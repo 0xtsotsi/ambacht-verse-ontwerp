@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -94,8 +95,8 @@ export const Gallery = () => {
                 variant={activeCategory === category.id ? "default" : "outline"}
                 className={`flex items-center gap-2 ${
                   activeCategory === category.id 
-                    ? "bg-burnt-orange text-warm-cream hover:bg-burnt-orange/90" 
-                    : "border-burnt-orange text-burnt-orange hover:bg-burnt-orange hover:text-warm-cream"
+                    ? "bg-forest-green text-warm-cream hover:bg-forest-green/90" 
+                    : "border-forest-green text-forest-green hover:bg-forest-green hover:text-warm-cream"
                 }`}
               >
                 {category.icon}
@@ -152,7 +153,7 @@ export const Gallery = () => {
               </p>
               <Button 
                 size="lg" 
-                className="bg-burnt-orange hover:bg-burnt-orange/90 text-clean-white px-8 py-6 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                className="bg-forest-green hover:bg-forest-green/90 text-clean-white px-8 py-6 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
               >
                 Plan Uw Evenement
               </Button>
