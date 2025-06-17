@@ -98,8 +98,8 @@ export const Services = () => {
                       </div>
                     ))}
                   </div>
-                </Card>
-              </CardContent>
+                </CardContent>
+              </Card>
 
               {/* Food Image */}
               <div className="relative">
