@@ -20,9 +20,9 @@ export default {
 		},
 		extend: {
 			fontFamily: {
-				serif: ['Baskerville', 'Times New Roman', 'serif'],
-				body: ['Open Sans', 'sans-serif'],
-				script: ['Dancing Script', 'cursive'],
+				serif: ['Spectral', 'Baskerville', 'Times New Roman', 'serif'],
+				body: ['Montserrat', 'Open Sans', 'sans-serif'],
+				script: ['Dancing Script', 'Brush Script MT', 'cursive'],
 			},
 			spacing: {
 				'base': '8px',
@@ -69,14 +69,14 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Custom brand colors
-				'forest-green': 'rgb(var(--forest-green))',
-				'warm-cream': 'rgb(var(--warm-cream))',
-				'beige': 'rgb(var(--beige))',
-				'burnt-orange': 'rgb(var(--burnt-orange))',
-				'deep-teal': 'rgb(var(--deep-teal))',
-				'natural-brown': 'rgb(var(--natural-brown))',
-				'clean-white': 'rgb(var(--clean-white))',
+				// Updated brand colors matching the reference
+				'forest-green': '#2B4040',
+				'warm-cream': '#FFEFDA', 
+				'beige': '#C4A76D',
+				'burnt-orange': '#CC5D00',
+				'deep-teal': '#3D6160',
+				'natural-brown': '#BB3A3C',
+				'clean-white': '#FEFEFA',
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
