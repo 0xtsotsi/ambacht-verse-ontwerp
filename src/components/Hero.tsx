@@ -2,6 +2,8 @@
 import { Button } from "@/components/ui/button";
 
 export const Hero = () => {
+  console.log("Hero component loaded - testing save functionality");
+  
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image - Charcuterie Board */}
