@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -95,7 +96,7 @@ export const Gallery = () => {
                 className={`flex items-center gap-2 ${
                   activeCategory === category.id 
                     ? "bg-forest-green text-warm-cream hover:bg-forest-green/90" 
-                    : "border-burnt-orange text-burnt-orange hover:bg-burnt-orange hover:text-warm-cream"
+                    : "border-beige text-beige hover:bg-burnt-orange hover:text-warm-cream"
                 }`}
               >
                 {category.icon}
