@@ -1,0 +1,223 @@
+{
+  "master": {
+    "tasks": [
+      {
+        "id": "task_001",
+        "title": "Epic 1 - Enhanced Booking Foundation",
+        "description": "Establish the core booking experience that positions Wesley's Ambacht as a professional, accessible catering service. This epic delivers the fundamental infrastructure for improved conversion rates through streamlined booking access and enhanced date/time selection capabilities.",
+        "status": "pending",
+        "priority": "high",
+        "complexity": 8,
+        "estimatedHours": 40,
+        "tags": [
+          "booking",
+          "ui",
+          "core"
+        ],
+        "dependencies": [],
+        "subtasks": [
+          {
+            "id": "task_001_1",
+            "title": "Floating Booking Widget Implementation",
+            "description": "Create a floating 'Check Your Date' button that appears in bottom-right corner on all pages, with responsive design and accessibility features",
+            "status": "pending",
+            "priority": "high",
+            "estimatedHours": 12
+          },
+          {
+            "id": "task_001_2",
+            "title": "Enhanced DateChecker Modal",
+            "description": "Develop modal with calendar component, time slot selection (10:00-20:00), guest count input, and real-time availability checking",
+            "status": "pending",
+            "priority": "high",
+            "estimatedHours": 16
+          },
+          {
+            "id": "task_001_3",
+            "title": "Preliminary Quote Calculator",
+            "description": "Build pricing calculator with service type selection and per-person pricing display (€12.50-€27.50 range)",
+            "status": "pending",
+            "priority": "medium",
+            "estimatedHours": 8
+          },
+          {
+            "id": "task_001_4",
+            "title": "Booking Database Schema Enhancement",
+            "description": "Create enhanced Supabase schema with bookings, availability_slots, and quotes tables including real-time subscriptions",
+            "status": "pending",
+            "priority": "high",
+            "estimatedHours": 4
+          }
+        ],
+        "created": "2025-06-28T09:15:00.000Z",
+        "lastModified": "2025-06-28T09:15:00.000Z"
+      },
+      {
+        "id": "task_002",
+        "title": "Epic 2 - Transparent Pricing & Services",
+        "description": "Transform service presentation to build customer confidence through transparent pricing and professional service descriptions. This epic establishes Wesley's Ambacht as a premium service provider with clear value propositions.",
+        "status": "pending",
+        "priority": "high",
+        "complexity": 7,
+        "estimatedHours": 32,
+        "tags": [
+          "pricing",
+          "services",
+          "ui"
+        ],
+        "dependencies": [
+          "task_001"
+        ],
+        "subtasks": [
+          {
+            "id": "task_002_1",
+            "title": "Service Pricing Cards Enhancement",
+            "description": "Create pricing cards with transparent per-person costs for Corporate (€12.50), Social (€27.50), Wedding (€22.50), and Custom services",
+            "status": "pending",
+            "priority": "high",
+            "estimatedHours": 10
+          },
+          {
+            "id": "task_002_2",
+            "title": "Tiered Service Options",
+            "description": "Implement 3-tier system (Essential, Premium, Luxury) for each service category with interactive pricing updates",
+            "status": "pending",
+            "priority": "medium",
+            "estimatedHours": 12
+          },
+          {
+            "id": "task_002_3",
+            "title": "Interactive Menu System",
+            "description": "Build menu system with dietary filters, PDF generation, and visual presentation with professional food photography",
+            "status": "pending",
+            "priority": "medium",
+            "estimatedHours": 8
+          },
+          {
+            "id": "task_002_4",
+            "title": "Seasonal Specials Section",
+            "description": "Create dynamic seasonal specials showcase with current offerings, special pricing, and admin content management",
+            "status": "pending",
+            "priority": "low",
+            "estimatedHours": 2
+          }
+        ],
+        "created": "2025-06-28T09:15:00.000Z",
+        "lastModified": "2025-06-28T09:15:00.000Z"
+      },
+      {
+        "id": "task_003",
+        "title": "Epic 3 - Professional Trust Signals",
+        "description": "Establish Wesley's Ambacht as a credible, professional catering service through awards, testimonials, and supplier partnerships. This epic builds the confidence and trust necessary for premium market positioning.",
+        "status": "pending",
+        "priority": "medium",
+        "complexity": 6,
+        "estimatedHours": 24,
+        "tags": [
+          "trust",
+          "testimonials",
+          "branding"
+        ],
+        "dependencies": [],
+        "subtasks": [
+          {
+            "id": "task_003_1",
+            "title": "Awards and Certifications Section",
+            "description": "Display professional certifications, quality assurance badges, industry memberships, and achievement statistics",
+            "status": "pending",
+            "priority": "medium",
+            "estimatedHours": 6
+          },
+          {
+            "id": "task_003_2",
+            "title": "Enhanced Testimonials Carousel",
+            "description": "Build auto-rotating testimonials carousel with client details, ratings, filtering, and social proof statistics",
+            "status": "pending",
+            "priority": "medium",
+            "estimatedHours": 8
+          },
+          {
+            "id": "task_003_3",
+            "title": "Local Supplier Partnership Showcase",
+            "description": "Create supplier partnership showcase featuring heritage stories for cheese, bakery, fish, and organic suppliers",
+            "status": "pending",
+            "priority": "medium",
+            "estimatedHours": 6
+          },
+          {
+            "id": "task_003_4",
+            "title": "Professional Contact Enhancement",
+            "description": "Enhance contact options with memorable phone display, business hours, emergency contact, and multi-method presentation",
+            "status": "pending",
+            "priority": "medium",
+            "estimatedHours": 4
+          }
+        ],
+        "created": "2025-06-28T09:15:00.000Z",
+        "lastModified": "2025-06-28T09:15:00.000Z"
+      },
+      {
+        "id": "task_004",
+        "title": "Epic 4 - Communication & Integration",
+        "description": "Enable professional communication capabilities and multi-language support to serve diverse clientele and provide immediate customer assistance. This epic completes the professional platform transformation.",
+        "status": "pending",
+        "priority": "medium",
+        "complexity": 7,
+        "estimatedHours": 28,
+        "tags": [
+          "communication",
+          "integration",
+          "i18n"
+        ],
+        "dependencies": [
+          "task_001",
+          "task_002"
+        ],
+        "subtasks": [
+          {
+            "id": "task_004_1",
+            "title": "WhatsApp Business Integration",
+            "description": "Integrate WhatsApp Business API with floating chat button, automated welcome messages, and chat analytics",
+            "status": "pending",
+            "priority": "high",
+            "estimatedHours": 10
+          },
+          {
+            "id": "task_004_2",
+            "title": "Multi-Language Support System",
+            "description": "Implement Dutch/English language toggle with formal tone, session persistence, and SEO optimization",
+            "status": "pending",
+            "priority": "medium",
+            "estimatedHours": 8
+          },
+          {
+            "id": "task_004_3",
+            "title": "Enhanced Analytics and Conversion Tracking",
+            "description": "Set up Google Analytics 4, conversion funnel tracking, A/B testing capability, and performance monitoring",
+            "status": "pending",
+            "priority": "medium",
+            "estimatedHours": 6
+          },
+          {
+            "id": "task_004_4",
+            "title": "Performance Optimization and PWA Features",
+            "description": "Implement PWA manifest, service worker, image optimization, lazy loading, and Lighthouse score optimization",
+            "status": "pending",
+            "priority": "low",
+            "estimatedHours": 4
+          }
+        ],
+        "created": "2025-06-28T09:15:00.000Z",
+        "lastModified": "2025-06-28T09:15:00.000Z"
+      }
+    ],
+    "metadata": {
+      "version": "1.0.0",
+      "created": "2025-06-28T09:15:00.000Z",
+      "lastModified": "2025-06-28T09:15:00.000Z",
+      "totalTasks": 4,
+      "projectName": "Wesley's Ambacht Enhancement",
+      "description": "Transform Wesley's Ambacht into a premium catering platform with Sopranos-inspired features"
+    }
+  }
+}

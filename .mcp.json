@@ -1,0 +1,27 @@
+{
+  "mcpServers": {
+    "task-master-ai": {
+      "command": "npx",
+      "args": ["-y", "--package=task-master-ai", "task-master-ai"],
+      "env": {
+        "ANTHROPIC_API_KEY": "sk-ant-api03-...",
+        "PERPLEXITY_API_KEY": "pplx-...",
+        "OPENAI_API_KEY": "sk-...",
+        "GOOGLE_API_KEY": "AIza...",
+        "XAI_API_KEY": "xai-...",
+        "OPENROUTER_API_KEY": "sk-or-...",
+        "MISTRAL_API_KEY": "...",
+        "AZURE_OPENAI_API_KEY": "...",
+        "OLLAMA_API_KEY": "..."
+      }
+    },
+    "notion": {
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-notion"],
+      "env": {
+        "NOTION_API_KEY": "secret_...",
+        "NOTION_DATABASE_ID": "21df23ab1c8f80ef914effd0d37a5b43"
+      }
+    }
+  }
+}
