@@ -1,30 +1,198 @@
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { useToast } from "@/hooks/use-toast";
+import { useLifecycleLogger, useStateLogger, usePerformanceLogger } from "@/hooks/useComponentLogger";
+import { UserFlowLogger, LoggerUtils } from "@/lib/logger";
+import { useFormAnalytics, FormField } from "@/lib/formLogger";
+import { useConversionFunnel } from "@/lib/conversionFunnel";
+import { useInteractionLogger, useBreadcrumbLogger } from "@/hooks/useUserFlowLogger";
+
+interface FormData {
+  name: string;
+  email: string;
+  message: string;
+}
 
 export const BookingForm = () => {
   const { toast } = useToast();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<FormData>({
     name: "",
     email: "",
     message: ""
   });
 
+  // Component logging setup
+  useLifecycleLogger({ 
+    componentName: 'BookingForm',
+    props: { hasInitialData: Object.values(formData).some(v => v.length > 0) },
+    enablePropLogging: true
+  });
+
+  const { logStateChange } = useStateLogger<FormData>({ 
+    componentName: 'BookingForm',
+    stateName: 'formData'
+  });
+
+  const { getPerformanceStats } = usePerformanceLogger({
+    componentName: 'BookingForm',
+    slowRenderThreshold: 20
+  });
+
+  // User flow tracking
+  const { logFormInteraction, logButtonPress } = useInteractionLogger();
+  const { addBreadcrumb, logJourneySummary } = useBreadcrumbLogger();
+  
+  // Form analytics
+  const formFields: FormField[] = [
+    { name: 'name', type: 'text', required: true },
+    { name: 'email', type: 'email', required: true },
+    { name: 'message', type: 'textarea', required: true }
+  ];
+  
+  const {
+    initializeForm,
+    trackFocus,
+    trackBlur,
+    trackChange,
+    trackSubmission,
+    trackAbandonment,
+    logFunnelStep,
+    cleanup
+  } = useFormAnalytics('BookingForm', formFields);
+
+  // Conversion funnel tracking
+  const { startFunnel, logStep, complete, abandon } = useConversionFunnel('contact_form');
+
+  // Initialize form tracking
+  useEffect(() => {
+    const formKey = initializeForm();
+    const funnelId = startFunnel();
+    
+    addBreadcrumb('booking_form_loaded');
+    logStep('form_view');
+    
+    return () => {
+      cleanup();
+    };
+  }, []);
+
+  // Log state changes when formData updates
+  useEffect(() => {
+    logStateChange(formData, 'form_field_update');
+  }, [formData, logStateChange]);
+
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    toast({
-      title: "Bericht Verzonden!",
-      description: "Bedankt voor uw bericht. Wij nemen snel contact met u op.",
-    });
-    setFormData({ name: "", email: "", message: "" });
+    try {
+      e.preventDefault();
+      
+      logButtonPress('submit_booking_form', 'BookingForm');
+      addBreadcrumb('form_submission_attempt', { formData });
+      
+      // Track form submission
+      const validationErrors: string[] = [];
+      if (!formData.name.trim()) validationErrors.push('Name is required');
+      if (!formData.email.trim()) validationErrors.push('Email is required');
+      if (!formData.message.trim()) validationErrors.push('Message is required');
+      
+      const isSuccessful = validationErrors.length === 0;
+      
+      trackSubmission(formData, validationErrors, isSuccessful);
+      
+      if (isSuccessful) {
+        logStep('form_submission');
+        complete({ 
+          formData: LoggerUtils.sanitizeData(formData),
+          submissionTime: Date.now()
+        });
+        
+        addBreadcrumb('booking_form_submitted_successfully');
+        logJourneySummary('completed');
+        
+        toast({
+          title: "Bericht Verzonden!",
+          description: "Bedankt voor uw bericht. Wij nemen snel contact met u op.",
+        });
+        
+        const resetData = { name: "", email: "", message: "" };
+        setFormData(resetData);
+        logStateChange(resetData, 'form_reset_after_submit');
+      } else {
+        addBreadcrumb('form_submission_failed', { errors: validationErrors });
+      }
+      
+    } catch (error) {
+      console.error('Form submission error:', error);
+      UserFlowLogger.error('form_submission_error', 'Failed to submit booking form', { error, formData });
+      abandon('error', { error: error.message });
+      addBreadcrumb('form_submission_error', { error: error.message });
+    }
   };
 
-  const handleChange = (field: string, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }));
+  const handleChange = (field: keyof FormData, value: string) => {
+    try {
+      const previousValue = formData[field];
+      setFormData(prev => ({ ...prev, [field]: value }));
+      
+      // Track field changes
+      trackChange(field, value);
+      logFormInteraction('change', 'BookingForm', field, value);
+      
+      // Track first interaction
+      if (!previousValue && value) {
+        logStep('first_field_interaction');
+        addBreadcrumb('first_form_interaction', { field });
+      }
+      
+      // Track form completion progress
+      const updatedData = { ...formData, [field]: value };
+      const completedFields = Object.values(updatedData).filter(v => v.trim().length > 0).length;
+      const completionPercentage = (completedFields / 3) * 100;
+      
+      if (completionPercentage === 100) {
+        logStep('form_completion');
+        addBreadcrumb('form_fully_completed');
+      }
+      
+      addBreadcrumb('field_updated', { 
+        field, 
+        completion: completionPercentage,
+        valueLength: value.length 
+      });
+      
+    } catch (error) {
+      console.error('Form field change error:', error);
+      UserFlowLogger.error('form_field_error', `Failed to update field ${field}`, { error, field, value });
+    }
   };
+
+  // Handle field focus
+  const handleFocus = (field: keyof FormData) => {
+    trackFocus(field);
+    logFormInteraction('focus', 'BookingForm', field);
+    addBreadcrumb('field_focused', { field });
+  };
+
+  // Handle field blur
+  const handleBlur = (field: keyof FormData) => {
+    trackBlur(field);
+    logFormInteraction('blur', 'BookingForm', field);
+  };
+
+  // Handle form abandonment on unmount
+  useEffect(() => {
+    return () => {
+      const hasAnyData = Object.values(formData).some(v => v.trim().length > 0);
+      if (hasAnyData) {
+        trackAbandonment('navigation');
+        abandon('navigation');
+        addBreadcrumb('form_abandoned_with_data');
+        logJourneySummary('abandoned');
+      }
+    };
+  }, [formData]);
 
   return (
     <section id="contact" className="py-0">
@@ -53,6 +221,8 @@ export const BookingForm = () => {
                 placeholder="Naam"
                 value={formData.name}
                 onChange={(e) => handleChange("name", e.target.value)}
+                onFocus={() => handleFocus("name")}
+                onBlur={() => handleBlur("name")}
                 className="w-full px-4 py-3 rounded-full border-2 border-forest-green/20 focus:border-forest-green bg-white"
                 required
               />
@@ -62,6 +232,8 @@ export const BookingForm = () => {
                 placeholder="E-mailadres"
                 value={formData.email}
                 onChange={(e) => handleChange("email", e.target.value)}
+                onFocus={() => handleFocus("email")}
+                onBlur={() => handleBlur("email")}
                 className="w-full px-4 py-3 rounded-full border-2 border-forest-green/20 focus:border-forest-green bg-white"
                 required
               />
@@ -70,6 +242,8 @@ export const BookingForm = () => {
                 placeholder="Bericht"
                 value={formData.message}
                 onChange={(e) => handleChange("message", e.target.value)}
+                onFocus={() => handleFocus("message")}
+                onBlur={() => handleBlur("message")}
                 className="w-full px-4 py-3 rounded-2xl border-2 border-forest-green/20 focus:border-forest-green bg-white min-h-[100px] resize-none"
                 required
               />

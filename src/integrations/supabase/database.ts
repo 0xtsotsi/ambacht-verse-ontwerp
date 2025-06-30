@@ -1,5 +1,6 @@
 import { supabase } from './client';
 import type { Database } from './types';
+import { withSupabaseLogging, withSupabaseRpcLogging, logApiError } from '@/lib/apiLogger';
 
 // Type aliases for easier use
 export type Booking = Database['public']['Tables']['bookings']['Row'];
@@ -20,105 +21,139 @@ export type QuoteStatus = Database['public']['Enums']['quote_status'];
 
 // Availability functions
 export async function checkAvailability(date: string, time: string): Promise<boolean> {
-  const { data, error } = await supabase.rpc('check_availability', {
-    p_date: date,
-    p_time: time
-  });
-  
-  if (error) {
-    console.error('Error checking availability:', error);
+  try {
+    return await withSupabaseRpcLogging(
+      () => supabase.rpc('check_availability', { p_date: date, p_time: time }),
+      'check_availability',
+      { p_date: date, p_time: time }
+    ) ?? false;
+  } catch (error) {
+    logApiError('rpc/check_availability', error as Error, { 
+      method: 'POST', 
+      payload: { p_date: date, p_time: time } 
+    });
     return false;
   }
-  
-  return data ?? false;
 }
 
 export async function getAvailabilitySlots(
   startDate?: string,
   endDate?: string
 ): Promise<AvailabilitySlot[]> {
-  let query = supabase
-    .from('availability_slots')
-    .select('*')
-    .order('date', { ascending: true })
-    .order('time_slot', { ascending: true });
+  try {
+    let query = supabase
+      .from('availability_slots')
+      .select('*')
+      .order('date', { ascending: true })
+      .order('time_slot', { ascending: true });
 
-  if (startDate) {
-    query = query.gte('date', startDate);
-  }
-  
-  if (endDate) {
-    query = query.lte('date', endDate);
-  }
+    if (startDate) {
+      query = query.gte('date', startDate);
+    }
+    
+    if (endDate) {
+      query = query.lte('date', endDate);
+    }
 
-  const { data, error } = await query;
-  
-  if (error) {
-    console.error('Error fetching availability slots:', error);
+    return await withSupabaseLogging(
+      query,
+      'availability_slots',
+      'GET'
+    ) ?? [];
+  } catch (error) {
+    logApiError('availability_slots', error as Error, { 
+      method: 'GET', 
+      payload: { startDate, endDate } 
+    });
     return [];
   }
-  
-  return data ?? [];
 }
 
 export async function getAvailableTimeSlots(date: string): Promise<AvailabilitySlot[]> {
-  const { data, error } = await supabase
-    .from('availability_slots')
-    .select('*')
-    .eq('date', date)
-    .lt('current_bookings', supabase.sql`max_bookings`)
-    .eq('is_blocked', false)
-    .order('time_slot', { ascending: true });
-  
-  if (error) {
-    console.error('Error fetching available time slots:', error);
+  try {
+    const query = supabase
+      .from('availability_slots')
+      .select('*')
+      .eq('date', date)
+      .lt('current_bookings', supabase.sql`max_bookings`)
+      .eq('is_blocked', false)
+      .order('time_slot', { ascending: true });
+
+    return await withSupabaseLogging(
+      query,
+      'availability_slots/available',
+      'GET'
+    ) ?? [];
+  } catch (error) {
+    logApiError('availability_slots/available', error as Error, { 
+      method: 'GET', 
+      payload: { date } 
+    });
     return [];
   }
-  
-  return data ?? [];
 }
 
 // Booking functions
 export async function createBooking(booking: BookingInsert): Promise<Booking | null> {
-  // First check availability
-  const isAvailable = await checkAvailability(booking.event_date, booking.event_time);
-  if (!isAvailable) {
-    throw new Error('Selected time slot is not available');
-  }
+  try {
+    // First check availability
+    const isAvailable = await checkAvailability(booking.event_date, booking.event_time);
+    if (!isAvailable) {
+      throw new Error('Selected time slot is not available');
+    }
 
-  const { data, error } = await supabase
-    .from('bookings')
-    .insert(booking)
-    .select()
-    .single();
-  
-  if (error) {
-    console.error('Error creating booking:', error);
+    const query = supabase
+      .from('bookings')
+      .insert(booking)
+      .select()
+      .single();
+
+    const data = await withSupabaseLogging(
+      query,
+      'bookings',
+      'POST'
+    );
+
+    // Reserve the time slot
+    await withSupabaseRpcLogging(
+      () => supabase.rpc('reserve_time_slot', {
+        p_date: booking.event_date,
+        p_time: booking.event_time
+      }),
+      'reserve_time_slot',
+      { p_date: booking.event_date, p_time: booking.event_time }
+    );
+    
+    return data;
+  } catch (error) {
+    logApiError('bookings', error as Error, { 
+      method: 'POST', 
+      payload: booking 
+    });
     throw error;
   }
-
-  // Reserve the time slot
-  await supabase.rpc('reserve_time_slot', {
-    p_date: booking.event_date,
-    p_time: booking.event_time
-  });
-  
-  return data;
 }
 
 export async function getBooking(id: string): Promise<Booking | null> {
-  const { data, error } = await supabase
-    .from('bookings')
-    .select('*')
-    .eq('id', id)
-    .single();
-  
-  if (error) {
-    console.error('Error fetching booking:', error);
+  try {
+    const query = supabase
+      .from('bookings')
+      .select('*')
+      .eq('id', id)
+      .single();
+
+    return await withSupabaseLogging(
+      query,
+      'bookings/get',
+      'GET'
+    );
+  } catch (error) {
+    logApiError('bookings/get', error as Error, { 
+      method: 'GET', 
+      payload: { id } 
+    });
     return null;
   }
-  
-  return data;
 }
 
 export async function updateBookingStatus(
@@ -126,131 +161,176 @@ export async function updateBookingStatus(
   status: BookingStatus,
   additionalUpdates?: Partial<BookingUpdate>
 ): Promise<Booking | null> {
-  const updates: BookingUpdate = {
-    status,
-    ...additionalUpdates
-  };
+  try {
+    const updates: BookingUpdate = {
+      status,
+      ...additionalUpdates
+    };
 
-  // Add timestamp fields based on status
-  if (status === 'confirmed') {
-    updates.confirmed_at = new Date().toISOString();
-  } else if (status === 'cancelled') {
-    updates.cancelled_at = new Date().toISOString();
-  }
+    // Add timestamp fields based on status
+    if (status === 'confirmed') {
+      updates.confirmed_at = new Date().toISOString();
+    } else if (status === 'cancelled') {
+      updates.cancelled_at = new Date().toISOString();
+    }
 
-  const { data, error } = await supabase
-    .from('bookings')
-    .update(updates)
-    .eq('id', id)
-    .select()
-    .single();
-  
-  if (error) {
-    console.error('Error updating booking status:', error);
+    const query = supabase
+      .from('bookings')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    const data = await withSupabaseLogging(
+      query,
+      'bookings/update',
+      'PATCH'
+    );
+
+    // If cancelling, release the time slot
+    if (status === 'cancelled' && data) {
+      await withSupabaseRpcLogging(
+        () => supabase.rpc('release_time_slot', {
+          p_date: data.event_date,
+          p_time: data.event_time
+        }),
+        'release_time_slot',
+        { p_date: data.event_date, p_time: data.event_time }
+      );
+    }
+    
+    return data;
+  } catch (error) {
+    logApiError('bookings/update', error as Error, { 
+      method: 'PATCH', 
+      payload: { id, status, additionalUpdates } 
+    });
     throw error;
   }
-
-  // If cancelling, release the time slot
-  if (status === 'cancelled' && data) {
-    await supabase.rpc('release_time_slot', {
-      p_date: data.event_date,
-      p_time: data.event_time
-    });
-  }
-  
-  return data;
 }
 
 // Quote functions
 export async function createQuote(quote: QuoteInsert): Promise<Quote | null> {
-  const { data, error } = await supabase
-    .from('quotes')
-    .insert(quote)
-    .select()
-    .single();
-  
-  if (error) {
-    console.error('Error creating quote:', error);
+  try {
+    const query = supabase
+      .from('quotes')
+      .insert(quote)
+      .select()
+      .single();
+
+    return await withSupabaseLogging(
+      query,
+      'quotes',
+      'POST'
+    );
+  } catch (error) {
+    logApiError('quotes', error as Error, { 
+      method: 'POST', 
+      payload: quote 
+    });
     throw error;
   }
-  
-  return data;
 }
 
 export async function getQuotesForBooking(bookingId: string): Promise<Quote[]> {
-  const { data, error } = await supabase
-    .from('quotes')
-    .select('*')
-    .eq('booking_id', bookingId)
-    .order('created_at', { ascending: false });
-  
-  if (error) {
-    console.error('Error fetching quotes:', error);
+  try {
+    const query = supabase
+      .from('quotes')
+      .select('*')
+      .eq('booking_id', bookingId)
+      .order('created_at', { ascending: false });
+
+    return await withSupabaseLogging(
+      query,
+      'quotes/booking',
+      'GET'
+    ) ?? [];
+  } catch (error) {
+    logApiError('quotes/booking', error as Error, { 
+      method: 'GET', 
+      payload: { bookingId } 
+    });
     return [];
   }
-  
-  return data ?? [];
 }
 
 export async function updateQuoteStatus(
   id: string, 
   status: QuoteStatus
 ): Promise<Quote | null> {
-  const updates: Partial<Quote> = { status };
+  try {
+    const updates: Partial<Quote> = { status };
 
-  // Add timestamp fields based on status
-  if (status === 'sent') {
-    updates.sent_at = new Date().toISOString();
-  } else if (status === 'accepted') {
-    updates.accepted_at = new Date().toISOString();
-  }
+    // Add timestamp fields based on status
+    if (status === 'sent') {
+      updates.sent_at = new Date().toISOString();
+    } else if (status === 'accepted') {
+      updates.accepted_at = new Date().toISOString();
+    }
 
-  const { data, error } = await supabase
-    .from('quotes')
-    .update(updates)
-    .eq('id', id)
-    .select()
-    .single();
-  
-  if (error) {
-    console.error('Error updating quote status:', error);
+    const query = supabase
+      .from('quotes')
+      .update(updates)
+      .eq('id', id)
+      .select()
+      .single();
+
+    return await withSupabaseLogging(
+      query,
+      'quotes/update',
+      'PATCH'
+    );
+  } catch (error) {
+    logApiError('quotes/update', error as Error, { 
+      method: 'PATCH', 
+      payload: { id, status } 
+    });
     throw error;
   }
-  
-  return data;
 }
 
 // Add-on services
 export async function getAddOnServices(): Promise<AddOnService[]> {
-  const { data, error } = await supabase
-    .from('add_on_services')
-    .select('*')
-    .eq('is_active', true)
-    .order('category', { ascending: true })
-    .order('name', { ascending: true });
-  
-  if (error) {
-    console.error('Error fetching add-on services:', error);
+  try {
+    const query = supabase
+      .from('add_on_services')
+      .select('*')
+      .eq('is_active', true)
+      .order('category', { ascending: true })
+      .order('name', { ascending: true });
+
+    return await withSupabaseLogging(
+      query,
+      'add_on_services',
+      'GET'
+    ) ?? [];
+  } catch (error) {
+    logApiError('add_on_services', error as Error, { method: 'GET' });
     return [];
   }
-  
-  return data ?? [];
 }
 
 export async function getAddOnServicesByCategory(category: string): Promise<AddOnService[]> {
-  const { data, error } = await supabase
-    .from('add_on_services')
-    .select('*')
-    .eq('category', category)
-    .eq('is_active', true)
-    .order('name', { ascending: true });
-  
-  if (error) {
-    console.error('Error fetching add-on services by category:', error);
+  try {
+    const query = supabase
+      .from('add_on_services')
+      .select('*')
+      .eq('category', category)
+      .eq('is_active', true)
+      .order('name', { ascending: true });
+
+    return await withSupabaseLogging(
+      query,
+      'add_on_services/category',
+      'GET'
+    ) ?? [];
+  } catch (error) {
+    logApiError('add_on_services/category', error as Error, { 
+      method: 'GET', 
+      payload: { category } 
+    });
     return [];
   }
-  
-  return data ?? [];
 }
 
 // Booking add-ons
@@ -258,53 +338,62 @@ export async function addBookingAddOns(
   bookingId: string, 
   addOnServices: { serviceId: string; quantity?: number }[]
 ): Promise<BookingAddOn[]> {
-  // Get the booking to calculate prices
-  const booking = await getBooking(bookingId);
-  if (!booking) {
-    throw new Error('Booking not found');
-  }
-
-  // Get the add-on service details
-  const serviceIds = addOnServices.map(a => a.serviceId);
-  const { data: services, error: servicesError } = await supabase
-    .from('add_on_services')
-    .select('*')
-    .in('id', serviceIds);
-
-  if (servicesError) {
-    throw servicesError;
-  }
-
-  // Calculate prices and prepare inserts
-  const inserts = addOnServices.map(({ serviceId, quantity = 1 }) => {
-    const service = services?.find(s => s.id === serviceId);
-    if (!service) {
-      throw new Error(`Add-on service ${serviceId} not found`);
+  try {
+    // Get the booking to calculate prices
+    const booking = await getBooking(bookingId);
+    if (!booking) {
+      throw new Error('Booking not found');
     }
 
-    const calculatedPrice = service.price_per_person 
-      ? service.price_per_person * booking.guest_count * quantity
-      : (service.flat_rate || 0) * quantity;
+    // Get the add-on service details
+    const serviceIds = addOnServices.map(a => a.serviceId);
+    const servicesQuery = supabase
+      .from('add_on_services')
+      .select('*')
+      .in('id', serviceIds);
 
-    return {
-      booking_id: bookingId,
-      add_on_service_id: serviceId,
-      quantity,
-      calculated_price: calculatedPrice
-    };
-  });
+    const services = await withSupabaseLogging(
+      servicesQuery,
+      'add_on_services/batch',
+      'GET'
+    );
 
-  const { data, error } = await supabase
-    .from('booking_add_ons')
-    .insert(inserts)
-    .select();
-  
-  if (error) {
-    console.error('Error adding booking add-ons:', error);
+    // Calculate prices and prepare inserts
+    const inserts = addOnServices.map(({ serviceId, quantity = 1 }) => {
+      const service = services?.find(s => s.id === serviceId);
+      if (!service) {
+        throw new Error(`Add-on service ${serviceId} not found`);
+      }
+
+      const calculatedPrice = service.price_per_person 
+        ? service.price_per_person * booking.guest_count * quantity
+        : (service.flat_rate || 0) * quantity;
+
+      return {
+        booking_id: bookingId,
+        add_on_service_id: serviceId,
+        quantity,
+        calculated_price: calculatedPrice
+      };
+    });
+
+    const insertQuery = supabase
+      .from('booking_add_ons')
+      .insert(inserts)
+      .select();
+
+    return await withSupabaseLogging(
+      insertQuery,
+      'booking_add_ons',
+      'POST'
+    ) ?? [];
+  } catch (error) {
+    logApiError('booking_add_ons', error as Error, { 
+      method: 'POST', 
+      payload: { bookingId, addOnServices } 
+    });
     throw error;
   }
-  
-  return data ?? [];
 }
 
 // Real-time subscriptions

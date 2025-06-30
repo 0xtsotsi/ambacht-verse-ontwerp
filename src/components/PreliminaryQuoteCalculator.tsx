@@ -9,6 +9,8 @@ import { Separator } from '@/components/ui/separator';
 import { Calculator, Euro, ArrowRight, CheckCircle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { useLifecycleLogger, useStateLogger, useRenderLogger, usePerformanceLogger } from '@/hooks/useComponentLogger';
+import { UserFlowLogger, ComponentLogger } from '@/lib/logger';
 import {
   QUOTE_SERVICE_CATEGORIES,
   QUOTE_SERVICE_TIERS,
@@ -56,9 +58,65 @@ export function PreliminaryQuoteCalculator({
 
   const t = QUOTE_TRANSLATIONS.nl;
 
+  // Logging setup
+  useLifecycleLogger({ 
+    componentName: 'PreliminaryQuoteCalculator',
+    props: { initialGuestCount, hasQuoteCallback: !!onRequestDetailedQuote },
+    enablePropLogging: true
+  });
+
+  const { logStateChange: logCategoryChange } = useStateLogger<QuoteServiceCategory>({ 
+    componentName: 'PreliminaryQuoteCalculator',
+    stateName: 'selectedCategory'
+  });
+
+  const { logStateChange: logTierChange } = useStateLogger<QuoteServiceTier>({ 
+    componentName: 'PreliminaryQuoteCalculator',
+    stateName: 'selectedTier'
+  });
+
+  const { logStateChange: logGuestCountChange } = useStateLogger<number[]>({ 
+    componentName: 'PreliminaryQuoteCalculator',
+    stateName: 'guestCount'
+  });
+
+  const { logStateChange: logStepChange } = useStateLogger<number>({ 
+    componentName: 'PreliminaryQuoteCalculator',
+    stateName: 'step'
+  });
+
+  const renderInfo = useRenderLogger({
+    componentName: 'PreliminaryQuoteCalculator',
+    dependencies: [selectedCategory, selectedTier, guestCount, selectedAddOns, step, quote, isCalculating]
+  });
+
+  const { getPerformanceStats } = usePerformanceLogger({
+    componentName: 'PreliminaryQuoteCalculator',
+    slowRenderThreshold: 25
+  });
+
+  // State change logging effects
+  useEffect(() => {
+    logCategoryChange(selectedCategory, 'category_selection');
+  }, [selectedCategory, logCategoryChange]);
+
+  useEffect(() => {
+    logTierChange(selectedTier, 'tier_selection');
+  }, [selectedTier, logTierChange]);
+
+  useEffect(() => {
+    logGuestCountChange(guestCount, 'guest_count_slider');
+  }, [guestCount, logGuestCountChange]);
+
+  useEffect(() => {
+    logStepChange(step, 'step_navigation');
+  }, [step, logStepChange]);
+
   // Calculate quote when form changes
   useEffect(() => {
     setIsCalculating(true);
+    ComponentLogger.stateChange('PreliminaryQuoteCalculator', false, true, 'quote_calculation_started');
+    
     setTimeout(() => {
       try {
         const calculatedQuote = calculateTotalQuote(
@@ -68,35 +126,90 @@ export function PreliminaryQuoteCalculator({
           selectedAddOns
         );
         setQuote(calculatedQuote);
+        ComponentLogger.stateChange('PreliminaryQuoteCalculator', null, calculatedQuote, 'quote_calculation_completed');
+        
+        UserFlowLogger.interaction('quote_calculated', 'PreliminaryQuoteCalculator', {
+          category: selectedCategory,
+          tier: selectedTier,
+          guestCount: guestCount[0],
+          addOns: selectedAddOns,
+          totalPrice: calculatedQuote?.total
+        });
+        
       } catch (error) {
         console.error('Quote calculation error:', error);
         setQuote(null);
+        UserFlowLogger.error('quote_calculation_error', 'Failed to calculate quote', {
+          error, selectedCategory, selectedTier, guestCount: guestCount[0], selectedAddOns
+        });
       }
       setIsCalculating(false);
+      ComponentLogger.stateChange('PreliminaryQuoteCalculator', true, false, 'quote_calculation_finished');
     }, 300);
   }, [selectedCategory, selectedTier, guestCount, selectedAddOns]);
 
   const handleCategorySelect = (categoryId: QuoteServiceCategory) => {
-    setSelectedCategory(categoryId);
-    setStep(2);
-    toast({
-      title: "Geweldige keuze!",
-      description: `${QUOTE_SERVICE_CATEGORIES[categoryId].label} geselecteerd.`,
-      duration: 2000,
-    });
+    try {
+      const previousCategory = selectedCategory;
+      setSelectedCategory(categoryId);
+      setStep(2);
+      
+      UserFlowLogger.interaction('category_selected', 'PreliminaryQuoteCalculator', {
+        previousCategory,
+        newCategory: categoryId,
+        categoryLabel: QUOTE_SERVICE_CATEGORIES[categoryId].label
+      });
+      
+      toast({
+        title: "Geweldige keuze!",
+        description: `${QUOTE_SERVICE_CATEGORIES[categoryId].label} geselecteerd.`,
+        duration: 2000,
+      });
+    } catch (error) {
+      console.error('Category selection error:', error);
+      UserFlowLogger.error('category_selection_error', 'Failed to select category', { error, categoryId });
+    }
   };
 
   const handleTierSelect = (tierId: QuoteServiceTier) => {
-    setSelectedTier(tierId);
-    setStep(3);
+    try {
+      const previousTier = selectedTier;
+      setSelectedTier(tierId);
+      setStep(3);
+      
+      UserFlowLogger.interaction('tier_selected', 'PreliminaryQuoteCalculator', {
+        previousTier,
+        newTier: tierId,
+        tierLabel: QUOTE_SERVICE_TIERS[tierId].label
+      });
+    } catch (error) {
+      console.error('Tier selection error:', error);
+      UserFlowLogger.error('tier_selection_error', 'Failed to select tier', { error, tierId });
+    }
   };
 
   const handleAddOnToggle = (addonId: QuoteAddOn) => {
-    setSelectedAddOns(prev => 
-      prev.includes(addonId)
-        ? prev.filter(id => id !== addonId)
-        : [...prev, addonId]
-    );
+    try {
+      const wasSelected = selectedAddOns.includes(addonId);
+      setSelectedAddOns(prev => 
+        prev.includes(addonId)
+          ? prev.filter(id => id !== addonId)
+          : [...prev, addonId]
+      );
+      
+      UserFlowLogger.interaction(
+        wasSelected ? 'addon_deselected' : 'addon_selected', 
+        'PreliminaryQuoteCalculator', 
+        {
+          addonId,
+          addonLabel: QUOTE_ADD_ONS[addonId].label,
+          totalAddOns: wasSelected ? selectedAddOns.length - 1 : selectedAddOns.length + 1
+        }
+      );
+    } catch (error) {
+      console.error('Add-on toggle error:', error);
+      UserFlowLogger.error('addon_toggle_error', 'Failed to toggle add-on', { error, addonId });
+    }
   };
 
   const handleRequestDetailedQuote = () => {

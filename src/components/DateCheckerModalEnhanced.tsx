@@ -10,6 +10,8 @@ import { nl } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
 import { useAvailability } from '@/hooks/useAvailability';
+import { useLifecycleLogger, useStateLogger, useRenderLogger, usePerformanceLogger } from '@/hooks/useComponentLogger';
+import { UserFlowLogger, ComponentLogger } from '@/lib/logger';
 import { 
   TIME_SLOTS,
   GUEST_COUNT_CONFIG,
@@ -64,41 +66,186 @@ export function DateCheckerModalEnhanced({
 
   const t = DATE_CHECKER_TRANSLATIONS[language];
 
+  // Logging setup
+  useLifecycleLogger({ 
+    componentName: 'DateCheckerModalEnhanced',
+    props: { 
+      open, 
+      initialServiceCategory, 
+      initialServiceTier, 
+      language,
+      hasQuoteCallback: !!onOpenQuoteCalculator 
+    },
+    enablePropLogging: true
+  });
+
+  const { logStateChange: logDateChange } = useStateLogger<Date | undefined>({ 
+    componentName: 'DateCheckerModalEnhanced',
+    stateName: 'selectedDate'
+  });
+
+  const { logStateChange: logTimeChange } = useStateLogger<string>({ 
+    componentName: 'DateCheckerModalEnhanced',
+    stateName: 'selectedTime'
+  });
+
+  const { logStateChange: logGuestCountChange } = useStateLogger<number[]>({ 
+    componentName: 'DateCheckerModalEnhanced',
+    stateName: 'guestCount'
+  });
+
+  const { logStateChange: logStepChange } = useStateLogger<number>({ 
+    componentName: 'DateCheckerModalEnhanced',
+    stateName: 'step'
+  });
+
+  const renderInfo = useRenderLogger({
+    componentName: 'DateCheckerModalEnhanced',
+    dependencies: [open, selectedDate, selectedTime, guestCount, step]
+  });
+
+  const { getPerformanceStats } = usePerformanceLogger({
+    componentName: 'DateCheckerModalEnhanced',
+    slowRenderThreshold: 20
+  });
+
+  // State change logging effects
+  useEffect(() => {
+    logDateChange(selectedDate, 'date_selection');
+  }, [selectedDate, logDateChange]);
+
+  useEffect(() => {
+    logTimeChange(selectedTime, 'time_selection');
+  }, [selectedTime, logTimeChange]);
+
+  useEffect(() => {
+    logGuestCountChange(guestCount, 'guest_count_change');
+  }, [guestCount, logGuestCountChange]);
+
+  useEffect(() => {
+    logStepChange(step, 'step_navigation');
+  }, [step, logStepChange]);
+
   // Reset state when modal opens
   useEffect(() => {
     if (open) {
+      ComponentLogger.lifecycle('DateCheckerModalEnhanced', 'update', { event: 'modal_opened' });
       setSelectedDate(undefined);
       setSelectedTime('');
       setGuestCount([GUEST_COUNT_CONFIG.default]);
       setStep(1);
+      
+      UserFlowLogger.interaction('modal_opened', 'DateCheckerModalEnhanced', {
+        initialServiceCategory,
+        initialServiceTier,
+        language
+      });
+    } else {
+      ComponentLogger.lifecycle('DateCheckerModalEnhanced', 'update', { event: 'modal_closed' });
+      UserFlowLogger.interaction('modal_closed', 'DateCheckerModalEnhanced');
     }
-  }, [open]);
+  }, [open, initialServiceCategory, initialServiceTier, language]);
 
   const handleDateSelect = (date: Date | undefined) => {
-    if (!date || !isDateSelectable(date)) return;
-    setSelectedDate(date);
-    setStep(2);
-    
-    toast({
-      title: t.success,
-      description: `${format(date, 'EEEE d MMMM', { locale: nl })} geselecteerd.`,
-      duration: 2000,
-    });
+    try {
+      if (!date || !isDateSelectable(date)) {
+        UserFlowLogger.interaction('date_selection_blocked', 'DateCheckerModalEnhanced', {
+          attemptedDate: date,
+          reason: !date ? 'no_date' : 'date_not_selectable'
+        });
+        return;
+      }
+      
+      const previousDate = selectedDate;
+      setSelectedDate(date);
+      setStep(2);
+      
+      UserFlowLogger.interaction('date_selected', 'DateCheckerModalEnhanced', {
+        previousDate,
+        selectedDate: date,
+        formattedDate: format(date, 'EEEE d MMMM', { locale: nl }),
+        isWeekend: date.getDay() === 0 || date.getDay() === 6
+      });
+      
+      toast({
+        title: t.success,
+        description: `${format(date, 'EEEE d MMMM', { locale: nl })} geselecteerd.`,
+        duration: 2000,
+      });
+    } catch (error) {
+      console.error('Date selection error:', error);
+      UserFlowLogger.error('date_selection_error', 'Failed to select date', { error, date });
+    }
   };
 
   const handleTimeSelect = (time: string) => {
-    setSelectedTime(time);
-    setStep(3);
+    try {
+      const previousTime = selectedTime;
+      setSelectedTime(time);
+      setStep(3);
+      
+      UserFlowLogger.interaction('time_selected', 'DateCheckerModalEnhanced', {
+        previousTime,
+        selectedTime: time,
+        timeSlot: TIME_SLOTS.find(slot => slot.value === time)
+      });
+    } catch (error) {
+      console.error('Time selection error:', error);
+      UserFlowLogger.error('time_selection_error', 'Failed to select time', { error, time });
+    }
   };
 
   const handleConfirm = () => {
-    if (selectedDate && selectedTime) {
-      onConfirm(selectedDate, selectedTime, guestCount[0]);
-      toast({
-        title: t.success,
-        description: `Reservering voor ${guestCount[0]} gasten bevestigd.`,
-        duration: 3000,
+    try {
+      if (selectedDate && selectedTime) {
+        const bookingData = {
+          date: selectedDate,
+          time: selectedTime,
+          guestCount: guestCount[0],
+          serviceCategory: initialServiceCategory,
+          serviceTier: initialServiceTier
+        };
+        
+        onConfirm(selectedDate, selectedTime, guestCount[0]);
+        
+        UserFlowLogger.interaction('booking_confirmed', 'DateCheckerModalEnhanced', {
+          ...bookingData,
+          estimatedPrice: calculateEstimatedPrice(initialServiceCategory, initialServiceTier, guestCount[0])
+        });
+        
+        toast({
+          title: t.success,
+          description: `Reservering voor ${guestCount[0]} gasten bevestigd.`,
+          duration: 3000,
+        });
+      } else {
+        UserFlowLogger.error('booking_confirmation_failed', 'Missing required booking data', {
+          hasDate: !!selectedDate,
+          hasTime: !!selectedTime,
+          step
+        });
+      }
+    } catch (error) {
+      console.error('Booking confirmation error:', error);
+      UserFlowLogger.error('booking_confirmation_error', 'Failed to confirm booking', { 
+        error, selectedDate, selectedTime, guestCount: guestCount[0] 
       });
+    }
+  };
+
+  const handleGuestCountChange = (newGuestCount: number[]) => {
+    try {
+      const previousCount = guestCount[0];
+      setGuestCount(newGuestCount);
+      
+      UserFlowLogger.interaction('guest_count_changed', 'DateCheckerModalEnhanced', {
+        previousCount,
+        newCount: newGuestCount[0],
+        difference: newGuestCount[0] - previousCount
+      });
+    } catch (error) {
+      console.error('Guest count change error:', error);
+      UserFlowLogger.error('guest_count_error', 'Failed to update guest count', { error, newGuestCount });
     }
   };
 
@@ -195,7 +342,7 @@ export function DateCheckerModalEnhanced({
                 </div>
                 <Slider
                   value={guestCount}
-                  onValueChange={setGuestCount}
+                  onValueChange={handleGuestCountChange}
                   min={GUEST_COUNT_CONFIG.min}
                   max={GUEST_COUNT_CONFIG.max}
                   step={GUEST_COUNT_CONFIG.step}

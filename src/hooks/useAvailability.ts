@@ -8,6 +8,8 @@ import {
   type AvailabilitySlot 
 } from '@/integrations/supabase/database';
 import { addDays, format } from 'date-fns';
+import { useApiLoggerQuery } from './useApiLogger';
+import { logApiError } from '@/lib/apiLogger';
 
 interface UseAvailabilityOptions {
   daysAhead?: number;
@@ -33,49 +35,58 @@ export function useAvailability(options: UseAvailabilityOptions = {}) {
     dates: { booked: [], limited: [] },
     timeSlots: { morning: [], afternoon: [], evening: [] }
   });
-  const [availableSlots, setAvailableSlots] = useState<AvailabilitySlot[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  
+  const startDate = format(new Date(), 'yyyy-MM-dd');
+  const endDate = format(addDays(new Date(), daysAhead), 'yyyy-MM-dd');
 
-  const fetchAvailability = useCallback(async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      
-      const startDate = format(new Date(), 'yyyy-MM-dd');
-      const endDate = format(addDays(new Date(), daysAhead), 'yyyy-MM-dd');
-      
-      const slots = await getAvailabilitySlots(startDate, endDate);
-      setAvailableSlots(slots);
-      
-      const mappedData = mapAvailabilityToDateChecker(slots);
+  // Enhanced query with logging
+  const availabilityQuery = useApiLoggerQuery({
+    queryKey: ['availability', startDate, endDate],
+    queryFn: () => getAvailabilitySlots(startDate, endDate),
+    endpoint: 'availability_slots',
+    method: 'GET',
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    refetchOnWindowFocus: false
+  });
+
+  // Process availability data when query succeeds
+  useEffect(() => {
+    if (availabilityQuery.data) {
+      const mappedData = mapAvailabilityToDateChecker(availabilityQuery.data);
       setAvailability(mappedData);
-    } catch (err) {
-      console.error('Error fetching availability:', err);
-      setError(err instanceof Error ? err.message : 'Failed to fetch availability');
-    } finally {
-      setLoading(false);
+      setError(null);
     }
-  }, [daysAhead]);
+    if (availabilityQuery.error) {
+      logApiError('availability_slots', availabilityQuery.error as Error, { 
+        method: 'GET', 
+        payload: { startDate, endDate } 
+      });
+      setError(availabilityQuery.error.message);
+    }
+  }, [availabilityQuery.data, availabilityQuery.error, startDate, endDate]);
 
   const getTimeSlotsForDate = useCallback(async (date: Date): Promise<AvailabilitySlot[]> => {
     try {
       const dateString = format(date, 'yyyy-MM-dd');
       return await getAvailableTimeSlots(dateString);
     } catch (err) {
-      console.error('Error fetching time slots for date:', err);
+      logApiError('availability_slots/available', err as Error, { 
+        method: 'GET', 
+        payload: { date: dateString } 
+      });
       return [];
     }
   }, []);
 
   const isDateAvailable = useCallback((date: Date): boolean => {
     const dateString = format(date, 'yyyy-MM-dd');
-    return availableSlots.some(slot => 
+    return availabilityQuery.data?.some(slot => 
       slot.date === dateString && 
       slot.current_bookings < slot.max_bookings && 
       !slot.is_blocked
-    );
-  }, [availableSlots]);
+    ) || false;
+  }, [availabilityQuery.data]);
 
   const isDateBooked = useCallback((date: Date): boolean => {
     return availability.dates.booked.some(
@@ -94,15 +105,18 @@ export function useAvailability(options: UseAvailabilityOptions = {}) {
       const dateString = format(date, 'yyyy-MM-dd');
       return await checkAvailability(dateString, time);
     } catch (err) {
-      console.error('Error checking slot availability:', err);
+      logApiError('rpc/check_availability', err as Error, { 
+        method: 'POST', 
+        payload: { date: dateString, time } 
+      });
       return false;
     }
   }, []);
 
-  // Initialize data
-  useEffect(() => {
-    fetchAvailability();
-  }, [fetchAvailability]);
+  // Refresh function for manual refetch
+  const refresh = useCallback(() => {
+    availabilityQuery.refetch();
+  }, [availabilityQuery]);
 
   // Set up real-time subscription
   useEffect(() => {
@@ -111,20 +125,20 @@ export function useAvailability(options: UseAvailabilityOptions = {}) {
     const channel = subscribeToAvailabilityChanges((payload) => {
       console.log('Availability changed:', payload);
       // Refresh availability data when changes occur
-      fetchAvailability();
+      availabilityQuery.refetch();
     });
 
     return () => {
       channel.unsubscribe();
     };
-  }, [enableRealTime, fetchAvailability]);
+  }, [enableRealTime, availabilityQuery]);
 
   return {
     availability,
-    availableSlots,
-    loading,
+    availableSlots: availabilityQuery.data || [],
+    loading: availabilityQuery.isLoading,
     error,
-    refresh: fetchAvailability,
+    refresh,
     getTimeSlotsForDate,
     isDateAvailable,
     isDateBooked,

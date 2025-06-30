@@ -22,6 +22,8 @@ import {
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { useInteractionLogger, useBreadcrumbLogger } from '@/hooks/useUserFlowLogger';
+import { useConversionFunnel } from '@/lib/conversionFunnel';
 import {
   SERVICE_CATEGORIES,
   SERVICE_TIERS,
@@ -65,7 +67,12 @@ export function StepByStepQuoteCalculator({
   const [quote, setQuote] = useState<QuoteBreakdown | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
 
-  // Reset when modal opens
+  // User tracking hooks
+  const { logClick, logButtonPress } = useInteractionLogger();
+  const { addBreadcrumb, logJourneySummary } = useBreadcrumbLogger();
+  const { startFunnel, logStep, complete, abandon } = useConversionFunnel('quote_calculator');
+
+  // Reset when modal opens and initialize tracking
   useEffect(() => {
     if (open) {
       setSelectedCategory(initialCategory);
@@ -74,6 +81,14 @@ export function StepByStepQuoteCalculator({
       setSelectedAddOns([]);
       setStep(1);
       setQuote(null);
+      
+      // Initialize funnel tracking
+      startFunnel();
+      logStep('calculator_open');
+      addBreadcrumb('quote_calculator_opened', {
+        initialCategory,
+        initialGuestCount
+      });
     }
   }, [open, initialCategory, initialGuestCount]);
 
@@ -87,14 +102,28 @@ export function StepByStepQuoteCalculator({
         selectedAddOns,
       };
 
+      logStep('quote_calculation');
+      addBreadcrumb('calculating_quote', input);
+
       setIsCalculating(true);
       setTimeout(() => {
         try {
           const calculatedQuote = calculateQuote(input);
           setQuote(calculatedQuote);
+          
+          logStep('quote_display');
+          addBreadcrumb('quote_calculated_successfully', {
+            totalPrice: calculatedQuote.totalPrice,
+            breakdown: calculatedQuote.breakdown
+          });
         } catch (error) {
           console.error('Quote calculation error:', error);
           setQuote(null);
+          
+          addBreadcrumb('quote_calculation_error', {
+            error: error.message,
+            input
+          });
         }
         setIsCalculating(false);
       }, 800);
@@ -103,6 +132,14 @@ export function StepByStepQuoteCalculator({
 
   const handleCategorySelect = (categoryId: string) => {
     setSelectedCategory(categoryId);
+    
+    logClick('service_category_selection', { categoryId });
+    logStep('service_category_selection');
+    addBreadcrumb('category_selected', { 
+      categoryId, 
+      categoryName: SERVICE_CATEGORIES.find(cat => cat.id === categoryId)?.name 
+    });
+    
     toast({
       title: "Geweldige keuze!",
       description: `${SERVICE_CATEGORIES.find(cat => cat.id === categoryId)?.name} geselecteerd.`,
@@ -110,22 +147,54 @@ export function StepByStepQuoteCalculator({
     });
   };
 
+  const handleTierSelect = (tierId: string) => {
+    setSelectedTier(tierId);
+    
+    logClick('service_tier_selection', { tierId });
+    logStep('service_tier_selection');
+    addBreadcrumb('tier_selected', { 
+      tierId, 
+      tierName: SERVICE_TIERS.find(tier => tier.id === tierId)?.name 
+    });
+  };
+
+  const handleGuestCountChange = (value: number[]) => {
+    setGuestCount(value);
+    
+    logClick('guest_count_input', { guestCount: value[0] });
+    logStep('guest_count_input');
+    addBreadcrumb('guest_count_updated', { guestCount: value[0] });
+  };
+
   const handleAddOnToggle = (addonId: string) => {
+    const isAdding = !selectedAddOns.includes(addonId);
     setSelectedAddOns(prev => 
       prev.includes(addonId)
         ? prev.filter(id => id !== addonId)
         : [...prev, addonId]
     );
+    
+    logClick('addon_toggle', { addonId, action: isAdding ? 'add' : 'remove' });
+    logStep('addon_selection');
+    addBreadcrumb('addon_toggled', { 
+      addonId, 
+      action: isAdding ? 'add' : 'remove',
+      totalAddons: isAdding ? selectedAddOns.length + 1 : selectedAddOns.length - 1
+    });
   };
 
   const handleNext = () => {
     if (step < 5) {
+      logButtonPress('next_step', `quote_calculator_step_${step}`);
+      addBreadcrumb('step_advanced', { fromStep: step, toStep: step + 1 });
       setStep(step + 1);
     }
   };
 
   const handleBack = () => {
     if (step > 1) {
+      logButtonPress('previous_step', `quote_calculator_step_${step}`);
+      addBreadcrumb('step_back', { fromStep: step, toStep: step - 1 });
       setStep(step - 1);
     }
   };
@@ -138,6 +207,23 @@ export function StepByStepQuoteCalculator({
         guestCount: guestCount[0],
         selectedAddOns,
       };
+      
+      logButtonPress('request_detailed_quote', 'quote_calculator');
+      logStep('detailed_quote_request');
+      addBreadcrumb('detailed_quote_requested', {
+        quote: quote.totalPrice,
+        input
+      });
+      
+      complete({
+        quote,
+        input,
+        totalSteps: 5,
+        completionTime: Date.now()
+      });
+      
+      logJourneySummary('completed');
+      
       onRequestDetailedQuote?.(quote, input);
       toast({
         title: "Offerte aangevraagd!",
@@ -146,6 +232,31 @@ export function StepByStepQuoteCalculator({
       });
       onOpenChange(false);
     }
+  };
+
+  // Handle calculator close/abandonment
+  const handleClose = () => {
+    if (step > 1 && step < 5) {
+      abandon('user_choice', {
+        stepReached: step,
+        progressPercentage: (step / 5) * 100,
+        selectionsMade: {
+          category: selectedCategory,
+          tier: selectedTier,
+          guestCount: guestCount[0],
+          addons: selectedAddOns.length
+        }
+      });
+      
+      addBreadcrumb('calculator_abandoned', {
+        stepReached: step,
+        completionPercentage: (step / 5) * 100
+      });
+      
+      logJourneySummary('abandoned');
+    }
+    
+    onOpenChange(false);
   };
 
   const selectedCategoryData = SERVICE_CATEGORIES.find(cat => cat.id === selectedCategory);
@@ -194,7 +305,7 @@ export function StepByStepQuoteCalculator({
   };
 
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-2xl font-serif text-forest-green flex items-center gap-3">
@@ -274,7 +385,7 @@ export function StepByStepQuoteCalculator({
             {/* Step 2: Service Tier */}
             {step === 2 && (
               <div className="space-y-4">
-                <RadioGroup value={selectedTier} onValueChange={setSelectedTier}>
+                <RadioGroup value={selectedTier} onValueChange={handleTierSelect}>
                   <div className="space-y-3">
                     {SERVICE_TIERS.map((tier) => (
                       <div key={tier.id} className="relative">
@@ -330,7 +441,7 @@ export function StepByStepQuoteCalculator({
                 <div className="space-y-4">
                   <Slider
                     value={guestCount}
-                    onValueChange={setGuestCount}
+                    onValueChange={handleGuestCountChange}
                     min={MIN_GUEST_COUNT}
                     max={MAX_GUEST_COUNT}
                     step={5}

@@ -15,6 +15,8 @@ import {
   type ServiceTier
 } from '@/integrations/supabase/database';
 import { format } from 'date-fns';
+import { useApiLoggerMutation } from './useApiLogger';
+import { logApiError } from '@/lib/apiLogger';
 
 interface CreateBookingData {
   customerName: string;
@@ -40,13 +42,31 @@ interface QuoteData {
 }
 
 export function useBooking() {
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [currentBooking, setCurrentBooking] = useState<Booking | null>(null);
 
+  // Enhanced mutation hooks with logging
+  const bookingMutation = useApiLoggerMutation({
+    mutationFn: createBooking,
+    endpoint: 'bookings',
+    method: 'POST'
+  });
+
+  const statusUpdateMutation = useApiLoggerMutation({
+    mutationFn: ({ id, status }: { id: string; status: BookingStatus }) => 
+      updateBookingStatus(id, status),
+    endpoint: 'bookings/status',
+    method: 'PATCH'
+  });
+
+  const quoteMutation = useApiLoggerMutation({
+    mutationFn: createQuote,
+    endpoint: 'quotes',
+    method: 'POST'
+  });
+
   const submitBooking = useCallback(async (bookingData: CreateBookingData): Promise<Booking> => {
     try {
-      setLoading(true);
       setError(null);
 
       const bookingInsert: BookingInsert = {
@@ -63,7 +83,7 @@ export function useBooking() {
         dietary_restrictions: bookingData.dietaryRestrictions || null
       };
 
-      const booking = await createBooking(bookingInsert);
+      const booking = await bookingMutation.mutateAsync(bookingInsert);
       if (!booking) {
         throw new Error('Failed to create booking');
       }
@@ -80,24 +100,24 @@ export function useBooking() {
       setCurrentBooking(booking);
       return booking;
     } catch (err) {
-      console.error('Error submitting booking:', err);
+      logApiError('bookings/submit', err as Error, { 
+        method: 'POST', 
+        payload: bookingData 
+      });
       const errorMessage = err instanceof Error ? err.message : 'Failed to create booking';
       setError(errorMessage);
       throw err;
-    } finally {
-      setLoading(false);
     }
-  }, []);
+  }, [bookingMutation]);
 
   const updateStatus = useCallback(async (
     bookingId: string, 
     status: BookingStatus
   ): Promise<Booking> => {
     try {
-      setLoading(true);
       setError(null);
 
-      const updatedBooking = await updateBookingStatus(bookingId, status);
+      const updatedBooking = await statusUpdateMutation.mutateAsync({ id: bookingId, status });
       if (!updatedBooking) {
         throw new Error('Failed to update booking status');
       }
@@ -108,21 +128,21 @@ export function useBooking() {
 
       return updatedBooking;
     } catch (err) {
-      console.error('Error updating booking status:', err);
+      logApiError('bookings/status', err as Error, { 
+        method: 'PATCH', 
+        payload: { bookingId, status } 
+      });
       const errorMessage = err instanceof Error ? err.message : 'Failed to update booking status';
       setError(errorMessage);
       throw err;
-    } finally {
-      setLoading(false);
     }
-  }, [currentBooking]);
+  }, [statusUpdateMutation, currentBooking]);
 
   const generateQuote = useCallback(async (
     bookingId: string, 
     quoteData: QuoteData
   ): Promise<Quote> => {
     try {
-      setLoading(true);
       setError(null);
 
       const quoteInsert: QuoteInsert = {
@@ -134,28 +154,32 @@ export function useBooking() {
         selected_add_ons: quoteData.selectedAddOns || []
       };
 
-      const quote = await createQuote(quoteInsert);
+      const quote = await quoteMutation.mutateAsync(quoteInsert);
       if (!quote) {
         throw new Error('Failed to create quote');
       }
 
       return quote;
     } catch (err) {
-      console.error('Error generating quote:', err);
+      logApiError('quotes/generate', err as Error, { 
+        method: 'POST', 
+        payload: { bookingId, quoteData } 
+      });
       const errorMessage = err instanceof Error ? err.message : 'Failed to generate quote';
       setError(errorMessage);
       throw err;
-    } finally {
-      setLoading(false);
     }
-  }, []);
+  }, [quoteMutation]);
 
   const getBookingQuotes = useCallback(async (bookingId: string): Promise<Quote[]> => {
     try {
       setError(null);
       return await getQuotesForBooking(bookingId);
     } catch (err) {
-      console.error('Error fetching booking quotes:', err);
+      logApiError('quotes/booking', err as Error, { 
+        method: 'GET', 
+        payload: { bookingId } 
+      });
       const errorMessage = err instanceof Error ? err.message : 'Failed to fetch quotes';
       setError(errorMessage);
       return [];
@@ -185,7 +209,7 @@ export function useBooking() {
   }, []);
 
   return {
-    loading,
+    loading: bookingMutation.isPending || statusUpdateMutation.isPending || quoteMutation.isPending,
     error,
     currentBooking,
     submitBooking,

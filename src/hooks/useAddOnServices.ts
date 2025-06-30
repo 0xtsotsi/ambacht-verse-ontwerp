@@ -1,35 +1,37 @@
 import { useState, useEffect } from 'react';
 import { getAddOnServices, getAddOnServicesByCategory, type AddOnService } from '@/integrations/supabase/database';
+import { useApiLoggerQuery } from './useApiLogger';
+import { logApiError } from '@/lib/apiLogger';
 
 export function useAddOnServices() {
-  const [services, setServices] = useState<AddOnService[]>([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    async function fetchServices() {
-      try {
-        setLoading(true);
-        setError(null);
-        const data = await getAddOnServices();
-        setServices(data);
-      } catch (err) {
-        console.error('Error fetching add-on services:', err);
-        setError(err instanceof Error ? err.message : 'Failed to fetch services');
-      } finally {
-        setLoading(false);
-      }
-    }
+  // Enhanced query with logging
+  const servicesQuery = useApiLoggerQuery({
+    queryKey: ['add-on-services'],
+    queryFn: getAddOnServices,
+    endpoint: 'add_on_services',
+    method: 'GET',
+    staleTime: 10 * 60 * 1000, // 10 minutes
+    refetchOnWindowFocus: false
+  });
 
-    fetchServices();
-  }, []);
+  // Handle errors
+  useEffect(() => {
+    if (servicesQuery.error) {
+      logApiError('add_on_services', servicesQuery.error as Error, { method: 'GET' });
+      setError(servicesQuery.error.message);
+    } else {
+      setError(null);
+    }
+  }, [servicesQuery.error]);
 
   const getServicesByCategory = (category: string) => {
-    return services.filter(service => service.category === category);
+    return servicesQuery.data?.filter(service => service.category === category) || [];
   };
 
   const getServiceById = (id: string) => {
-    return services.find(service => service.id === id);
+    return servicesQuery.data?.find(service => service.id === id);
   };
 
   const calculateServicePrice = (service: AddOnService, guestCount: number, quantity: number = 1) => {
@@ -40,11 +42,12 @@ export function useAddOnServices() {
   };
 
   return {
-    services,
-    loading,
+    services: servicesQuery.data || [],
+    loading: servicesQuery.isLoading,
     error,
     getServicesByCategory,
     getServiceById,
-    calculateServicePrice
+    calculateServicePrice,
+    refetch: servicesQuery.refetch
   };
 }

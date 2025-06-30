@@ -3,6 +3,8 @@
 import React, { useState, useEffect } from 'react'
 import { Calendar, Clock, ChefHat } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useInteractionLogger, useBreadcrumbLogger } from '@/hooks/useUserFlowLogger'
+import { useConversionFunnel } from '@/lib/conversionFunnel'
 
 interface FloatingBookingWidgetProps {
   className?: string
@@ -16,14 +18,43 @@ export function FloatingBookingWidget({
   const [isVisible, setIsVisible] = useState(false)
   const [isHovered, setIsHovered] = useState(false)
 
+  // User tracking hooks
+  const { logClick, logButtonPress } = useInteractionLogger()
+  const { addBreadcrumb } = useBreadcrumbLogger()
+  const { startFunnel, logStep } = useConversionFunnel('booking_flow')
+
   useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 1000)
+    const timer = setTimeout(() => {
+      setIsVisible(true)
+      addBreadcrumb('floating_widget_displayed')
+    }, 1000)
     return () => clearTimeout(timer)
-  }, [])
+  }, [addBreadcrumb])
 
   const handleClick = () => {
+    // Track widget interaction
+    logClick('floating_booking_widget', {
+      widgetType: 'elegant_corner',
+      displayTime: Date.now(),
+      isHovered
+    })
+    
+    logButtonPress('floating_widget_click', 'booking_flow')
+    addBreadcrumb('widget_clicked')
+    
+    // Start booking funnel
+    startFunnel()
+    logStep('widget_interaction')
+    
     if (onBookingClick) {
       onBookingClick()
+    }
+  }
+
+  const handleHover = (hovered: boolean) => {
+    setIsHovered(hovered)
+    if (hovered) {
+      addBreadcrumb('widget_hovered')
     }
   }
 
@@ -46,8 +77,8 @@ export function FloatingBookingWidget({
           isHovered && "scale-105 rotate-1"
         )}
         onClick={handleClick}
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
+        onMouseEnter={() => handleHover(true)}
+        onMouseLeave={() => handleHover(false)}
         role="button"
         tabIndex={0}
         aria-label="Reserveer vandaag - Open booking formulier"
