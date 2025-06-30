@@ -1762,3 +1762,61 @@ $$ LANGUAGE plpgsql;
 - Average order value (target: €850)
 - Quote-to-booking time (target: <4 hours)
 - Customer satisfaction scores
+
+## Project Management Integration
+
+### Notion Sync Architecture
+
+**Purpose:** Automated task tracking and project management integration for development workflow visibility.
+
+**Integration Points:**
+- Git commit hooks for automatic task completion detection
+- GitHub Actions workflows for CI/CD milestone tracking  
+- Manual sync commands for ad-hoc project updates
+- Task Master integration for dynamic task retrieval
+
+**Sync Triggers:**
+```mermaid
+flowchart TD
+    A[Git Commit] -->|Pattern Match| B[Post-Commit Hook]
+    C[GitHub Action] -->|Workflow Complete| D[Story Sync]
+    E[Manual Command] -->|npm run sync:notion| F[Direct Sync]
+    G[Task Master] -->|Dynamic Data| F
+    
+    B --> H[sync-to-notion.cjs]
+    D --> H
+    F --> H
+    
+    H --> I[Notion API]
+    I --> J[Task Database]
+    
+    style H fill:#e1f5fe
+    style J fill:#f3e5f5
+```
+
+**Configuration:**
+- **Database ID:** 21df23ab1c8f80ef914effd0d37a5b43
+- **API Integration:** Secure token-based authentication
+- **Sync Status:** ✅ 8/8 tasks successfully synchronized
+- **Environment:** Configurable via `NOTION_SYNC_ENABLED` flag
+
+**Task Data Structure:**
+```typescript
+interface NotionTask {
+  title: string;           // Task name with emoji prefix
+  summary: string;         // Brief description  
+  description: string;     // Detailed information
+  priority: 'Low' | 'Medium' | 'High';
+  status: 'Not started' | 'In progress' | 'Done';
+  types: string[];         // Multi-select categories
+  effort: 'Low' | 'Medium' | 'High';
+}
+```
+
+**Workflow Integration:**
+- Automatic sync on story/epic completion
+- Status updates for task progression
+- Integration with existing GitHub workflows
+- Non-blocking error handling for reliability
+
+This integration ensures project visibility and automated documentation of development progress without interrupting the core development workflow.

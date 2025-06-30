@@ -6,7 +6,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
-import { CalendarDays, Clock, Users, Sparkles, CheckCircle } from 'lucide-react';
+import { CalendarDays, Clock, Users, Sparkles, CheckCircle, Calculator } from 'lucide-react';
 import { format, addDays, setHours, setMinutes } from 'date-fns';
 import { nl } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
@@ -16,6 +16,7 @@ interface DateCheckerModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onConfirm: (date: Date, time: string, guests: number) => void;
+  onOpenQuoteCalculator?: (guestCount: number) => void;
 }
 
 // Mock availability data - replace with Supabase integration
@@ -38,7 +39,7 @@ const mockAvailability = {
   },
 };
 
-export function DateCheckerModal({ open, onOpenChange, onConfirm }: DateCheckerModalProps) {
+export function DateCheckerModal({ open, onOpenChange, onConfirm, onOpenQuoteCalculator }: DateCheckerModalProps) {
   const { toast } = useToast();
   const [selectedDate, setSelectedDate] = useState<Date | undefined>();
   const [selectedTime, setSelectedTime] = useState<string>('');
@@ -341,13 +342,27 @@ export function DateCheckerModal({ open, onOpenChange, onConfirm }: DateCheckerM
                   </div>
                 </div>
 
-                <div className="bg-warm-cream/50 p-4 rounded-lg">
-                  <p className="text-sm text-forest-green">
-                    <span className="font-semibold">Geschatte prijs:</span> €{(guestCount[0] * 22.50).toFixed(2)}
-                  </p>
-                  <p className="text-xs text-gray-600 mt-1">
-                    *Exacte prijs hangt af van uw menukeuzes
-                  </p>
+                <div className="bg-warm-cream/50 p-4 rounded-lg space-y-3">
+                  <div>
+                    <p className="text-sm text-forest-green">
+                      <span className="font-semibold">Geschatte prijs:</span> €{(guestCount[0] * 22.50).toFixed(2)}
+                    </p>
+                    <p className="text-xs text-gray-600 mt-1">
+                      *Exacte prijs hangt af van uw menukeuzes
+                    </p>
+                  </div>
+                  
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => {
+                      onOpenQuoteCalculator?.(guestCount[0]);
+                    }}
+                    className="w-full text-xs border-burnt-orange text-burnt-orange hover:bg-burnt-orange hover:text-white"
+                  >
+                    <Calculator className="w-3 h-3 mr-1" />
+                    Gedetailleerde Offerte Berekenen
+                  </Button>
                 </div>
               </div>
 

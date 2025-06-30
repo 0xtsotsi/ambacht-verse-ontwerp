@@ -1,4 +1,110 @@
-# Welcome to your Lovable project
+# 🍽️ Wesley's Ambacht - Professional Catering Enhancement
+
+## 🎯 Project Overview
+
+A comprehensive enhancement of Wesley's Ambacht catering website, implementing CEO Intelligence orchestration with empathy-driven design patterns. This project demonstrates advanced UI/UX implementation with Dutch cultural localization, real-time booking systems, and enterprise-grade testing.
+
+### 🏆 Current Status: Epic 1 - 50% Complete
+
+**Completed Components:**
+- ✅ Mobile-adaptive floating booking widget with accessibility compliance
+- ✅ 3-step progressive booking modal with Dutch localization  
+- ✅ Comprehensive Playwright testing suite (6 scenarios, 5 browsers)
+- ✅ CEO Intelligence memory system for context preservation
+- ✅ **Notion integration for task tracking and project management** *(8/8 tasks synced successfully)*
+
+**Next Implementation:** Quote Calculator with price transparency
+
+### 🔗 **Live Notion Database**: [Wesley's Ambacht Task Tracker](https://notion.so/21df23ab1c8f80ef914effd0d37a5b43)
+
+## 🔄 Notion Task Sync Integration
+
+This project includes automated Notion synchronization for task tracking and project management. The sync happens at key workflow milestones to maintain project visibility.
+
+### Configuration
+
+1. **Set up environment variables** in `.env`:
+```env
+NOTION_API_KEY="your_notion_integration_token"
+NOTION_DATABASE_ID="your_notion_database_id"
+NOTION_SYNC_ENABLED="true"  # Set to false to disable
+```
+
+2. **GitHub Secrets** (for automated workflows):
+   - Go to Repository Settings → Secrets and variables → Actions
+   - Add: `NOTION_API_KEY` with your integration token
+   - Add: `NOTION_DATABASE_ID` with your database ID
+
+3. **Notion Database Requirements**:
+   - Properties: `Task name`, `Summary`, `Description`, `Priority`, `Status`, `Task type`, `Effort level`
+   - Status options: `Not started`, `In progress`, `Done`
+   - Priority options: `Low`, `Medium`, `High`
+
+### Usage
+
+#### Manual Sync Commands
+```bash
+npm run sync:notion         # Sync all tasks
+npm run sync:epic          # Sync only epics
+npm run sync:story         # Sync only stories  
+npm run sync:task          # Sync individual tasks
+```
+
+#### Automatic Sync Triggers
+
+1. **Git Commits**: Automatically syncs when commit messages match patterns:
+   - `feat: complete task_001_1`
+   - `fix: finish story implementation`
+   - `feat: done epic 1`
+
+2. **GitHub Actions**: Syncs on workflow dispatch:
+   - Story completion workflow
+   - Task sync workflow
+
+3. **Command Line Options**:
+```bash
+# Sync specific task
+node sync-to-notion.cjs --task=task_001_1 --status=done
+
+# Update existing tasks
+node sync-to-notion.cjs --update-status
+
+# Sync from JSON file
+node sync-to-notion.cjs --data=custom-task.json
+
+# Filter by status
+node sync-to-notion.cjs --status=done
+```
+
+### GitHub Workflow Integration
+
+Trigger story/task completion workflows:
+```bash
+gh workflow run story-complete.yml \
+  -f story_id="task_001" \
+  -f story_title="Epic 1 - Enhanced Booking Foundation" \
+  -f deployment_type="staging"
+```
+
+### ✅ Sync Status
+
+**Last Successful Sync**: 8/8 tasks created successfully
+- 🚀 Epic 1 - Enhanced Booking Foundation
+- 📱 Floating Booking Widget Implementation  
+- 📅 Enhanced DateChecker Modal
+- 💰 Preliminary Quote Calculator
+- 🗄️ Booking Database Schema Enhancement
+- 💰 Epic 2 - Transparent Pricing & Services
+- 🏷️ Service Pricing Cards Enhancement
+- ⭐ Tiered Service Options
+
+### Troubleshooting
+
+- **Sync not working**: Check API keys in `.env`
+- **Rate limits**: Script includes retry logic and rate limiting
+- **Disable sync**: Set `NOTION_SYNC_ENABLED=false`
+- **Debug mode**: Check console output for detailed sync status
+- **Test sync**: Run `npm run sync:notion` to verify connection
 
 ## Project info
 

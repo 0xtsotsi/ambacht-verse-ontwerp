@@ -62,54 +62,39 @@ jobs:
       - name: Sync story completion to Notion
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
-          NOTION_DATABASE_ID: "21df23ab1c8f80ef914effd0d37a5b43"
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
         run: |
-          echo "Syncing completed story to Notion..."
+          echo "🔄 Syncing completed story to Notion..."
           
-          cat > sync_story.js << 'EOF'
-          const { spawn } = require('child_process');
-          
-          const storyData = {
-            id: process.env.STORY_ID,
-            title: process.env.STORY_TITLE,
-            status: 'completed',
-            type: 'story/epic',
-            deployment_env: process.env.DEPLOYMENT_TYPE,
-            completed_at: new Date().toISOString(),
-            project: 'Wesley Ambacht Enhancement'
-          };
-          
-          console.log('Syncing story completion to Notion:', storyData);
-          
-          // Use Claude Code MCP to sync to Notion
-          const claude = spawn('claude', ['--headless', '--mcp', 
-            `Update Notion story completion: ${JSON.stringify(storyData)}`
-          ], {
-            env: {
-              ...process.env,
-              NOTION_API_KEY: process.env.NOTION_API_KEY,
-              NOTION_DATABASE_ID: process.env.NOTION_DATABASE_ID
-            }
-          });
-          
-          claude.stdout.on('data', (data) => {
-            console.log(`Claude: ${data}`);
-          });
-          
-          claude.stderr.on('data', (data) => {
-            console.error(`Error: ${data}`);
-          });
-          
-          claude.on('close', (code) => {
-            console.log(`Story sync completed with code ${code}`);
-          });
+          # Create dynamic task data for the story
+          cat > story-data.json << EOF
+          {
+            "title": "✅ ${{ github.event.inputs.story_id }} - ${{ github.event.inputs.story_title }}",
+            "summary": "Story completed and deployed to ${{ github.event.inputs.deployment_type }}",
+            "description": "Story ID: ${{ github.event.inputs.story_id }}\\nDeployment: ${{ github.event.inputs.deployment_type }}\\nCompleted: $(date -u +%Y-%m-%dT%H:%M:%SZ)\\nCommit: ${{ github.sha }}",
+            "priority": "High",
+            "status": "Done",
+            "types": ["Story", "Deployment", "${{ github.event.inputs.deployment_type }}"],
+            "effort": "Completed"
+          }
           EOF
           
-          STORY_ID="${{ github.event.inputs.story_id }}" \
-          STORY_TITLE="${{ github.event.inputs.story_title }}" \
-          DEPLOYMENT_TYPE="${{ github.event.inputs.deployment_type }}" \
-          node sync_story.js
+          # Run the sync script with the story data
+          if [ -f "sync-to-notion.cjs" ]; then
+            node sync-to-notion.cjs --data=story-data.json --update-status
+            
+            if [ $? -eq 0 ]; then
+              echo "✅ Successfully synced story to Notion"
+            else
+              echo "❌ Failed to sync to Notion (non-blocking error)"
+              exit 0  # Don't fail the workflow
+            fi
+          else
+            echo "⚠️  sync-to-notion.cjs not found, skipping Notion sync"
+          fi
+          
+          # Clean up
+          rm -f story-data.json
           
       - name: Create release tag
         if: github.event.inputs.deployment_type == 'production'

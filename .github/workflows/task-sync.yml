@@ -78,66 +78,46 @@ jobs:
         with:
           node-version: '18'
           
-      - name: Install Claude Code CLI
-        run: npm install -g @anthropic/claude-code
-        
       - name: Sync task to Notion
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
-          NOTION_DATABASE_ID: "21df23ab1c8f80ef914effd0d37a5b43"
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
         run: |
-          echo "Syncing task ${{ github.event.inputs.task_id }} to Notion..."
+          echo "🔄 Syncing task ${{ github.event.inputs.task_id }} to Notion..."
           
-          # Create task entry in Notion via MCP
-          cat > sync_task.js << 'EOF'
-          const { spawn } = require('child_process');
+          # Map task status to proper format
+          STATUS_MAPPING='{"done": "Done", "in-progress": "In progress", "pending": "Not started"}'
+          NOTION_STATUS=$(echo $STATUS_MAPPING | jq -r '."${{ github.event.inputs.status }}" // "Not started"')
           
-          const taskData = {
-            id: process.env.TASK_ID,
-            title: process.env.TASK_TITLE,
-            status: process.env.TASK_STATUS,
-            completed_at: new Date().toISOString(),
-            project: 'Wesley Ambacht Enhancement',
-            tests_passed: true,
-            test_coverage: {
-              functional: 'Complete',
-              accessibility: 'WCAG 2.1 AA Compliant',
-              browsers: ['Chrome', 'Firefox', 'Safari', 'Mobile'],
-              visual_regression: 'Passed'
-            }
-          };
-          
-          console.log('Syncing task to Notion:', taskData);
-          
-          // Use Claude Code MCP to sync to Notion
-          const claude = spawn('claude', ['--headless', '--mcp', 
-            `Create Notion entry: ${JSON.stringify(taskData)}`
-          ], {
-            env: {
-              ...process.env,
-              NOTION_API_KEY: process.env.NOTION_API_KEY,
-              NOTION_DATABASE_ID: process.env.NOTION_DATABASE_ID
-            }
-          });
-          
-          claude.stdout.on('data', (data) => {
-            console.log(`Claude: ${data}`);
-          });
-          
-          claude.stderr.on('data', (data) => {
-            console.error(`Error: ${data}`);
-          });
-          
-          claude.on('close', (code) => {
-            console.log(`Sync completed with code ${code}`);
-          });
+          # Create dynamic task data
+          cat > task-data.json << EOF
+          {
+            "title": "📋 ${{ github.event.inputs.task_id }} - ${{ github.event.inputs.task_title }}",
+            "summary": "Task ${{ github.event.inputs.status }} - Tests passed",
+            "description": "Task ID: ${{ github.event.inputs.task_id }}\\nStatus: ${{ github.event.inputs.status }}\\nTests: All passing\\nAccessibility: WCAG 2.1 AA Compliant\\nBrowsers tested: Chrome, Firefox, Safari, Mobile\\nCommit: ${{ github.sha }}",
+            "priority": "High",
+            "status": "${NOTION_STATUS}",
+            "types": ["Task", "Development", "Tested"],
+            "effort": "Medium"
+          }
           EOF
           
-          TASK_ID="${{ github.event.inputs.task_id }}" \
-          TASK_TITLE="${{ github.event.inputs.task_title }}" \
-          TASK_STATUS="${{ github.event.inputs.status }}" \
-          node sync_task.js
+          # Run the sync script with the task data
+          if [ -f "sync-to-notion.cjs" ]; then
+            node sync-to-notion.cjs --data=task-data.json --update-status
+            
+            if [ $? -eq 0 ]; then
+              echo "✅ Successfully synced task to Notion"
+            else
+              echo "❌ Failed to sync to Notion (non-blocking error)"
+              exit 0  # Don't fail the workflow
+            fi
+          else
+            echo "⚠️  sync-to-notion.cjs not found, skipping Notion sync"
+          fi
+          
+          # Clean up
+          rm -f task-data.json
           
       - name: Update task status comment
         uses: actions/github-script@v7

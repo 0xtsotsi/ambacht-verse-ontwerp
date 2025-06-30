@@ -1,7 +1,7 @@
 ---
+trigger: always_on
 description: Guidelines for continuously improving Windsurf rules based on emerging code patterns and best practices.
 globs: **/*
-alwaysApply: true
 ---
 
 - **Rule Improvement Triggers:**

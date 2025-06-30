@@ -1,7 +1,7 @@
 ---
+trigger: always_on
 description: Guidelines for creating and maintaining Windsurf rules to ensure consistency and effectiveness.
 globs: .windsurf/rules/*.md
-alwaysApply: true
 ---
 
 - **Required Rule Structure:**
@@ -50,4 +50,4 @@ alwaysApply: true
   - Keep descriptions concise
   - Include both DO and DON'T examples
   - Reference actual code over theoretical examples
-  - Use consistent formatting across rules 
+  - Use consistent formatting across rules

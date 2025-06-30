@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, ChefHat, Phone, ArrowRight, X } from 'lucide-react';
+import { Calendar, ChefHat, Phone, ArrowRight, X, Calculator } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -8,12 +8,14 @@ interface FloatingBookingWidgetProps {
   className?: string;
   onBookingClick?: () => void;
   onPhoneClick?: () => void;
+  onQuoteCalculatorClick?: () => void;
 }
 
 export function FloatingBookingWidget({ 
   className, 
   onBookingClick,
-  onPhoneClick 
+  onPhoneClick,
+  onQuoteCalculatorClick
 }: FloatingBookingWidgetProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -149,6 +151,27 @@ export function FloatingBookingWidget({
                   <Phone className="w-4 h-4 mr-2" />
                   {isMobile ? "Bel Direct" : "020 123 4567"}
                 </Button>
+
+                {onQuoteCalculatorClick && (
+                  <Button
+                    onClick={() => {
+                      onQuoteCalculatorClick();
+                      if (isMobile) {
+                        setIsExpanded(false);
+                      }
+                    }}
+                    variant="outline"
+                    className={cn(
+                      "w-full border-white/30 text-white hover:bg-white/10",
+                      "h-12 md:h-10 text-base md:text-sm", // Larger on mobile
+                      "rounded-xl md:rounded-lg",
+                      "active:scale-[0.98]" // Mobile tap feedback
+                    )}
+                  >
+                    <Calculator className="w-4 h-4 mr-2" />
+                    Prijs Berekenen
+                  </Button>
+                )}
               </div>
 
               {/* Mobile trust indicator */}
