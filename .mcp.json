@@ -1,5 +1,15 @@
 {
   "mcpServers": {
+    "ken-you-remember": {
+      "command": "npx",
+      "args": ["-y", "ken-you-remember"],
+      "env": {}
+    },
+    "zen": {
+      "command": "/mnt/c/Users/schre/Users/Demo projects/zen-mcp-server/.zen_venv/bin/python",
+      "args": ["/mnt/c/Users/schre/Users/Demo projects/zen-mcp-server/server.py"],
+      "env": {}
+    },
     "task-master-ai": {
       "command": "npx",
       "args": ["-y", "--package=task-master-ai", "task-master-ai"],
@@ -9,7 +19,7 @@
         "OPENAI_API_KEY": "sk-...",
         "GOOGLE_API_KEY": "AIza...",
         "XAI_API_KEY": "xai-...",
-        "OPENROUTER_API_KEY": "sk-or-...",
+        "OPENROUTER_API_KEY": "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",
         "MISTRAL_API_KEY": "...",
         "AZURE_OPENAI_API_KEY": "...",
         "OLLAMA_API_KEY": "..."

@@ -86,31 +86,56 @@ const searchExistingPage = (title) => {
 
 // Function to update existing page
 const updatePage = (pageId, taskData) => {
-  const postData = JSON.stringify({
-    properties: {
-      'Task name': {
-        title: [{ text: { content: taskData.title } }]
-      },
-      'Summary': {
-        rich_text: [{ text: { content: taskData.summary } }]
-      },
-      'Description': {
-        rich_text: [{ text: { content: taskData.description } }]
-      },
-      'Priority': {
-        select: { name: taskData.priority }
-      },
-      'Status': {
-        status: { name: taskData.status }
-      },
-      'Task type': {
-        multi_select: taskData.types.map(type => ({ name: type }))
-      },
-      'Effort level': {
-        select: { name: taskData.effort }
-      }
+  const properties = {
+    'Task name': {
+      title: [{ text: { content: taskData.title } }]
+    },
+    'Summary': {
+      rich_text: [{ text: { content: taskData.summary } }]
+    },
+    'Description': {
+      rich_text: [{ text: { content: taskData.description } }]
+    },
+    'Priority': {
+      select: { name: taskData.priority }
+    },
+    'Status': {
+      status: { name: taskData.status }
+    },
+    'Task type': {
+      multi_select: taskData.types.map(type => ({ name: type }))
+    },
+    'Effort level': {
+      select: { name: taskData.effort || 'Medium' }
     }
-  });
+  };
+
+  // Temporarily comment out incompatible fields until Notion database is updated
+  // TODO: Add these fields to Notion database schema:
+  // - Assignee (as People field, not Select)
+  // - Start Date (Date field)
+  // - Due Date (Date field) 
+  // - Estimated Hours (Number field)
+  // - Actual Hours (Number field)
+  // - Completion Comments (Rich Text field)
+  
+  // Append completion comments to existing Description field if available
+  if (taskData.completionComment) {
+    const existingDescription = taskData.description || '';
+    const enhancedDescription = existingDescription + 
+      (existingDescription ? '\n\n---\n' : '') + 
+      `📝 COMPLETION: ${taskData.completionComment}`;
+    
+    properties['Description'] = { 
+      rich_text: [{ 
+        text: { 
+          content: enhancedDescription 
+        } 
+      }] 
+    };
+  }
+
+  const postData = JSON.stringify({ properties });
 
   return new Promise((resolve) => {
     const req = https.request({
@@ -146,31 +171,58 @@ const updatePage = (pageId, taskData) => {
 
 // Function to create new page
 const createTask = (taskData) => {
+  const properties = {
+    'Task name': {
+      title: [{ text: { content: taskData.title } }]
+    },
+    'Summary': {
+      rich_text: [{ text: { content: taskData.summary } }]
+    },
+    'Description': {
+      rich_text: [{ text: { content: taskData.description } }]
+    },
+    'Priority': {
+      select: { name: taskData.priority }
+    },
+    'Status': {
+      status: { name: taskData.status }
+    },
+    'Task type': {
+      multi_select: taskData.types.map(type => ({ name: type }))
+    },
+    'Effort level': {
+      select: { name: taskData.effort || 'Medium' }
+    }
+  };
+
+  // Temporarily comment out incompatible fields until Notion database is updated
+  // TODO: Add these fields to Notion database schema:
+  // - Assignee (as People field, not Select)
+  // - Start Date (Date field)
+  // - Due Date (Date field) 
+  // - Estimated Hours (Number field)
+  // - Actual Hours (Number field)
+  // - Completion Comments (Rich Text field)
+  
+  // Append completion comments to existing Description field if available
+  if (taskData.completionComment) {
+    const existingDescription = taskData.description || '';
+    const enhancedDescription = existingDescription + 
+      (existingDescription ? '\n\n---\n' : '') + 
+      `📝 COMPLETION: ${taskData.completionComment}`;
+    
+    properties['Description'] = { 
+      rich_text: [{ 
+        text: { 
+          content: enhancedDescription 
+        } 
+      }] 
+    };
+  }
+
   const postData = JSON.stringify({
     parent: { database_id: DB_ID },
-    properties: {
-      'Task name': {
-        title: [{ text: { content: taskData.title } }]
-      },
-      'Summary': {
-        rich_text: [{ text: { content: taskData.summary } }]
-      },
-      'Description': {
-        rich_text: [{ text: { content: taskData.description } }]
-      },
-      'Priority': {
-        select: { name: taskData.priority }
-      },
-      'Status': {
-        status: { name: taskData.status }
-      },
-      'Task type': {
-        multi_select: taskData.types.map(type => ({ name: type }))
-      },
-      'Effort level': {
-        select: { name: taskData.effort }
-      }
-    }
+    properties
   });
 
   return new Promise((resolve) => {
@@ -230,7 +282,8 @@ const loadTaskMasterTasks = async () => {
   }
   
   try {
-    const tasksData = JSON.parse(fs.readFileSync(taskMasterPath, 'utf8'));
+    const tasksFileData = JSON.parse(fs.readFileSync(taskMasterPath, 'utf8'));
+    const tasksData = tasksFileData.master || tasksFileData; // Handle nested structure
     const tasks = [];
     
     // Filter tasks based on options
@@ -238,7 +291,7 @@ const loadTaskMasterTasks = async () => {
     const filterStatus = options.status;
     const filterTask = options.task;
     
-    tasksData.tasks.forEach(task => {
+    const processTask = (task, parentTask = null) => {
       // Apply filters
       if (filterTask && task.id !== filterTask) return;
       if (filterStatus && task.status !== filterStatus) return;
@@ -246,10 +299,13 @@ const loadTaskMasterTasks = async () => {
       // Map Task Master format to Notion format
       const isEpic = task.id.indexOf('.') === -1 && task.title.toLowerCase().includes('epic');
       const isStory = task.title.toLowerCase().includes('story');
+      const isSubtask = task.id.indexOf('.') > -1;
       
       if (filterType === 'epic' && !isEpic) return;
       if (filterType === 'story' && !isStory) return;
       if (filterType === 'task' && (isEpic || isStory)) return;
+      
+      const taskType = isEpic ? 'Epic' : isStory ? 'Story' : isSubtask ? 'Subtask' : 'Task';
       
       tasks.push({
         title: `${task.status === 'done' ? '✅' : '📋'} ${task.id} - ${task.title}`,
@@ -258,10 +314,26 @@ const loadTaskMasterTasks = async () => {
         priority: task.priority || 'Medium',
         status: task.status === 'done' ? 'Done' : 
                 task.status === 'in-progress' ? 'In progress' : 'Not started',
-        types: ['Task Master', isEpic ? 'Epic' : isStory ? 'Story' : 'Task'],
-        effort: task.complexity || 'Medium'
+        types: ['Task Master', taskType],
+        effort: typeof task.complexity === 'number' ? 
+                task.complexity <= 3 ? 'Low' : 
+                task.complexity <= 6 ? 'Medium' : 'High' : 
+                'Medium',
+        assignee: task.assignee || 'Unassigned',
+        startDate: task.startDate || null,
+        dueDate: task.dueDate || null,
+        estimatedHours: task.estimatedHours || null,
+        actualHours: task.actualHours || null,
+        completionComment: task.completionComment || null
       });
-    });
+      
+      // Process subtasks if they exist
+      if (task.subtasks && Array.isArray(task.subtasks)) {
+        task.subtasks.forEach(subtask => processTask(subtask, task));
+      }
+    };
+
+    tasksData.tasks.forEach(task => processTask(task));
     
     return tasks;
   } catch (e) {

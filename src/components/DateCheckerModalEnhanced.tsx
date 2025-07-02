@@ -4,7 +4,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
 import { Slider } from '@/components/ui/slider';
 import { Badge } from '@/components/ui/badge';
-import { CalendarDays, Clock, Users, AlertCircle } from 'lucide-react';
+import { CalendarDays, Clock, Users } from 'lucide-react';
 import { format } from 'date-fns';
 import { nl } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
@@ -12,6 +12,7 @@ import { useToast } from '@/hooks/use-toast';
 import { useAvailability } from '@/hooks/useAvailability';
 import { useLifecycleLogger, useRenderLogger, usePerformanceLogger } from '@/hooks/useComponentLogger';
 import { UserFlowLogger, ComponentLogger } from '@/lib/logger';
+import { SafeLogger } from '@/lib/LoggerUtils';
 import { useDateCheckerReducer } from '@/hooks/useDateCheckerReducer';
 import { 
   TIME_SLOTS,
@@ -57,7 +58,7 @@ export function DateCheckerModalEnhanced({
   // Input validation
   const validation = validateDateCheckerProps({ open, onOpenChange, onConfirm });
   if (!validation.isValid) {
-    console.error('Invalid DateChecker props:', validation.errors);
+    SafeLogger.error('Invalid DateChecker props:', validation.errors);
     return null;
   }
 
@@ -74,8 +75,8 @@ export function DateCheckerModalEnhanced({
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
   const ariaLiveRef = useRef<HTMLDivElement>(null);
 
-  const t = DATE_CHECKER_TRANSLATIONS[language];
-  const nav = NAVIGATION_LABELS[language];
+  const t = createSafeTranslations(language);
+  const nav = createSafeNavigationLabels(language);
 
   // Logging setup (state logging now handled in reducer)
   useLifecycleLogger({ 
@@ -165,8 +166,8 @@ export function DateCheckerModalEnhanced({
         duration: TOAST_DURATIONS.success,
       });
     } catch (error) {
-      console.error('Date selection error:', error);
-      UserFlowLogger.error('date_selection_error', 'Failed to select date', { error, date });
+      SafeLogger.error('Date selection error:', error, { date });
+      UserFlowLogger.error('date_selection_error', 'Failed to select date', { error: error.message, date });
     }
   };
 
@@ -174,8 +175,8 @@ export function DateCheckerModalEnhanced({
     try {
       actions.setTime(time, selectedTime);
     } catch (error) {
-      console.error('Time selection error:', error);
-      UserFlowLogger.error('time_selection_error', 'Failed to select time', { error, time });
+      SafeLogger.error('Time selection error:', error, { time });
+      UserFlowLogger.error('time_selection_error', 'Failed to select time', { error: error.message, time });
     }
   };
 
@@ -230,9 +231,9 @@ export function DateCheckerModalEnhanced({
         duration: TOAST_DURATIONS.confirmation,
       });
     } catch (error) {
-      console.error('Booking confirmation error:', error);
+      SafeLogger.error('Booking confirmation error:', error, { selectedDate, selectedTime, guestCount });
       UserFlowLogger.error('booking_confirmation_error', 'Failed to confirm booking', { 
-        error, selectedDate, selectedTime, guestCount 
+        error: error.message, selectedDate, selectedTime, guestCount 
       });
     }
   };
@@ -242,8 +243,10 @@ export function DateCheckerModalEnhanced({
       const previousCount = guestCount;
       actions.setGuestCount(newGuestCount[0], previousCount);
     } catch (error) {
-      console.error('Guest count change error:', error);
-      UserFlowLogger.error('guest_count_error', 'Failed to update guest count', { error, newGuestCount });
+      SafeLogger.error('Guest count change error:', error, { newGuestCount });
+      UserFlowLogger.error('guest_count_error', 'Failed to update guest count', { 
+        error: error.message, newGuestCount 
+      });
     }
   };
 
@@ -331,7 +334,9 @@ export function DateCheckerModalEnhanced({
                       {status === 'limited' && (
                         <Badge 
                           variant="secondary" 
-                          className="text-xs mt-1 bg-orange-100 text-orange-800 border-orange-200"
+                          className="text-xs mt-1 bg-orange-100 text-orange-800 border-orange-200 dark:bg-orange-900/30 dark:text-orange-200 dark:border-orange-700"
+                          role="status"
+                          aria-live="polite"
                         >
                           {t.limited}
                         </Badge>

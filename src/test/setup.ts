@@ -191,7 +191,7 @@ vi.mock('@/components/ErrorBoundary', () => ({
     try {
       return children;
     } catch (error) {
-      return fallback || <div data-testid="error-boundary">Error occurred</div>;
+      return fallback || 'Error occurred';
     }
   },
   withErrorBoundary: (Component: any) => Component,

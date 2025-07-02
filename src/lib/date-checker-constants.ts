@@ -79,17 +79,69 @@ export const SERVICE_TIERS = {
   }
 } as const;
 
-// Blackout dates configuration
-export const BLACKOUT_DATES = [
-  // Dutch national holidays and peak periods
-  '2024-12-25', // Christmas Day
-  '2024-12-26', // Boxing Day
-  '2024-12-31', // New Year's Eve
-  '2025-01-01', // New Year's Day
-  '2025-04-27', // King's Day
-  '2025-05-05', // Liberation Day
-  // Add more dates as needed
-] as const;
+// Dynamic Dutch holidays generator
+export const generateDutchHolidays = (year: number): string[] => {
+  const holidays = [
+    `${year}-01-01`, // New Year's Day
+    `${year}-04-27`, // King's Day
+    `${year}-05-05`, // Liberation Day (every 5 years officially, but often celebrated)
+    `${year}-12-25`, // Christmas Day
+    `${year}-12-26`, // Boxing Day
+    `${year}-12-31`, // New Year's Eve
+  ];
+
+  // Easter calculation (simplified for common cases)
+  const easter = calculateEaster(year);
+  holidays.push(
+    formatDate(easter), // Easter Sunday
+    formatDate(addDays(easter, 1)), // Easter Monday
+    formatDate(addDays(easter, 39)), // Ascension Day
+    formatDate(addDays(easter, 50)), // Whit Monday
+  );
+
+  return holidays.sort();
+};
+
+// Simplified Easter calculation (Gregorian calendar)
+const calculateEaster = (year: number): Date => {
+  const a = year % 19;
+  const b = Math.floor(year / 100);
+  const c = year % 100;
+  const d = Math.floor(b / 4);
+  const e = b % 4;
+  const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4);
+  const k = c % 4;
+  const l = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * l) / 451);
+  const month = Math.floor((h + l - 7 * m + 114) / 31);
+  const day = ((h + l - 7 * m + 114) % 31) + 1;
+  return new Date(year, month - 1, day);
+};
+
+const formatDate = (date: Date): string => {
+  return date.toISOString().split('T')[0];
+};
+
+const addDays = (date: Date, days: number): Date => {
+  const result = new Date(date);
+  result.setDate(result.getDate() + days);
+  return result;
+};
+
+// Get blackout dates for current and next year
+export const getBlackoutDates = (): string[] => {
+  const currentYear = new Date().getFullYear();
+  return [
+    ...generateDutchHolidays(currentYear),
+    ...generateDutchHolidays(currentYear + 1),
+  ];
+};
+
+// Legacy static dates for compatibility (auto-updated)
+export const BLACKOUT_DATES = getBlackoutDates();
 
 // UI translations
 export const DATE_CHECKER_TRANSLATIONS = {
@@ -333,6 +385,78 @@ export const validateBookingData = (
     isValid: errors.length === 0,
     errors
   };
+};
+
+/**
+ * Safe translation accessor with fallback mechanism
+ * Returns English text if a translation key is missing for the requested language
+ */
+export const getTranslation = (
+  language: keyof typeof DATE_CHECKER_TRANSLATIONS,
+  key: keyof typeof DATE_CHECKER_TRANSLATIONS['nl']
+): string => {
+  const translations = DATE_CHECKER_TRANSLATIONS[language];
+  
+  // If language exists and has the key, return it
+  if (translations && translations[key]) {
+    return translations[key];
+  }
+  
+  // Fallback to English
+  const englishTranslations = DATE_CHECKER_TRANSLATIONS.en;
+  if (englishTranslations && englishTranslations[key]) {
+    return englishTranslations[key];
+  }
+  
+  // Ultimate fallback: return key name with proper formatting
+  return key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+};
+
+/**
+ * Safe navigation label accessor with fallback mechanism
+ */
+export const getNavigationLabel = (
+  language: keyof typeof NAVIGATION_LABELS,
+  key: keyof typeof NAVIGATION_LABELS['nl']
+): string => {
+  const labels = NAVIGATION_LABELS[language];
+  
+  // If language exists and has the key, return it
+  if (labels && labels[key]) {
+    return labels[key];
+  }
+  
+  // Fallback to English
+  const englishLabels = NAVIGATION_LABELS.en;
+  if (englishLabels && englishLabels[key]) {
+    return englishLabels[key];
+  }
+  
+  // Ultimate fallback: return key name with proper formatting
+  return key.charAt(0).toUpperCase() + key.slice(1).replace(/([A-Z])/g, ' $1');
+};
+
+/**
+ * Enhanced translation object with safe accessors
+ * Provides fallback behavior if translation keys are missing
+ */
+export const createSafeTranslations = (language: keyof typeof DATE_CHECKER_TRANSLATIONS) => {
+  return new Proxy({}, {
+    get: (target, prop: string) => {
+      return getTranslation(language, prop as keyof typeof DATE_CHECKER_TRANSLATIONS['nl']);
+    }
+  }) as typeof DATE_CHECKER_TRANSLATIONS['nl'];
+};
+
+/**
+ * Enhanced navigation labels with safe accessors
+ */
+export const createSafeNavigationLabels = (language: keyof typeof NAVIGATION_LABELS) => {
+  return new Proxy({}, {
+    get: (target, prop: string) => {
+      return getNavigationLabel(language, prop as keyof typeof NAVIGATION_LABELS['nl']);
+    }
+  }) as typeof NAVIGATION_LABELS['nl'];
 };
 
 export type ServiceCategory = keyof typeof SERVICE_CATEGORIES;

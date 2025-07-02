@@ -18,12 +18,19 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
+        // Classic Elegance variants
+        elegant: "bg-elegant-terracotta text-elegant-light hover:bg-elegant-terracotta/90 shadow-elegant-button hover:shadow-elegant-button-hover rounded-elegant font-elegant-body transition-all duration-300",
+        "elegant-outline": "border-2 border-elegant-terracotta text-elegant-terracotta bg-transparent hover:bg-elegant-terracotta hover:text-elegant-light rounded-elegant font-elegant-body transition-all duration-300",
+        "elegant-ghost": "text-elegant-terracotta hover:bg-elegant-terracotta/10 hover:text-elegant-terracotta font-elegant-body transition-all duration-300",
       },
       size: {
         default: "h-10 px-4 py-2",
         sm: "h-9 rounded-md px-3",
         lg: "h-11 rounded-md px-8",
         icon: "h-10 w-10",
+        // Classic Elegance sizes
+        elegant: "h-12 px-8 py-3 text-base",
+        "elegant-lg": "h-14 px-10 py-4 text-lg",
       },
     },
     defaultVariants: {

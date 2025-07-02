@@ -71,16 +71,16 @@ export const Gallery = () => {
     : galleryItems.filter(item => item.category === activeCategory);
 
   return (
-    <section id="gallery" className="py-20 bg-warm-cream">
+    <section id="gallery" className="py-20 bg-elegant-light">
       <div className="container mx-auto px-4">
         <div className="max-w-6xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-serif text-forest-green mb-4">
+            <h2 className="text-4xl md:text-5xl font-elegant-heading text-elegant-dark mb-6">
               Onze Galerij
             </h2>
-            <div className="w-24 h-1 bg-burnt-orange mx-auto mb-6"></div>
-            <p className="text-xl text-natural-brown max-w-3xl mx-auto">
+            <div className="w-24 h-1 bg-elegant-terracotta mx-auto mb-8"></div>
+            <p className="text-xl font-elegant-body text-elegant-nav max-w-3xl mx-auto">
               Neem eens een kijkje in de galerij wat wij afgelopen jaar allemaal mochten realiseren. 
               Van intieme lunches tot grote feesten - elk evenement krijgt onze volle aandacht.
             </p>
@@ -92,12 +92,9 @@ export const Gallery = () => {
               <Button
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
-                variant={activeCategory === category.id ? "default" : "outline"}
-                className={`flex items-center gap-2 ${
-                  activeCategory === category.id 
-                    ? "bg-forest-green text-warm-cream hover:bg-forest-green/90" 
-                    : "border-beige text-beige hover:bg-burnt-orange hover:text-warm-cream"
-                }`}
+                variant={activeCategory === category.id ? "elegant" : "elegant-outline"}
+                size="elegant"
+                className="flex items-center gap-2"
               >
                 {category.icon}
                 {category.name}
@@ -112,27 +109,27 @@ export const Gallery = () => {
                 key={item.id} 
                 className="break-inside-avoid group cursor-pointer"
               >
-                <div className="bg-clean-white rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300">
+                <div className="bg-elegant-light rounded-elegant overflow-hidden shadow-elegant-soft hover:shadow-elegant-panel transition-all duration-300">
                   {/* Image Placeholder with Styling */}
-                  <div className={`${item.height} bg-gradient-to-br from-natural-brown/20 via-forest-green/10 to-beige rustic-pattern relative overflow-hidden`}>
+                  <div className={`${item.height} bg-gradient-to-br from-elegant-terracotta/10 via-elegant-nav/5 to-elegant-terracotta/5 relative overflow-hidden`}>
                     <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                     <div className="absolute top-4 left-4">
-                      <Badge className="bg-burnt-orange text-clean-white">
+                      <Badge className="bg-elegant-terracotta text-elegant-light font-elegant-body">
                         {item.type}
                       </Badge>
                     </div>
-                    <div className="absolute bottom-4 left-4 right-4 text-clean-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                      <h4 className="font-serif text-lg mb-1">{item.title}</h4>
-                      <p className="text-sm opacity-90">{item.description}</p>
+                    <div className="absolute bottom-4 left-4 right-4 text-elegant-light opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                      <h4 className="font-elegant-heading text-lg mb-1">{item.title}</h4>
+                      <p className="text-sm opacity-90 font-elegant-body">{item.description}</p>
                     </div>
                   </div>
                   
                   {/* Content */}
                   <div className="p-4">
-                    <h4 className="font-serif text-forest-green text-lg mb-2 group-hover:text-burnt-orange transition-colors">
+                    <h4 className="font-elegant-heading text-elegant-dark text-lg mb-2 group-hover:text-elegant-terracotta transition-colors">
                       {item.title}
                     </h4>
-                    <p className="text-natural-brown text-sm leading-relaxed">
+                    <p className="text-elegant-nav text-sm leading-relaxed font-elegant-body">
                       {item.description}
                     </p>
                   </div>
@@ -143,17 +140,17 @@ export const Gallery = () => {
 
           {/* Call to Action */}
           <div className="text-center mt-16">
-            <div className="bg-clean-white rounded-xl p-8 md:p-12 delft-pattern">
-              <h3 className="text-2xl md:text-3xl font-serif text-forest-green mb-4">
+            <div className="bg-elegant-light rounded-elegant p-10 md:p-16 shadow-elegant-panel">
+              <h3 className="text-2xl md:text-3xl font-elegant-heading text-elegant-dark mb-6">
                 Laat Ons Uw Verhaal Vertellen
               </h3>
-              <p className="text-natural-brown text-lg mb-8 max-w-2xl mx-auto">
+              <p className="text-elegant-nav font-elegant-body text-lg mb-10 max-w-2xl mx-auto">
                 Elk evenement is uniek, net als onze aanpak. Laten we samen iets bijzonders creëren 
                 dat uw gasten nog lang zullen herinneren.
               </p>
               <Button 
-                size="lg" 
-                className="bg-forest-green hover:bg-forest-green/90 text-clean-white px-8 py-6 text-lg font-semibold rounded-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                variant="elegant"
+                size="elegant-lg"
               >
                 Plan Uw Evenement
               </Button>

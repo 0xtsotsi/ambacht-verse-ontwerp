@@ -202,28 +202,28 @@ export const BookingForm = () => {
           backgroundImage: "linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=2070')"
         }}
       >
-        {/* Circular Booking Form */}
-        <div className="relative z-10 max-w-md mx-auto px-4">
-          <div className="bg-warm-cream rounded-full p-8 md:p-12 shadow-2xl">
-            <div className="text-center mb-8">
-              <h2 className="text-3xl md:text-4xl font-serif text-forest-green mb-4">
+        {/* Classic Booking Form */}
+        <div className="relative z-10 max-w-lg mx-auto px-4">
+          <div className="bg-elegant-light rounded-elegant p-10 md:p-16 shadow-elegant-panel">
+            <div className="text-center mb-10">
+              <h2 className="text-3xl md:text-4xl font-elegant-heading text-elegant-dark mb-6">
                 BOEKINGS<br />
                 AANVRAAG
               </h2>
-              <p className="text-forest-green text-sm leading-relaxed">
+              <p className="text-elegant-nav font-elegant-body text-base leading-relaxed">
                 Vul jeje hieg on details en perfeebingxen<br />
                 te zubmiet jow resservaterrnnrsje utraast
               </p>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-4">
+            <form onSubmit={handleSubmit} className="space-y-6">
               <Input
                 placeholder="Naam"
                 value={formData.name}
                 onChange={(e) => handleChange("name", e.target.value)}
                 onFocus={() => handleFocus("name")}
                 onBlur={() => handleBlur("name")}
-                className="w-full px-4 py-3 rounded-full border-2 border-forest-green/20 focus:border-forest-green bg-white"
+                className="w-full px-6 py-4 rounded-elegant border-2 border-elegant-nav/20 focus:border-elegant-terracotta bg-elegant-light font-elegant-body"
                 required
               />
               
@@ -234,7 +234,7 @@ export const BookingForm = () => {
                 onChange={(e) => handleChange("email", e.target.value)}
                 onFocus={() => handleFocus("email")}
                 onBlur={() => handleBlur("email")}
-                className="w-full px-4 py-3 rounded-full border-2 border-forest-green/20 focus:border-forest-green bg-white"
+                className="w-full px-6 py-4 rounded-elegant border-2 border-elegant-nav/20 focus:border-elegant-terracotta bg-elegant-light font-elegant-body"
                 required
               />
               
@@ -244,13 +244,15 @@ export const BookingForm = () => {
                 onChange={(e) => handleChange("message", e.target.value)}
                 onFocus={() => handleFocus("message")}
                 onBlur={() => handleBlur("message")}
-                className="w-full px-4 py-3 rounded-2xl border-2 border-forest-green/20 focus:border-forest-green bg-white min-h-[100px] resize-none"
+                className="w-full px-6 py-4 rounded-elegant border-2 border-elegant-nav/20 focus:border-elegant-terracotta bg-elegant-light min-h-[120px] resize-none font-elegant-body"
                 required
               />
               
               <Button 
                 type="submit"
-                className="w-full bg-burnt-orange hover:bg-burnt-orange/90 text-warm-cream py-3 rounded-full font-semibold text-lg shadow-lg hover:shadow-xl transition-all duration-300"
+                variant="elegant"
+                size="elegant"
+                className="w-full mt-8"
               >
                 Versturen
               </Button>
@@ -260,8 +262,8 @@ export const BookingForm = () => {
 
         {/* Bottom Arrow */}
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2">
-          <div className="w-12 h-12 bg-forest-green rounded-full flex items-center justify-center shadow-lg">
-            <svg className="w-6 h-6 text-warm-cream" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div className="w-12 h-12 bg-elegant-terracotta rounded-elegant flex items-center justify-center shadow-elegant-subtle">
+            <svg className="w-6 h-6 text-elegant-light" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
             </svg>
           </div>
@@ -269,23 +271,23 @@ export const BookingForm = () => {
       </div>
 
       {/* Our Story Section */}
-      <section className="py-20 bg-warm-cream">
+      <section className="py-20 bg-elegant-light">
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
               {/* Illustration */}
               <div className="flex justify-center">
-                <div className="w-80 h-60 bg-gradient-to-br from-natural-brown/20 to-burnt-orange/10 rounded-lg flex items-center justify-center">
+                <div className="w-80 h-60 bg-gradient-to-br from-elegant-terracotta/20 to-elegant-terracotta/10 rounded-elegant flex items-center justify-center shadow-elegant-subtle">
                   <div className="text-8xl">👨‍🍳</div>
                 </div>
               </div>
 
               {/* Content */}
               <div>
-                <h2 className="text-4xl md:text-5xl font-serif text-forest-green mb-8">
+                <h2 className="text-4xl md:text-5xl font-elegant-heading text-elegant-dark mb-10">
                   ONS VERHAAL
                 </h2>
-                <div className="text-forest-green text-lg leading-relaxed space-y-4">
+                <div className="text-elegant-dark font-elegant-body text-lg leading-relaxed space-y-4">
                   <p>
                     Wesley's Ambacht smoken opstreds traditionele technieken en rijjen logae 
                     ingredienten voor de verkoop en frese. In vorms ommen kombaarkaas, hegema-

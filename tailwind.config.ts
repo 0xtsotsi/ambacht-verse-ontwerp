@@ -20,9 +20,16 @@ export default {
 		},
 		extend: {
 			fontFamily: {
+				// Existing fonts (preserved)
 				serif: ['Spectral', 'Baskerville', 'Times New Roman', 'serif'],
 				body: ['Montserrat', 'Open Sans', 'sans-serif'],
 				script: ['Dancing Script', 'Brush Script MT', 'cursive'],
+				// Elegant Catering Design System Fonts (from design.json)
+				'elegant-sans': ['Inter', 'Open Sans', 'system-ui', 'sans-serif'],        // Headings, body, navigation
+				'elegant-script': ['Great Vibes', 'Allura', 'Dancing Script', 'cursive'], // Script accents
+				'elegant-heading': ['Inter', 'system-ui', 'sans-serif'],                 // Main headings
+				'elegant-body': ['Inter', 'system-ui', 'sans-serif'],                    // Body text
+				'elegant-nav': ['Inter', 'system-ui', 'sans-serif'],                     // Navigation
 			},
 			spacing: {
 				'base': '8px',
@@ -69,7 +76,15 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Updated brand colors matching the reference
+				// Elegant Catering Design System Colors (from design.json)
+				'elegant': {
+					'terracotta': '#E08A4F',      // Primary accent
+					'dark': '#333333',            // Dark text
+					'light': '#FFFFFF',           // Light text
+					'nav': '#555555',             // Navigation text
+					'overlay': 'rgba(0, 0, 0, 0.6)', // Background overlay
+				},
+				// Existing brand colors (preserved for compatibility)
 				'forest-green': '#2B4040',
 				'warm-cream': '#FFEFDA', 
 				'beige': '#C4A76D',
@@ -77,11 +92,47 @@ export default {
 				'deep-teal': '#3D6160',
 				'natural-brown': '#BB3A3C',
 				'clean-white': '#FEFEFA',
+				// Design System Extension Colors
+				'terracotta': {
+					50: '#FDF7F3',
+					100: '#FAEBE0',
+					200: '#F5D4C1',
+					300: '#EDBAA0',
+					400: '#E08A4F',  // Primary
+					500: '#D47A3D',
+					600: '#B8672F',
+					700: '#9A5424',
+					800: '#7D431C',
+					900: '#633516',
+				},
+				'elegant-grey': {
+					50: '#F9F9F9',
+					100: '#F3F3F3',
+					200: '#E7E7E7',
+					300: '#CCCCCC',
+					400: '#999999',
+					500: '#555555',  // Navigation
+					600: '#444444',
+					700: '#333333',  // Dark text
+					800: '#222222',
+					900: '#111111',
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				sm: 'calc(var(--radius) - 4px)',
+				// Elegant design system border radius
+				'elegant': '0.75rem',     // Rounded corners for buttons/panels
+				'elegant-full': '9999px', // Fully rounded buttons
+			},
+			boxShadow: {
+				// Elegant design system shadows
+				'elegant-subtle': '0 2px 8px rgba(0, 0, 0, 0.08)',
+				'elegant-soft': '0 4px 16px rgba(0, 0, 0, 0.12)',
+				'elegant-button': '0 2px 6px rgba(224, 138, 79, 0.2)',
+				'elegant-button-hover': '0 4px 12px rgba(224, 138, 79, 0.3)',
+				'elegant-panel': '0 8px 32px rgba(0, 0, 0, 0.1)',
 			},
 			keyframes: {
 				'accordion-down': {
@@ -119,13 +170,44 @@ export default {
 						opacity: '1',
 						transform: 'translateX(0)'
 					}
+				},
+				// Elegant design system animations
+				'elegant-fade-in': {
+					'0%': {
+						opacity: '0',
+						transform: 'translateY(10px)'
+					},
+					'100%': {
+						opacity: '1',
+						transform: 'translateY(0)'
+					}
+				},
+				'elegant-button-hover': {
+					'0%': {
+						transform: 'translateY(0) scale(1)',
+					},
+					'100%': {
+						transform: 'translateY(-1px) scale(1.02)',
+					}
+				},
+				'elegant-glow': {
+					'0%, 100%': {
+						boxShadow: '0 2px 6px rgba(224, 138, 79, 0.2)',
+					},
+					'50%': {
+						boxShadow: '0 4px 12px rgba(224, 138, 79, 0.4)',
+					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'fade-in': 'fade-in 0.6s ease-out',
-				'slide-in-left': 'slide-in-left 0.5s ease-out'
+				'slide-in-left': 'slide-in-left 0.5s ease-out',
+				// Elegant design system animations
+				'elegant-fade-in': 'elegant-fade-in 0.8s ease-out',
+				'elegant-button-hover': 'elegant-button-hover 0.2s ease-out',
+				'elegant-glow': 'elegant-glow 2s ease-in-out infinite',
 			}
 		}
 	},

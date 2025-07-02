@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Calendar } from '@/components/ui/calendar';
 import { Button } from '@/components/ui/button';
@@ -11,6 +11,7 @@ import { format, addDays, setHours, setMinutes } from 'date-fns';
 import { nl } from 'date-fns/locale';
 import { cn } from '@/lib/utils';
 import { useToast } from '@/hooks/use-toast';
+import { calculateEstimatedPrice } from '@/lib/date-checker-constants';
 
 interface DateCheckerModalProps {
   open: boolean;
@@ -79,6 +80,12 @@ export function DateCheckerModal({ open, onOpenChange, onConfirm, onOpenQuoteCal
     setStep(3);
   };
 
+  // Memoized price calculation to avoid recalculation on every render
+  const estimatedPrice = useMemo(() => {
+    // Using 'social' category and 'basis' tier as defaults for simple DateChecker
+    return calculateEstimatedPrice('social', 'basis', guestCount[0]);
+  }, [guestCount]);
+
   const handleConfirm = () => {
     if (selectedDate && selectedTime) {
       onConfirm(selectedDate, selectedTime, guestCount[0]);
@@ -106,7 +113,16 @@ export function DateCheckerModal({ open, onOpenChange, onConfirm, onOpenQuoteCal
   const getPopularityBadge = (time: string) => {
     const popularTimes = ['18:00', '18:30', '19:00', '19:30'];
     if (popularTimes.includes(time)) {
-      return <Badge variant="secondary" className="ml-2 text-xs">Populair</Badge>;
+      return (
+        <Badge 
+          variant="secondary" 
+          className="ml-2 text-xs bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-200 dark:border-green-700"
+          role="status"
+          aria-live="polite"
+        >
+          Populair
+        </Badge>
+      );
     }
     return null;
   };
@@ -262,7 +278,14 @@ export function DateCheckerModal({ open, onOpenChange, onConfirm, onOpenQuoteCal
                   <Label className="text-sm font-semibold text-forest-green flex items-center gap-2 mb-3">
                     <Clock className="w-4 h-4" />
                     Avond (16:00 - 20:00)
-                    <Badge variant="secondary" className="text-xs">Meest gekozen</Badge>
+                    <Badge 
+                      variant="secondary" 
+                      className="text-xs bg-green-100 text-green-800 border-green-200 dark:bg-green-900/30 dark:text-green-200 dark:border-green-700"
+                      role="status"
+                      aria-live="polite"
+                    >
+                      Meest gekozen
+                    </Badge>
                   </Label>
                   <RadioGroup value={selectedTime} onValueChange={handleTimeSelect}>
                     <div className="grid grid-cols-4 gap-2">
@@ -345,7 +368,7 @@ export function DateCheckerModal({ open, onOpenChange, onConfirm, onOpenQuoteCal
                 <div className="bg-warm-cream/50 p-4 rounded-lg space-y-3">
                   <div>
                     <p className="text-sm text-forest-green">
-                      <span className="font-semibold">Geschatte prijs:</span> €{(guestCount[0] * 22.50).toFixed(2)}
+                      <span className="font-semibold">Geschatte prijs:</span> €{estimatedPrice ? estimatedPrice.toFixed(2) : '---'}
                     </p>
                     <p className="text-xs text-gray-600 mt-1">
                       *Exacte prijs hangt af van uw menukeuzes

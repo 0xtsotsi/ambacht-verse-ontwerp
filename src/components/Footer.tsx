@@ -108,20 +108,20 @@ export const Footer = () => {
       </div>
 
       {/* Bottom Bar */}
-      <div className="border-t border-warm-cream/20 py-6">
+      <div className="border-t border-elegant-light/20 py-6">
         <div className="container mx-auto px-4">
-          <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm text-warm-cream/80">
+          <div className="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center text-sm text-elegant-light/80 font-elegant-body">
             <div className="mb-4 md:mb-0">
               © 2024 Wesley's Ambacht. Alle rechten voorbehouden.
             </div>
             <div className="flex space-x-6">
-              <span className="hover:text-warm-cream transition-colors cursor-pointer">
+              <span className="hover:text-elegant-light transition-colors cursor-pointer">
                 Privacy Beleid
               </span>
-              <span className="hover:text-warm-cream transition-colors cursor-pointer">
+              <span className="hover:text-elegant-light transition-colors cursor-pointer">
                 Algemene Voorwaarden
               </span>
-              <span className="hover:text-warm-cream transition-colors cursor-pointer">
+              <span className="hover:text-elegant-light transition-colors cursor-pointer">
                 Cookies
               </span>
             </div>

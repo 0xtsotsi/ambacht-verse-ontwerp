@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { 
   getAvailabilitySlots, 
   getAvailableTimeSlots, 
@@ -31,14 +31,21 @@ interface AvailabilityData {
 export function useAvailability(options: UseAvailabilityOptions = {}) {
   const { daysAhead = 180, enableRealTime = true } = options;
   
+  // Cache for expensive computations
+  const availabilityCache = useRef<Map<string, any>>(new Map());
+  const timeSlotsCache = useRef<Map<string, AvailabilitySlot[]>>(new Map());
+  
   const [availability, setAvailability] = useState<AvailabilityData>({
     dates: { booked: [], limited: [] },
     timeSlots: { morning: [], afternoon: [], evening: [] }
   });
   const [error, setError] = useState<string | null>(null);
   
-  const startDate = format(new Date(), 'yyyy-MM-dd');
-  const endDate = format(addDays(new Date(), daysAhead), 'yyyy-MM-dd');
+  // Memoize date calculations
+  const { startDate, endDate } = useMemo(() => ({
+    startDate: format(new Date(), 'yyyy-MM-dd'),
+    endDate: format(addDays(new Date(), daysAhead), 'yyyy-MM-dd')
+  }), [daysAhead]);
 
   // Enhanced query with logging
   const availabilityQuery = useApiLoggerQuery({
@@ -56,6 +63,10 @@ export function useAvailability(options: UseAvailabilityOptions = {}) {
       const mappedData = mapAvailabilityToDateChecker(availabilityQuery.data);
       setAvailability(mappedData);
       setError(null);
+      
+      // Clear caches when availability data changes
+      availabilityCache.current.clear();
+      timeSlotsCache.current.clear();
     }
     if (availabilityQuery.error) {
       logApiError('availability_slots', availabilityQuery.error as Error, { 
@@ -67,9 +78,18 @@ export function useAvailability(options: UseAvailabilityOptions = {}) {
   }, [availabilityQuery.data, availabilityQuery.error, startDate, endDate]);
 
   const getTimeSlotsForDate = useCallback(async (date: Date): Promise<AvailabilitySlot[]> => {
+    const dateString = format(date, 'yyyy-MM-dd');
+    
+    // Check cache first
+    if (timeSlotsCache.current.has(dateString)) {
+      return timeSlotsCache.current.get(dateString)!;
+    }
+    
     try {
-      const dateString = format(date, 'yyyy-MM-dd');
-      return await getAvailableTimeSlots(dateString);
+      const slots = await getAvailableTimeSlots(dateString);
+      // Cache the result
+      timeSlotsCache.current.set(dateString, slots);
+      return slots;
     } catch (err) {
       logApiError('availability_slots/available', err as Error, { 
         method: 'GET', 
@@ -89,15 +109,39 @@ export function useAvailability(options: UseAvailabilityOptions = {}) {
   }, [availabilityQuery.data]);
 
   const isDateBooked = useCallback((date: Date): boolean => {
-    return availability.dates.booked.some(
-      bookedDate => format(date, 'yyyy-MM-dd') === format(bookedDate, 'yyyy-MM-dd')
+    const dateString = format(date, 'yyyy-MM-dd');
+    const cacheKey = `booked-${dateString}`;
+    
+    // Check cache first
+    if (availabilityCache.current.has(cacheKey)) {
+      return availabilityCache.current.get(cacheKey);
+    }
+    
+    const isBooked = availability.dates.booked.some(
+      bookedDate => format(bookedDate, 'yyyy-MM-dd') === dateString
     );
+    
+    // Cache the result
+    availabilityCache.current.set(cacheKey, isBooked);
+    return isBooked;
   }, [availability.dates.booked]);
 
   const isDateLimited = useCallback((date: Date): boolean => {
-    return availability.dates.limited.some(
-      limitedDate => format(date, 'yyyy-MM-dd') === format(limitedDate, 'yyyy-MM-dd')
+    const dateString = format(date, 'yyyy-MM-dd');
+    const cacheKey = `limited-${dateString}`;
+    
+    // Check cache first
+    if (availabilityCache.current.has(cacheKey)) {
+      return availabilityCache.current.get(cacheKey);
+    }
+    
+    const isLimited = availability.dates.limited.some(
+      limitedDate => format(limitedDate, 'yyyy-MM-dd') === dateString
     );
+    
+    // Cache the result
+    availabilityCache.current.set(cacheKey, isLimited);
+    return isLimited;
   }, [availability.dates.limited]);
 
   const checkSlotAvailability = useCallback(async (date: Date, time: string): Promise<boolean> => {
