@@ -71,51 +71,32 @@ export const Gallery = () => {
     : galleryItems.filter(item => item.category === activeCategory);
 
   return (
-    <section id="gallery" className="py-20 bg-gradient-to-br from-elegant-light via-terracotta-50/30 to-elegant-light">
-      {/* Modern Pattern Background */}
-      <div className="absolute inset-0 opacity-5">
-        <div 
-          className="w-full h-full"
-          style={{
-            backgroundImage: `
-              radial-gradient(circle at 20% 80%, rgba(224,138,79,0.4) 0%, transparent 50%),
-              radial-gradient(circle at 80% 20%, rgba(224,138,79,0.3) 0%, transparent 50%),
-              linear-gradient(30deg, transparent 48%, rgba(224,138,79,0.1) 49%, rgba(224,138,79,0.1) 51%, transparent 52%)
-            `,
-            backgroundSize: '600px 600px, 400px 400px, 120px 120px'
-          }}
-        ></div>
-      </div>
-
-      <div className="container mx-auto px-4 relative z-10">
+    <section id="gallery" className="py-32 bg-white">
+      <div className="container mx-auto px-16">
         <div className="max-w-7xl mx-auto">
-          {/* Modern Section Header */}
-          <div className="text-center mb-20 animate-elegant-fade-in">
-            <h2 className="text-5xl md:text-6xl font-elegant-heading text-elegant-dark mb-8 font-bold tracking-tight">
-              <span className="bg-gradient-to-r from-terracotta-600 via-terracotta-700 to-terracotta-800 bg-clip-text text-transparent">
+          {/* Clean Section Header */}
+          <div className="text-center mb-32">
+            <h2 className="text-8xl md:text-9xl font-elegant-heading text-elegant-dark mb-16 font-light tracking-[-0.02em]">
+              <span className="text-terracotta-600">
                 Onze
               </span> Galerij
             </h2>
-            <div className="w-32 h-1 bg-gradient-to-r from-terracotta-400 to-terracotta-600 mx-auto mb-10 rounded-full"></div>
-            <p className="text-2xl font-elegant-body text-elegant-nav max-w-4xl mx-auto font-medium leading-relaxed">
+            <div className="w-32 h-px bg-terracotta-600 mx-auto mb-16"></div>
+            <p className="text-2xl font-elegant-body text-elegant-dark max-w-4xl mx-auto font-light leading-relaxed">
               Neem eens een kijkje in de galerij wat wij afgelopen jaar allemaal mochten realiseren. 
               Van intieme lunches tot grote feesten - elk evenement krijgt onze volle aandacht.
             </p>
           </div>
 
-          {/* Modern Category Filter */}
-          <div className="flex flex-wrap justify-center gap-6 mb-16">
+          {/* Clean Category Filter */}
+          <div className="flex flex-wrap justify-center gap-16 mb-32">
             {categories.map((category, index) => (
               <Button
                 key={category.id}
                 onClick={() => setActiveCategory(category.id)}
-                variant={activeCategory === category.id ? "fusion-primary" : "fusion-glass"}
-                size="elegant-lg"
-                className="flex items-center gap-3 transform hover:scale-110 hover:-translate-y-1 transition-all duration-300"
-                style={{
-                  animationDelay: `${index * 0.1}s`,
-                  animation: 'elegant-fade-in 0.6s ease-out forwards'
-                }}
+                variant={activeCategory === category.id ? "luxury-primary" : "luxury-ghost"}
+                size="luxury-lg"
+                className="flex items-center gap-3 transition-all duration-300"
               >
                 {category.icon}
                 {category.name}
@@ -123,59 +104,38 @@ export const Gallery = () => {
             ))}
           </div>
 
-          {/* Modern Gallery Grid - Enhanced Masonry */}
-          <div className="columns-1 md:columns-2 lg:columns-3 gap-8 space-y-8">
+          {/* Clean Gallery Grid */}
+          <div className="columns-1 md:columns-2 lg:columns-3 gap-16 space-y-16">
             {filteredItems.map((item, index) => (
               <div 
                 key={item.id} 
                 className="break-inside-avoid group cursor-pointer"
-                style={{
-                  animationDelay: `${0.2 + index * 0.1}s`,
-                  animation: 'elegant-fade-in 0.8s ease-out forwards'
-                }}
               >
-                <div className="bg-gradient-to-br from-elegant-light/95 via-elegant-light/90 to-terracotta-50/80 backdrop-blur-sm rounded-2xl overflow-hidden shadow-elegant-soft hover:shadow-elegant-panel transition-all duration-500 transform hover:scale-105 hover:-translate-y-2 border border-terracotta-200/50">
-                  {/* Enhanced Image Placeholder */}
-                  <div className={`${item.height} bg-gradient-to-br from-terracotta-400/20 via-terracotta-500/10 to-terracotta-600/20 relative overflow-hidden`}>
-                    {/* Modern Geometric Overlay */}
-                    <div className="absolute inset-0 opacity-20">
-                      <div 
-                        className="w-full h-full"
-                        style={{
-                          backgroundImage: `
-                            linear-gradient(45deg, transparent 30%, rgba(224,138,79,0.3) 50%, transparent 70%),
-                            radial-gradient(circle at 30% 70%, rgba(224,138,79,0.2) 0%, transparent 50%)
-                          `,
-                          backgroundSize: '60px 60px, 150px 150px'
-                        }}
-                      ></div>
-                    </div>
+                <div className="bg-white border-0 shadow-none overflow-hidden transition-all duration-300">
+                  {/* Clean Image Placeholder */}
+                  <div className={`${item.height} bg-gray-100 relative overflow-hidden`}>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
                     
-                    <div className="absolute inset-0 bg-gradient-to-t from-terracotta-900/70 via-terracotta-800/30 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300"></div>
-                    
-                    {/* Modern Badge */}
-                    <div className="absolute top-4 left-4">
-                      <Badge className="bg-gradient-to-r from-terracotta-500 to-terracotta-600 text-white font-elegant-body font-semibold px-4 py-2 rounded-xl shadow-elegant-button border-0">
+                    {/* Clean Badge */}
+                    <div className="absolute top-6 left-6">
+                      <Badge className="bg-terracotta-600 text-white font-elegant-body font-light px-4 py-2 border-0 shadow-none">
                         {item.type}
                       </Badge>
                     </div>
                     
-                    {/* Modern Hover Content */}
-                    <div className="absolute bottom-4 left-4 right-4 text-white opacity-0 group-hover:opacity-100 transition-all duration-300 transform translate-y-4 group-hover:translate-y-0">
-                      <h4 className="font-elegant-heading text-xl mb-2 font-bold">{item.title}</h4>
-                      <p className="text-sm opacity-90 font-elegant-body leading-relaxed">{item.description}</p>
+                    {/* Clean Hover Content */}
+                    <div className="absolute bottom-6 left-6 right-6 text-white opacity-0 group-hover:opacity-100 transition-all duration-300">
+                      <h4 className="font-elegant-heading text-xl mb-2 font-light">{item.title}</h4>
+                      <p className="text-sm opacity-90 font-elegant-body leading-relaxed font-light">{item.description}</p>
                     </div>
-                    
-                    {/* Decorative Corner Element */}
-                    <div className="absolute -top-2 -right-2 w-8 h-8 bg-gradient-to-br from-terracotta-400 to-terracotta-600 rounded-full opacity-0 group-hover:opacity-80 transition-all duration-300 transform scale-0 group-hover:scale-100"></div>
                   </div>
                   
-                  {/* Enhanced Content */}
-                  <div className="p-6">
-                    <h4 className="font-elegant-heading text-elegant-dark text-xl mb-3 group-hover:text-terracotta-600 transition-colors font-bold">
+                  {/* Clean Content */}
+                  <div className="p-8">
+                    <h4 className="font-elegant-heading text-elegant-dark text-2xl mb-4 group-hover:text-terracotta-600 transition-colors font-light">
                       {item.title}
                     </h4>
-                    <p className="text-elegant-nav leading-relaxed font-elegant-body font-medium">
+                    <p className="text-elegant-nav leading-relaxed font-elegant-body font-light">
                       {item.description}
                     </p>
                   </div>
@@ -184,25 +144,21 @@ export const Gallery = () => {
             ))}
           </div>
 
-          {/* Modern Call to Action */}
-          <div className="text-center mt-20">
-            <div className="bg-gradient-to-br from-elegant-light/95 via-elegant-light/90 to-terracotta-50/80 backdrop-blur-md rounded-3xl p-12 md:p-20 shadow-elegant-panel border border-terracotta-200/50 transform hover:scale-[1.02] transition-all duration-500 relative overflow-hidden">
-              {/* Decorative Elements */}
-              <div className="absolute -top-4 -left-4 w-12 h-12 bg-gradient-to-br from-terracotta-400 to-terracotta-600 rounded-full opacity-60"></div>
-              <div className="absolute -bottom-4 -right-4 w-8 h-8 bg-gradient-to-br from-terracotta-500 to-terracotta-700 rounded-full opacity-60"></div>
-              
-              <h3 className="text-4xl md:text-5xl font-elegant-heading text-elegant-dark mb-8 font-bold">
+          {/* Clean Call to Action */}
+          <div className="text-center mt-32">
+            <div className="bg-gray-50 p-24 md:p-32 border-0 shadow-none">
+              <h3 className="text-6xl md:text-7xl font-elegant-heading text-elegant-dark mb-16 font-light tracking-[-0.02em]">
                 Laat Ons Uw Verhaal Vertellen
               </h3>
-              <div className="w-24 h-1 bg-gradient-to-r from-terracotta-400 to-terracotta-600 mx-auto mb-8 rounded-full"></div>
-              <p className="text-elegant-nav font-elegant-body text-xl mb-12 max-w-3xl mx-auto font-medium leading-relaxed">
+              <div className="w-32 h-px bg-terracotta-600 mx-auto mb-16"></div>
+              <p className="text-elegant-dark font-elegant-body text-2xl mb-20 max-w-4xl mx-auto font-light leading-relaxed">
                 Elk evenement is uniek, net als onze aanpak. Laten we samen iets bijzonders creëren 
                 dat uw gasten nog lang zullen herinneren.
               </p>
               <Button 
-                variant="fusion-primary"
-                size="elegant-lg"
-                className="px-12 py-6 text-xl font-bold"
+                variant="luxury-primary"
+                size="luxury-xl"
+                className="text-xl font-light"
               >
                 Plan Uw Evenement
               </Button>

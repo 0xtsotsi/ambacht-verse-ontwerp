@@ -30,6 +30,10 @@ const buttonVariants = cva(
         "organic-primary": "bg-gradient-to-br from-terracotta-400 via-terracotta-500 to-terracotta-600 hover:from-terracotta-500 hover:via-terracotta-600 hover:to-terracotta-700 text-white rounded-3xl font-elegant-body font-semibold transition-all duration-500 transform hover:scale-105 shadow-organic-natural hover:shadow-organic-floating animate-organic-breathe",
         "organic-soft": "bg-gradient-to-br from-terracotta-50 via-terracotta-100 to-terracotta-150 hover:from-terracotta-100 hover:via-terracotta-200 hover:to-terracotta-250 text-terracotta-700 border border-terracotta-200/60 hover:border-terracotta-300/80 rounded-full font-elegant-body font-medium transition-all duration-400 transform hover:scale-105 shadow-organic-soft hover:shadow-organic-natural",
         "organic-floating": "bg-gradient-to-br from-elegant-light/90 via-terracotta-50/70 to-elegant-light/85 backdrop-blur-sm text-terracotta-600 border border-terracotta-200/40 hover:border-terracotta-300/60 hover:bg-gradient-to-br hover:from-terracotta-100/80 hover:via-terracotta-150/70 hover:to-terracotta-100/75 rounded-3xl font-elegant-body font-medium transition-all duration-500 transform hover:scale-105 shadow-organic-soft hover:shadow-organic-floating animate-organic-float",
+        // Minimalist Luxury variants
+        "luxury-primary": "bg-terracotta-600 hover:bg-terracotta-700 text-white font-elegant-body font-medium transition-all duration-300 border-0 shadow-none",
+        "luxury-outline": "border border-terracotta-600 text-terracotta-600 bg-transparent hover:bg-terracotta-600 hover:text-white font-elegant-body font-medium transition-all duration-300 shadow-none",
+        "luxury-ghost": "text-terracotta-600 hover:text-terracotta-700 bg-transparent hover:bg-transparent font-elegant-body font-medium transition-all duration-300 border-0 shadow-none",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -43,6 +47,10 @@ const buttonVariants = cva(
         "organic": "h-12 px-8 py-3 text-base",
         "organic-lg": "h-14 px-12 py-4 text-lg",
         "organic-xl": "h-16 px-14 py-5 text-xl",
+        // Minimalist Luxury sizes
+        "luxury": "h-12 px-12 py-3 text-base",
+        "luxury-lg": "h-14 px-16 py-4 text-lg",
+        "luxury-xl": "h-16 px-20 py-5 text-xl",
       },
     },
     defaultVariants: {
