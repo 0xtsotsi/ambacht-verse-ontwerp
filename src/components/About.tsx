@@ -4,48 +4,51 @@ import { Card, CardContent } from "@/components/ui/card";
 export const About = () => {
   return (
     <>
-      {/* Main About Section - Modern Fusion */}
-      <section className="py-0 bg-gradient-to-br from-elegant-light via-terracotta-50/30 to-elegant-light">
+      {/* Main About Section - Organic Sophistication */}
+      <section className="py-0 bg-gradient-to-br from-elegant-light via-terracotta-50/40 to-terracotta-100/20">
         <div className="container mx-auto px-4">
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-2 min-h-screen">
-              {/* Left Side - Modern Content */}
-              <div className="flex items-center justify-center p-8 lg:p-16 relative">
-                {/* Geometric Background */}
-                <div className="absolute inset-0 opacity-10">
+              {/* Left Side - Organic Content */}
+              <div className="flex items-center justify-center p-8 lg:p-20 relative">
+                {/* Organic Background */}
+                <div className="absolute inset-0 opacity-15">
                   <div 
                     className="w-full h-full"
                     style={{
                       backgroundImage: `
-                        linear-gradient(60deg, transparent 40%, rgba(224,138,79,0.15) 50%, transparent 60%),
-                        radial-gradient(circle at 30% 70%, rgba(224,138,79,0.1) 0%, transparent 50%)
+                        radial-gradient(ellipse 400px 300px at 40% 60%, rgba(224,138,79,0.2) 0%, transparent 70%),
+                        radial-gradient(ellipse 300px 200px at 70% 30%, rgba(224,138,79,0.15) 0%, transparent 60%),
+                        radial-gradient(ellipse 200px 150px at 20% 20%, rgba(255,255,255,0.1) 0%, transparent 50%)
                       `,
-                      backgroundSize: '100px 100px, 200px 200px'
+                      backgroundSize: '600px 500px, 500px 400px, 300px 250px',
+                      filter: 'blur(1px)'
                     }}
                   ></div>
                 </div>
                 
-                <div className="max-w-lg relative z-10">
-                  {/* Modern Illustration */}
-                  <div className="mb-12 flex justify-center">
+                <div className="max-w-lg relative z-10 animate-organic-grow">
+                  {/* Organic Illustration */}
+                  <div className="mb-16 flex justify-center">
                     <div className="relative">
-                      <div className="w-56 h-40 bg-gradient-to-br from-terracotta-400/30 via-terracotta-500/20 to-terracotta-600/30 rounded-2xl flex items-center justify-center shadow-elegant-panel border border-terracotta-200/50 backdrop-blur-sm transform hover:scale-105 transition-all duration-300">
-                        <div className="text-7xl transform hover:rotate-6 transition-all duration-300">🏠</div>
+                      <div className="w-64 h-48 bg-gradient-to-br from-terracotta-400/25 via-terracotta-500/15 to-terracotta-600/25 rounded-3xl flex items-center justify-center shadow-organic-floating border border-terracotta-200/40 backdrop-blur-sm transform hover:scale-105 transition-all duration-700 animate-organic-breathe">
+                        <div className="text-8xl transform hover:rotate-6 transition-all duration-500 animate-organic-float">🏠</div>
                       </div>
-                      {/* Floating Elements */}
-                      <div className="absolute -top-3 -right-3 w-8 h-8 bg-gradient-to-br from-terracotta-400 to-terracotta-600 rounded-full animate-elegant-glow"></div>
-                      <div className="absolute -bottom-3 -left-3 w-6 h-6 bg-gradient-to-br from-terracotta-500 to-terracotta-700 rounded-full opacity-80"></div>
+                      {/* Organic Floating Elements */}
+                      <div className="absolute -top-4 -right-4 w-10 h-8 bg-gradient-to-br from-terracotta-400/60 to-terracotta-600/60 rounded-full animate-organic-float"></div>
+                      <div className="absolute -bottom-4 -left-4 w-8 h-6 bg-gradient-to-br from-terracotta-500/50 to-terracotta-700/50 rounded-full animate-organic-float" style={{ animationDelay: '1s' }}></div>
+                      <div className="absolute top-4 left-4 w-6 h-6 bg-gradient-to-br from-terracotta-300/40 to-terracotta-500/40 rounded-full animate-organic-float" style={{ animationDelay: '2s' }}></div>
                     </div>
                   </div>
                   
-                  <h2 className="text-5xl md:text-6xl font-elegant-heading text-elegant-dark mb-12 text-center font-bold tracking-tight">
-                    <span className="bg-gradient-to-r from-terracotta-600 via-terracotta-700 to-terracotta-800 bg-clip-text text-transparent">
+                  <h2 className="text-5xl md:text-6xl font-elegant-heading text-elegant-dark mb-14 text-center font-bold tracking-tight">
+                    <span className="bg-gradient-to-br from-terracotta-600 via-terracotta-700 to-terracotta-800 bg-clip-text text-transparent">
                       AMBACHTELIJK
                     </span><br />
                     EN VERS
                   </h2>
                   
-                  <div className="w-20 h-1 bg-gradient-to-r from-terracotta-400 to-terracotta-600 mx-auto mb-8 rounded-full"></div>
+                  <div className="w-28 h-2 bg-gradient-to-r from-terracotta-400 via-terracotta-500 to-terracotta-600 mx-auto mb-10 rounded-full opacity-90"></div>
                   
                   <p className="text-elegant-dark font-elegant-body text-xl leading-relaxed text-center font-medium">
                     Of u nu een broodjeslunch op de zaak wilt, een BBQ om het seizoen af te sluiten of een buffet om uw verjaardag te vieren. Wij staan voor u klaar!

@@ -133,6 +133,11 @@ export default {
 				'elegant-button': '0 2px 6px rgba(224, 138, 79, 0.2)',
 				'elegant-button-hover': '0 4px 12px rgba(224, 138, 79, 0.3)',
 				'elegant-panel': '0 8px 32px rgba(0, 0, 0, 0.1)',
+				// Organic Sophistication natural shadows
+				'organic-soft': '0 6px 20px rgba(0, 0, 0, 0.08), 0 2px 6px rgba(0, 0, 0, 0.04)',
+				'organic-natural': '0 8px 25px rgba(224, 138, 79, 0.15), 0 3px 10px rgba(0, 0, 0, 0.08)',
+				'organic-floating': '0 12px 35px rgba(224, 138, 79, 0.12), 0 4px 15px rgba(0, 0, 0, 0.06)',
+				'organic-glow': '0 0 20px rgba(224, 138, 79, 0.3), 0 6px 20px rgba(0, 0, 0, 0.1)',
 			},
 			keyframes: {
 				'accordion-down': {
@@ -197,6 +202,35 @@ export default {
 					'50%': {
 						boxShadow: '0 4px 12px rgba(224, 138, 79, 0.4)',
 					}
+				},
+				// Organic Sophistication animations
+				'organic-float': {
+					'0%, 100%': {
+						transform: 'translateY(0px) rotate(0deg)',
+					},
+					'50%': {
+						transform: 'translateY(-6px) rotate(1deg)',
+					}
+				},
+				'organic-breathe': {
+					'0%, 100%': {
+						transform: 'scale(1) rotate(0deg)',
+						opacity: '1',
+					},
+					'50%': {
+						transform: 'scale(1.02) rotate(0.5deg)',
+						opacity: '0.95',
+					}
+				},
+				'organic-grow': {
+					'0%': {
+						transform: 'scale(0.8) rotate(-2deg)',
+						opacity: '0',
+					},
+					'100%': {
+						transform: 'scale(1) rotate(0deg)',
+						opacity: '1',
+					}
 				}
 			},
 			animation: {
@@ -208,6 +242,10 @@ export default {
 				'elegant-fade-in': 'elegant-fade-in 0.8s ease-out',
 				'elegant-button-hover': 'elegant-button-hover 0.2s ease-out',
 				'elegant-glow': 'elegant-glow 2s ease-in-out infinite',
+				// Organic Sophistication animations
+				'organic-float': 'organic-float 4s ease-in-out infinite',
+				'organic-breathe': 'organic-breathe 3s ease-in-out infinite',
+				'organic-grow': 'organic-grow 0.8s ease-out',
 			}
 		}
 	},

@@ -26,6 +26,10 @@ const buttonVariants = cva(
         "fusion-primary": "bg-gradient-to-r from-terracotta-500 via-terracotta-600 to-terracotta-700 hover:from-terracotta-600 hover:via-terracotta-700 hover:to-terracotta-800 text-white shadow-elegant-button hover:shadow-elegant-button-hover rounded-2xl font-elegant-body font-bold transition-all duration-300 transform hover:scale-110 hover:-translate-y-1 animate-elegant-glow",
         "fusion-outline": "border-3 border-gradient-to-r from-terracotta-400 to-terracotta-600 text-terracotta-600 bg-gradient-to-r from-transparent to-terracotta-50/30 hover:bg-gradient-to-r hover:from-terracotta-50 hover:to-terracotta-100 rounded-2xl font-elegant-body font-bold transition-all duration-300 transform hover:scale-110 hover:rotate-1",
         "fusion-glass": "bg-gradient-to-r from-elegant-light/80 via-terracotta-50/60 to-elegant-light/80 backdrop-blur-md border border-terracotta-200/50 text-terracotta-700 hover:bg-gradient-to-r hover:from-terracotta-100/80 hover:via-terracotta-100/70 hover:to-terracotta-50/80 hover:border-terracotta-300/70 rounded-2xl font-elegant-body font-semibold transition-all duration-300 transform hover:scale-105 shadow-elegant-subtle hover:shadow-elegant-soft",
+        // Organic Sophistication variants
+        "organic-primary": "bg-gradient-to-br from-terracotta-400 via-terracotta-500 to-terracotta-600 hover:from-terracotta-500 hover:via-terracotta-600 hover:to-terracotta-700 text-white rounded-3xl font-elegant-body font-semibold transition-all duration-500 transform hover:scale-105 shadow-organic-natural hover:shadow-organic-floating animate-organic-breathe",
+        "organic-soft": "bg-gradient-to-br from-terracotta-50 via-terracotta-100 to-terracotta-150 hover:from-terracotta-100 hover:via-terracotta-200 hover:to-terracotta-250 text-terracotta-700 border border-terracotta-200/60 hover:border-terracotta-300/80 rounded-full font-elegant-body font-medium transition-all duration-400 transform hover:scale-105 shadow-organic-soft hover:shadow-organic-natural",
+        "organic-floating": "bg-gradient-to-br from-elegant-light/90 via-terracotta-50/70 to-elegant-light/85 backdrop-blur-sm text-terracotta-600 border border-terracotta-200/40 hover:border-terracotta-300/60 hover:bg-gradient-to-br hover:from-terracotta-100/80 hover:via-terracotta-150/70 hover:to-terracotta-100/75 rounded-3xl font-elegant-body font-medium transition-all duration-500 transform hover:scale-105 shadow-organic-soft hover:shadow-organic-floating animate-organic-float",
       },
       size: {
         default: "h-10 px-4 py-2",
@@ -35,6 +39,10 @@ const buttonVariants = cva(
         // Classic Elegance sizes
         elegant: "h-12 px-8 py-3 text-base",
         "elegant-lg": "h-14 px-10 py-4 text-lg",
+        // Organic Sophistication sizes
+        "organic": "h-12 px-8 py-3 text-base",
+        "organic-lg": "h-14 px-12 py-4 text-lg",
+        "organic-xl": "h-16 px-14 py-5 text-xl",
       },
     },
     defaultVariants: {
