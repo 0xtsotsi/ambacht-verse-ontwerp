@@ -31,6 +31,8 @@ node_modules/
 .vscode
 # OS specific
 
+.vercel
+
 # Task files
 # tasks.json
 # tasks/ 

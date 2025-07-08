@@ -1,6 +1,11 @@
 /**
  * Custom hooks for comprehensive component state & lifecycle tracking
  * Provides logging for mount/unmount, state changes, re-renders, and performance
+ * 
+ * V5 Interactive Elegance Integration:
+ * - Optimized for animation performance monitoring
+ * - Real-time render tracking for smooth 60fps animations
+ * - Memory usage monitoring for complex interactive components
  */
 
 import { useEffect, useRef, useCallback, useMemo } from 'react';

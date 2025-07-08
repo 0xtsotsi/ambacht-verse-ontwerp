@@ -108,7 +108,7 @@ export const Navigation = () => {
                 onClick={() => setIsOpen(false)}
                 style={{
                   animationDelay: `${index * 100}ms`,
-                  animation: isOpen ? "elegant-fade-in 0.6s ease-out forwards" : "none"
+                  animation: isOpen ? "interactive-slide-up 0.6s ease-out forwards" : "none"
                 }}
               >
                 {item.name}

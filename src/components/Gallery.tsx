@@ -1,43 +1,46 @@
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, memo, useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Camera, ChefHat, Utensils, Users } from "lucide-react";
+import { useOptimizedIntersectionObserver } from "@/hooks/useAnimationOptimization";
+import { usePerformanceLogger } from "@/hooks/useComponentLogger";
 
-export const Gallery = () => {
+export const Gallery = memo(() => {
   const [activeCategory, setActiveCategory] = useState("all");
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
-  const [isVisible, setIsVisible] = useState(false);
   const sectionRef = useRef<HTMLDivElement>(null);
+  
+  // Optimized intersection observer with proper cleanup
+  const { observe, isVisible } = useOptimizedIntersectionObserver({
+    threshold: 0.1,
+    rootMargin: '50px'
+  });
+  
+  // Performance monitoring
+  const { getPerformanceStats } = usePerformanceLogger({
+    componentName: 'Gallery',
+    slowRenderThreshold: 16,
+    enableMemoryTracking: true
+  });
 
+  // Set up intersection observer
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            setIsVisible(true);
-          }
-        });
-      },
-      { threshold: 0.1 }
-    );
-
     if (sectionRef.current) {
-      observer.observe(sectionRef.current);
+      observe(sectionRef.current);
     }
+  }, [observe]);
 
-    return () => observer.disconnect();
-  }, []);
-
-  const categories = [
+  // Memoize categories to prevent unnecessary re-renders
+  const categories = useMemo(() => [
     { id: "all", name: "Alles", icon: <Camera className="w-4 h-4" /> },
     { id: "bbq", name: "BBQ Events", icon: <ChefHat className="w-4 h-4" /> },
     { id: "catering", name: "Catering", icon: <Utensils className="w-4 h-4" /> },
     { id: "events", name: "Evenementen", icon: <Users className="w-4 h-4" /> },
-  ];
+  ], []);
 
-  // Using placeholder content that represents the style of images
-  const galleryItems = [
+  // Memoize gallery items to prevent unnecessary re-renders
+  const galleryItems = useMemo(() => [
     {
       id: 1,
       category: "bbq",
@@ -86,11 +89,28 @@ export const Gallery = () => {
       type: "Birthday Party",
       height: "h-76"
     }
-  ];
+  ], []);
 
-  const filteredItems = activeCategory === "all" 
-    ? galleryItems 
-    : galleryItems.filter(item => item.category === activeCategory);
+  // Memoize filtered items to prevent unnecessary filtering
+  const filteredItems = useMemo(() => {
+    return activeCategory === "all" 
+      ? galleryItems 
+      : galleryItems.filter(item => item.category === activeCategory);
+  }, [activeCategory, galleryItems]);
+
+  // Memoize hover handlers to prevent unnecessary re-renders
+  const handleMouseEnter = useCallback((itemId: number) => {
+    setHoveredItem(itemId);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setHoveredItem(null);
+  }, []);
+
+  // Memoize category change handler
+  const handleCategoryChange = useCallback((categoryId: string) => {
+    setActiveCategory(categoryId);
+  }, []);
 
   return (
     <section id="gallery" className="py-32 bg-white overflow-hidden" ref={sectionRef}>
@@ -114,7 +134,7 @@ export const Gallery = () => {
             <div className="relative w-32 h-px bg-terracotta-600 mx-auto mb-16 overflow-hidden">
               <span className="absolute inset-0 bg-gradient-to-r from-transparent via-terracotta-400 to-transparent animate-pulse"></span>
             </div>
-            <p className="text-2xl font-elegant-body text-elegant-dark max-w-4xl mx-auto font-light leading-relaxed animate-elegant-fade-in">
+            <p className="text-2xl font-elegant-body text-elegant-dark max-w-4xl mx-auto font-light leading-relaxed animate-interactive-slide-up">
               Neem eens een kijkje in de galerij wat wij afgelopen jaar allemaal mochten realiseren. 
               Van intieme lunches tot grote feesten - elk evenement krijgt onze volle aandacht.
             </p>
@@ -125,13 +145,13 @@ export const Gallery = () => {
             {categories.map((category, index) => (
               <Button
                 key={category.id}
-                onClick={() => setActiveCategory(category.id)}
+                onClick={() => handleCategoryChange(category.id)}
                 variant={activeCategory === category.id ? "interactive-primary" : "interactive-glass"}
                 size="elegant-lg"
                 className="flex items-center gap-3 group"
                 style={{
                   animationDelay: `${index * 0.1}s`,
-                  animation: isVisible ? 'elegant-fade-in 0.8s ease-out forwards' : 'none'
+                  animation: isVisible ? 'interactive-slide-up 0.8s ease-out forwards' : 'none'
                 }}
               >
                 <span className="transform group-hover:scale-125 group-hover:rotate-12 transition-all duration-500">
@@ -148,12 +168,13 @@ export const Gallery = () => {
               <div 
                 key={item.id} 
                 className="break-inside-avoid group cursor-pointer transform transition-all duration-700 hover:scale-105 hover:-translate-y-2"
-                onMouseEnter={() => setHoveredItem(item.id)}
-                onMouseLeave={() => setHoveredItem(null)}
+                onMouseEnter={() => handleMouseEnter(item.id)}
+                onMouseLeave={handleMouseLeave}
                 style={{
                   animationDelay: `${index * 0.15}s`,
-                  animation: isVisible ? 'elegant-fade-in 1s ease-out forwards' : 'none',
-                  opacity: isVisible ? 1 : 0
+                  animation: isVisible ? 'interactive-slide-up 1s ease-out forwards' : 'none',
+                  opacity: isVisible ? 1 : 0,
+                  willChange: 'transform, opacity'
                 }}
               >
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-elegant-soft hover:shadow-elegant-panel overflow-hidden transition-all duration-700">
@@ -177,8 +198,8 @@ export const Gallery = () => {
                     
                     {/* Interactive Hover Content */}
                     <div className="absolute bottom-6 left-6 right-6 text-white transform translate-y-8 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-700">
-                      <h4 className="font-elegant-heading text-2xl mb-3 font-light animate-elegant-fade-in">{item.title}</h4>
-                      <p className="text-base opacity-90 font-elegant-body leading-relaxed font-light animate-elegant-fade-in" style={{ animationDelay: '0.1s' }}>
+                      <h4 className="font-elegant-heading text-2xl mb-3 font-light animate-interactive-slide-up">{item.title}</h4>
+                      <p className="text-base opacity-90 font-elegant-body leading-relaxed font-light animate-interactive-slide-up" style={{ animationDelay: '0.1s' }}>
                         {item.description}
                       </p>
                     </div>
@@ -227,7 +248,7 @@ export const Gallery = () => {
               <Button 
                 variant="interactive-primary"
                 size="luxury-xl"
-                className="text-xl font-light group"
+                className="text-xl font-light group animate-interactive-pulse-glow"
               >
                 <span className="relative z-10">Plan Uw Evenement</span>
               </Button>
@@ -237,4 +258,4 @@ export const Gallery = () => {
       </div>
     </section>
   );
-};
+});

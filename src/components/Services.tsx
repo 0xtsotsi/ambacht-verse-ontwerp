@@ -1,24 +1,40 @@
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { useState, useEffect } from "react";
+import { useState, useEffect, memo, useMemo, useCallback } from "react";
+import { usePerformanceLogger } from "@/hooks/useComponentLogger";
 
-export const Services = () => {
+export const Services = memo(() => {
   const [activeCategory, setActiveCategory] = useState("soepen");
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [isVisible, setIsVisible] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
+  
+  // Performance monitoring
+  const { getPerformanceStats } = usePerformanceLogger({
+    componentName: 'Services',
+    slowRenderThreshold: 16,
+    enableMemoryTracking: true
+  });
 
   useEffect(() => {
     setIsVisible(true);
+    
+    // Preload the background image
+    const img = new Image();
+    img.onload = () => setImageLoaded(true);
+    img.src = 'https://images.unsplash.com/photo-1574484284002-952d92456975?q=80&w=2074';
   }, []);
 
-  const categories = [
+  // Memoize categories to prevent unnecessary re-renders
+  const categories = useMemo(() => [
     { id: "soepen", name: "BBQ", color: "bg-burnt-orange", icon: "🔥" },
     { id: "hapjes", name: "Kantoor Catering", color: "bg-forest-green", icon: "🏢" },
     { id: "buffets", name: "Evenement Buffets", color: "bg-deep-teal", icon: "🎉" },
-  ];
+  ], []);
 
-  const menuItems = {
+  // Memoize menu items to prevent unnecessary re-renders
+  const menuItems = useMemo(() => ({
     soepen: [
       {
         title: "Tomaten Basilicum",
@@ -50,7 +66,20 @@ export const Services = () => {
         price: "€ 18,50"
       }
     ]
-  };
+  }), []);
+
+  // Memoize handlers to prevent unnecessary re-renders
+  const handleCategoryChange = useCallback((categoryId: string) => {
+    setActiveCategory(categoryId);
+  }, []);
+
+  const handleMouseEnter = useCallback((cardId: number) => {
+    setHoveredCard(cardId);
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setHoveredCard(null);
+  }, []);
 
   return (
     <section className="py-32 bg-white overflow-hidden">
@@ -75,7 +104,7 @@ export const Services = () => {
             <div className="relative w-24 h-px bg-terracotta-600 mx-auto mb-16 overflow-hidden">
               <span className="absolute inset-0 bg-gradient-to-r from-transparent via-terracotta-400 to-transparent animate-pulse"></span>
             </div>
-            <p className="text-elegant-dark font-elegant-script text-4xl md:text-5xl font-light animate-elegant-fade-in">
+            <p className="text-elegant-dark font-elegant-script text-4xl md:text-5xl font-light animate-interactive-slide-up">
               ambachtelijk genieten
             </p>
           </div>
@@ -85,13 +114,13 @@ export const Services = () => {
             {categories.map((category, index) => (
               <Button
                 key={category.id}
-                onClick={() => setActiveCategory(category.id)}
+                onClick={() => handleCategoryChange(category.id)}
                 variant={activeCategory === category.id ? "interactive-primary" : "interactive-glass"}
                 size="elegant-lg"
                 className="group relative overflow-hidden"
                 style={{
                   animationDelay: `${index * 0.1}s`,
-                  animation: isVisible ? 'elegant-fade-in 0.8s ease-out forwards' : 'none'
+                  animation: isVisible ? 'interactive-slide-up 0.8s ease-out forwards' : 'none'
                 }}
               >
                 <span className="relative z-10 flex items-center gap-3">
@@ -109,8 +138,8 @@ export const Services = () => {
             {/* Interactive Menu Card */}
             <Card 
               className="bg-white/90 backdrop-blur-sm border-0 shadow-elegant-panel hover:shadow-2xl transition-all duration-700 transform hover:scale-105 hover:-translate-y-2 group overflow-hidden"
-              onMouseEnter={() => setHoveredCard(0)}
-              onMouseLeave={() => setHoveredCard(null)}
+              onMouseEnter={() => handleMouseEnter(0)}
+              onMouseLeave={handleMouseLeave}
             >
               <CardContent className="p-16 text-left relative">
                 {/* Glow background effect */}
@@ -126,7 +155,7 @@ export const Services = () => {
                       className="border-b border-gray-100 last:border-0 pb-8 last:pb-0 transition-all duration-500 hover:translate-x-2 group/item"
                       style={{
                         animationDelay: `${index * 0.1}s`,
-                        animation: hoveredCard === 0 ? 'elegant-fade-in 0.6s ease-out forwards' : 'none'
+                        animation: hoveredCard === 0 ? 'interactive-slide-up 0.6s ease-out forwards' : 'none'
                       }}
                     >
                       <div className="flex justify-between items-start mb-4">
@@ -149,13 +178,15 @@ export const Services = () => {
             {/* Interactive Food Image */}
             <div 
               className="relative overflow-hidden rounded-2xl group cursor-pointer"
-              onMouseEnter={() => setHoveredCard(1)}
-              onMouseLeave={() => setHoveredCard(null)}
+              onMouseEnter={() => handleMouseEnter(1)}
+              onMouseLeave={handleMouseLeave}
             >
               <div 
                 className="h-[600px] bg-cover bg-center bg-no-repeat transition-all duration-700 transform group-hover:scale-110"
                 style={{
-                  backgroundImage: "url('https://images.unsplash.com/photo-1574484284002-952d92456975?q=80&w=2074')"
+                  backgroundImage: "url('https://images.unsplash.com/photo-1574484284002-952d92456975?q=80&w=2074')",
+                  willChange: 'transform',
+                  opacity: imageLoaded ? 1 : 0
                 }}
               >
                 {/* Interactive overlay with gradient */}
@@ -178,8 +209,8 @@ export const Services = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-24 mt-32 max-w-6xl mx-auto">
             <Card 
               className="bg-white/90 backdrop-blur-sm border-0 shadow-elegant-soft hover:shadow-elegant-panel transition-all duration-700 transform hover:scale-105 hover:-translate-y-2 group overflow-hidden"
-              onMouseEnter={() => setHoveredCard(2)}
-              onMouseLeave={() => setHoveredCard(null)}
+              onMouseEnter={() => handleMouseEnter(2)}
+              onMouseLeave={handleMouseLeave}
             >
               <CardContent className="p-16 text-left relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-terracotta-50/0 to-terracotta-100/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
@@ -206,8 +237,8 @@ export const Services = () => {
 
             <Card 
               className="bg-white/90 backdrop-blur-sm border-0 shadow-elegant-soft hover:shadow-elegant-panel transition-all duration-700 transform hover:scale-105 hover:-translate-y-2 group overflow-hidden"
-              onMouseEnter={() => setHoveredCard(3)}
-              onMouseLeave={() => setHoveredCard(null)}
+              onMouseEnter={() => handleMouseEnter(3)}
+              onMouseLeave={handleMouseLeave}
             >
               <CardContent className="p-16 text-left relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-terracotta-50/0 to-terracotta-100/20 opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
@@ -230,4 +261,4 @@ export const Services = () => {
       </div>
     </section>
   );
-};
+});
