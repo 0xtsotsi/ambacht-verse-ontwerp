@@ -116,26 +116,22 @@ export function withLogging<P extends Record<string, any>>(
   } = options;
 
   const LoggingWrapper = React.forwardRef<any, P>((props, ref) => {
-    // Early return if logging is disabled
-    if (!shouldEnableLogging(enableInProduction)) {
-      return <WrappedComponent {...props} ref={ref} />;
-    }
-
+    const loggingEnabled = shouldEnableLogging(enableInProduction);
     const effectiveConfig = getEffectiveConfig(config);
     const renderCountRef = useRef(0);
     const lastPropsRef = useRef<P>();
 
     // Sanitize props for logging
     const sanitizedProps = useMemo(() => 
-      effectiveConfig.props ? sanitizeProps(props as Record<string, any>, excludeProps) : {},
-      [props, excludeProps, effectiveConfig.props]
+      loggingEnabled && effectiveConfig.props ? sanitizeProps(props as Record<string, any>, excludeProps) : {},
+      [props, effectiveConfig.props, loggingEnabled]
     );
 
-    // Use component tracking hooks
+    // Use component tracking hooks (always called, but conditionally enabled)
     const tracking = useComponentTracking(componentName, {
-      enableLifecycleLogging: effectiveConfig.lifecycle,
-      enableRenderLogging: effectiveConfig.renders,
-      enablePerformanceLogging: effectiveConfig.performance,
+      enableLifecycleLogging: loggingEnabled && effectiveConfig.lifecycle,
+      enableRenderLogging: loggingEnabled && effectiveConfig.renders,
+      enablePerformanceLogging: loggingEnabled && effectiveConfig.performance,
       props: sanitizedProps,
       dependencies: [props]
     });
@@ -143,7 +139,7 @@ export function withLogging<P extends Record<string, any>>(
     // Track prop changes
     useEffect(() => {
       try {
-        if (effectiveConfig.props && lastPropsRef.current) {
+        if (loggingEnabled && effectiveConfig.props && lastPropsRef.current) {
           const prevProps = lastPropsRef.current;
           const currentProps = props;
           
@@ -174,13 +170,13 @@ export function withLogging<P extends Record<string, any>>(
       } catch (error) {
         console.error(`Props change logging error for ${componentName}:`, error);
       }
-    }, [props, componentName, effectiveConfig.props]);
+    }, [props, effectiveConfig.props, loggingEnabled]);
 
     // Track render count
     useEffect(() => {
       renderCountRef.current += 1;
       
-      if (effectiveConfig.renders && renderCountRef.current > 1) {
+      if (loggingEnabled && effectiveConfig.renders && renderCountRef.current > 1) {
         ComponentLogger.rerender(
           componentName,
           `Render #${renderCountRef.current}`,
@@ -191,17 +187,17 @@ export function withLogging<P extends Record<string, any>>(
 
     // Log component mounting with initial props
     useEffect(() => {
-      if (effectiveConfig.lifecycle) {
+      if (loggingEnabled && effectiveConfig.lifecycle) {
         ComponentLogger.lifecycle(componentName, 'mount', {
           initialProps: sanitizedProps,
           renderCount: renderCountRef.current
         });
       }
-    }, []); // Empty deps - only on mount
+    }, [loggingEnabled, effectiveConfig.lifecycle, sanitizedProps]); // Added proper dependencies
 
     // Performance monitoring wrapper
     const WrappedComponentWithPerf = useMemo(() => {
-      if (!effectiveConfig.performance) {
+      if (!loggingEnabled || !effectiveConfig.performance) {
         return <WrappedComponent {...props} ref={ref} />;
       }
 
@@ -213,7 +209,12 @@ export function withLogging<P extends Record<string, any>>(
           <WrappedComponent {...props} ref={ref} />
         </PerformanceWrapper>
       );
-    }, [props, ref, componentName, effectiveConfig.performance, effectiveConfig.slowRenderThreshold]);
+    }, [props, ref, loggingEnabled, effectiveConfig.performance, effectiveConfig.slowRenderThreshold]);
+
+    // Early return if logging is disabled, but after all hooks are called
+    if (!loggingEnabled) {
+      return <WrappedComponent {...props} ref={ref} />;
+    }
 
     return WrappedComponentWithPerf;
   });

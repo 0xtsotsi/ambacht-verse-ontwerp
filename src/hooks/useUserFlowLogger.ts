@@ -56,7 +56,7 @@ export const useNavigationLogger = () => {
 
 // Interaction tracking hook
 export const useInteractionLogger = () => {
-  const logClick = useCallback((element: string, additionalData?: any) => {
+  const logClick = useCallback((element: string, additionalData?: Record<string, unknown>) => {
     const sessionId = getSessionId();
     
     UserFlowLogger.interaction('click', element, {
@@ -79,7 +79,7 @@ export const useInteractionLogger = () => {
     action: 'focus' | 'blur' | 'change' | 'submit',
     formName: string,
     fieldName?: string,
-    value?: any
+    value?: unknown
   ) => {
     const sessionId = getSessionId();
     
@@ -200,10 +200,10 @@ export const useBreadcrumbLogger = () => {
   const journeySteps = useRef<Array<{
     action: string;
     timestamp: number;
-    data?: any;
+    data?: Record<string, unknown>;
   }>>([]);
 
-  const addBreadcrumb = useCallback((action: string, data?: any) => {
+  const addBreadcrumb = useCallback((action: string, data?: Record<string, unknown>) => {
     const sessionId = getSessionId();
     const step = {
       action,
@@ -264,7 +264,7 @@ export const useErrorLogger = () => {
   const logUserError = useCallback((
     errorType: string,
     errorMessage: string,
-    errorContext?: any,
+    errorContext?: Record<string, unknown>,
     userAction?: string
   ) => {
     const sessionId = getSessionId();

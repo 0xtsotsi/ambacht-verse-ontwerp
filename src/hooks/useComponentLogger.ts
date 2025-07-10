@@ -14,7 +14,7 @@ import { ComponentLogger } from '@/lib/logger';
 // Type definitions for logging hooks
 interface UseLifecycleLoggerOptions {
   componentName: string;
-  props?: Record<string, any>;
+  props?: Record<string, unknown>;
   enablePropLogging?: boolean;
 }
 
@@ -26,7 +26,7 @@ interface UseStateLoggerOptions<T> {
 
 interface UseRenderLoggerOptions {
   componentName: string;
-  dependencies?: any[];
+  dependencies?: unknown[];
   threshold?: number; // milliseconds for slow render detection
 }
 
@@ -52,7 +52,7 @@ export function useLifecycleLogger({
   props,
   enablePropLogging = false
 }: UseLifecycleLoggerOptions) {
-  const previousPropsRef = useRef<Record<string, any>>();
+  const previousPropsRef = useRef<Record<string, unknown>>();
   const mountedRef = useRef(false);
 
   // Track component mount
@@ -69,7 +69,7 @@ export function useLifecycleLogger({
     } catch (error) {
       console.error(`Lifecycle logging error for ${componentName}:`, error);
     }
-  }, []); // Empty dependency array - only run on mount/unmount
+  }, [componentName, enablePropLogging, props]); // Mount/unmount with proper dependencies
 
   // Track prop changes
   useEffect(() => {
@@ -147,7 +147,7 @@ export function useRenderLogger({
 }: UseRenderLoggerOptions) {
   const renderCountRef = useRef(0);
   const lastRenderTimeRef = useRef(Date.now());
-  const previousDepsRef = useRef<any[]>(dependencies);
+  const previousDepsRef = useRef<unknown[]>(dependencies);
 
   // Track render count and frequency
   const renderInfo = useMemo(() => {
@@ -189,7 +189,7 @@ export function useRenderLogger({
         changedDependencies: []
       };
     }
-  }, dependencies);
+  }, [dependencies, componentName, threshold]);
 
   return renderInfo;
 }
@@ -220,7 +220,7 @@ export function usePerformanceLogger({
         
         let memoryUsage: number | undefined;
         if (enableMemoryTracking && 'memory' in performance) {
-          memoryUsage = (performance as any).memory?.usedJSHeapSize;
+          memoryUsage = (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize;
         }
 
         const metrics: PerformanceMetrics = {
@@ -287,8 +287,8 @@ export function useComponentTracking(componentName: string, options: {
   enableStateLogging?: boolean;
   enableRenderLogging?: boolean;
   enablePerformanceLogging?: boolean;
-  props?: Record<string, any>;
-  dependencies?: any[];
+  props?: Record<string, unknown>;
+  dependencies?: unknown[];
 } = {}) {
   const {
     enableLifecycleLogging = true,
@@ -299,28 +299,28 @@ export function useComponentTracking(componentName: string, options: {
     dependencies = []
   } = options;
 
-  const lifecycle = enableLifecycleLogging 
-    ? useLifecycleLogger({ componentName, props, enablePropLogging: true })
-    : null;
+  // Always call hooks, but conditionally enable their functionality
+  const lifecycle = useLifecycleLogger({ 
+    componentName, 
+    props, 
+    enablePropLogging: enableLifecycleLogging 
+  });
 
-  const renderInfo = enableRenderLogging 
-    ? useRenderLogger({ componentName, dependencies })
-    : null;
+  const renderInfo = useRenderLogger({ 
+    componentName, 
+    dependencies: enableRenderLogging ? dependencies : [] 
+  });
 
-  const performance = enablePerformanceLogging 
-    ? usePerformanceLogger({ componentName })
-    : null;
-
-  const createStateLogger = useCallback(<T>(stateName: string) => {
-    return enableStateLogging 
-      ? useStateLogger<T>({ componentName, stateName })
-      : null;
-  }, [componentName, enableStateLogging]);
+  const performance = usePerformanceLogger({ 
+    componentName, 
+    enableMemoryTracking: enablePerformanceLogging 
+  });
 
   return {
-    lifecycle,
-    renderInfo,
-    performance,
-    createStateLogger
+    lifecycle: enableLifecycleLogging ? lifecycle : null,
+    renderInfo: enableRenderLogging ? renderInfo : null,
+    performance: enablePerformanceLogging ? performance : null,
+    // Removed createStateLogger to avoid hook-in-callback issue
+    // Users should call useStateLogger directly when needed
   };
 }

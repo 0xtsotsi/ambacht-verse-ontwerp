@@ -32,7 +32,7 @@ export function useAvailability(options: UseAvailabilityOptions = {}) {
   const { daysAhead = 180, enableRealTime = true } = options;
   
   // Cache for expensive computations
-  const availabilityCache = useRef<Map<string, any>>(new Map());
+  const availabilityCache = useRef<Map<string, AvailabilityData>>(new Map());
   const timeSlotsCache = useRef<Map<string, AvailabilitySlot[]>>(new Map());
   
   const [availability, setAvailability] = useState<AvailabilityData>({

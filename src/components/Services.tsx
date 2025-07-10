@@ -3,12 +3,14 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { useState, useEffect, memo, useMemo, useCallback } from "react";
 import { usePerformanceLogger } from "@/hooks/useComponentLogger";
+import { InteractiveMenuSystemWithBoundary } from "./InteractiveMenuSystem";
 
 export const Services = memo(() => {
   const [activeCategory, setActiveCategory] = useState("soepen");
   const [hoveredCard, setHoveredCard] = useState<number | null>(null);
   const [isVisible, setIsVisible] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [showInteractiveMenu, setShowInteractiveMenu] = useState(false);
   
   // Performance monitoring
   const { getPerformanceStats } = usePerformanceLogger({
@@ -81,6 +83,15 @@ export const Services = memo(() => {
     setHoveredCard(null);
   }, []);
 
+  const handleShowInteractiveMenu = useCallback(() => {
+    setShowInteractiveMenu(true);
+  }, []);
+
+  // Conditionally render interactive menu system or traditional menu
+  if (showInteractiveMenu) {
+    return <InteractiveMenuSystemWithBoundary />;
+  }
+
   return (
     <section className="py-32 bg-white overflow-hidden">
       <div className="container mx-auto px-16 relative z-10">
@@ -107,6 +118,21 @@ export const Services = memo(() => {
             <p className="text-elegant-dark font-elegant-script text-4xl md:text-5xl font-light animate-interactive-slide-up">
               ambachtelijk genieten
             </p>
+            
+            {/* Interactive Menu Toggle Button */}
+            <div className="mt-16">
+              <Button
+                onClick={handleShowInteractiveMenu}
+                variant="interactive-primary"
+                size="elegant-lg"
+                className="group relative overflow-hidden"
+              >
+                <span className="relative z-10 flex items-center gap-3">
+                  🍽️
+                  Interactieve Menu Bekijken
+                </span>
+              </Button>
+            </div>
           </div>
 
           {/* Interactive Category Buttons with Enhanced Effects */}

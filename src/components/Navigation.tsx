@@ -1,5 +1,5 @@
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 
@@ -8,13 +8,13 @@ export const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
 
-  const menuItems = [
+  const menuItems = useMemo(() => [
     { name: "HOME", href: "#home" },
     { name: "WIE ZIJN WIJ?", href: "#about" },
     { name: "GALERIJ", href: "#gallery" },
     { name: "GASTENBOEK", href: "#testimonials" },
     { name: "CONTACT", href: "#contact" },
-  ];
+  ], []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -35,7 +35,7 @@ export const Navigation = () => {
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+  }, [menuItems]);
 
   return (
     <nav className={`fixed top-0 w-full z-50 backdrop-blur-md border-0 transition-all duration-700 ${

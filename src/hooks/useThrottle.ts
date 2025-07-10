@@ -23,7 +23,7 @@ interface UseThrottleOptions {
  * @param options - Configuration options
  * @returns Throttled function
  */
-export function useThrottle<T extends (...args: any[]) => any>(
+export function useThrottle<T extends (...args: unknown[]) => unknown>(
   callback: T,
   delay: number = 16,
   options: UseThrottleOptions = {}
@@ -87,7 +87,7 @@ export function useThrottle<T extends (...args: any[]) => any>(
  * @param callback - Function to throttle
  * @returns Throttled function that uses requestAnimationFrame
  */
-export function useAnimationThrottle<T extends (...args: any[]) => any>(
+export function useAnimationThrottle<T extends (...args: unknown[]) => unknown>(
   callback: T
 ): T {
   const rafRef = useRef<number | null>(null);
@@ -131,7 +131,7 @@ export function useAnimationThrottle<T extends (...args: any[]) => any>(
  * @param delay - Delay in milliseconds
  * @returns Debounced function
  */
-export function useDebounce<T extends (...args: any[]) => any>(
+export function useDebounce<T extends (...args: unknown[]) => unknown>(
   callback: T,
   delay: number
 ): T {

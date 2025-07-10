@@ -37,14 +37,15 @@ const PricingCard009PremiumPositioning: React.FC<PricingCardProps> = ({
   onBookNow,
   language = 'nl'
 }) => {
-  // Input validation
+  // All hooks must be called first
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Input validation after hooks
   const validation = validatePricingCardProps({ serviceType, tier, language, pricePerPerson });
   if (!validation.isValid) {
     console.error('Invalid props:', validation.errors);
     return null;
   }
-
-  const [isHovered, setIsHovered] = useState(false);
   const t = TRANSLATIONS[language];
 
   const luxuryMultipliers = { corporate: 2.2, social: 1.8, wedding: 2.0, custom: 2.5 };

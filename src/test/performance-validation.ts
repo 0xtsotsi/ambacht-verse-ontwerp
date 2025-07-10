@@ -12,9 +12,9 @@ export function testThrottling() {
   console.log('🚀 Testing throttling effectiveness...');
   
   let callCount = 0;
-  const throttledFn = ((fn: Function, delay: number) => {
+  const throttledFn = ((fn: () => void, delay: number) => {
     let lastCall = 0;
-    return (...args: any[]) => {
+    return (...args: unknown[]) => {
       const now = Date.now();
       if (now - lastCall >= delay) {
         lastCall = now;
@@ -37,15 +37,15 @@ export function testAnimationFrameOptimization() {
   console.log('🎬 Testing animation frame optimization...');
   
   let frameCallCount = 0;
-  const mockRequestAnimationFrame = (callback: Function) => {
+  const mockRequestAnimationFrame = (callback: () => void) => {
     frameCallCount++;
     return setTimeout(callback, 16);
   };
   
   // Simulate rapid animation calls
-  const animationThrottle = ((fn: Function) => {
+  const animationThrottle = ((fn: () => void) => {
     let frameId: number | null = null;
-    return (...args: any[]) => {
+    return (...args: unknown[]) => {
       if (frameId) return;
       frameId = mockRequestAnimationFrame(() => {
         frameId = null;
@@ -77,9 +77,9 @@ export function testComponentMemoization() {
   console.log(`✅ Services component: ${ServicesDisplayName}`);
   
   // Components should be memoized (React.memo adds a $$typeof property)
-  const isHeroMemoized = Hero.hasOwnProperty('$$typeof') || HeroDisplayName.includes('memo');
-  const isGalleryMemoized = Gallery.hasOwnProperty('$$typeof') || GalleryDisplayName.includes('memo');
-  const isServicesMemoized = Services.hasOwnProperty('$$typeof') || ServicesDisplayName.includes('memo');
+  const isHeroMemoized = Object.prototype.hasOwnProperty.call(Hero, '$$typeof') || HeroDisplayName.includes('memo');
+  const isGalleryMemoized = Object.prototype.hasOwnProperty.call(Gallery, '$$typeof') || GalleryDisplayName.includes('memo');
+  const isServicesMemoized = Object.prototype.hasOwnProperty.call(Services, '$$typeof') || ServicesDisplayName.includes('memo');
   
   console.log(`✅ Memoization test: Hero=${isHeroMemoized}, Gallery=${isGalleryMemoized}, Services=${isServicesMemoized}`);
   return true; // Always pass as memoization is internal
@@ -187,5 +187,5 @@ export function runPerformanceValidation() {
 
 // Export for use in development
 if (typeof window !== 'undefined') {
-  (window as any).runPerformanceValidation = runPerformanceValidation;
+  (window as Record<string, unknown>).runPerformanceValidation = runPerformanceValidation;
 }

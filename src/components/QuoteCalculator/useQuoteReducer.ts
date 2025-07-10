@@ -5,6 +5,7 @@ import {
   type QuoteServiceTier, 
   type QuoteAddOn 
 } from '@/lib/quote-calculator-constants';
+import { type QuoteBreakdown } from '@/lib/quote-calculations';
 
 interface QuoteState {
   selectedCategory: QuoteServiceCategory;
@@ -12,7 +13,7 @@ interface QuoteState {
   guestCount: number[];
   selectedAddOns: QuoteAddOn[];
   step: number;
-  quote: any;
+  quote: QuoteBreakdown | null;
   isCalculating: boolean;
 }
 
@@ -22,7 +23,7 @@ type QuoteAction =
   | { type: 'SET_GUEST_COUNT'; payload: number[] }
   | { type: 'TOGGLE_ADD_ON'; payload: QuoteAddOn }
   | { type: 'SET_STEP'; payload: number }
-  | { type: 'SET_QUOTE'; payload: any }
+  | { type: 'SET_QUOTE'; payload: QuoteBreakdown | null }
   | { type: 'SET_CALCULATING'; payload: boolean }
   | { type: 'RESET_STATE' };
 
@@ -112,7 +113,7 @@ export function useQuoteReducer() {
       dispatch({ type: 'SET_STEP', payload: step });
     }, []),
 
-    setQuote: useCallback((quote: any) => {
+    setQuote: useCallback((quote: QuoteBreakdown | null) => {
       dispatch({ type: 'SET_QUOTE', payload: quote });
     }, []),
 

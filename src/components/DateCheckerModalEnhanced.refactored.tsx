@@ -53,13 +53,7 @@ export function DateCheckerModalEnhanced({
   initialServiceTier = 'premium',
   language = 'nl'
 }: DateCheckerModalEnhancedProps) {
-  // Input validation
-  const validation = validateDateCheckerProps({ open, onOpenChange, onConfirm });
-  if (!validation.isValid) {
-    SafeLogger.error('Invalid DateChecker props:', validation.errors);
-    return null;
-  }
-
+  // All hooks must be called first, before any conditional logic
   const { toast } = useToast();
   const { isDateBooked, isDateLimited } = useAvailability();
   
@@ -115,6 +109,13 @@ export function DateCheckerModalEnhanced({
       UserFlowLogger.interaction('modal_closed', 'DateCheckerModalEnhanced');
     }
   }, [open, initialServiceCategory, initialServiceTier, language, actions]);
+
+  // Input validation after all hooks
+  const validation = validateDateCheckerProps({ open, onOpenChange, onConfirm });
+  if (!validation.isValid) {
+    SafeLogger.error('Invalid DateChecker props:', validation.errors);
+    return null;
+  }
 
   // Event handlers
   const handleDateSelect = (date: Date | undefined) => {

@@ -33,7 +33,7 @@ export interface InteractionAnalytics {
   element: string;
   timestamp: number;
   sessionId: string;
-  data?: any;
+  data?: Record<string, unknown>;
 }
 
 export interface AnalyticsDashboard {
@@ -136,7 +136,7 @@ class AnalyticsManager {
   }
 
   // Track interaction
-  public trackInteraction(action: string, element: string, data: any, sessionId: string): void {
+  public trackInteraction(action: string, element: string, data: Record<string, unknown>, sessionId: string): void {
     const session = this.sessions.get(sessionId);
     if (session) {
       session.interactions++;
@@ -490,7 +490,7 @@ export const useAnalytics = () => {
     analyticsManager.trackNavigation(from, to, sessionId, userId);
   };
 
-  const trackInteraction = (action: string, element: string, data: any, sessionId: string) => {
+  const trackInteraction = (action: string, element: string, data: Record<string, unknown>, sessionId: string) => {
     analyticsManager.trackInteraction(action, element, data, sessionId);
   };
 

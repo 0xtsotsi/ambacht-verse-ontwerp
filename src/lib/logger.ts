@@ -81,7 +81,7 @@ export const ComponentLogger = {
   /**
    * Log component state changes
    */
-  stateChange: (componentName: string, prevState: any, newState: any, trigger: string) => {
+  stateChange: (componentName: string, prevState: unknown, newState: unknown, trigger: string) => {
     logger.log('component', 'State Change', {
       type: 'state_change',
       component: componentName,
@@ -95,7 +95,7 @@ export const ComponentLogger = {
   /**
    * Log component lifecycle events
    */
-  lifecycle: (componentName: string, event: 'mount' | 'unmount' | 'update', props?: any) => {
+  lifecycle: (componentName: string, event: 'mount' | 'unmount' | 'update', props?: Record<string, unknown>) => {
     logger.log('component', 'Lifecycle Event', {
       type: 'lifecycle',
       component: componentName,
@@ -137,7 +137,7 @@ export const APILogger = {
   /**
    * Log API request start
    */
-  request: (endpoint: string, method: string, payload?: any, requestId?: string) => {
+  request: (endpoint: string, method: string, payload?: unknown, requestId?: string) => {
     logger.log('api', 'API Request', {
       type: 'api_request',
       endpoint: endpoint,
@@ -151,7 +151,7 @@ export const APILogger = {
   /**
    * Log API response
    */
-  response: (endpoint: string, status: number, responseTime: number, requestId?: string, data?: any) => {
+  response: (endpoint: string, status: number, responseTime: number, requestId?: string, data?: unknown) => {
     logger.log('api', 'API Response', {
       type: 'api_response',
       endpoint: endpoint,
@@ -216,7 +216,7 @@ export const UserFlowLogger = {
   /**
    * Log user interactions (clicks, form submissions, etc.)
    */
-  interaction: (action: string, element: string, data?: any, sessionId?: string, userId?: string) => {
+  interaction: (action: string, element: string, data?: Record<string, unknown>, sessionId?: string, userId?: string) => {
     logger.log('user', 'User Interaction', {
       type: 'interaction',
       action: action,
@@ -231,7 +231,7 @@ export const UserFlowLogger = {
   /**
    * Log form submissions and validation errors
    */
-  form: (formName: string, action: 'submit' | 'validate' | 'error', data?: any, errors?: string[]) => {
+  form: (formName: string, action: 'submit' | 'validate' | 'error', data?: Record<string, unknown>, errors?: string[]) => {
     logger.log('user', 'Form Event', {
       type: 'form_event',
       formName: formName,
@@ -245,7 +245,7 @@ export const UserFlowLogger = {
   /**
    * Log user errors and issues
    */
-  error: (errorType: string, description: string, context?: any, sessionId?: string, userId?: string) => {
+  error: (errorType: string, description: string, context?: Record<string, unknown>, sessionId?: string, userId?: string) => {
     logger.log('user', 'User Error', {
       type: 'user_error',
       errorType: errorType,
@@ -260,7 +260,7 @@ export const UserFlowLogger = {
   /**
    * Create breadcrumb trail
    */
-  breadcrumb: (action: string, data?: any, sessionId?: string) => {
+  breadcrumb: (action: string, data?: Record<string, unknown>, sessionId?: string) => {
     logger.log('user', 'Breadcrumb', {
       type: 'breadcrumb',
       action: action,
@@ -290,7 +290,7 @@ export const LoggerUtils = {
   /**
    * Sanitize sensitive data before logging
    */
-  sanitizeData: (data: any): any => {
+  sanitizeData: (data: unknown): unknown => {
     if (!data || typeof data !== 'object') return data;
     
     const sensitive = ['password', 'token', 'apiKey', 'secret', 'authorization'];
@@ -311,7 +311,7 @@ export default logger;
 
 // Development helper to view logs in console with better formatting
 if (isDevelopment) {
-  (window as any).logger = {
+  (window as Window & { logger?: unknown }).logger = {
     component: ComponentLogger,
     api: APILogger,
     user: UserFlowLogger,

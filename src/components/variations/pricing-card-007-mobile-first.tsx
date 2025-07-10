@@ -35,15 +35,16 @@ const PricingCard007MobileFirst: React.FC<PricingCardProps> = ({
   onBookNow,
   language = 'nl'
 }) => {
-  // Input validation
+  // All hooks must be called first
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [activeAction, setActiveAction] = useState<'book' | 'call' | 'whatsapp' | null>(null);
+
+  // Input validation after hooks
   const validation = validatePricingCardProps({ serviceType, tier, language, pricePerPerson });
   if (!validation.isValid) {
     console.error('Invalid props:', validation.errors);
     return null;
   }
-
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [activeAction, setActiveAction] = useState<'book' | 'call' | 'whatsapp' | null>(null);
 
   const t = TRANSLATIONS[language];
   const colorScheme = COLOR_SCHEMES[serviceType];

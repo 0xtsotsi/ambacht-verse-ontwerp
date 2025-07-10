@@ -27,6 +27,8 @@ import {
   calculateEstimatedPrice,
   isBookingComplete,
   validateBookingData,
+  createSafeTranslations,
+  createSafeNavigationLabels,
   type ServiceCategory,
   type ServiceTier,
   type LanguageType
@@ -55,13 +57,7 @@ export function DateCheckerModalEnhanced({
   initialServiceTier = 'premium',
   language = 'nl'
 }: DateCheckerModalEnhancedProps) {
-  // Input validation
-  const validation = validateDateCheckerProps({ open, onOpenChange, onConfirm });
-  if (!validation.isValid) {
-    SafeLogger.error('Invalid DateChecker props:', validation.errors);
-    return null;
-  }
-
+  // All hooks must be called first, before any conditional logic
   const { toast } = useToast();
   const { isDateBooked, isDateLimited } = useAvailability();
   
@@ -74,9 +70,6 @@ export function DateCheckerModalEnhanced({
   const guestCountSliderRef = useRef<HTMLDivElement>(null);
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
   const ariaLiveRef = useRef<HTMLDivElement>(null);
-
-  const t = createSafeTranslations(language);
-  const nav = createSafeNavigationLabels(language);
 
   // Logging setup (state logging now handled in reducer)
   useLifecycleLogger({ 
@@ -96,12 +89,10 @@ export function DateCheckerModalEnhanced({
     dependencies: [open, state] // Single dependency reduces re-render triggers
   });
 
-  const { getPerformanceStats } = import.meta.env.DEV 
-    ? usePerformanceLogger({
-        componentName: 'DateCheckerModalEnhanced',
-        slowRenderThreshold: 20
-      })
-    : { getPerformanceStats: () => {} };
+  const { getPerformanceStats } = usePerformanceLogger({
+    componentName: 'DateCheckerModalEnhanced',
+    slowRenderThreshold: 20
+  });
 
   // Focus management for accessibility
   useEffect(() => {
@@ -114,19 +105,21 @@ export function DateCheckerModalEnhanced({
       }
     } else if (step === 3 && guestCountSliderRef.current) {
       setTimeout(() => {
-        guestCountSliderRef.current.focus();
+        guestCountSliderRef.current?.focus();
       }, 0);
     }
     
     // Update aria-live region for screen readers
     if (ariaLiveRef.current) {
+      const t = createSafeTranslations(language);
+      const nav = createSafeNavigationLabels(language);
       const stepNames = [t.selectDate, t.selectTime, t.guestCount];
       const announcement = nav.screenReaderStepAnnouncement
         .replace('{step}', step.toString())
         .replace('{stepName}', stepNames[step - 1] || '');
       ariaLiveRef.current.textContent = announcement;
     }
-  }, [step, t.selectDate, t.selectTime, t.guestCount, nav.screenReaderStepAnnouncement]);
+  }, [step, language]);
 
   // Reset state when modal opens
   useEffect(() => {
@@ -144,6 +137,20 @@ export function DateCheckerModalEnhanced({
       UserFlowLogger.interaction('modal_closed', 'DateCheckerModalEnhanced');
     }
   }, [open, initialServiceCategory, initialServiceTier, language, actions]);
+
+  const estimatedPrice = useMemo(() => {
+    return calculateEstimatedPrice(initialServiceCategory, initialServiceTier, guestCount);
+  }, [initialServiceCategory, initialServiceTier, guestCount]);
+
+  // Input validation after all hooks
+  const validation = validateDateCheckerProps({ open, onOpenChange, onConfirm });
+  if (!validation.isValid) {
+    SafeLogger.error('Invalid DateChecker props:', validation.errors);
+    return null;
+  }
+
+  const t = createSafeTranslations(language);
+  const nav = createSafeNavigationLabels(language);
 
   const handleDateSelect = (date: Date | undefined) => {
     try {
@@ -167,7 +174,7 @@ export function DateCheckerModalEnhanced({
       });
     } catch (error) {
       SafeLogger.error('Date selection error:', error, { date });
-      UserFlowLogger.error('date_selection_error', 'Failed to select date', { error: error.message, date });
+      UserFlowLogger.error('date_selection_error', 'Failed to select date', { error: (error as Error).message, date });
     }
   };
 
@@ -176,7 +183,7 @@ export function DateCheckerModalEnhanced({
       actions.setTime(time, selectedTime);
     } catch (error) {
       SafeLogger.error('Time selection error:', error, { time });
-      UserFlowLogger.error('time_selection_error', 'Failed to select time', { error: error.message, time });
+      UserFlowLogger.error('time_selection_error', 'Failed to select time', { error: (error as Error).message, time });
     }
   };
 
@@ -233,7 +240,7 @@ export function DateCheckerModalEnhanced({
     } catch (error) {
       SafeLogger.error('Booking confirmation error:', error, { selectedDate, selectedTime, guestCount });
       UserFlowLogger.error('booking_confirmation_error', 'Failed to confirm booking', { 
-        error: error.message, selectedDate, selectedTime, guestCount 
+        error: (error as Error).message, selectedDate, selectedTime, guestCount 
       });
     }
   };
@@ -245,14 +252,10 @@ export function DateCheckerModalEnhanced({
     } catch (error) {
       SafeLogger.error('Guest count change error:', error, { newGuestCount });
       UserFlowLogger.error('guest_count_error', 'Failed to update guest count', { 
-        error: error.message, newGuestCount 
+        error: (error as Error).message, newGuestCount 
       });
     }
   };
-
-  const estimatedPrice = useMemo(() => {
-    return calculateEstimatedPrice(initialServiceCategory, initialServiceTier, guestCount);
-  }, [initialServiceCategory, initialServiceTier, guestCount]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

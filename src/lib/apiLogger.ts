@@ -35,10 +35,18 @@ const DEFAULT_RETRY_CONFIG: RetryConfig = {
   backoffMultiplier: 2
 };
 
+// Define types for API error objects
+export interface ApiError {
+  status?: number;
+  code?: number | string;
+  name?: string;
+  message?: string;
+}
+
 /**
  * Classifies errors based on type and status code
  */
-export function classifyError(error: any, status?: number): ErrorType {
+export function classifyError(error: ApiError | Error, status?: number): ErrorType {
   if (status) {
     if (status === 401 || status === 403) return 'authentication';
     if (status >= 400 && status < 500) return 'validation';
@@ -71,7 +79,7 @@ export async function withApiLogging<T>(
   operation: () => Promise<T>,
   endpoint: string,
   method: string = 'GET',
-  payload?: any,
+  payload?: Record<string, unknown>,
   retryConfig: RetryConfig = DEFAULT_RETRY_CONFIG
 ): Promise<T> {
   const requestId = LoggerUtils.generateRequestId();
@@ -115,7 +123,7 @@ export async function withApiLogging<T>(
       metrics.responseTime = Date.now() - metrics.startTime;
       
       // Extract status from Supabase error if available
-      const status = (error as any)?.status || (error as any)?.code || 500;
+      const status = (error as ApiError)?.status || (error as ApiError)?.code || 500;
       metrics.status = status;
       
       const errorType = classifyError(apiError, status);
@@ -138,8 +146,14 @@ export async function withApiLogging<T>(
 /**
  * Wrapper specifically for Supabase queries with enhanced logging
  */
+// Define Supabase query response type
+export interface SupabaseResponse<T> {
+  data: T | null;
+  error: Error | null;
+}
+
 export async function withSupabaseLogging<T>(
-  queryBuilder: any,
+  queryBuilder: Promise<SupabaseResponse<T>>,
   endpoint: string,
   method: string = 'GET'
 ): Promise<T> {
@@ -158,9 +172,9 @@ export async function withSupabaseLogging<T>(
  * Wrapper for Supabase RPC calls with logging
  */
 export async function withSupabaseRpcLogging<T>(
-  rpcCall: () => Promise<{ data: T; error: any }>,
+  rpcCall: () => Promise<SupabaseResponse<T>>,
   rpcName: string,
-  params?: any
+  params?: Record<string, unknown>
 ): Promise<T> {
   return withApiLogging(
     async () => {
@@ -182,7 +196,7 @@ export function logApiError(
   error: Error,
   context: {
     method?: string;
-    payload?: any;
+    payload?: Record<string, unknown>;
     userId?: string;
     sessionId?: string;
     retryAttempt?: number;

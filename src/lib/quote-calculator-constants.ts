@@ -4,6 +4,7 @@
  */
 
 import { Calculator, Users, Sparkles, CheckCircle, ChefHat, Crown, Gem, Euro, TrendingDown } from 'lucide-react';
+import { cn } from '@/lib/utils';
 
 // Guest count configuration
 export const QUOTE_GUEST_CONFIG = {
@@ -135,7 +136,7 @@ export const QUOTE_TRANSLATIONS = {
 // Validation utilities
 export const validateQuoteCalculatorProps = (props: {
   initialGuestCount?: number;
-  onQuoteCalculated?: (quote: any) => void;
+  onQuoteCalculated?: (quote: unknown) => void;
 }) => {
   const errors: string[] = [];
 
@@ -306,5 +307,3 @@ export type QuoteServiceTier = keyof typeof QUOTE_SERVICE_TIERS;
 export type QuoteAddOn = keyof typeof QUOTE_ADD_ONS;
 export type QuoteLanguageType = keyof typeof QUOTE_TRANSLATIONS;
 
-// Import cn function for helper functions
-import { cn } from '@/lib/utils';

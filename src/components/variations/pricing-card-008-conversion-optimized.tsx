@@ -37,13 +37,7 @@ const PricingCard008ConversionOptimized: React.FC<PricingCardProps> = ({
   language = 'nl',
   variant = 'urgency'
 }) => {
-  // Input validation
-  const validation = validatePricingCardProps({ serviceType, tier, language, pricePerPerson });
-  if (!validation.isValid) {
-    console.error('Invalid props:', validation.errors);
-    return null;
-  }
-
+  // All hooks must be called first
   const [timeLeft, setTimeLeft] = useState(3600);
   const [peopleViewing, setPeopleViewing] = useState(Math.floor(Math.random() * 8) + 3);
   const [recentBookings, setRecentBookings] = useState(Math.floor(Math.random() * 5) + 2);
@@ -53,6 +47,13 @@ const PricingCard008ConversionOptimized: React.FC<PricingCardProps> = ({
     const viewingTimer = setInterval(() => setPeopleViewing(Math.floor(Math.random() * 8) + 3), 15000);
     return () => { clearInterval(timer); clearInterval(viewingTimer); };
   }, []);
+
+  // Input validation after hooks
+  const validation = validatePricingCardProps({ serviceType, tier, language, pricePerPerson });
+  if (!validation.isValid) {
+    console.error('Invalid props:', validation.errors);
+    return null;
+  }
 
   const formatTime = (seconds: number) => {
     const minutes = Math.floor(seconds / 60);

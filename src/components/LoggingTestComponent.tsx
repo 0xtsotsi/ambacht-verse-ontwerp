@@ -12,7 +12,7 @@ import { UserFlowLogger } from '@/lib/logger';
 
 interface TestComponentProps {
   title?: string;
-  onAction?: (data: any) => void;
+  onAction?: (data: { count: number; text: string }) => void;
 }
 
 // Basic component for testing logging

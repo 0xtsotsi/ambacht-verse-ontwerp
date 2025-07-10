@@ -26,9 +26,10 @@ import {
   type QuoteServiceTier,
   type QuoteAddOn
 } from '@/lib/quote-calculator-constants';
+import { type QuoteBreakdown } from '@/lib/quote-calculations';
 
 interface PreliminaryQuoteCalculatorProps {
-  onRequestDetailedQuote?: (quote: any) => void;
+  onRequestDetailedQuote?: (quote: QuoteBreakdown) => void;
   initialGuestCount?: number;
 }
 
@@ -40,23 +41,15 @@ export function PreliminaryQuoteCalculator({
   onRequestDetailedQuote,
   initialGuestCount = QUOTE_GUEST_CONFIG.default
 }: PreliminaryQuoteCalculatorProps) {
-  // Input validation
-  const validation = validateQuoteCalculatorProps({ initialGuestCount, onRequestDetailedQuote });
-  if (!validation.isValid) {
-    console.error('Invalid props:', validation.errors);
-    return null;
-  }
-
+  // All hooks must be called first
   const { toast } = useToast();
   const [selectedCategory, setSelectedCategory] = useState<QuoteServiceCategory>('corporate');
   const [selectedTier, setSelectedTier] = useState<QuoteServiceTier>('premium');
   const [guestCount, setGuestCount] = useState([initialGuestCount]);
   const [selectedAddOns, setSelectedAddOns] = useState<QuoteAddOn[]>([]);
   const [step, setStep] = useState(1);
-  const [quote, setQuote] = useState<any>(null);
+  const [quote, setQuote] = useState<QuoteBreakdown | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
-
-  const t = QUOTE_TRANSLATIONS.nl;
 
   // Logging setup
   useLifecycleLogger({ 
@@ -147,6 +140,15 @@ export function PreliminaryQuoteCalculator({
       ComponentLogger.stateChange('PreliminaryQuoteCalculator', true, false, 'quote_calculation_finished');
     }, 300);
   }, [selectedCategory, selectedTier, guestCount, selectedAddOns]);
+
+  // Input validation after all hooks
+  const validation = validateQuoteCalculatorProps({ initialGuestCount, onRequestDetailedQuote });
+  if (!validation.isValid) {
+    console.error('Invalid props:', validation.errors);
+    return null;
+  }
+
+  const t = QUOTE_TRANSLATIONS.nl;
 
   const handleCategorySelect = (categoryId: QuoteServiceCategory) => {
     try {

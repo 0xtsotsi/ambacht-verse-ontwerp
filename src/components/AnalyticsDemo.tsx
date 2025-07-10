@@ -37,7 +37,7 @@ export const AnalyticsDemo = () => {
     // Log analytics demo view
     addBreadcrumb('analytics_demo_viewed');
     logSectionView('analytics-demo', 0);
-  }, []);
+  }, [addBreadcrumb, logSectionView]);
 
   const simulateUserJourney = () => {
     logButtonPress('simulate_journey', 'analytics_demo');

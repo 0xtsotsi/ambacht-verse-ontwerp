@@ -52,14 +52,12 @@ export function withPerformanceOptimization<P extends object>(
       dependencies: Object.values(props)
     });
 
-    // Animation performance monitoring
-    const animationPerformance = enableAnimationTracking 
-      ? useAnimationPerformance(componentName)
-      : null;
+    // Animation performance monitoring (always call hook, conditionally enable)
+    const animationPerformance = useAnimationPerformance(componentName);
 
     // Record animation frame if enabled
     const recordAnimationFrame = useCallback(() => {
-      if (animationPerformance) {
+      if (enableAnimationTracking && animationPerformance) {
         animationPerformance.recordFrame();
       }
     }, [animationPerformance]);
@@ -72,7 +70,7 @@ export function withPerformanceOptimization<P extends object>(
         return {
           ...baseProps,
           onAnimationFrame: recordAnimationFrame,
-          getPerformanceData: animationPerformance?.getPerformanceData
+          getPerformanceData: enableAnimationTracking ? animationPerformance?.getPerformanceData : undefined
         };
       }
       
@@ -84,7 +82,7 @@ export function withPerformanceOptimization<P extends object>(
       if (process.env.NODE_ENV === 'development' && enablePerformanceMonitoring) {
         const interval = setInterval(() => {
           const performanceStats = tracking.performance?.getPerformanceStats();
-          const animationStats = animationPerformance?.getPerformanceData();
+          const animationStats = enableAnimationTracking ? animationPerformance?.getPerformanceData() : null;
           
           if (performanceStats && performanceStats.slowRenderCount > 0) {
             console.log(`${componentName} Performance Report:`, {
@@ -100,7 +98,7 @@ export function withPerformanceOptimization<P extends object>(
 
         return () => clearInterval(interval);
       }
-    }, [tracking, animationPerformance, enablePerformanceMonitoring]);
+    }, [tracking, animationPerformance]);
 
     return <WrappedComponent {...enhancedProps} />;
   }, customPropsComparison);

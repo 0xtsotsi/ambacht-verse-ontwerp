@@ -9,6 +9,7 @@ import { Testimonials } from "@/components/Testimonials";
 import { BookingForm } from "@/components/BookingForm";
 import { LocalSuppliers } from "@/components/LocalSuppliers";
 import { Footer } from "@/components/Footer";
+import { ServiceTiersContainer } from "@/components/ServiceTiersContainer";
 import { FloatingBookingWidget } from "@/components/variations/floating-widget-002-mobile-adaptive";
 import { DateCheckerModal } from "@/components/DateCheckerModal";
 import { StepByStepQuoteCalculator } from "@/components/variations/quote-calculator-001-step-by-step";
@@ -74,6 +75,7 @@ const Index = () => {
       <Hero />
       <About />
       <Services />
+      <ServiceTiersContainer />
       <Gallery />
       <BookingForm />
       <Footer />

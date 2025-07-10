@@ -397,12 +397,12 @@ describe('date-checker-constants', () => {
 
       it('should provide formatted fallback when both language and English lack the key', () => {
         // Test with a non-existent key
-        const result = getTranslation('nl', 'nonExistentKey' as any);
+        const result = getTranslation('nl', 'nonExistentKey' as never);
         expect(result).toBe('Non Existent Key');
       });
 
       it('should handle camelCase key formatting correctly', () => {
-        const result = getTranslation('nl', 'someComplexKey' as any);
+        const result = getTranslation('nl', 'someComplexKey' as never);
         expect(result).toBe('Some Complex Key');
       });
     });
@@ -422,7 +422,7 @@ describe('date-checker-constants', () => {
       });
 
       it('should format fallback labels correctly', () => {
-        const result = getNavigationLabel('nl', 'someNavigationKey' as any);
+        const result = getNavigationLabel('nl', 'someNavigationKey' as never);
         expect(result).toBe('Some Navigation Key');
       });
     });
@@ -436,7 +436,7 @@ describe('date-checker-constants', () => {
         expect(safeTranslations.confirm).toBe(DATE_CHECKER_TRANSLATIONS.nl.confirm);
         
         // Test non-existent key fallback
-        expect((safeTranslations as any).nonExistentKey).toBe('Non Existent Key');
+        expect((safeTranslations as Record<string, unknown>).nonExistentKey).toBe('Non Existent Key');
       });
 
       it('should work with both Dutch and English', () => {
@@ -447,8 +447,8 @@ describe('date-checker-constants', () => {
         expect(englishSafe.title).toBe(DATE_CHECKER_TRANSLATIONS.en.title);
         
         // Both should have same fallback behavior for missing keys
-        expect((dutchSafe as any).missingKey).toBe('Missing Key');
-        expect((englishSafe as any).missingKey).toBe('Missing Key');
+        expect((dutchSafe as Record<string, unknown>).missingKey).toBe('Missing Key');
+        expect((englishSafe as Record<string, unknown>).missingKey).toBe('Missing Key');
       });
     });
 
@@ -461,7 +461,7 @@ describe('date-checker-constants', () => {
         expect(safeNavigation.next).toBe(NAVIGATION_LABELS.nl.next);
         
         // Test fallback
-        expect((safeNavigation as any).nonExistentNav).toBe('Non Existent Nav');
+        expect((safeNavigation as Record<string, unknown>).nonExistentNav).toBe('Non Existent Nav');
       });
 
       it('should handle complex navigation labels', () => {

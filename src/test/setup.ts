@@ -187,15 +187,15 @@ vi.mock('date-fns/locale', () => ({
 
 // Mock Error Boundary for error testing
 vi.mock('@/components/ErrorBoundary', () => ({
-  ErrorBoundary: ({ children, fallback }: any) => {
+  ErrorBoundary: ({ children, fallback }: { children: React.ReactNode; fallback?: React.ReactNode }) => {
     try {
       return children;
     } catch (error) {
       return fallback || 'Error occurred';
     }
   },
-  withErrorBoundary: (Component: any) => Component,
-  AsyncErrorBoundary: ({ children }: any) => children
+  withErrorBoundary: (Component: React.ComponentType) => Component,
+  AsyncErrorBoundary: ({ children }: { children: React.ReactNode }) => children
 }));
 
 // Global test utilities

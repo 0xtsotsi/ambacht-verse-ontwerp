@@ -358,7 +358,7 @@ describe('LoggerUtils', () => {
     });
 
     it('should handle circular references gracefully', () => {
-      const circularObj: any = { name: 'test' };
+      const circularObj: { name: string; self?: unknown } = { name: 'test' };
       circularObj.self = circularObj;
 
       // Should not throw an error due to maxDepth limit

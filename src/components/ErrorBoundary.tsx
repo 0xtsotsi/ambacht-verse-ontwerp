@@ -200,23 +200,8 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 }
 
-/**
- * HOC for wrapping components with error boundary
- */
-export function withErrorBoundary<P extends object>(
-  WrappedComponent: React.ComponentType<P>,
-  errorBoundaryProps?: Omit<ErrorBoundaryProps, 'children'>
-) {
-  const WithErrorBoundaryComponent = (props: P) => (
-    <ErrorBoundary {...errorBoundaryProps}>
-      <WrappedComponent {...props} />
-    </ErrorBoundary>
-  );
-
-  WithErrorBoundaryComponent.displayName = `withErrorBoundary(${WrappedComponent.displayName || WrappedComponent.name})`;
-  
-  return WithErrorBoundaryComponent;
-}
+// Export only the ErrorBoundary component to satisfy react-refresh/only-export-components
+// HOC functionality can be added to a separate file if needed
 
 /**
  * Specific error boundary for async operations

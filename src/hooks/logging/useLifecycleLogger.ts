@@ -3,7 +3,7 @@ import { ComponentLogger } from '@/lib/logger';
 
 interface UseLifecycleLoggerOptions {
   componentName: string;
-  props?: Record<string, any>;
+  props?: Record<string, unknown>;
   enablePropLogging?: boolean;
 }
 
@@ -16,7 +16,7 @@ export function useLifecycleLogger({
   props,
   enablePropLogging = false
 }: UseLifecycleLoggerOptions) {
-  const previousPropsRef = useRef<Record<string, any>>();
+  const previousPropsRef = useRef<Record<string, unknown>>();
   const mountedRef = useRef(false);
 
   // Track component mount
@@ -33,9 +33,9 @@ export function useLifecycleLogger({
     } catch (error) {
       console.error(`Lifecycle logging error for ${componentName}:`, error);
     }
-  }, []); // Empty dependency array - only run on mount/unmount
+  }, [componentName, enablePropLogging, props]); // Mount/unmount with proper dependencies
 
-  // Track prop changes
+  // Track prop changes  
   useEffect(() => {
     try {
       if (mountedRef.current && props && enablePropLogging) {

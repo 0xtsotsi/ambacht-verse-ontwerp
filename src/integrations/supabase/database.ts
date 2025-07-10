@@ -398,7 +398,7 @@ export async function addBookingAddOns(
 
 // Real-time subscriptions
 export function subscribeToAvailabilityChanges(
-  callback: (payload: any) => void
+  callback: (payload: { eventType: string; new?: unknown; old?: unknown }) => void
 ) {
   return supabase
     .channel('availability_changes')
@@ -416,7 +416,7 @@ export function subscribeToAvailabilityChanges(
 
 export function subscribeToBookingUpdates(
   bookingId: string,
-  callback: (payload: any) => void
+  callback: (payload: { eventType: string; new?: unknown; old?: unknown }) => void
 ) {
   return supabase
     .channel(`booking_${bookingId}`)

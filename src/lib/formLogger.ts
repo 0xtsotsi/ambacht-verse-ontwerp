@@ -5,11 +5,14 @@
 
 import { UserFlowLogger, LoggerUtils } from '@/lib/logger';
 
+// Define form field value types
+export type FormFieldValue = string | number | boolean | Date | string[] | null;
+
 export interface FormField {
   name: string;
   type: 'text' | 'email' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'number' | 'date';
   required: boolean;
-  value?: any;
+  value?: FormFieldValue;
 }
 
 export interface FormAnalytics {
@@ -57,7 +60,7 @@ export interface FormErrorAnalytics {
   fieldName: string;
   errorType: string;
   errorMessage: string;
-  userInput: any;
+  userInput: FormFieldValue;
   validationRule: string;
 }
 
@@ -160,7 +163,7 @@ class FormAnalyticsManager {
   }
 
   // Track field value changes
-  public trackFieldChange(formKey: string, fieldName: string, value: any): void {
+  public trackFieldChange(formKey: string, fieldName: string, value: FormFieldValue): void {
     const formData = this.activeFormsData.get(formKey);
     if (!formData) return;
 
@@ -195,7 +198,7 @@ class FormAnalyticsManager {
     fieldName: string, 
     errorType: string, 
     errorMessage: string,
-    userInput: any,
+    userInput: FormFieldValue,
     validationRule: string
   ): void {
     const formData = this.activeFormsData.get(formKey);
@@ -234,7 +237,7 @@ class FormAnalyticsManager {
   // Track form submission
   public trackFormSubmission(
     formKey: string, 
-    formValues: Record<string, any>, 
+    formValues: Record<string, FormFieldValue>, 
     validationErrors: string[] = [],
     successful: boolean = true
   ): void {
@@ -326,7 +329,7 @@ class FormAnalyticsManager {
   public logConversionFunnelStep(
     formKey: string, 
     stepName: string, 
-    stepData?: any
+    stepData?: Record<string, unknown>
   ): void {
     const formData = this.activeFormsData.get(formKey);
     if (!formData) return;
@@ -418,15 +421,15 @@ export const useFormAnalytics = (formName: string, fields: FormField[]) => {
     if (formKey) formAnalytics.trackFieldBlur(formKey, fieldName);
   };
 
-  const trackChange = (fieldName: string, value: any) => {
+  const trackChange = (fieldName: string, value: FormFieldValue) => {
     if (formKey) formAnalytics.trackFieldChange(formKey, fieldName, value);
   };
 
-  const trackError = (fieldName: string, errorType: string, errorMessage: string, userInput: any, validationRule: string) => {
+  const trackError = (fieldName: string, errorType: string, errorMessage: string, userInput: FormFieldValue, validationRule: string) => {
     if (formKey) formAnalytics.trackValidationError(formKey, fieldName, errorType, errorMessage, userInput, validationRule);
   };
 
-  const trackSubmission = (formValues: Record<string, any>, validationErrors: string[] = [], successful: boolean = true) => {
+  const trackSubmission = (formValues: Record<string, FormFieldValue>, validationErrors: string[] = [], successful: boolean = true) => {
     if (formKey) formAnalytics.trackFormSubmission(formKey, formValues, validationErrors, successful);
   };
 
@@ -434,7 +437,7 @@ export const useFormAnalytics = (formName: string, fields: FormField[]) => {
     if (formKey) formAnalytics.trackFormAbandonment(formKey, reason);
   };
 
-  const logFunnelStep = (stepName: string, stepData?: any) => {
+  const logFunnelStep = (stepName: string, stepData?: Record<string, unknown>) => {
     if (formKey) formAnalytics.logConversionFunnelStep(formKey, stepName, stepData);
   };
 

@@ -34,8 +34,8 @@ interface CreateBookingData {
 }
 
 interface QuoteData {
-  serviceDetails: any;
-  pricingBreakdown: any;
+  serviceDetails: Record<string, unknown>;
+  pricingBreakdown: Record<string, unknown>;
   totalAmount: number;
   validUntil: Date;
   selectedAddOns?: string[];

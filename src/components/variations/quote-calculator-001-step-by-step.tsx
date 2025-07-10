@@ -90,7 +90,7 @@ export function StepByStepQuoteCalculator({
         initialGuestCount
       });
     }
-  }, [open, initialCategory, initialGuestCount]);
+  }, [open, initialCategory, initialGuestCount, addBreadcrumb, logStep, startFunnel]);
 
   // Calculate quote when on final step
   useEffect(() => {
@@ -121,14 +121,14 @@ export function StepByStepQuoteCalculator({
           setQuote(null);
           
           addBreadcrumb('quote_calculation_error', {
-            error: error.message,
+            error: error instanceof Error ? error.message : 'Unknown error',
             input
           });
         }
         setIsCalculating(false);
       }, 800);
     }
-  }, [step, selectedCategory, selectedTier, guestCount, selectedAddOns]);
+  }, [step, selectedCategory, selectedTier, guestCount, selectedAddOns, addBreadcrumb, logStep]);
 
   const handleCategorySelect = (categoryId: string) => {
     setSelectedCategory(categoryId);

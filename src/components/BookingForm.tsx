@@ -77,7 +77,7 @@ export const BookingForm = () => {
     return () => {
       cleanup();
     };
-  }, []);
+  }, [addBreadcrumb, cleanup, initializeForm, logStep, startFunnel]);
 
   // Log state changes when formData updates
   useEffect(() => {
@@ -192,7 +192,7 @@ export const BookingForm = () => {
         logJourneySummary('abandoned');
       }
     };
-  }, [formData]);
+  }, [formData, abandon, addBreadcrumb, logJourneySummary, trackAbandonment]);
 
   const [isFormVisible, setIsFormVisible] = useState(false);
 

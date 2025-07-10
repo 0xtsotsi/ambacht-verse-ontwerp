@@ -40,7 +40,7 @@ export function usePerformanceLogger({
         
         let memoryUsage: number | undefined;
         if (enableMemoryTracking && 'memory' in performance) {
-          memoryUsage = (performance as any).memory?.usedJSHeapSize;
+          memoryUsage = (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize;
         }
 
         const metrics: PerformanceMetrics = {

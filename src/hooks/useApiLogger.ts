@@ -203,7 +203,7 @@ export function useQueryCacheLogger() {
           dataUpdatedAt: query.dataUpdatedAt,
           errorUpdatedAt: query.errorUpdatedAt,
           fetchStatus: query.fetchStatus,
-          isStale: Date.now() - query.dataUpdatedAt > (query as any).staleTime || 0
+          isStale: Date.now() - query.dataUpdatedAt > (query as { staleTime?: number }).staleTime || 0
         },
         LoggerUtils.generateRequestId()
       );

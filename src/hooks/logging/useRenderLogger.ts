@@ -3,7 +3,7 @@ import { ComponentLogger } from '@/lib/logger';
 
 interface UseRenderLoggerOptions {
   componentName: string;
-  dependencies?: any[];
+  dependencies?: unknown[];
   threshold?: number; // milliseconds for slow render detection
 }
 
@@ -18,7 +18,7 @@ export function useRenderLogger({
 }: UseRenderLoggerOptions) {
   const renderCountRef = useRef(0);
   const lastRenderTimeRef = useRef(Date.now());
-  const previousDepsRef = useRef<any[]>(dependencies);
+  const previousDepsRef = useRef<unknown[]>(dependencies);
 
   // Track render count and frequency
   const renderInfo = useMemo(() => {
@@ -60,6 +60,7 @@ export function useRenderLogger({
         changedDependencies: []
       };
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, dependencies);
 
   return renderInfo;
