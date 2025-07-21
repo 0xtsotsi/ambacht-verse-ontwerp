@@ -1,5 +1,6 @@
 
 import type { Config } from "tailwindcss";
+import tailwindcssAnimate from "tailwindcss-animate";
 
 export default {
 	darkMode: ["class"],
@@ -20,9 +21,16 @@ export default {
 		},
 		extend: {
 			fontFamily: {
+				// Existing fonts (preserved)
 				serif: ['Spectral', 'Baskerville', 'Times New Roman', 'serif'],
 				body: ['Montserrat', 'Open Sans', 'sans-serif'],
 				script: ['Dancing Script', 'Brush Script MT', 'cursive'],
+				// Elegant Catering Design System Fonts (from design.json)
+				'elegant-sans': ['Inter', 'Open Sans', 'system-ui', 'sans-serif'],        // Headings, body, navigation
+				'elegant-script': ['Great Vibes', 'Allura', 'Dancing Script', 'cursive'], // Script accents
+				'elegant-heading': ['Inter', 'system-ui', 'sans-serif'],                 // Main headings
+				'elegant-body': ['Inter', 'system-ui', 'sans-serif'],                    // Body text
+				'elegant-nav': ['Inter', 'system-ui', 'sans-serif'],                     // Navigation
 			},
 			spacing: {
 				'base': '8px',
@@ -69,7 +77,15 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				// Updated brand colors matching the reference
+				// Elegant Catering Design System Colors (from design.json)
+				'elegant': {
+					'terracotta': '#E08A4F',      // Primary accent
+					'dark': '#333333',            // Dark text
+					'light': '#FFFFFF',           // Light text
+					'nav': '#555555',             // Navigation text
+					'overlay': 'rgba(0, 0, 0, 0.6)', // Background overlay
+				},
+				// Existing brand colors (preserved for compatibility)
 				'forest-green': '#2B4040',
 				'warm-cream': '#FFEFDA', 
 				'beige': '#C4A76D',
@@ -77,11 +93,49 @@ export default {
 				'deep-teal': '#3D6160',
 				'natural-brown': '#BB3A3C',
 				'clean-white': '#FEFEFA',
+				// Design System Extension Colors
+				'terracotta': {
+					50: '#FDF7F3',
+					100: '#FAEBE0',
+					200: '#F5D4C1',
+					300: '#EDBAA0',
+					400: '#E08A4F',  // Primary
+					500: '#D47A3D',
+					600: '#B8672F',
+					700: '#9A5424',
+					800: '#7D431C',
+					900: '#633516',
+				},
+				'elegant-grey': {
+					50: '#F9F9F9',
+					100: '#F3F3F3',
+					200: '#E7E7E7',
+					300: '#CCCCCC',
+					400: '#999999',
+					500: '#555555',  // Navigation
+					600: '#444444',
+					700: '#333333',  // Dark text
+					800: '#222222',
+					900: '#111111',
+				},
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
-				sm: 'calc(var(--radius) - 4px)'
+				sm: 'calc(var(--radius) - 4px)',
+				// Elegant design system border radius
+				'elegant': '0.75rem',     // Rounded corners for buttons/panels
+				'elegant-full': '9999px', // Fully rounded buttons
+			},
+			boxShadow: {
+				// V5 Interactive Elegance shadows
+				'elegant-subtle': '0 2px 8px rgba(0, 0, 0, 0.08)',
+				'elegant-soft': '0 4px 16px rgba(0, 0, 0, 0.12)',
+				'elegant-button': '0 2px 6px rgba(224, 138, 79, 0.2)',
+				'elegant-button-hover': '0 4px 12px rgba(224, 138, 79, 0.3)',
+				'elegant-panel': '0 8px 32px rgba(0, 0, 0, 0.1)',
+				'organic-natural': '0 8px 25px rgba(224, 138, 79, 0.15), 0 3px 10px rgba(0, 0, 0, 0.08)',
+				'organic-floating': '0 12px 35px rgba(224, 138, 79, 0.12), 0 4px 15px rgba(0, 0, 0, 0.06)',
 			},
 			keyframes: {
 				'accordion-down': {
@@ -100,34 +154,72 @@ export default {
 						height: '0'
 					}
 				},
-				'fade-in': {
-					'0%': {
-						opacity: '0',
-						transform: 'translateY(20px)'
+				// V5 Interactive Elegance animations only
+				'elegant-glow': {
+					'0%, 100%': {
+						boxShadow: '0 2px 6px rgba(224, 138, 79, 0.2)',
 					},
-					'100%': {
-						opacity: '1',
-						transform: 'translateY(0)'
+					'50%': {
+						boxShadow: '0 4px 12px rgba(224, 138, 79, 0.4)',
 					}
 				},
-				'slide-in-left': {
+				'interactive-shimmer': {
 					'0%': {
-						opacity: '0',
-						transform: 'translateX(-30px)'
+						transform: 'translateX(-100%)',
 					},
 					'100%': {
+						transform: 'translateX(100%)',
+					}
+				},
+				'interactive-bounce': {
+					'0%, 100%': {
+						transform: 'translateY(0) scale(1)',
+					},
+					'50%': {
+						transform: 'translateY(-5px) scale(1.05)',
+					}
+				},
+				'interactive-pulse-glow': {
+					'0%, 100%': {
+						boxShadow: '0 0 20px rgba(224, 138, 79, 0.3)',
+						transform: 'scale(1)',
+					},
+					'50%': {
+						boxShadow: '0 0 40px rgba(224, 138, 79, 0.6)',
+						transform: 'scale(1.02)',
+					}
+				},
+				'interactive-slide-up': {
+					'0%': {
+						transform: 'translateY(20px)',
+						opacity: '0',
+					},
+					'100%': {
+						transform: 'translateY(0)',
 						opacity: '1',
-						transform: 'translateX(0)'
+					}
+				},
+				'organic-float': {
+					'0%, 100%': {
+						transform: 'translateY(0px) rotate(0deg)',
+					},
+					'50%': {
+						transform: 'translateY(-6px) rotate(1deg)',
 					}
 				}
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
-				'fade-in': 'fade-in 0.6s ease-out',
-				'slide-in-left': 'slide-in-left 0.5s ease-out'
+				// V5 Interactive Elegance animations only
+				'elegant-glow': 'elegant-glow 2s ease-in-out infinite',
+				'interactive-shimmer': 'interactive-shimmer 2s ease-in-out infinite',
+				'interactive-bounce': 'interactive-bounce 2s ease-in-out infinite',
+				'interactive-pulse-glow': 'interactive-pulse-glow 3s ease-in-out infinite',
+				'interactive-slide-up': 'interactive-slide-up 0.6s ease-out',
+				'organic-float': 'organic-float 4s ease-in-out infinite',
 			}
 		}
 	},
-	plugins: [require("tailwindcss-animate")],
+	plugins: [tailwindcssAnimate],
 } satisfies Config;

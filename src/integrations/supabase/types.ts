@@ -9,16 +9,237 @@ export type Json =
 export type Database = {
   public: {
     Tables: {
-      [_ in never]: never
+      add_on_services: {
+        Row: {
+          id: string
+          name: string
+          description: string | null
+          category: string
+          price_per_person: number | null
+          flat_rate: number | null
+          is_active: boolean
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          name: string
+          description?: string | null
+          category: string
+          price_per_person?: number | null
+          flat_rate?: number | null
+          is_active?: boolean
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          name?: string
+          description?: string | null
+          category?: string
+          price_per_person?: number | null
+          flat_rate?: number | null
+          is_active?: boolean
+          created_at?: string
+        }
+      }
+      availability_slots: {
+        Row: {
+          id: string
+          date: string
+          time_slot: string
+          max_bookings: number
+          current_bookings: number
+          is_blocked: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          date: string
+          time_slot: string
+          max_bookings?: number
+          current_bookings?: number
+          is_blocked?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          date?: string
+          time_slot?: string
+          max_bookings?: number
+          current_bookings?: number
+          is_blocked?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
+      booking_add_ons: {
+        Row: {
+          id: string
+          booking_id: string
+          add_on_service_id: string
+          quantity: number
+          calculated_price: number
+          created_at: string
+        }
+        Insert: {
+          id?: string
+          booking_id: string
+          add_on_service_id: string
+          quantity?: number
+          calculated_price: number
+          created_at?: string
+        }
+        Update: {
+          id?: string
+          booking_id?: string
+          add_on_service_id?: string
+          quantity?: number
+          calculated_price?: number
+          created_at?: string
+        }
+      }
+      bookings: {
+        Row: {
+          id: string
+          customer_name: string
+          customer_email: string
+          customer_phone: string | null
+          company_name: string | null
+          event_date: string
+          event_time: string
+          guest_count: number
+          service_category: Database['public']['Enums']['service_category']
+          service_tier: Database['public']['Enums']['service_tier']
+          status: Database['public']['Enums']['booking_status']
+          special_requests: string | null
+          dietary_restrictions: string | null
+          estimated_total: number | null
+          final_total: number | null
+          created_at: string
+          updated_at: string
+          confirmed_at: string | null
+          cancelled_at: string | null
+        }
+        Insert: {
+          id?: string
+          customer_name: string
+          customer_email: string
+          customer_phone?: string | null
+          company_name?: string | null
+          event_date: string
+          event_time: string
+          guest_count: number
+          service_category: Database['public']['Enums']['service_category']
+          service_tier?: Database['public']['Enums']['service_tier']
+          status?: Database['public']['Enums']['booking_status']
+          special_requests?: string | null
+          dietary_restrictions?: string | null
+          estimated_total?: number | null
+          final_total?: number | null
+          created_at?: string
+          updated_at?: string
+          confirmed_at?: string | null
+          cancelled_at?: string | null
+        }
+        Update: {
+          id?: string
+          customer_name?: string
+          customer_email?: string
+          customer_phone?: string | null
+          company_name?: string | null
+          event_date?: string
+          event_time?: string
+          guest_count?: number
+          service_category?: Database['public']['Enums']['service_category']
+          service_tier?: Database['public']['Enums']['service_tier']
+          status?: Database['public']['Enums']['booking_status']
+          special_requests?: string | null
+          dietary_restrictions?: string | null
+          estimated_total?: number | null
+          final_total?: number | null
+          created_at?: string
+          updated_at?: string
+          confirmed_at?: string | null
+          cancelled_at?: string | null
+        }
+      }
+      quotes: {
+        Row: {
+          id: string
+          booking_id: string | null
+          service_details: Json
+          pricing_breakdown: Json
+          total_amount: number
+          status: Database['public']['Enums']['quote_status']
+          valid_until: string
+          selected_add_ons: Json
+          created_at: string
+          updated_at: string
+          sent_at: string | null
+          accepted_at: string | null
+        }
+        Insert: {
+          id?: string
+          booking_id?: string | null
+          service_details: Json
+          pricing_breakdown: Json
+          total_amount: number
+          status?: Database['public']['Enums']['quote_status']
+          valid_until: string
+          selected_add_ons?: Json
+          created_at?: string
+          updated_at?: string
+          sent_at?: string | null
+          accepted_at?: string | null
+        }
+        Update: {
+          id?: string
+          booking_id?: string | null
+          service_details?: Json
+          pricing_breakdown?: Json
+          total_amount?: number
+          status?: Database['public']['Enums']['quote_status']
+          valid_until?: string
+          selected_add_ons?: Json
+          created_at?: string
+          updated_at?: string
+          sent_at?: string | null
+          accepted_at?: string | null
+        }
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      check_availability: {
+        Args: {
+          p_date: string
+          p_time: string
+        }
+        Returns: boolean
+      }
+      release_time_slot: {
+        Args: {
+          p_date: string
+          p_time: string
+        }
+        Returns: boolean
+      }
+      reserve_time_slot: {
+        Args: {
+          p_date: string
+          p_time: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      booking_status: 'pending' | 'confirmed' | 'cancelled' | 'completed'
+      quote_status: 'draft' | 'sent' | 'accepted' | 'rejected' | 'expired'
+      service_category: 'corporate' | 'private' | 'wedding' | 'celebration'
+      service_tier: 'essential' | 'premium' | 'luxury'
     }
     CompositeTypes: {
       [_ in never]: never
