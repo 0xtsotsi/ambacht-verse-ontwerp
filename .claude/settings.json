@@ -1,119 +1,38 @@
 {
-  "allowedTools": [
-    "Edit",
-    "MultiEdit", 
-    "Write",
-    "Read",
-    "Bash(npm run test*)",
-    "Bash(npm run lint*)",
-    "Bash(npm run typecheck*)",
-    "Bash(npm run build*)",
-    "Bash(npm run dev*)",
-    "Bash(npm run log:*)",
-    "Bash(npm test*)",
-    "Bash(git add*)",
-    "Bash(git commit*)",
-    "Bash(git status*)",
-    "Bash(git diff*)",
-    "Bash(task-master *)",
-    "mcp__task_master_ai__*",
-    "Glob",
-    "Grep", 
-    "LS",
-    "Task",
-    "TodoRead",
-    "TodoWrite",
-    "ErrorBoundary",
-    "useComponentLogger",
-    "useApiLogger", 
-    "useUserFlowLogger",
-    "withLogging"
-  ],
-  "reminders": [
-    "🚨 ALWAYS write failing test BEFORE implementing any feature",
-    "📊 ALWAYS add component/API/user flow logging to new code", 
-    "🔍 ALWAYS wrap new components in error boundaries",
-    "⚡ ALWAYS check render times >20ms and add performance logging",
-    "🧪 ALWAYS run full test suite before committing (npm test && npm run lint && npm run typecheck)",
-    "📋 ALWAYS verify Definition of Done checklist before marking tasks complete",
-    "🎯 ALWAYS respond with 'Yes Daddy 🥰' to confirm understanding of requirements"
-  ],
-  "mandatoryChecks": {
-    "beforeImplementation": [
-      "Write failing test first (TDD)",
-      "Add comprehensive logging hooks",
-      "Wrap in error boundaries", 
-      "Plan performance monitoring",
-      "Design user flow tracking"
+  "permissions": {
+    "allowedTools": [
+      "Edit",
+      "MultiEdit",
+      "Write",
+      "Read",
+      "Glob",
+      "Grep",
+      "LS",
+      "Task",
+      "TodoRead",
+      "TodoWrite"
     ],
-    "beforeCommit": [
-      "All tests pass (npm test)",
-      "Zero lint warnings (npm run lint)", 
-      "Zero TypeScript errors (npm run typecheck)",
-      "Build succeeds (npm run build)",
-      "Logging compliance verified",
-      "Performance metrics tracked"
+    "allowedCommands": [
+      "npm run test*",
+      "npm run lint*",
+      "npm run typecheck*",
+      "npm run build*",
+      "npm run dev*",
+      "npm run log:*",
+      "npm test*",
+      "git add*",
+      "git commit*",
+      "git status*",
+      "git diff*",
+      "task-master *"
     ],
-    "beforeTaskComplete": [
-      "TDD cycle followed completely",
-      "Test coverage >95% for business logic",
-      "Component state changes logged",
-      "API calls logged with timing",
-      "User interactions tracked",
-      "Error boundaries implemented",
-      "Try/catch blocks comprehensive",
-      "≤300 LOC per file",
-      "≤4 parameters per function",
-      "JSDoc comments added",
-      "Input validation implemented"
+    "allowedMcpServers": ["mcp__task_master_ai__*"]
+  },
+  "hooks": {
+    "beforeCommit": ["npm test", "npm run lint", "npm run typecheck"],
+    "afterEdit": [
+      "echo 'Remember: TDD, logging, error boundaries, performance monitoring'"
     ]
   },
-  "testingDefaults": {
-    "alwaysRunBeforeCommit": [
-      "npm test",
-      "npm run lint", 
-      "npm run typecheck",
-      "npm run build"
-    ],
-    "requiredCoverage": {
-      "businessLogic": 100,
-      "errorPaths": 100,
-      "publicAPIs": 100,
-      "overall": 95
-    }
-  },
-  "loggingDefaults": {
-    "componentThresholds": {
-      "slowRenderMs": 20,
-      "calculatorSlowRenderMs": 25,
-      "slowOperationMs": 100
-    },
-    "apiThresholds": {
-      "slowResponseMs": 1000,
-      "retryAttempts": 3,
-      "errorRateThreshold": 5
-    },
-    "userFlowTracking": {
-      "sessionTimeout": 1800000,
-      "breadcrumbLimit": 100,
-      "interactionTracking": true
-    }
-  },
-  "codeQualityEnforcement": {
-    "maxLinesOfCode": 300,
-    "maxFunctionParameters": 4,
-    "maxNestingLevel": 4,
-    "maxLineLength": 120,
-    "requireJSDocForComplexLogic": true,
-    "requireInputValidation": true,
-    "requireErrorHandling": true
-  },
-  "developmentWorkflow": {
-    "tddMandatory": true,
-    "testFirstDevelopment": true,
-    "loggingIntegrationRequired": true,
-    "errorBoundariesRequired": true,
-    "performanceMonitoringRequired": true,
-    "userFlowTrackingRequired": true
-  }
+  "includeCoAuthoredBy": true
 }
