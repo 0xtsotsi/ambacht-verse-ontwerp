@@ -2,10 +2,6 @@
 import { Button } from "@/components/ui/button";
 
 export const Hero = () => {
-  console.log("Hero component loaded - testing save functionality");
-  console.log("Current timestamp:", new Date().toISOString());
-  console.log("Component rendering successfully");
-  
   return (
     <section id="home" className="relative min-h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image - Charcuterie Board */}
@@ -43,7 +39,6 @@ export const Hero = () => {
               
               <Button 
                 className="bg-burnt-orange hover:bg-burnt-orange/90 text-warm-cream px-8 py-3 rounded-full font-semibold text-lg mt-8 shadow-lg hover:shadow-xl transition-all duration-300"
-                onClick={() => console.log("Button clicked - changes are working!")}
               >
                 Contacteer Ons
               </Button>
