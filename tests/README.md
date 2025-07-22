@@ -7,7 +7,9 @@ This document describes the comprehensive testing strategy for the Floating Book
 ## Test Structure
 
 ### 1. Unit Tests (`floating-booking-widget.spec.ts`)
+
 Tests individual widget behaviors in isolation:
+
 - **Visibility Logic**: Widget appears after scroll threshold
 - **Expand/Collapse**: State management and UI transitions
 - **Click Handlers**: Booking and phone button functionality
@@ -16,7 +18,9 @@ Tests individual widget behaviors in isolation:
 - **Mobile Optimization**: Touch targets and responsive behavior
 
 ### 2. Accessibility Tests (`accessibility.spec.ts`)
+
 Ensures WCAG 2.1 AA compliance:
+
 - **Axe-core Scanning**: Automated accessibility violation detection
 - **Color Contrast**: Verifies text readability
 - **Focus Management**: Keyboard navigation flow
@@ -25,7 +29,9 @@ Ensures WCAG 2.1 AA compliance:
 - **Touch Targets**: Minimum 44x44px for mobile
 
 ### 3. Integration Tests (`integration/booking-flow.spec.ts`)
+
 Tests complete user journeys:
+
 - **Full Booking Flow**: Widget → Form → Submission
 - **Phone Contact Flow**: Clipboard functionality
 - **Mobile Journey**: Tel: link handling
@@ -34,7 +40,9 @@ Tests complete user journeys:
 - **Performance Impact**: Widget doesn't block interactions
 
 ### 4. Visual Regression Tests
+
 Captures visual snapshots:
+
 - **Collapsed State**: Desktop and mobile views
 - **Expanded State**: All interactive states
 - **Hover States**: Visual feedback
@@ -43,6 +51,7 @@ Captures visual snapshots:
 ## Running Tests
 
 ### Local Development
+
 ```bash
 # Install Playwright browsers (first time only)
 npm run test:install
@@ -52,7 +61,7 @@ npm test
 
 # Run specific test suites
 npm run test:widget      # Widget functionality tests
-npm run test:a11y        # Accessibility tests  
+npm run test:a11y        # Accessibility tests
 npm run test:mobile      # Mobile-specific tests
 npm run test:visual      # Visual regression tests
 
@@ -66,7 +75,9 @@ npm run test:update-snapshots
 ```
 
 ### CI/CD Pipeline
+
 Tests run automatically on:
+
 - Push to `main` or `develop` branches
 - Pull request creation/update
 - Manual workflow dispatch
@@ -74,6 +85,7 @@ Tests run automatically on:
 ## Test Coverage
 
 ### Functional Coverage
+
 - ✅ Widget visibility triggers
 - ✅ Expand/collapse animations
 - ✅ Scroll to booking form
@@ -83,6 +95,7 @@ Tests run automatically on:
 - ✅ Mobile tel: link handling
 
 ### Browser Coverage
+
 - ✅ Chrome/Chromium
 - ✅ Firefox
 - ✅ Safari/WebKit
@@ -91,6 +104,7 @@ Tests run automatically on:
 - ✅ Microsoft Edge
 
 ### Accessibility Coverage
+
 - ✅ Keyboard navigation
 - ✅ Screen reader compatibility
 - ✅ Color contrast (4.5:1 minimum)
@@ -100,6 +114,7 @@ Tests run automatically on:
 - ✅ ARIA labels and roles
 
 ### Performance Metrics
+
 - Page load: < 3s DOM ready, < 5s complete
 - Widget animation: 60fps minimum
 - No blocking of main thread
@@ -108,6 +123,7 @@ Tests run automatically on:
 ## Test Data
 
 ### Default Test Values
+
 ```javascript
 {
   name: "Test Gebruiker",
@@ -118,6 +134,7 @@ Tests run automatically on:
 ```
 
 ### Viewport Sizes
+
 - Desktop: 1280x720 (default)
 - Mobile: 375x667 (iPhone SE)
 - Tablet: 768x1024 (iPad)
@@ -125,6 +142,7 @@ Tests run automatically on:
 ## Debugging Failed Tests
 
 ### Local Debugging
+
 1. Run with `--headed` flag to see browser
 2. Use `test:debug` for step-by-step execution
 3. Check `test-results/` folder for:
@@ -133,6 +151,7 @@ Tests run automatically on:
    - Trace files for timeline analysis
 
 ### CI Debugging
+
 1. Download artifacts from GitHub Actions
 2. View HTML report with `npx playwright show-report`
 3. Check visual diff images for regression tests
@@ -141,6 +160,7 @@ Tests run automatically on:
 ## Best Practices
 
 ### Writing New Tests
+
 1. Use descriptive test names
 2. Follow AAA pattern: Arrange, Act, Assert
 3. Use data-testid for reliable selectors
@@ -148,6 +168,7 @@ Tests run automatically on:
 5. Keep tests independent and idempotent
 
 ### Maintaining Tests
+
 1. Run tests before committing
 2. Update snapshots intentionally
 3. Fix flaky tests immediately

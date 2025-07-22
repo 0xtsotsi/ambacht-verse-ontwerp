@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useState } from 'react';
-import { cn } from '@/lib/utils';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Progress } from '@/components/ui/progress';
-import { CheckCircle, Eye, Shield, Calculator, PieChart } from 'lucide-react';
+import React, { useState } from "react";
+import { cn } from "@/lib/utils";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { CheckCircle, Eye, Shield, Calculator, PieChart } from "lucide-react";
 
 // INFINITE LOOP VARIATION 1: Cost Breakdown Transparency
 // Psychology: Dutch directness values seeing exactly where money goes
@@ -40,125 +40,128 @@ interface CostBreakdownPricingProps {
 
 const pricingTiers: PricingTier[] = [
   {
-    id: 'essential',
-    name: 'Essential',
-    description: 'Transparante basis kwaliteit',
-    pricePerPerson: 28.50,
-    guestCountRange: '20-75 gasten',
+    id: "essential",
+    name: "Essential",
+    description: "Transparante basis kwaliteit",
+    pricePerPerson: 28.5,
+    guestCountRange: "20-75 gasten",
     breakdown: [
       {
-        category: 'Verse Ingrediënten',
+        category: "Verse Ingrediënten",
         percentage: 45,
         amount: 12.83,
-        description: '100% Nederlandse leveranciers',
-        color: 'bg-green-500'
+        description: "100% Nederlandse leveranciers",
+        color: "bg-green-500",
       },
       {
-        category: 'Vakkundig Personeel',
+        category: "Vakkundig Personeel",
         percentage: 50,
         amount: 14.25,
-        description: 'Gediplomeerde chefs & service',
-        color: 'bg-blue-500'
+        description: "Gediplomeerde chefs & service",
+        color: "bg-blue-500",
       },
       {
-        category: 'Service & Materialen',
+        category: "Service & Materialen",
         percentage: 5,
         amount: 1.42,
-        description: 'Transport, servies, setup',
-        color: 'bg-amber-500'
-      }
+        description: "Transport, servies, setup",
+        color: "bg-amber-500",
+      },
     ],
     features: [
-      'Lokale biologische ingrediënten',
-      'Professionele presentatie',
-      'Standaard servies inbegrepen',
-      'Flexibele menuopties'
+      "Lokale biologische ingrediënten",
+      "Professionele presentatie",
+      "Standaard servies inbegrepen",
+      "Flexibele menuopties",
     ],
-    guarantee: 'Tevredenheidsgarantie of geld terug',
-    localSourcing: '85% lokale leveranciers binnen 50km'
+    guarantee: "Tevredenheidsgarantie of geld terug",
+    localSourcing: "85% lokale leveranciers binnen 50km",
   },
   {
-    id: 'premium',
-    name: 'Premium',
-    description: 'Uitgebreide transparantie',
+    id: "premium",
+    name: "Premium",
+    description: "Uitgebreide transparantie",
     pricePerPerson: 38.75,
-    guestCountRange: '30-150 gasten',
+    guestCountRange: "30-150 gasten",
     breakdown: [
       {
-        category: 'Premium Ingrediënten',
+        category: "Premium Ingrediënten",
         percentage: 45,
         amount: 17.44,
-        description: 'Biologisch + seizoensspecialiteiten',
-        color: 'bg-green-600'
+        description: "Biologisch + seizoensspecialiteiten",
+        color: "bg-green-600",
       },
       {
-        category: 'Expert Bemanning',
+        category: "Expert Bemanning",
         percentage: 50,
         amount: 19.38,
-        description: 'Sous-chefs + dedicated service',
-        color: 'bg-blue-600'
+        description: "Sous-chefs + dedicated service",
+        color: "bg-blue-600",
       },
       {
-        category: 'Premium Service',
+        category: "Premium Service",
         percentage: 5,
         amount: 1.93,
-        description: 'Elegant servies + decoratie',
-        color: 'bg-amber-600'
-      }
+        description: "Elegant servies + decoratie",
+        color: "bg-amber-600",
+      },
     ],
     features: [
-      'Ambachtelijke seizoensgerechten',
-      'Premium servies & linnen',
-      'Persoonlijke chef aanwezig',
-      'Wijn advies inbegrepen'
+      "Ambachtelijke seizoensgerechten",
+      "Premium servies & linnen",
+      "Persoonlijke chef aanwezig",
+      "Wijn advies inbegrepen",
     ],
-    guarantee: 'Perfecte dag garantie + backup plan',
-    localSourcing: '95% lokale leveranciers + verhaal per gerecht',
-    isRecommended: true
+    guarantee: "Perfecte dag garantie + backup plan",
+    localSourcing: "95% lokale leveranciers + verhaal per gerecht",
+    isRecommended: true,
   },
   {
-    id: 'luxury',
-    name: 'Luxury',
-    description: 'Volledige transparantie',
-    pricePerPerson: 52.00,
-    guestCountRange: '50-300 gasten',
+    id: "luxury",
+    name: "Luxury",
+    description: "Volledige transparantie",
+    pricePerPerson: 52.0,
+    guestCountRange: "50-300 gasten",
     breakdown: [
       {
-        category: 'Exclusieve Ingrediënten',
+        category: "Exclusieve Ingrediënten",
         percentage: 45,
-        amount: 23.40,
-        description: 'Biologisch + import specialiteiten',
-        color: 'bg-green-700'
+        amount: 23.4,
+        description: "Biologisch + import specialiteiten",
+        color: "bg-green-700",
       },
       {
-        category: 'Dedicated Team',
+        category: "Dedicated Team",
         percentage: 50,
-        amount: 26.00,
-        description: 'Chef de cuisine + full service team',
-        color: 'bg-blue-700'
+        amount: 26.0,
+        description: "Chef de cuisine + full service team",
+        color: "bg-blue-700",
       },
       {
-        category: 'White-glove Service',
+        category: "White-glove Service",
         percentage: 5,
-        amount: 2.60,
-        description: 'Luxe materialen + decoratie',
-        color: 'bg-amber-700'
-      }
+        amount: 2.6,
+        description: "Luxe materialen + decoratie",
+        color: "bg-amber-700",
+      },
     ],
     features: [
-      'Chef-designed exclusieve menu\'s',
-      'Luxe servies & kristal',
-      'Dedicated event coordinator',
-      'Live cooking stations'
+      "Chef-designed exclusieve menu's",
+      "Luxe servies & kristal",
+      "Dedicated event coordinator",
+      "Live cooking stations",
     ],
-    guarantee: 'Onbeperkte aanpassingen tot perfectie',
-    localSourcing: '100% traceerbaarheid + bezoek leveranciers'
-  }
+    guarantee: "Onbeperkte aanpassingen tot perfectie",
+    localSourcing: "100% traceerbaarheid + bezoek leveranciers",
+  },
 ];
 
-export function CostBreakdownPricing({ className, onSelectTier }: CostBreakdownPricingProps) {
-  const [selectedTier, setSelectedTier] = useState<string>('premium');
-  const [showBreakdown, setShowBreakdown] = useState<string | null>('premium');
+export function CostBreakdownPricing({
+  className,
+  onSelectTier,
+}: CostBreakdownPricingProps) {
+  const [selectedTier, setSelectedTier] = useState<string>("premium");
+  const [showBreakdown, setShowBreakdown] = useState<string | null>("premium");
 
   const handleSelectTier = (tierId: string) => {
     setSelectedTier(tierId);
@@ -178,8 +181,9 @@ export function CostBreakdownPricing({ className, onSelectTier }: CostBreakdownP
           Zie Precies Waar Uw Geld Naartoe Gaat
         </h2>
         <p className="text-lg text-sophisticated-green/80 max-w-3xl mx-auto leading-relaxed">
-          Nederlandse directheid vereist eerlijkheid. Daarom laten wij exact zien hoe elke euro wordt besteed 
-          aan kwaliteit, vakmanschap en service.
+          Nederlandse directheid vereist eerlijkheid. Daarom laten wij exact
+          zien hoe elke euro wordt besteed aan kwaliteit, vakmanschap en
+          service.
         </p>
         <div className="flex items-center justify-center gap-6 text-sm text-deep-charcoal/70">
           <div className="flex items-center gap-2">
@@ -209,8 +213,9 @@ export function CostBreakdownPricing({ className, onSelectTier }: CostBreakdownP
               className={cn(
                 "relative overflow-hidden transition-all duration-500 cursor-pointer",
                 "hover:shadow-2xl hover:shadow-sopranos-gold/20 hover:scale-[1.02]",
-                isSelected && "ring-2 ring-sopranos-gold shadow-2xl scale-[1.02]",
-                tier.isRecommended && "ring-2 ring-blue-500/50"
+                isSelected &&
+                  "ring-2 ring-sopranos-gold shadow-2xl scale-[1.02]",
+                tier.isRecommended && "ring-2 ring-blue-500/50",
               )}
               onClick={() => handleSelectTier(tier.id)}
             >
@@ -254,11 +259,13 @@ export function CostBreakdownPricing({ className, onSelectTier }: CostBreakdownP
                     <PieChart className="h-4 w-4" />
                     Kostenspecificatie:
                   </h4>
-                  
+
                   {tier.breakdown.map((item, index) => (
                     <div key={index} className="space-y-2">
                       <div className="flex justify-between items-center text-sm">
-                        <span className="text-deep-charcoal/80">{item.category}</span>
+                        <span className="text-deep-charcoal/80">
+                          {item.category}
+                        </span>
                         <span className="font-medium text-deep-charcoal">
                           €{item.amount.toFixed(2)} ({item.percentage}%)
                         </span>
@@ -273,24 +280,32 @@ export function CostBreakdownPricing({ className, onSelectTier }: CostBreakdownP
 
                 {/* Features */}
                 <div className="space-y-3">
-                  <h4 className="text-sm font-medium text-deep-charcoal">Inbegrepen:</h4>
+                  <h4 className="text-sm font-medium text-deep-charcoal">
+                    Inbegrepen:
+                  </h4>
                   {tier.features.map((feature, index) => (
                     <div key={index} className="flex items-start gap-2">
                       <CheckCircle className="h-4 w-4 text-sopranos-gold mt-0.5 flex-shrink-0" />
-                      <span className="text-sm text-sophisticated-green/80">{feature}</span>
+                      <span className="text-sm text-sophisticated-green/80">
+                        {feature}
+                      </span>
                     </div>
                   ))}
                 </div>
 
                 {/* Local Sourcing */}
                 <div className="bg-green-50 p-3 rounded-lg border border-green-200">
-                  <h5 className="text-xs font-medium text-green-800 mb-1">Lokale Inkoop:</h5>
+                  <h5 className="text-xs font-medium text-green-800 mb-1">
+                    Lokale Inkoop:
+                  </h5>
                   <p className="text-xs text-green-700">{tier.localSourcing}</p>
                 </div>
 
                 {/* Guarantee */}
                 <div className="bg-blue-50 p-3 rounded-lg border border-blue-200">
-                  <h5 className="text-xs font-medium text-blue-800 mb-1">Garantie:</h5>
+                  <h5 className="text-xs font-medium text-blue-800 mb-1">
+                    Garantie:
+                  </h5>
                   <p className="text-xs text-blue-700">{tier.guarantee}</p>
                 </div>
 
@@ -298,13 +313,15 @@ export function CostBreakdownPricing({ className, onSelectTier }: CostBreakdownP
                 <Button
                   className={cn(
                     "w-full transition-all duration-300",
-                    isSelected 
+                    isSelected
                       ? "bg-sopranos-gold hover:bg-sopranos-gold/90 text-white"
-                      : "bg-deep-charcoal hover:bg-deep-charcoal/90 text-white"
+                      : "bg-deep-charcoal hover:bg-deep-charcoal/90 text-white",
                   )}
                   size="lg"
                 >
-                  {isSelected ? 'Geselecteerd - Offerte Aanvragen' : 'Kies Dit Pakket'}
+                  {isSelected
+                    ? "Geselecteerd - Offerte Aanvragen"
+                    : "Kies Dit Pakket"}
                 </Button>
               </CardContent>
             </Card>
@@ -320,21 +337,28 @@ export function CostBreakdownPricing({ className, onSelectTier }: CostBreakdownP
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
           <div className="space-y-2">
             <Shield className="h-8 w-8 text-sopranos-gold mx-auto" />
-            <h4 className="font-medium text-deep-charcoal">Nederlandse Eerlijkheid</h4>
+            <h4 className="font-medium text-deep-charcoal">
+              Nederlandse Eerlijkheid
+            </h4>
             <p className="text-sophisticated-green/70">
               Geen verborgen kosten of verrassingen. Wat u ziet is wat u krijgt.
             </p>
           </div>
           <div className="space-y-2">
             <CheckCircle className="h-8 w-8 text-sopranos-gold mx-auto" />
-            <h4 className="font-medium text-deep-charcoal">Kwaliteitsgarantie</h4>
+            <h4 className="font-medium text-deep-charcoal">
+              Kwaliteitsgarantie
+            </h4>
             <p className="text-sophisticated-green/70">
-              Elke euro wordt besteed aan de hoogste kwaliteit ingrediënten en service.
+              Elke euro wordt besteed aan de hoogste kwaliteit ingrediënten en
+              service.
             </p>
           </div>
           <div className="space-y-2">
             <PieChart className="h-8 w-8 text-sopranos-gold mx-auto" />
-            <h4 className="font-medium text-deep-charcoal">Volledige Controle</h4>
+            <h4 className="font-medium text-deep-charcoal">
+              Volledige Controle
+            </h4>
             <p className="text-sophisticated-green/70">
               U weet precies waar uw investering naartoe gaat en waarom.
             </p>

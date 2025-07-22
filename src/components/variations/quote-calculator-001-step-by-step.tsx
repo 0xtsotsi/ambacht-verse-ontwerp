@@ -1,29 +1,38 @@
-import { useState, useEffect } from 'react';
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Label } from '@/components/ui/label';
-import { Slider } from '@/components/ui/slider';
-import { Checkbox } from '@/components/ui/checkbox';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { 
-  Calculator, 
-  Users, 
-  Sparkles, 
-  CheckCircle, 
-  ChefHat, 
-  Crown, 
+import { useState, useEffect } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Label } from "@/components/ui/label";
+import { Slider } from "@/components/ui/slider";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import {
+  Calculator,
+  Users,
+  Sparkles,
+  CheckCircle,
+  ChefHat,
+  Crown,
   Gem,
   Euro,
   ArrowRight,
   ArrowLeft,
-  X
-} from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { useToast } from '@/hooks/use-toast';
-import { useInteractionLogger, useBreadcrumbLogger } from '@/hooks/useUserFlowLogger';
-import { useConversionFunnel } from '@/lib/conversionFunnel';
+  X,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { useToast } from "@/hooks/use-toast";
+import {
+  useInteractionLogger,
+  useBreadcrumbLogger,
+} from "@/hooks/useUserFlowLogger";
+import { useConversionFunnel } from "@/lib/conversionFunnel";
 import {
   SERVICE_CATEGORIES,
   SERVICE_TIERS,
@@ -31,13 +40,13 @@ import {
   GUEST_COUNT_PRESETS,
   MIN_GUEST_COUNT,
   MAX_GUEST_COUNT,
-} from '@/lib/pricing-constants';
+} from "@/lib/pricing-constants";
 import {
   calculateQuote,
   formatCurrency,
   type QuoteInput,
   type QuoteBreakdown,
-} from '@/lib/quote-calculations';
+} from "@/lib/quote-calculations";
 
 interface StepByStepQuoteCalculatorProps {
   open: boolean;
@@ -51,18 +60,18 @@ export function StepByStepQuoteCalculator({
   open,
   onOpenChange,
   onRequestDetailedQuote,
-  initialCategory = 'corporate',
+  initialCategory = "corporate",
   initialGuestCount = 50,
 }: StepByStepQuoteCalculatorProps) {
   const { toast } = useToast();
-  
+
   // Form state
   const [selectedCategory, setSelectedCategory] = useState(initialCategory);
-  const [selectedTier, setSelectedTier] = useState('premium');
+  const [selectedTier, setSelectedTier] = useState("premium");
   const [guestCount, setGuestCount] = useState([initialGuestCount]);
   const [selectedAddOns, setSelectedAddOns] = useState<string[]>([]);
   const [step, setStep] = useState(1);
-  
+
   // Calculation state
   const [quote, setQuote] = useState<QuoteBreakdown | null>(null);
   const [isCalculating, setIsCalculating] = useState(false);
@@ -70,27 +79,35 @@ export function StepByStepQuoteCalculator({
   // User tracking hooks
   const { logClick, logButtonPress } = useInteractionLogger();
   const { addBreadcrumb, logJourneySummary } = useBreadcrumbLogger();
-  const { startFunnel, logStep, complete, abandon } = useConversionFunnel('quote_calculator');
+  const { startFunnel, logStep, complete, abandon } =
+    useConversionFunnel("quote_calculator");
 
   // Reset when modal opens and initialize tracking
   useEffect(() => {
     if (open) {
       setSelectedCategory(initialCategory);
-      setSelectedTier('premium');
+      setSelectedTier("premium");
       setGuestCount([initialGuestCount]);
       setSelectedAddOns([]);
       setStep(1);
       setQuote(null);
-      
+
       // Initialize funnel tracking
       startFunnel();
-      logStep('calculator_open');
-      addBreadcrumb('quote_calculator_opened', {
+      logStep("calculator_open");
+      addBreadcrumb("quote_calculator_opened", {
         initialCategory,
-        initialGuestCount
+        initialGuestCount,
       });
     }
-  }, [open, initialCategory, initialGuestCount, addBreadcrumb, logStep, startFunnel]);
+  }, [
+    open,
+    initialCategory,
+    initialGuestCount,
+    addBreadcrumb,
+    logStep,
+    startFunnel,
+  ]);
 
   // Calculate quote when on final step
   useEffect(() => {
@@ -102,99 +119,110 @@ export function StepByStepQuoteCalculator({
         selectedAddOns,
       };
 
-      logStep('quote_calculation');
-      addBreadcrumb('calculating_quote', input);
+      logStep("quote_calculation");
+      addBreadcrumb("calculating_quote", input);
 
       setIsCalculating(true);
       setTimeout(() => {
         try {
           const calculatedQuote = calculateQuote(input);
           setQuote(calculatedQuote);
-          
-          logStep('quote_display');
-          addBreadcrumb('quote_calculated_successfully', {
+
+          logStep("quote_display");
+          addBreadcrumb("quote_calculated_successfully", {
             totalPrice: calculatedQuote.totalPrice,
-            breakdown: calculatedQuote.breakdown
+            breakdown: calculatedQuote.breakdown,
           });
         } catch (error) {
-          console.error('Quote calculation error:', error);
+          console.error("Quote calculation error:", error);
           setQuote(null);
-          
-          addBreadcrumb('quote_calculation_error', {
-            error: error instanceof Error ? error.message : 'Unknown error',
-            input
+
+          addBreadcrumb("quote_calculation_error", {
+            error: error instanceof Error ? error.message : "Unknown error",
+            input,
           });
         }
         setIsCalculating(false);
       }, 800);
     }
-  }, [step, selectedCategory, selectedTier, guestCount, selectedAddOns, addBreadcrumb, logStep]);
+  }, [
+    step,
+    selectedCategory,
+    selectedTier,
+    guestCount,
+    selectedAddOns,
+    addBreadcrumb,
+    logStep,
+  ]);
 
   const handleCategorySelect = (categoryId: string) => {
     setSelectedCategory(categoryId);
-    
-    logClick('service_category_selection', { categoryId });
-    logStep('service_category_selection');
-    addBreadcrumb('category_selected', { 
-      categoryId, 
-      categoryName: SERVICE_CATEGORIES.find(cat => cat.id === categoryId)?.name 
+
+    logClick("service_category_selection", { categoryId });
+    logStep("service_category_selection");
+    addBreadcrumb("category_selected", {
+      categoryId,
+      categoryName: SERVICE_CATEGORIES.find((cat) => cat.id === categoryId)
+        ?.name,
     });
-    
+
     toast({
       title: "Geweldige keuze!",
-      description: `${SERVICE_CATEGORIES.find(cat => cat.id === categoryId)?.name} geselecteerd.`,
+      description: `${SERVICE_CATEGORIES.find((cat) => cat.id === categoryId)?.name} geselecteerd.`,
       duration: 2000,
     });
   };
 
   const handleTierSelect = (tierId: string) => {
     setSelectedTier(tierId);
-    
-    logClick('service_tier_selection', { tierId });
-    logStep('service_tier_selection');
-    addBreadcrumb('tier_selected', { 
-      tierId, 
-      tierName: SERVICE_TIERS.find(tier => tier.id === tierId)?.name 
+
+    logClick("service_tier_selection", { tierId });
+    logStep("service_tier_selection");
+    addBreadcrumb("tier_selected", {
+      tierId,
+      tierName: SERVICE_TIERS.find((tier) => tier.id === tierId)?.name,
     });
   };
 
   const handleGuestCountChange = (value: number[]) => {
     setGuestCount(value);
-    
-    logClick('guest_count_input', { guestCount: value[0] });
-    logStep('guest_count_input');
-    addBreadcrumb('guest_count_updated', { guestCount: value[0] });
+
+    logClick("guest_count_input", { guestCount: value[0] });
+    logStep("guest_count_input");
+    addBreadcrumb("guest_count_updated", { guestCount: value[0] });
   };
 
   const handleAddOnToggle = (addonId: string) => {
     const isAdding = !selectedAddOns.includes(addonId);
-    setSelectedAddOns(prev => 
+    setSelectedAddOns((prev) =>
       prev.includes(addonId)
-        ? prev.filter(id => id !== addonId)
-        : [...prev, addonId]
+        ? prev.filter((id) => id !== addonId)
+        : [...prev, addonId],
     );
-    
-    logClick('addon_toggle', { addonId, action: isAdding ? 'add' : 'remove' });
-    logStep('addon_selection');
-    addBreadcrumb('addon_toggled', { 
-      addonId, 
-      action: isAdding ? 'add' : 'remove',
-      totalAddons: isAdding ? selectedAddOns.length + 1 : selectedAddOns.length - 1
+
+    logClick("addon_toggle", { addonId, action: isAdding ? "add" : "remove" });
+    logStep("addon_selection");
+    addBreadcrumb("addon_toggled", {
+      addonId,
+      action: isAdding ? "add" : "remove",
+      totalAddons: isAdding
+        ? selectedAddOns.length + 1
+        : selectedAddOns.length - 1,
     });
   };
 
   const handleNext = () => {
     if (step < 5) {
-      logButtonPress('next_step', `quote_calculator_step_${step}`);
-      addBreadcrumb('step_advanced', { fromStep: step, toStep: step + 1 });
+      logButtonPress("next_step", `quote_calculator_step_${step}`);
+      addBreadcrumb("step_advanced", { fromStep: step, toStep: step + 1 });
       setStep(step + 1);
     }
   };
 
   const handleBack = () => {
     if (step > 1) {
-      logButtonPress('previous_step', `quote_calculator_step_${step}`);
-      addBreadcrumb('step_back', { fromStep: step, toStep: step - 1 });
+      logButtonPress("previous_step", `quote_calculator_step_${step}`);
+      addBreadcrumb("step_back", { fromStep: step, toStep: step - 1 });
       setStep(step - 1);
     }
   };
@@ -207,23 +235,23 @@ export function StepByStepQuoteCalculator({
         guestCount: guestCount[0],
         selectedAddOns,
       };
-      
-      logButtonPress('request_detailed_quote', 'quote_calculator');
-      logStep('detailed_quote_request');
-      addBreadcrumb('detailed_quote_requested', {
+
+      logButtonPress("request_detailed_quote", "quote_calculator");
+      logStep("detailed_quote_request");
+      addBreadcrumb("detailed_quote_requested", {
         quote: quote.totalPrice,
-        input
+        input,
       });
-      
+
       complete({
         quote,
         input,
         totalSteps: 5,
-        completionTime: Date.now()
+        completionTime: Date.now(),
       });
-      
-      logJourneySummary('completed');
-      
+
+      logJourneySummary("completed");
+
       onRequestDetailedQuote?.(quote, input);
       toast({
         title: "Offerte aangevraagd!",
@@ -237,70 +265,96 @@ export function StepByStepQuoteCalculator({
   // Handle calculator close/abandonment
   const handleClose = () => {
     if (step > 1 && step < 5) {
-      abandon('user_choice', {
+      abandon("user_choice", {
         stepReached: step,
         progressPercentage: (step / 5) * 100,
         selectionsMade: {
           category: selectedCategory,
           tier: selectedTier,
           guestCount: guestCount[0],
-          addons: selectedAddOns.length
-        }
+          addons: selectedAddOns.length,
+        },
       });
-      
-      addBreadcrumb('calculator_abandoned', {
+
+      addBreadcrumb("calculator_abandoned", {
         stepReached: step,
-        completionPercentage: (step / 5) * 100
+        completionPercentage: (step / 5) * 100,
       });
-      
-      logJourneySummary('abandoned');
+
+      logJourneySummary("abandoned");
     }
-    
+
     onOpenChange(false);
   };
 
-  const selectedCategoryData = SERVICE_CATEGORIES.find(cat => cat.id === selectedCategory);
-  const selectedTierData = SERVICE_TIERS.find(tier => tier.id === selectedTier);
+  const selectedCategoryData = SERVICE_CATEGORIES.find(
+    (cat) => cat.id === selectedCategory,
+  );
+  const selectedTierData = SERVICE_TIERS.find(
+    (tier) => tier.id === selectedTier,
+  );
 
   const getTierIcon = (tierId: string) => {
     switch (tierId) {
-      case 'essential': return <ChefHat className="w-5 h-5" />;
-      case 'premium': return <Crown className="w-5 h-5" />;
-      case 'luxury': return <Gem className="w-5 h-5" />;
-      default: return <ChefHat className="w-5 h-5" />;
+      case "essential":
+        return <ChefHat className="w-5 h-5" />;
+      case "premium":
+        return <Crown className="w-5 h-5" />;
+      case "luxury":
+        return <Gem className="w-5 h-5" />;
+      default:
+        return <ChefHat className="w-5 h-5" />;
     }
   };
 
   const getStepTitle = () => {
     switch (step) {
-      case 1: return "Selecteer Service Type";
-      case 2: return "Kies Service Niveau";
-      case 3: return "Aantal Gasten";
-      case 4: return "Extra Services";
-      case 5: return "Uw Offerte";
-      default: return "Offerte Calculator";
+      case 1:
+        return "Selecteer Service Type";
+      case 2:
+        return "Kies Service Niveau";
+      case 3:
+        return "Aantal Gasten";
+      case 4:
+        return "Extra Services";
+      case 5:
+        return "Uw Offerte";
+      default:
+        return "Offerte Calculator";
     }
   };
 
   const getStepDescription = () => {
     switch (step) {
-      case 1: return "Welk type evenement organiseert u?";
-      case 2: return "Welk service niveau past bij uw wensen?";
-      case 3: return "Hoeveel gasten verwacht u?";
-      case 4: return "Maak uw ervaring compleet met extra services";
-      case 5: return "Uw gepersonaliseerde offerte";
-      default: return "";
+      case 1:
+        return "Welk type evenement organiseert u?";
+      case 2:
+        return "Welk service niveau past bij uw wensen?";
+      case 3:
+        return "Hoeveel gasten verwacht u?";
+      case 4:
+        return "Maak uw ervaring compleet met extra services";
+      case 5:
+        return "Uw gepersonaliseerde offerte";
+      default:
+        return "";
     }
   };
 
   const canProceed = () => {
     switch (step) {
-      case 1: return selectedCategory !== '';
-      case 2: return selectedTier !== '';
-      case 3: return guestCount[0] >= MIN_GUEST_COUNT;
-      case 4: return true; // Add-ons are optional
-      case 5: return quote !== null;
-      default: return false;
+      case 1:
+        return selectedCategory !== "";
+      case 2:
+        return selectedTier !== "";
+      case 3:
+        return guestCount[0] >= MIN_GUEST_COUNT;
+      case 4:
+        return true; // Add-ons are optional
+      case 5:
+        return quote !== null;
+      default:
+        return false;
     }
   };
 
@@ -322,19 +376,23 @@ export function StepByStepQuoteCalculator({
           <div className="flex items-center justify-center gap-2">
             {[1, 2, 3, 4, 5].map((stepNum) => (
               <div key={stepNum} className="flex items-center">
-                <div className={cn(
-                  "w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-colors",
-                  step >= stepNum 
-                    ? "bg-burnt-orange text-white" 
-                    : "bg-gray-200 text-gray-500"
-                )}>
+                <div
+                  className={cn(
+                    "w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold transition-colors",
+                    step >= stepNum
+                      ? "bg-burnt-orange text-white"
+                      : "bg-gray-200 text-gray-500",
+                  )}
+                >
                   {stepNum}
                 </div>
                 {stepNum < 5 && (
-                  <div className={cn(
-                    "w-12 h-0.5 transition-colors",
-                    step > stepNum ? "bg-burnt-orange" : "bg-gray-200"
-                  )} />
+                  <div
+                    className={cn(
+                      "w-12 h-0.5 transition-colors",
+                      step > stepNum ? "bg-burnt-orange" : "bg-gray-200",
+                    )}
+                  />
                 )}
               </div>
             ))}
@@ -345,33 +403,43 @@ export function StepByStepQuoteCalculator({
             {/* Step 1: Service Category */}
             {step === 1 && (
               <div className="space-y-4">
-                <RadioGroup value={selectedCategory} onValueChange={handleCategorySelect}>
+                <RadioGroup
+                  value={selectedCategory}
+                  onValueChange={handleCategorySelect}
+                >
                   <div className="space-y-3">
                     {SERVICE_CATEGORIES.map((category) => (
                       <div key={category.id} className="relative">
-                        <RadioGroupItem 
-                          value={category.id} 
-                          id={category.id} 
-                          className="peer sr-only" 
+                        <RadioGroupItem
+                          value={category.id}
+                          id={category.id}
+                          className="peer sr-only"
                         />
                         <Label
                           htmlFor={category.id}
                           className={cn(
                             "block p-4 rounded-lg border-2 cursor-pointer transition-all duration-200",
                             "hover:border-burnt-orange hover:bg-warm-cream/30",
-                            "peer-data-[state=checked]:border-burnt-orange peer-data-[state=checked]:bg-warm-cream/50"
+                            "peer-data-[state=checked]:border-burnt-orange peer-data-[state=checked]:bg-warm-cream/50",
                           )}
                         >
                           <div className="space-y-2">
                             <div className="flex items-center justify-between">
-                              <h4 className="font-semibold text-forest-green">{category.name}</h4>
-                              {category.id === 'corporate' && (
-                                <Badge variant="secondary" className="text-xs">Populair</Badge>
+                              <h4 className="font-semibold text-forest-green">
+                                {category.name}
+                              </h4>
+                              {category.id === "corporate" && (
+                                <Badge variant="secondary" className="text-xs">
+                                  Populair
+                                </Badge>
                               )}
                             </div>
-                            <p className="text-sm text-forest-green/70">{category.description}</p>
+                            <p className="text-sm text-forest-green/70">
+                              {category.description}
+                            </p>
                             <div className="text-sm font-medium text-burnt-orange">
-                              €{category.minPrice.toFixed(2)} - €{category.maxPrice.toFixed(2)} per persoon
+                              €{category.minPrice.toFixed(2)} - €
+                              {category.maxPrice.toFixed(2)} per persoon
                             </div>
                           </div>
                         </Label>
@@ -385,14 +453,17 @@ export function StepByStepQuoteCalculator({
             {/* Step 2: Service Tier */}
             {step === 2 && (
               <div className="space-y-4">
-                <RadioGroup value={selectedTier} onValueChange={handleTierSelect}>
+                <RadioGroup
+                  value={selectedTier}
+                  onValueChange={handleTierSelect}
+                >
                   <div className="space-y-3">
                     {SERVICE_TIERS.map((tier) => (
                       <div key={tier.id} className="relative">
-                        <RadioGroupItem 
-                          value={tier.id} 
-                          id={tier.id} 
-                          className="peer sr-only" 
+                        <RadioGroupItem
+                          value={tier.id}
+                          id={tier.id}
+                          className="peer sr-only"
                         />
                         <Label
                           htmlFor={tier.id}
@@ -400,7 +471,8 @@ export function StepByStepQuoteCalculator({
                             "block p-4 rounded-lg border-2 cursor-pointer transition-all duration-200",
                             "hover:border-burnt-orange hover:bg-warm-cream/30",
                             "peer-data-[state=checked]:border-burnt-orange peer-data-[state=checked]:bg-warm-cream/50",
-                            tier.id === 'premium' && "ring-1 ring-burnt-orange/30"
+                            tier.id === "premium" &&
+                              "ring-1 ring-burnt-orange/30",
                           )}
                         >
                           <div className="space-y-3">
@@ -408,18 +480,32 @@ export function StepByStepQuoteCalculator({
                               {getTierIcon(tier.id)}
                               <div className="flex-1">
                                 <div className="flex items-center gap-2">
-                                  <h4 className="font-semibold text-forest-green">{tier.name}</h4>
-                                  {tier.id === 'premium' && (
-                                    <Badge variant="secondary" className="text-xs">Aanbevolen</Badge>
+                                  <h4 className="font-semibold text-forest-green">
+                                    {tier.name}
+                                  </h4>
+                                  {tier.id === "premium" && (
+                                    <Badge
+                                      variant="secondary"
+                                      className="text-xs"
+                                    >
+                                      Aanbevolen
+                                    </Badge>
                                   )}
                                 </div>
-                                <p className="text-sm text-forest-green/70 mt-1">{tier.description}</p>
+                                <p className="text-sm text-forest-green/70 mt-1">
+                                  {tier.description}
+                                </p>
                               </div>
                             </div>
                             <div className="text-sm font-medium text-burnt-orange">
-                              {tier.priceMultiplier < 1 ? '-' : '+'}
-                              {Math.abs((tier.priceMultiplier - 1) * 100).toFixed(0)}% 
-                              {tier.priceMultiplier === 1 ? ' (basis)' : ' op basis prijs'}
+                              {tier.priceMultiplier < 1 ? "-" : "+"}
+                              {Math.abs(
+                                (tier.priceMultiplier - 1) * 100,
+                              ).toFixed(0)}
+                              %
+                              {tier.priceMultiplier === 1
+                                ? " (basis)"
+                                : " op basis prijs"}
                             </div>
                           </div>
                         </Label>
@@ -434,7 +520,9 @@ export function StepByStepQuoteCalculator({
             {step === 3 && (
               <div className="space-y-6">
                 <div className="text-center">
-                  <div className="text-4xl font-bold text-burnt-orange mb-2">{guestCount[0]}</div>
+                  <div className="text-4xl font-bold text-burnt-orange mb-2">
+                    {guestCount[0]}
+                  </div>
                   <div className="text-lg text-forest-green">gasten</div>
                 </div>
 
@@ -447,12 +535,12 @@ export function StepByStepQuoteCalculator({
                     step={5}
                     className="w-full"
                   />
-                  
+
                   <div className="flex justify-between text-sm text-gray-600">
                     <span>Min. {MIN_GUEST_COUNT}</span>
                     <span>Max. {MAX_GUEST_COUNT}</span>
                   </div>
-                  
+
                   <div className="grid grid-cols-5 gap-2 mt-6">
                     {GUEST_COUNT_PRESETS.map((count) => (
                       <Button
@@ -462,7 +550,8 @@ export function StepByStepQuoteCalculator({
                         onClick={() => setGuestCount([count])}
                         className={cn(
                           "transition-colors h-12",
-                          guestCount[0] === count && "border-burnt-orange bg-burnt-orange/10"
+                          guestCount[0] === count &&
+                            "border-burnt-orange bg-burnt-orange/10",
                         )}
                       >
                         {count}
@@ -484,7 +573,10 @@ export function StepByStepQuoteCalculator({
 
                 <div className="space-y-4 max-h-80 overflow-y-auto">
                   {ADD_ON_SERVICES.map((addon) => (
-                    <div key={addon.id} className="flex items-start space-x-3 p-3 rounded-lg hover:bg-warm-cream/30">
+                    <div
+                      key={addon.id}
+                      className="flex items-start space-x-3 p-3 rounded-lg hover:bg-warm-cream/30"
+                    >
                       <Checkbox
                         id={addon.id}
                         checked={selectedAddOns.includes(addon.id)}
@@ -492,15 +584,19 @@ export function StepByStepQuoteCalculator({
                         className="mt-1"
                       />
                       <div className="flex-1 min-w-0">
-                        <Label htmlFor={addon.id} className="text-sm font-medium text-forest-green cursor-pointer block">
+                        <Label
+                          htmlFor={addon.id}
+                          className="text-sm font-medium text-forest-green cursor-pointer block"
+                        >
                           {addon.name}
                         </Label>
-                        <p className="text-xs text-forest-green/70 mt-1">{addon.description}</p>
+                        <p className="text-xs text-forest-green/70 mt-1">
+                          {addon.description}
+                        </p>
                         <p className="text-sm font-medium text-burnt-orange mt-1">
-                          {addon.pricePerPerson 
+                          {addon.pricePerPerson
                             ? `${formatCurrency(addon.pricePerPerson)} per persoon`
-                            : `${formatCurrency(addon.flatRate || 0)} vast tarief`
-                          }
+                            : `${formatCurrency(addon.flatRate || 0)} vast tarief`}
                         </p>
                       </div>
                     </div>
@@ -508,7 +604,8 @@ export function StepByStepQuoteCalculator({
                 </div>
 
                 <div className="text-center text-sm text-forest-green/60">
-                  {selectedAddOns.length} extra service{selectedAddOns.length !== 1 ? 's' : ''} geselecteerd
+                  {selectedAddOns.length} extra service
+                  {selectedAddOns.length !== 1 ? "s" : ""} geselecteerd
                 </div>
               </div>
             )}
@@ -520,7 +617,9 @@ export function StepByStepQuoteCalculator({
                   <div className="flex items-center justify-center py-16">
                     <div className="text-center">
                       <Sparkles className="w-12 h-12 text-burnt-orange animate-pulse mx-auto mb-4" />
-                      <p className="text-lg text-forest-green">Uw offerte wordt berekend...</p>
+                      <p className="text-lg text-forest-green">
+                        Uw offerte wordt berekend...
+                      </p>
                     </div>
                   </div>
                 ) : quote ? (
@@ -529,16 +628,28 @@ export function StepByStepQuoteCalculator({
                     <Card className="bg-warm-cream/30 border-burnt-orange/30">
                       <CardContent className="p-4 space-y-2">
                         <div className="flex justify-between">
-                          <span className="text-sm text-forest-green/70">Service:</span>
-                          <span className="text-sm font-medium">{selectedCategoryData?.name}</span>
+                          <span className="text-sm text-forest-green/70">
+                            Service:
+                          </span>
+                          <span className="text-sm font-medium">
+                            {selectedCategoryData?.name}
+                          </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-sm text-forest-green/70">Niveau:</span>
-                          <span className="text-sm font-medium">{selectedTierData?.name}</span>
+                          <span className="text-sm text-forest-green/70">
+                            Niveau:
+                          </span>
+                          <span className="text-sm font-medium">
+                            {selectedTierData?.name}
+                          </span>
                         </div>
                         <div className="flex justify-between">
-                          <span className="text-sm text-forest-green/70">Gasten:</span>
-                          <span className="text-sm font-medium">{guestCount[0]} personen</span>
+                          <span className="text-sm text-forest-green/70">
+                            Gasten:
+                          </span>
+                          <span className="text-sm font-medium">
+                            {guestCount[0]} personen
+                          </span>
                         </div>
                       </CardContent>
                     </Card>
@@ -553,28 +664,46 @@ export function StepByStepQuoteCalculator({
                       </CardHeader>
                       <CardContent className="space-y-3">
                         <div className="flex justify-between">
-                          <span className="text-sm">Basis catering ({formatCurrency(quote.basePricePerPerson)}/p.p.):</span>
-                          <span className="text-sm font-medium">{formatCurrency(quote.basePrice)}</span>
+                          <span className="text-sm">
+                            Basis catering (
+                            {formatCurrency(quote.basePricePerPerson)}/p.p.):
+                          </span>
+                          <span className="text-sm font-medium">
+                            {formatCurrency(quote.basePrice)}
+                          </span>
                         </div>
-                        
+
                         {quote.addOns.map((addon) => (
                           <div key={addon.id} className="flex justify-between">
-                            <span className="text-sm text-forest-green/70">{addon.name}:</span>
-                            <span className="text-sm">{formatCurrency(addon.total)}</span>
+                            <span className="text-sm text-forest-green/70">
+                              {addon.name}:
+                            </span>
+                            <span className="text-sm">
+                              {formatCurrency(addon.total)}
+                            </span>
                           </div>
                         ))}
 
                         {quote.volumeDiscount && (
                           <div className="flex justify-between text-green-600">
                             <span className="text-sm">Volumekorting:</span>
-                            <span className="text-sm font-medium">-{formatCurrency(quote.volumeDiscount.discountAmount)}</span>
+                            <span className="text-sm font-medium">
+                              -
+                              {formatCurrency(
+                                quote.volumeDiscount.discountAmount,
+                              )}
+                            </span>
                           </div>
                         )}
 
                         <div className="border-t pt-3 mt-4">
                           <div className="flex justify-between items-center">
-                            <span className="text-lg font-semibold text-forest-green">Totaal:</span>
-                            <span className="text-2xl font-bold text-burnt-orange">{formatCurrency(quote.finalTotal)}</span>
+                            <span className="text-lg font-semibold text-forest-green">
+                              Totaal:
+                            </span>
+                            <span className="text-2xl font-bold text-burnt-orange">
+                              {formatCurrency(quote.finalTotal)}
+                            </span>
                           </div>
                           <div className="text-center mt-2">
                             <span className="text-sm text-forest-green/70">
@@ -602,7 +731,9 @@ export function StepByStepQuoteCalculator({
                   </>
                 ) : (
                   <div className="text-center py-16">
-                    <p className="text-forest-green/70">Er ging iets mis bij het berekenen van uw offerte.</p>
+                    <p className="text-forest-green/70">
+                      Er ging iets mis bij het berekenen van uw offerte.
+                    </p>
                   </div>
                 )}
               </div>

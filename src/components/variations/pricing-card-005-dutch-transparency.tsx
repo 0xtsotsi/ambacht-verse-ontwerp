@@ -1,22 +1,22 @@
-import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { CheckCircle, Clock, MapPin } from 'lucide-react';
-import { 
-  BASE_PRICES, 
-  TIER_MULTIPLIERS, 
-  COLOR_SCHEMES, 
-  SERVICE_ICONS, 
-  TRANSLATIONS, 
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { CheckCircle, Clock, MapPin } from "lucide-react";
+import {
+  BASE_PRICES,
+  TIER_MULTIPLIERS,
+  COLOR_SCHEMES,
+  SERVICE_ICONS,
+  TRANSLATIONS,
   SERVICE_INCLUSIONS,
   validatePricingCardProps,
   calculateFinalPrice,
   COMMON_STYLES,
   type ServiceType,
   type TierType,
-  type LanguageType
-} from '@/lib/pricing-card-constants';
+  type LanguageType,
+} from "@/lib/pricing-card-constants";
 
 interface PricingCardProps {
   serviceType: ServiceType;
@@ -35,12 +35,17 @@ const PricingCard005DutchTransparency: React.FC<PricingCardProps> = ({
   pricePerPerson,
   tier,
   onBookNow,
-  language = 'nl'
+  language = "nl",
 }) => {
   // Input validation
-  const validation = validatePricingCardProps({ serviceType, tier, language, pricePerPerson });
+  const validation = validatePricingCardProps({
+    serviceType,
+    tier,
+    language,
+    pricePerPerson,
+  });
   if (!validation.isValid) {
-    console.error('Invalid props:', validation.errors);
+    console.error("Invalid props:", validation.errors);
     return null;
   }
 
@@ -50,15 +55,26 @@ const PricingCard005DutchTransparency: React.FC<PricingCardProps> = ({
   const finalPrice = calculateFinalPrice(serviceType, tier);
 
   const dutchTranslations = {
-    nl: { transparent: 'Transparante Prijzen', noHiddenFees: 'Geen Verborgen Kosten', dutchQuality: 'Nederlandse Kwaliteit' },
-    en: { transparent: 'Transparent Pricing', noHiddenFees: 'No Hidden Fees', dutchQuality: 'Dutch Quality' }
+    nl: {
+      transparent: "Transparante Prijzen",
+      noHiddenFees: "Geen Verborgen Kosten",
+      dutchQuality: "Nederlandse Kwaliteit",
+    },
+    en: {
+      transparent: "Transparent Pricing",
+      noHiddenFees: "No Hidden Fees",
+      dutchQuality: "Dutch Quality",
+    },
   };
   const dt = dutchTranslations[language];
 
   return (
-    <Card className={`relative ${colorScheme.bg} ${COMMON_STYLES.card} transition-all duration-300 group`} data-testid="transparent-pricing">
+    <Card
+      className={`relative ${colorScheme.bg} ${COMMON_STYLES.card} transition-all duration-300 group`}
+      data-testid="transparent-pricing"
+    >
       <div className="absolute -top-2 left-4 flex gap-2">
-        {tier === 'premium' && (
+        {tier === "premium" && (
           <Badge className="bg-orange-500 text-white text-xs px-2 py-1">
             Populaire Keuze
           </Badge>
@@ -80,13 +96,18 @@ const PricingCard005DutchTransparency: React.FC<PricingCardProps> = ({
             {t[tier]}
           </Badge>
         </div>
-        
-        <div className={`text-center py-4 ${COMMON_STYLES.priceDisplay} border-b border-gray-200`} data-price>
+
+        <div
+          className={`text-center py-4 ${COMMON_STYLES.priceDisplay} border-b border-gray-200`}
+          data-price
+        >
           {finalPrice ? (
             <div>
               <div className="flex items-baseline justify-center gap-1">
                 <span className="text-sm text-gray-600">{t.vanaf}</span>
-                <span className="text-3xl font-bold text-[#CC5D00]">€{finalPrice.toFixed(2)}</span>
+                <span className="text-3xl font-bold text-[#CC5D00]">
+                  €{finalPrice.toFixed(2)}
+                </span>
                 <span className="text-sm text-gray-600">{t.perPersoon}</span>
               </div>
               <div className="text-xs text-gray-500 mt-1">
@@ -115,12 +136,15 @@ const PricingCard005DutchTransparency: React.FC<PricingCardProps> = ({
         </div>
 
         <div className="text-center mb-4">
-          <Badge variant="outline" className="text-xs px-3 py-1 bg-orange-50 border-orange-200 text-orange-700">
+          <Badge
+            variant="outline"
+            className="text-xs px-3 py-1 bg-orange-50 border-orange-200 text-orange-700"
+          >
             {dt.dutchQuality}
           </Badge>
         </div>
 
-        <Button 
+        <Button
           onClick={() => onBookNow(serviceType, tier)}
           className={`w-full ${COMMON_STYLES.primaryButton} py-3 transition-colors duration-200`}
           data-testid="book-button"
@@ -129,9 +153,7 @@ const PricingCard005DutchTransparency: React.FC<PricingCardProps> = ({
         </Button>
 
         <div className="text-center mt-3">
-          <p className="text-xs text-gray-500">
-            {t.confirmation}
-          </p>
+          <p className="text-xs text-gray-500">{t.confirmation}</p>
         </div>
       </CardContent>
     </Card>

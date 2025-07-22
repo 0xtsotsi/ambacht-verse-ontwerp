@@ -3,11 +3,11 @@
  * Complies with 300 LOC limit and ≤4 parameters per function
  */
 
-import { Component, ErrorInfo, ReactNode } from 'react';
-import { AlertTriangle, RefreshCw, Home } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import logger, { LoggerUtils } from '@/lib/logger';
+import { Component, ErrorInfo, ReactNode } from "react";
+import { AlertTriangle, RefreshCw, Home } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import logger, { LoggerUtils } from "@/lib/logger";
 
 interface ErrorBoundaryProps {
   children: ReactNode;
@@ -26,7 +26,10 @@ interface ErrorBoundaryState {
 /**
  * Error boundary with comprehensive logging and user-friendly fallback UI
  */
-export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+export class ErrorBoundary extends Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   private resetTimeoutId: number | null = null;
 
   constructor(props: ErrorBoundaryProps) {
@@ -35,7 +38,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
       hasError: false,
       error: null,
       errorInfo: null,
-      errorId: null
+      errorId: null,
     };
   }
 
@@ -43,34 +46,34 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
     return {
       hasError: true,
       error,
-      errorId: LoggerUtils.generateRequestId()
+      errorId: LoggerUtils.generateRequestId(),
     };
   }
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     const errorId = LoggerUtils.generateRequestId();
-    
+
     // Log error with comprehensive context
-    logger.error('React Error Boundary Caught Error', {
-      type: 'react_error_boundary',
+    logger.error("React Error Boundary Caught Error", {
+      type: "react_error_boundary",
       error: {
         message: error.message,
         stack: error.stack,
-        name: error.name
+        name: error.name,
       },
       errorInfo: {
-        componentStack: errorInfo.componentStack
+        componentStack: errorInfo.componentStack,
       },
       errorId: errorId,
       userAgent: navigator.userAgent,
       url: window.location.href,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
 
     this.setState({
       error,
       errorInfo,
-      errorId
+      errorId,
     });
 
     // Call custom error handler if provided
@@ -80,8 +83,12 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   componentDidUpdate(prevProps: ErrorBoundaryProps): void {
     const { hasError } = this.state;
     const { resetOnPropsChange } = this.props;
-    
-    if (hasError && prevProps.children !== this.props.children && resetOnPropsChange) {
+
+    if (
+      hasError &&
+      prevProps.children !== this.props.children &&
+      resetOnPropsChange
+    ) {
       this.handleRetry();
     }
   }
@@ -93,27 +100,27 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
   }
 
   handleRetry = (): void => {
-    logger.info('Error Boundary Reset Attempted', {
-      type: 'error_boundary_reset',
+    logger.info("Error Boundary Reset Attempted", {
+      type: "error_boundary_reset",
       errorId: this.state.errorId,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
 
     this.setState({
       hasError: false,
       error: null,
       errorInfo: null,
-      errorId: null
+      errorId: null,
     });
   };
 
   handleReload = (): void => {
-    logger.info('Page Reload Requested', {
-      type: 'page_reload',
+    logger.info("Page Reload Requested", {
+      type: "page_reload",
       errorId: this.state.errorId,
-      timestamp: new Date().toISOString()
+      timestamp: new Date().toISOString(),
     });
-    
+
     window.location.reload();
   };
 
@@ -139,15 +146,18 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                 Er is iets misgegaan
               </h2>
               <p className="text-gray-600 mt-2">
-                We hebben een onverwachte fout gedetecteerd. Onze ontwikkelaars zijn op de hoogte gesteld.
+                We hebben een onverwachte fout gedetecteerd. Onze ontwikkelaars
+                zijn op de hoogte gesteld.
               </p>
             </CardHeader>
-            
+
             <CardContent className="space-y-4">
               {/* Error details for development */}
               {import.meta.env.DEV && error && (
                 <div className="p-3 bg-red-50 border border-red-200 rounded-md">
-                  <p className="text-sm font-medium text-red-800">Foutdetails:</p>
+                  <p className="text-sm font-medium text-red-800">
+                    Foutdetails:
+                  </p>
                   <p className="text-xs text-red-700 mt-1 font-mono">
                     {error.message}
                   </p>
@@ -161,7 +171,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
               {/* Action buttons */}
               <div className="flex flex-col sm:flex-row gap-3">
-                <Button 
+                <Button
                   onClick={this.handleRetry}
                   className="flex-1 flex items-center gap-2"
                   variant="outline"
@@ -169,8 +179,8 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
                   <RefreshCw className="w-4 h-4" />
                   Opnieuw proberen
                 </Button>
-                
-                <Button 
+
+                <Button
                   onClick={this.handleReload}
                   className="flex-1 flex items-center gap-2"
                 >
@@ -182,7 +192,8 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
               {/* Support information */}
               <div className="text-center pt-4 border-t">
                 <p className="text-xs text-gray-500">
-                  Als het probleem aanhoudt, neem dan contact op met onze support.
+                  Als het probleem aanhoudt, neem dan contact op met onze
+                  support.
                 </p>
                 {errorId && (
                   <p className="text-xs text-gray-400 mt-1">
@@ -206,21 +217,24 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 /**
  * Specific error boundary for async operations
  */
-export function AsyncErrorBoundary({ children, onError }: { 
-  children: ReactNode; 
-  onError?: (error: Error) => void; 
+export function AsyncErrorBoundary({
+  children,
+  onError,
+}: {
+  children: ReactNode;
+  onError?: (error: Error) => void;
 }) {
   return (
     <ErrorBoundary
       onError={(error, errorInfo) => {
-        logger.error('Async Operation Error', {
-          type: 'async_error',
+        logger.error("Async Operation Error", {
+          type: "async_error",
           error: {
             message: error.message,
-            stack: error.stack
+            stack: error.stack,
           },
           componentStack: errorInfo.componentStack,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         });
         onError?.(error);
       }}

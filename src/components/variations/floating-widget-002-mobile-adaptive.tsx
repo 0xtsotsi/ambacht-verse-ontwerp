@@ -1,8 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { Calendar, ChefHat, Phone, ArrowRight, X, Calculator } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import React, { useState, useEffect } from "react";
+import {
+  Calendar,
+  ChefHat,
+  Phone,
+  ArrowRight,
+  X,
+  Calculator,
+} from "lucide-react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
 
 interface FloatingBookingWidgetProps {
   className?: string;
@@ -11,11 +18,11 @@ interface FloatingBookingWidgetProps {
   onQuoteCalculatorClick?: () => void;
 }
 
-export function FloatingBookingWidget({ 
-  className, 
+export function FloatingBookingWidget({
+  className,
   onBookingClick,
   onPhoneClick,
-  onQuoteCalculatorClick
+  onQuoteCalculatorClick,
 }: FloatingBookingWidgetProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
@@ -36,12 +43,12 @@ export function FloatingBookingWidget({
     checkMobile();
     handleScroll();
 
-    window.addEventListener('resize', checkMobile);
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener("resize", checkMobile);
+    window.addEventListener("scroll", handleScroll, { passive: true });
 
     return () => {
-      window.removeEventListener('resize', checkMobile);
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("resize", checkMobile);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, [isMobile]);
 
@@ -58,7 +65,7 @@ export function FloatingBookingWidget({
 
   const handlePhoneClick = () => {
     if (isMobile) {
-      window.location.href = 'tel:+31201234567';
+      window.location.href = "tel:+31201234567";
     } else {
       onPhoneClick?.();
     }
@@ -76,7 +83,7 @@ export function FloatingBookingWidget({
         // Mobile width optimization
         "w-auto md:w-auto",
         isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4",
-        className
+        className,
       )}
     >
       <Card
@@ -84,15 +91,13 @@ export function FloatingBookingWidget({
           "bg-gradient-to-br from-[#CC5D00] to-[#BB3A3C] text-white shadow-2xl border-0",
           "transition-all duration-300 ease-out",
           // Mobile-first responsive sizing
-          isExpanded 
-            ? "w-72 md:w-80" 
-            : "w-auto",
+          isExpanded ? "w-72 md:w-80" : "w-auto",
           // Enhanced mobile touch targets
           "min-h-[60px] md:min-h-[56px]",
           // Mobile-optimized rounded corners
           "rounded-2xl md:rounded-xl",
           // Touch-friendly hover states
-          "hover:shadow-3xl hover:scale-[1.02] active:scale-[0.98]"
+          "hover:shadow-3xl hover:scale-[1.02] active:scale-[0.98]",
         )}
       >
         {isExpanded ? (
@@ -130,7 +135,7 @@ export function FloatingBookingWidget({
                     "h-12 md:h-11 text-base md:text-sm", // Larger touch target on mobile
                     "rounded-xl md:rounded-lg",
                     "shadow-lg hover:shadow-xl transition-all duration-200",
-                    "active:scale-[0.98]" // Mobile tap feedback
+                    "active:scale-[0.98]", // Mobile tap feedback
                   )}
                 >
                   <Calendar className="w-5 h-5 mr-2" />
@@ -145,7 +150,7 @@ export function FloatingBookingWidget({
                     "w-full border-white/30 text-white hover:bg-white/10",
                     "h-12 md:h-10 text-base md:text-sm", // Larger on mobile
                     "rounded-xl md:rounded-lg",
-                    "active:scale-[0.98]" // Mobile tap feedback
+                    "active:scale-[0.98]", // Mobile tap feedback
                   )}
                 >
                   <Phone className="w-4 h-4 mr-2" />
@@ -165,7 +170,7 @@ export function FloatingBookingWidget({
                       "w-full border-white/30 text-white hover:bg-white/10",
                       "h-12 md:h-10 text-base md:text-sm", // Larger on mobile
                       "rounded-xl md:rounded-lg",
-                      "active:scale-[0.98]" // Mobile tap feedback
+                      "active:scale-[0.98]", // Mobile tap feedback
                     )}
                   >
                     <Calculator className="w-4 h-4 mr-2" />
@@ -191,7 +196,7 @@ export function FloatingBookingWidget({
               "h-[60px] md:h-14 px-4 md:px-5", // Larger touch target on mobile
               "rounded-2xl md:rounded-xl",
               "active:scale-[0.98]", // Mobile tap feedback
-              "transition-all duration-200"
+              "transition-all duration-200",
             )}
           >
             <div className="flex items-center gap-2 md:gap-3">

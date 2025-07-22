@@ -1,4 +1,4 @@
-import { useEffect, useRef, useCallback } from 'react';
+import { useEffect, useRef, useCallback } from "react";
 
 interface UseAccessibilityManagerProps {
   step: number;
@@ -19,7 +19,7 @@ interface UseAccessibilityManagerProps {
 export function useAccessibilityManager({
   step,
   translations,
-  navigationLabels
+  navigationLabels,
 }: UseAccessibilityManagerProps) {
   const ariaLiveRef = useRef<HTMLDivElement>(null);
   const confirmButtonRef = useRef<HTMLButtonElement>(null);
@@ -28,15 +28,15 @@ export function useAccessibilityManager({
   useEffect(() => {
     if (ariaLiveRef.current) {
       const stepNames = [
-        translations.selectDate, 
-        translations.selectTime, 
-        translations.guestCount
+        translations.selectDate,
+        translations.selectTime,
+        translations.guestCount,
       ];
-      
+
       const announcement = navigationLabels.screenReaderStepAnnouncement
-        .replace('{step}', step.toString())
-        .replace('{stepName}', stepNames[step - 1] || '');
-      
+        .replace("{step}", step.toString())
+        .replace("{stepName}", stepNames[step - 1] || "");
+
       ariaLiveRef.current.textContent = announcement;
     }
   }, [step, translations, navigationLabels]);
@@ -51,25 +51,24 @@ export function useAccessibilityManager({
   }, []);
 
   // Generate ARIA props for step navigation
-  const getStepAriaProps = useCallback((currentStep: number, targetStep: number) => {
-    const stepNames = [
-      translations.selectDate, 
-      translations.selectTime, 
-      translations.guestCount
-    ];
+  const getStepAriaProps = useCallback(
+    (currentStep: number, targetStep: number) => {
+      const stepNames = [
+        translations.selectDate,
+        translations.selectTime,
+        translations.guestCount,
+      ];
 
-    return {
-      'aria-label': `${targetStep < currentStep ? 'Previous' : 'Next'}: ${stepNames[targetStep - 1] || ''}`
-    };
-  }, [translations]);
+      return {
+        "aria-label": `${targetStep < currentStep ? "Previous" : "Next"}: ${stepNames[targetStep - 1] || ""}`,
+      };
+    },
+    [translations],
+  );
 
   // Screen reader announcement component
   const AriaLiveRegion = () => (
-    <div 
-      ref={ariaLiveRef} 
-      aria-live="polite" 
-      className="sr-only" 
-    />
+    <div ref={ariaLiveRef} aria-live="polite" className="sr-only" />
   );
 
   return {
@@ -77,6 +76,6 @@ export function useAccessibilityManager({
     confirmButtonRef,
     focusConfirmButton,
     getStepAriaProps,
-    AriaLiveRegion
+    AriaLiveRegion,
   };
 }

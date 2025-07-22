@@ -1,27 +1,34 @@
 # 🌐 Wesley's Ambacht - Preview
 
-## 🚀 To preview the built application:
+## 🚀 To preview the built application
 
 ### Option 1: Use Vite Preview (Recommended)
+
 ```bash
 npm run preview
 ```
-Then open: **http://localhost:4173**
+
+Then open: **<http://localhost:4173>**
 
 ### Option 2: Python HTTP Server
+
 ```bash
 python3 -m http.server 8080 --directory dist
 ```
-Then open: **http://localhost:8080**
+
+Then open: **<http://localhost:8080>**
 
 ### Option 3: Direct File Access
+
 Open in browser: `file:///mnt/c/Users/schre/Users/Demo projects/ambacht-verse-ontwerp/dist/index.html`
 
-## 📱 Application Features:
+## 📱 Application Features
 
 ### **Homepage Layout:**
+
 1. **Navigation Bar** - Clean navigation with smooth scrolling
 2. **Hero Section** - Circular welcome card with:
+
    - "Welkom bij WESLEY'S AMBACHT"
    - Dutch craftsman messaging
    - Call-to-action button
@@ -34,7 +41,8 @@ Open in browser: `file:///mnt/c/Users/schre/Users/Demo projects/ambacht-verse-on
 7. **Footer** - Contact info and links
 
 ### **Design System:**
-- **Colors**: 
+
+- **Colors**:
   - Warm Cream (#FAF6F0)
   - Forest Green (#1B4332)
   - Burnt Orange (#D2691E)
@@ -42,6 +50,7 @@ Open in browser: `file:///mnt/c/Users/schre/Users/Demo projects/ambacht-verse-on
 - **Style**: Traditional Dutch craftsman aesthetic
 
 ### **Technical Details:**
+
 - Single Page Application (SPA)
 - React 18 + TypeScript
 - Tailwind CSS styling
@@ -49,9 +58,10 @@ Open in browser: `file:///mnt/c/Users/schre/Users/Demo projects/ambacht-verse-on
 - Responsive design
 - 408KB total bundle size
 
-## 🎨 Visual Preview:
+## 🎨 Visual Preview
 
 The application has a warm, traditional Dutch aesthetic with:
+
 - Circular design elements
 - Wood texture overlays
 - Professional food photography

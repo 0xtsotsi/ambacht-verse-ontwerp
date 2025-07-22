@@ -1,10 +1,10 @@
-import React from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Slider } from '@/components/ui/slider';
-import { Users } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { QUOTE_GUEST_CONFIG } from '@/lib/quote-calculator-constants';
+import React from "react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Slider } from "@/components/ui/slider";
+import { Users } from "lucide-react";
+import { cn } from "@/lib/utils";
+import { QUOTE_GUEST_CONFIG } from "@/lib/quote-calculator-constants";
 
 interface GuestCountSelectorProps {
   guestCount: number[];
@@ -22,7 +22,7 @@ interface GuestCountSelectorProps {
 export function GuestCountSelector({
   guestCount,
   onGuestCountChange,
-  translations
+  translations,
 }: GuestCountSelectorProps) {
   return (
     <Card className="border-0 shadow-elegant-panel bg-white/80 backdrop-blur-sm">
@@ -38,7 +38,7 @@ export function GuestCountSelector({
             {guestCount[0]} {translations.guests}
           </span>
         </div>
-        
+
         <Slider
           value={guestCount}
           onValueChange={onGuestCountChange}
@@ -47,12 +47,12 @@ export function GuestCountSelector({
           step={QUOTE_GUEST_CONFIG.step}
           className="w-full"
         />
-        
+
         <div className="flex justify-between text-xs text-gray-500 mb-4">
           <span>{QUOTE_GUEST_CONFIG.min}</span>
           <span>{QUOTE_GUEST_CONFIG.max}</span>
         </div>
-        
+
         <div className="grid grid-cols-6 gap-2">
           {QUOTE_GUEST_CONFIG.presets.map((count) => (
             <Button
@@ -62,7 +62,8 @@ export function GuestCountSelector({
               onClick={() => onGuestCountChange([count])}
               className={cn(
                 "transition-colors",
-                guestCount[0] === count && "border-burnt-orange bg-burnt-orange/10"
+                guestCount[0] === count &&
+                  "border-burnt-orange bg-burnt-orange/10",
               )}
             >
               {count}

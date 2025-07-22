@@ -1,5 +1,5 @@
-import { SafeLogger } from '@/lib/LoggerUtils';
-import { ValidationService } from './ValidationService';
+import { SafeLogger } from "@/lib/LoggerUtils";
+import { ValidationService } from "./ValidationService";
 
 export interface QuoteCalculation {
   basePrice: number;
@@ -18,7 +18,7 @@ export interface QuoteCalculation {
 export interface AvailabilityCheck {
   date: Date;
   time: string;
-  status: 'available' | 'limited' | 'unavailable';
+  status: "available" | "limited" | "unavailable";
   reason?: string;
 }
 
@@ -48,24 +48,29 @@ export class BusinessLogicService {
     category: string,
     tier: string,
     guestCount: number,
-    addOns: string[] = []
+    addOns: string[] = [],
   ): QuoteCalculation {
     try {
       // Validate inputs
-      const guestValidation = this.validationService.validateGuestCount(guestCount, category);
+      const guestValidation = this.validationService.validateGuestCount(
+        guestCount,
+        category,
+      );
       if (!guestValidation.isValid) {
-        throw new Error(`Invalid guest count: ${guestValidation.errors.join(', ')}`);
+        throw new Error(
+          `Invalid guest count: ${guestValidation.errors.join(", ")}`,
+        );
       }
 
       // Base price calculation
       const basePrice = this.calculateBasePrice(category, tier, guestCount);
-      
+
       // Add-ons calculation
       const addOnTotal = this.calculateAddOnsTotal(addOns, guestCount);
-      
+
       // Tax calculation (21% BTW in Netherlands)
       const tax = (basePrice + addOnTotal) * 0.21;
-      
+
       // Total calculation
       const total = basePrice + addOnTotal + tax;
       const perPerson = total / guestCount;
@@ -75,7 +80,7 @@ export class BusinessLogicService {
         category,
         tier,
         guestCount,
-        addOns: addOns.map(addOn => this.getAddOnDetails(addOn))
+        addOns: addOns.map((addOn) => this.getAddOnDetails(addOn)),
       };
 
       return {
@@ -84,34 +89,41 @@ export class BusinessLogicService {
         tax,
         total,
         perPerson,
-        breakdown
+        breakdown,
       };
     } catch (error) {
-      SafeLogger.error('Quote calculation error:', error, { 
-        category, tier, guestCount, addOns 
+      SafeLogger.error("Quote calculation error:", error, {
+        category,
+        tier,
+        guestCount,
+        addOns,
       });
-      throw new Error('Unable to calculate quote');
+      throw new Error("Unable to calculate quote");
     }
   }
 
   /**
    * Calculate base price for service category and tier
    */
-  private calculateBasePrice(category: string, tier: string, guestCount: number): number {
+  private calculateBasePrice(
+    category: string,
+    tier: string,
+    guestCount: number,
+  ): number {
     const basePrices = {
-      corporate: 12.50,
-      social: 27.50,
-      wedding: 22.50,
-      custom: 0
+      corporate: 12.5,
+      social: 27.5,
+      wedding: 22.5,
+      custom: 0,
     };
 
     const tierMultipliers = {
       basis: 1.0,
       premium: 1.4,
-      luxe: 1.8
+      luxe: 1.8,
     };
 
-    const basePrice = basePrices[category] || 15.00;
+    const basePrice = basePrices[category] || 15.0;
     const multiplier = tierMultipliers[tier] || 1.0;
 
     return basePrice * multiplier * guestCount;
@@ -122,19 +134,21 @@ export class BusinessLogicService {
    */
   private calculateAddOnsTotal(addOns: string[], guestCount: number): number {
     const addOnPrices = {
-      'drinks-package': { price: 15.00, perPerson: true },
-      'appetizer-selection': { price: 8.50, perPerson: true },
-      'dessert-upgrade': { price: 6.00, perPerson: true },
-      'wine-pairing': { price: 25.00, perPerson: true },
-      'live-cooking': { price: 150.00, perPerson: false },
-      'premium-service': { price: 200.00, perPerson: false }
+      "drinks-package": { price: 15.0, perPerson: true },
+      "appetizer-selection": { price: 8.5, perPerson: true },
+      "dessert-upgrade": { price: 6.0, perPerson: true },
+      "wine-pairing": { price: 25.0, perPerson: true },
+      "live-cooking": { price: 150.0, perPerson: false },
+      "premium-service": { price: 200.0, perPerson: false },
     };
 
     let total = 0;
     for (const addOn of addOns) {
       const addOnConfig = addOnPrices[addOn];
       if (addOnConfig) {
-        total += addOnConfig.perPerson ? addOnConfig.price * guestCount : addOnConfig.price;
+        total += addOnConfig.perPerson
+          ? addOnConfig.price * guestCount
+          : addOnConfig.price;
       }
     }
 
@@ -146,12 +160,28 @@ export class BusinessLogicService {
    */
   private getAddOnDetails(addOn: string) {
     const addOnConfigs = {
-      'drinks-package': { name: 'Drankenpakket', price: 15.00, perPerson: true },
-      'appetizer-selection': { name: 'Borrelhapjes Selectie', price: 8.50, perPerson: true },
-      'dessert-upgrade': { name: 'Dessert Upgrade', price: 6.00, perPerson: true },
-      'wine-pairing': { name: 'Wijn Arrangement', price: 25.00, perPerson: true },
-      'live-cooking': { name: 'Live Cooking', price: 150.00, perPerson: false },
-      'premium-service': { name: 'Premium Service', price: 200.00, perPerson: false }
+      "drinks-package": { name: "Drankenpakket", price: 15.0, perPerson: true },
+      "appetizer-selection": {
+        name: "Borrelhapjes Selectie",
+        price: 8.5,
+        perPerson: true,
+      },
+      "dessert-upgrade": {
+        name: "Dessert Upgrade",
+        price: 6.0,
+        perPerson: true,
+      },
+      "wine-pairing": {
+        name: "Wijn Arrangement",
+        price: 25.0,
+        perPerson: true,
+      },
+      "live-cooking": { name: "Live Cooking", price: 150.0, perPerson: false },
+      "premium-service": {
+        name: "Premium Service",
+        price: 200.0,
+        perPerson: false,
+      },
     };
 
     return addOnConfigs[addOn] || { name: addOn, price: 0, perPerson: false };
@@ -166,32 +196,32 @@ export class BusinessLogicService {
         { date, time },
         [
           {
-            name: 'date_future',
+            name: "date_future",
             validate: (d) => d.date > new Date(),
-            message: 'Date must be in the future',
-            severity: 'error'
+            message: "Date must be in the future",
+            severity: "error",
           },
           {
-            name: 'time_valid',
+            name: "time_valid",
             validate: (d) => /^\d{2}:\d{2}$/.test(d.time),
-            message: 'Invalid time format',
-            severity: 'error'
-          }
-        ]
+            message: "Invalid time format",
+            severity: "error",
+          },
+        ],
       );
 
       if (!dateValidation.isValid) {
         return {
           date,
           time,
-          status: 'unavailable',
-          reason: dateValidation.errors.join(', ')
+          status: "unavailable",
+          reason: dateValidation.errors.join(", "),
         };
       }
 
       // Business logic for availability
       const dayOfWeek = date.getDay();
-      const hour = parseInt(time.split(':')[0]);
+      const hour = parseInt(time.split(":")[0]);
 
       // Weekend restrictions
       if (dayOfWeek === 0 || dayOfWeek === 6) {
@@ -199,15 +229,15 @@ export class BusinessLogicService {
           return {
             date,
             time,
-            status: 'unavailable',
-            reason: 'Weekend availability limited to 12:00-20:00'
+            status: "unavailable",
+            reason: "Weekend availability limited to 12:00-20:00",
           };
         }
         return {
           date,
           time,
-          status: 'limited',
-          reason: 'Weekend booking - limited availability'
+          status: "limited",
+          reason: "Weekend booking - limited availability",
         };
       }
 
@@ -216,8 +246,8 @@ export class BusinessLogicService {
         return {
           date,
           time,
-          status: 'unavailable',
-          reason: 'Weekday availability limited to 11:00-20:00'
+          status: "unavailable",
+          reason: "Weekday availability limited to 11:00-20:00",
         };
       }
 
@@ -226,23 +256,23 @@ export class BusinessLogicService {
         return {
           date,
           time,
-          status: 'limited',
-          reason: 'Peak hours - limited availability'
+          status: "limited",
+          reason: "Peak hours - limited availability",
         };
       }
 
       return {
         date,
         time,
-        status: 'available'
+        status: "available",
       };
     } catch (error) {
-      SafeLogger.error('Availability check error:', error, { date, time });
+      SafeLogger.error("Availability check error:", error, { date, time });
       return {
         date,
         time,
-        status: 'unavailable',
-        reason: 'Unable to check availability'
+        status: "unavailable",
+        reason: "Unable to check availability",
       };
     }
   }
@@ -250,13 +280,16 @@ export class BusinessLogicService {
   /**
    * Calculate estimated delivery time
    */
-  calculateDeliveryTime(guestCount: number, complexity: string = 'standard'): number {
+  calculateDeliveryTime(
+    guestCount: number,
+    complexity: string = "standard",
+  ): number {
     const baseTime = 120; // 2 hours base
     const guestMultiplier = Math.max(1, guestCount / 50);
     const complexityMultiplier = {
       simple: 0.8,
       standard: 1.0,
-      complex: 1.5
+      complex: 1.5,
     };
 
     const multiplier = complexityMultiplier[complexity] || 1.0;
@@ -271,7 +304,7 @@ export class BusinessLogicService {
     tier: string,
     guestCount: number,
     date: Date,
-    time: string
+    time: string,
   ): { isValid: boolean; errors: string[]; warnings: string[] } {
     const errors: string[] = [];
     const warnings: string[] = [];
@@ -282,53 +315,62 @@ export class BusinessLogicService {
         corporate: 10,
         social: 5,
         wedding: 20,
-        custom: 1
+        custom: 1,
       };
 
       const maxGuests = {
         corporate: 200,
         social: 150,
         wedding: 200,
-        custom: 500
+        custom: 500,
       };
 
       if (guestCount < minGuests[category]) {
-        errors.push(`Minimum ${minGuests[category]} gasten vereist voor ${category}`);
+        errors.push(
+          `Minimum ${minGuests[category]} gasten vereist voor ${category}`,
+        );
       }
 
       if (guestCount > maxGuests[category]) {
-        errors.push(`Maximum ${maxGuests[category]} gasten toegestaan voor ${category}`);
+        errors.push(
+          `Maximum ${maxGuests[category]} gasten toegestaan voor ${category}`,
+        );
       }
 
       // Lead time validation
       const leadTime = (date.getTime() - Date.now()) / (1000 * 60 * 60 * 24);
       if (leadTime < 7) {
         if (leadTime < 2) {
-          errors.push('Minimum 2 dagen vooruit boeken vereist');
+          errors.push("Minimum 2 dagen vooruit boeken vereist");
         } else {
-          warnings.push('Korte levertijd - mogelijk beperkte menu opties');
+          warnings.push("Korte levertijd - mogelijk beperkte menu opties");
         }
       }
 
       // Seasonal availability
       const month = date.getMonth();
-      if (month === 11 || month === 0) { // December/January
-        warnings.push('Drukke periode - vroeg boeken aanbevolen');
+      if (month === 11 || month === 0) {
+        // December/January
+        warnings.push("Drukke periode - vroeg boeken aanbevolen");
       }
 
       return {
         isValid: errors.length === 0,
         errors,
-        warnings
+        warnings,
       };
     } catch (error) {
-      SafeLogger.error('Business rules validation error:', error, {
-        category, tier, guestCount, date, time
+      SafeLogger.error("Business rules validation error:", error, {
+        category,
+        tier,
+        guestCount,
+        date,
+        time,
       });
       return {
         isValid: false,
-        errors: ['Business rules validation error'],
-        warnings: []
+        errors: ["Business rules validation error"],
+        warnings: [],
       };
     }
   }

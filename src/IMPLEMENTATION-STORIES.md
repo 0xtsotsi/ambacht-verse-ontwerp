@@ -10,16 +10,19 @@
 ---
 
 ## 📋 STORY 1: Content Quality & Professional Polish
+
 **Priority**: CRITICAL  
 **Story Points**: 8  
 **Sprint**: Week 1
 
 ### User Story
+
 As a potential customer visiting Wesley's Ambacht website,  
 I want to see professional, error-free Dutch content throughout,  
 So that I perceive the business as credible and trustworthy.
 
 ### Acceptance Criteria
+
 - [ ] Replace all placeholder/incorrect Dutch text with professional copy
 - [ ] Fix specific content errors: "gesetveerd", "zaorten kookeke saucs", etc.
 - [ ] Implement consistent brand voice: warm, professional, emphasizing tradition
@@ -28,6 +31,7 @@ So that I perceive the business as credible and trustworthy.
 - [ ] Content passes professional review for grammar and tone
 
 ### Technical Implementation
+
 - Update all component text content
 - Create content constants file for maintainability
 - Implement proper typography hierarchy
@@ -36,16 +40,19 @@ So that I perceive the business as credible and trustworthy.
 ---
 
 ## 📋 STORY 2: Component Integration & Layout Enhancement
+
 **Priority**: HIGH  
 **Story Points**: 13  
 **Sprint**: Week 1
 
 ### User Story
+
 As a website visitor,  
 I want to see testimonials and local supplier information,  
 So that I can trust Wesley's quality and local connections.
 
 ### Acceptance Criteria
+
 - [ ] Integrate existing Testimonials component into Index.tsx layout
 - [ ] Integrate existing LocalSuppliers component into Index.tsx layout
 - [ ] Position between Gallery and BookingForm sections
@@ -54,15 +61,17 @@ So that I can trust Wesley's quality and local connections.
 - [ ] Components blend seamlessly with overall design
 
 ### Technical Implementation
+
 ```typescript
 // src/pages/Index.tsx modification
 <Gallery />
 <Testimonials />        // NEW
-<LocalSuppliers />      // NEW  
+<LocalSuppliers />      // NEW
 <BookingForm />
 ```
 
 ### Definition of Done
+
 - Components render correctly on all screen sizes
 - No layout shifts or visual disruptions
 - Performance impact is minimal
@@ -71,16 +80,19 @@ So that I can trust Wesley's quality and local connections.
 ---
 
 ## 📋 STORY 3: Multi-Language Foundation
+
 **Priority**: HIGH  
 **Story Points**: 21  
 **Sprint**: Week 1-2
 
 ### User Story
+
 As an international visitor or English-speaking client,  
 I want to view the website in English,  
 So that I can understand Wesley's services and make a booking.
 
 ### Acceptance Criteria
+
 - [ ] Create LanguageProvider context with Dutch/English support
 - [ ] Implement LanguageToggle component in Navigation
 - [ ] Create translation files for all content
@@ -89,6 +101,7 @@ So that I can understand Wesley's services and make a booking.
 - [ ] All user-facing text supports both languages
 
 ### Technical Implementation
+
 ```typescript
 // New files:
 src/components/i18n/LanguageProvider.tsx
@@ -102,8 +115,9 @@ src/App.tsx (wrap with provider)
 ```
 
 ### Translation Coverage
+
 - Navigation items
-- Hero section content  
+- Hero section content
 - Service descriptions
 - Booking form labels
 - Footer information
@@ -112,16 +126,19 @@ src/App.tsx (wrap with provider)
 ---
 
 ## 📋 STORY 4: Multi-Step Booking Form Foundation
+
 **Priority**: HIGH  
 **Story Points**: 34  
 **Sprint**: Week 2-3
 
 ### User Story
+
 As a potential customer wanting to book catering services,  
 I want a guided, step-by-step booking process,  
 So that I can easily provide all necessary information without feeling overwhelmed.
 
 ### Acceptance Criteria
+
 - [ ] Create 5-step booking wizard preserving circular design
 - [ ] Implement progress indicator with step validation
 - [ ] Maintain existing warm cream background and styling
@@ -130,6 +147,7 @@ So that I can easily provide all necessary information without feeling overwhelm
 - [ ] Support service pre-selection from Services component
 
 ### Step Structure
+
 1. **Service Selection** - BBQ, Office Catering, Event Buffets
 2. **Date & Time** - Calendar picker with availability checking
 3. **Event Details** - Guest count, location, special requirements
@@ -137,25 +155,27 @@ So that I can easily provide all necessary information without feeling overwhelm
 5. **Contact Information** - Enhanced existing form with company field
 
 ### Technical Implementation
+
 ```typescript
 // New components:
-src/components/booking/MultiStepBookingForm.tsx
-src/components/booking/StepIndicator.tsx
-src/components/booking/ServiceSelector.tsx
-src/components/booking/DateTimePicker.tsx
-src/components/booking/EventDetails.tsx
-src/components/booking/MenuSelector.tsx
-src/components/booking/ContactForm.tsx
+src / components / booking / MultiStepBookingForm.tsx;
+src / components / booking / StepIndicator.tsx;
+src / components / booking / ServiceSelector.tsx;
+src / components / booking / DateTimePicker.tsx;
+src / components / booking / EventDetails.tsx;
+src / components / booking / MenuSelector.tsx;
+src / components / booking / ContactForm.tsx;
 
 // State management:
-src/hooks/useBookingForm.ts
-src/types/booking.ts
+src / hooks / useBookingForm.ts;
+src / types / booking.ts;
 ```
 
 ### Form Data Structure
+
 ```typescript
 interface BookingFormData {
-  serviceType: 'bbq' | 'office' | 'events';
+  serviceType: "bbq" | "office" | "events";
   eventDate: Date;
   eventTime: string;
   guestCount: number;
@@ -173,16 +193,19 @@ interface BookingFormData {
 ---
 
 ## 📋 STORY 5: Database Schema & API Integration
+
 **Priority**: MEDIUM  
 **Story Points**: 13  
 **Sprint**: Week 2
 
 ### User Story
+
 As Wesley (business owner),  
 I want booking requests to be stored in the database,  
 So that I can manage and respond to customer inquiries efficiently.
 
 ### Acceptance Criteria
+
 - [ ] Create Supabase tables for booking management
 - [ ] Generate TypeScript types for database operations
 - [ ] Implement booking submission with validation
@@ -191,6 +214,7 @@ So that I can manage and respond to customer inquiries efficiently.
 - [ ] Create booking status management system
 
 ### Database Schema
+
 ```sql
 -- Booking requests table
 CREATE TABLE booking_requests (
@@ -236,6 +260,7 @@ CREATE TABLE menu_options (
 ```
 
 ### API Operations
+
 ```typescript
 // src/integrations/supabase/booking-operations.ts
 export const submitBookingRequest = async (data: BookingFormData)
@@ -246,16 +271,19 @@ export const getMenuOptions = async (serviceType: string)
 ---
 
 ## 📋 STORY 6: Enhanced Services with Booking Integration
+
 **Priority**: MEDIUM  
 **Story Points**: 13  
 **Sprint**: Week 3
 
 ### User Story
+
 As a visitor exploring catering services,  
 I want to directly book a specific service from the Services section,  
 So that I can quickly proceed with my preferred option.
 
 ### Acceptance Criteria
+
 - [ ] Add "Boek Nu" (Book Now) CTAs to each service card
 - [ ] Implement service pre-selection in booking form
 - [ ] Add pricing information display
@@ -264,10 +292,11 @@ So that I can quickly proceed with my preferred option.
 - [ ] Support smooth scrolling to booking form
 
 ### Enhanced Service Cards
+
 ```typescript
 // src/components/enhanced/EnhancedServices.tsx
 interface ServiceCardProps {
-  serviceType: 'bbq' | 'office' | 'events';
+  serviceType: "bbq" | "office" | "events";
   title: string;
   description: string;
   pricing: string;
@@ -277,23 +306,27 @@ interface ServiceCardProps {
 ```
 
 ### Service Information Updates
+
 - **BBQ Service**: "Vanaf €27,50 per persoon"
-- **Office Catering**: "Vanaf €12,50 per persoon"  
+- **Office Catering**: "Vanaf €12,50 per persoon"
 - **Event Buffets**: "Vanaf €22,50 per persoon"
 
 ---
 
 ## 📋 STORY 7: Performance & SEO Optimization
+
 **Priority**: MEDIUM  
 **Story Points**: 8  
 **Sprint**: Week 3
 
 ### User Story
+
 As a website visitor on mobile,  
 I want the site to load quickly and rank well in search results,  
 So that I have a smooth experience and can easily find Wesley's services.
 
 ### Acceptance Criteria
+
 - [ ] Achieve 90+ Lighthouse scores across all categories
 - [ ] Implement lazy loading for images below the fold
 - [ ] Add structured data markup for local business
@@ -302,6 +335,7 @@ So that I have a smooth experience and can easily find Wesley's services.
 - [ ] Ensure mobile-first performance optimization
 
 ### Technical Implementation
+
 - Image optimization with WebP format
 - Code splitting for booking form
 - Structured data for catering business
@@ -313,15 +347,18 @@ So that I have a smooth experience and can easily find Wesley's services.
 ## 🚀 Implementation Timeline
 
 ### Week 1: Foundation (Stories 1-3)
+
 - **Days 1-2**: Content quality improvement
 - **Days 3-4**: Component integration
 - **Days 5-7**: Multi-language foundation
 
 ### Week 2: Core Functionality (Stories 4-5)
+
 - **Days 1-4**: Multi-step booking form
 - **Days 5-7**: Database schema and API integration
 
 ### Week 3: Enhancement & Polish (Stories 6-7)
+
 - **Days 1-3**: Enhanced services integration
 - **Days 4-5**: Performance and SEO optimization
 - **Days 6-7**: Testing and final validation
@@ -329,16 +366,19 @@ So that I have a smooth experience and can easily find Wesley's services.
 ## 📊 Success Metrics
 
 **Conversion Optimization:**
+
 - 40% increase in booking form completion rate
 - 25% increase in service inquiry conversion
 - 80%+ multi-step form completion rate
 
 **Technical Performance:**
+
 - 90+ Lighthouse Performance score
 - 90+ Lighthouse Accessibility score
 - <2.5s First Contentful Paint on mobile
 
 **Content Quality:**
+
 - Professional Dutch content throughout
 - SEO visibility improvement for local searches
 - Reduced bounce rate from landing pages
@@ -346,6 +386,7 @@ So that I have a smooth experience and can easily find Wesley's services.
 ## 🎯 Definition of Done
 
 **Each Story Must:**
+
 - [ ] Pass all acceptance criteria
 - [ ] Maintain existing functionality
 - [ ] Include appropriate tests
@@ -356,6 +397,7 @@ So that I have a smooth experience and can easily find Wesley's services.
 - [ ] Maintain performance benchmarks
 
 **Epic Completion Criteria:**
+
 - [ ] All 7 stories completed successfully
 - [ ] Comprehensive booking system functional
 - [ ] Professional content quality achieved

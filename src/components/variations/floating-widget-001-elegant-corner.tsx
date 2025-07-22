@@ -1,58 +1,61 @@
-"use client"
+"use client";
 
 // React imports
-import React, { useCallback, useEffect, useId, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useId, useRef, useState } from "react";
 
 /* 3rd-party UI */
-import Calendar from 'lucide-react/dist/esm/icons/calendar'
-import ChefHat from 'lucide-react/dist/esm/icons/chef-hat'
-import Clock from 'lucide-react/dist/esm/icons/clock'
+import Calendar from "lucide-react/dist/esm/icons/calendar";
+import ChefHat from "lucide-react/dist/esm/icons/chef-hat";
+import Clock from "lucide-react/dist/esm/icons/clock";
 
 /* Utils */
-import { cn } from '@/lib/utils'
+import { cn } from "@/lib/utils";
 
 /* Analytics */
-import { useBreadcrumbLogger, useInteractionLogger } from '@/hooks/useUserFlowLogger'
-import { useConversionFunnel } from '@/lib/conversionFunnel'
+import {
+  useBreadcrumbLogger,
+  useInteractionLogger,
+} from "@/hooks/useUserFlowLogger";
+import { useConversionFunnel } from "@/lib/conversionFunnel";
 
 // Types & Constants - grouped at the top
 
 // Widget variants
-export type WidgetVariant = 'corner' | 'sidebar';
+export type WidgetVariant = "corner" | "sidebar";
 
 /**
  * Analytics event types for floating widget
  */
 enum WidgetEventType {
-  DISPLAY = 'display',
-  CLICK = 'click',
-  HOVER = 'hover'
+  DISPLAY = "display",
+  CLICK = "click",
+  HOVER = "hover",
 }
 
 // Analytics constants using enum for standardization
 enum Breadcrumb {
-  Displayed = 'floating_widget_displayed',
-  Hover = 'widget_hovered',
-  Click = 'widget_clicked'
+  Displayed = "floating_widget_displayed",
+  Hover = "widget_hovered",
+  Click = "widget_clicked",
 }
 
 // Constants
 const CONSTANTS = {
-  DEFAULT_DELAY_MS: 1000
+  DEFAULT_DELAY_MS: 1000,
 };
 
 const WIDGET_TYPES: Record<WidgetVariant, string> = {
-  corner: 'floating_corner',
-  sidebar: 'floating_sidebar'
+  corner: "floating_corner",
+  sidebar: "floating_sidebar",
 };
 
 // Memoized icons to prevent re-renders
-const CalendarIcon = React.memo(Calendar)
-const ClockIcon = React.memo(Clock)
-const ChefHatIcon = React.memo(ChefHat)
+const CalendarIcon = React.memo(Calendar);
+const ClockIcon = React.memo(Clock);
+const ChefHatIcon = React.memo(ChefHat);
 
 // Analytics event types
-type EventType = 'display' | 'click' | 'hover';
+type EventType = "display" | "click" | "hover";
 type LogClickFn = (element: string, data?: Record<string, unknown>) => void;
 type LogButtonPressFn = (buttonId: string, flowId: string) => void;
 type AddBreadcrumbFn = (breadcrumb: Breadcrumb) => void;
@@ -63,35 +66,37 @@ const trackFloatingWidget = (
   logButtonPress: LogButtonPressFn,
   addBreadcrumb: AddBreadcrumbFn,
   event: EventType,
-  variant: WidgetVariant = 'corner',
-  payload?: Record<string, unknown>
+  variant: WidgetVariant = "corner",
+  payload?: Record<string, unknown>,
 ): void => {
   switch (event) {
-    case 'display':
+    case "display":
       addBreadcrumb(Breadcrumb.Displayed);
       break;
-    case 'hover':
+    case "hover":
       addBreadcrumb(Breadcrumb.Hover);
       break;
-    case 'click':
-      logClick('floating_booking_widget', {
+    case "click":
+      logClick("floating_booking_widget", {
         widgetType: WIDGET_TYPES[variant],
-        ...payload
+        ...payload,
       });
-      logButtonPress('floating_widget_click', 'booking_flow');
+      logButtonPress("floating_widget_click", "booking_flow");
       addBreadcrumb(Breadcrumb.Click);
       break;
   }
 };
 
 // LiveRegion component for accessibility announcements
-function LiveRegion({ id, children }: { id: string; children: React.ReactNode }) {
+function LiveRegion({
+  id,
+  children,
+}: {
+  id: string;
+  children: React.ReactNode;
+}) {
   return (
-    <div 
-      id={id}
-      aria-live="polite" 
-      className="sr-only"
-    >
+    <div id={id} aria-live="polite" className="sr-only">
       {children}
     </div>
   );
@@ -99,13 +104,13 @@ function LiveRegion({ id, children }: { id: string; children: React.ReactNode })
 
 // Translation dictionary - in real app, replace with i18n system
 const TRANSLATIONS = {
-  'widget.reserve': 'Reserveer',
-  'widget.today': 'Vandaag',
-  'widget.checkAvailability': 'Beschikbaarheid Controleren',
-  'widget.responseTime': 'Binnen 24 uur reactie',
-  'widget.checkDate': 'Check Uw Datum',
-  'widget.announced': 'Reserveer widget verschenen',
-  'widget.openBooking': 'Reserveer vandaag - Open booking formulier'
+  "widget.reserve": "Reserveer",
+  "widget.today": "Vandaag",
+  "widget.checkAvailability": "Beschikbaarheid Controleren",
+  "widget.responseTime": "Binnen 24 uur reactie",
+  "widget.checkDate": "Check Uw Datum",
+  "widget.announced": "Reserveer widget verschenen",
+  "widget.openBooking": "Reserveer vandaag - Open booking formulier",
 } as const;
 
 // Type-safe translation keys
@@ -121,7 +126,7 @@ const useTranslation = () => {
       }
       // Fallback to the key itself if not found
       return key;
-    }, [])
+    }, []),
   };
 };
 
@@ -149,13 +154,19 @@ interface Props extends React.HTMLAttributes<HTMLButtonElement> {
 /**
  * Skeleton variant for loading states
  */
-export function BookingWidgetFloatingSkeleton({ className }: { className?: string }) {
+export function BookingWidgetFloatingSkeleton({
+  className,
+}: {
+  className?: string;
+}) {
   return (
-    <div className={cn(
-      "fixed bottom-8 right-8 z-50 animate-pulse",
-      "rounded-3xl bg-neutral-100 shadow-md w-64 aspect-[4/3]",
-      className
-    )} />
+    <div
+      className={cn(
+        "fixed bottom-8 right-8 z-50 animate-pulse",
+        "rounded-3xl bg-neutral-100 shadow-md w-64 aspect-[4/3]",
+        className,
+      )}
+    />
   );
 }
 
@@ -176,8 +187,8 @@ type FloatingWidgetHookReturn = {
 
 function useFloatingWidget({
   delayMs = CONSTANTS.DEFAULT_DELAY_MS,
-  variant = 'corner',
-  onBookingClick
+  variant = "corner",
+  onBookingClick,
 }: FloatingWidgetHookProps): FloatingWidgetHookReturn {
   const [isVisible, setIsVisible] = useState(false);
   const shownAtRef = useRef<number | null>(null);
@@ -185,18 +196,24 @@ function useFloatingWidget({
   // const observerRef = useRef<IntersectionObserver | null>(null);
   const hoverLoggedRef = useRef(false);
   const hoverTimerRef = useRef<number | null>(null);
-  
+
   const { logClick, logButtonPress } = useInteractionLogger();
   const { addBreadcrumb } = useBreadcrumbLogger();
-  const { startFunnel, logStep } = useConversionFunnel('booking_flow');
-  
+  const { startFunnel, logStep } = useConversionFunnel("booking_flow");
+
   // Set up visibility with delay or IntersectionObserver
   useEffect(() => {
     // Alternative 1: Simple timeout approach
     const timer = window.setTimeout(() => {
       setIsVisible(true);
       shownAtRef.current = Date.now();
-      trackFloatingWidget(logClick, logButtonPress, addBreadcrumb, 'display', variant);
+      trackFloatingWidget(
+        logClick,
+        logButtonPress,
+        addBreadcrumb,
+        "display",
+        variant,
+      );
       startFunnel();
     }, delayMs);
 
@@ -230,142 +247,172 @@ function useFloatingWidget({
         window.clearTimeout(hoverTimerRef.current);
       }
     };
-   
   }, [addBreadcrumb, delayMs, logButtonPress, logClick, startFunnel, variant]);
 
   // Handle booking button click with analytics
   const handleClick = useCallback(() => {
     // Calculate exact display duration since the widget appeared
-    const displayDuration = shownAtRef.current ? Date.now() - shownAtRef.current : 0;
-    
-    trackFloatingWidget(logClick, logButtonPress, addBreadcrumb, 'click', variant, {
-      displayDuration, // Track how long the widget was visible before click
-      timestamp: Date.now()
-    });
-    
-    logStep('booking_widget_click');
-    
+    const displayDuration = shownAtRef.current
+      ? Date.now() - shownAtRef.current
+      : 0;
+
+    trackFloatingWidget(
+      logClick,
+      logButtonPress,
+      addBreadcrumb,
+      "click",
+      variant,
+      {
+        displayDuration, // Track how long the widget was visible before click
+        timestamp: Date.now(),
+      },
+    );
+
+    logStep("booking_widget_click");
+
     if (onBookingClick) {
       onBookingClick();
     }
-  }, [addBreadcrumb, logButtonPress, logClick, logStep, onBookingClick, variant]);
+  }, [
+    addBreadcrumb,
+    logButtonPress,
+    logClick,
+    logStep,
+    onBookingClick,
+    variant,
+  ]);
 
   // Handle hover state with debounced analytics (300ms)
-  const handleHover = useCallback((hovered: boolean) => {
-    // For hover start, we debounce to avoid logging accidental hovering
-    if (hovered && !hoverLoggedRef.current) {
-      if (hoverTimerRef.current) {
-        window.clearTimeout(hoverTimerRef.current);
+  const handleHover = useCallback(
+    (hovered: boolean) => {
+      // For hover start, we debounce to avoid logging accidental hovering
+      if (hovered && !hoverLoggedRef.current) {
+        if (hoverTimerRef.current) {
+          window.clearTimeout(hoverTimerRef.current);
+        }
+
+        hoverTimerRef.current = window.setTimeout(() => {
+          hoverLoggedRef.current = true;
+          trackFloatingWidget(
+            logClick,
+            logButtonPress,
+            addBreadcrumb,
+            "hover",
+            variant,
+            {
+              timestamp: Date.now(),
+            },
+          );
+        }, 300); // 300ms debounce to ensure intentional hover
       }
-      
-      hoverTimerRef.current = window.setTimeout(() => {
-        hoverLoggedRef.current = true;
-        trackFloatingWidget(logClick, logButtonPress, addBreadcrumb, 'hover', variant, {
-          timestamp: Date.now()
-        });
-      }, 300); // 300ms debounce to ensure intentional hover
-    } 
-    // For hover end, we reset the logged state after a delay
-    else if (!hovered) {
-      if (hoverTimerRef.current) {
-        window.clearTimeout(hoverTimerRef.current);
+      // For hover end, we reset the logged state after a delay
+      else if (!hovered) {
+        if (hoverTimerRef.current) {
+          window.clearTimeout(hoverTimerRef.current);
+        }
+
+        hoverTimerRef.current = window.setTimeout(() => {
+          hoverLoggedRef.current = false;
+        }, 500); // 500ms delay before allowing new hover events
       }
-      
-      hoverTimerRef.current = window.setTimeout(() => {
-        hoverLoggedRef.current = false;
-      }, 500); // 500ms delay before allowing new hover events
-    }
-  }, [addBreadcrumb, logButtonPress, logClick, variant]);
+    },
+    [addBreadcrumb, logButtonPress, logClick, variant],
+  );
 
   return {
     isVisible,
     handleClick,
-    handleHover
+    handleHover,
   };
 }
-function WidgetContent({ variant = 'corner' }: { variant?: WidgetVariant }) {
+function WidgetContent({ variant = "corner" }: { variant?: WidgetVariant }) {
   const { t } = useTranslation();
   const reactId = useId(); // For unique IDs in labels and headings
-  
+
   // Content layout adjustments based on variant
-  const contentPadding = variant === 'corner' ? "p-5" : "p-6";
-  const accentPosition = variant === 'corner' 
-    ? "top-0 right-0 w-[40%] h-[45%] rounded-bl-3xl rounded-tr-3xl" 
-    : "top-0 left-0 w-[50%] h-[40%] rounded-br-3xl rounded-tl-3xl";
-    
+  const contentPadding = variant === "corner" ? "p-5" : "p-6";
+  const accentPosition =
+    variant === "corner"
+      ? "top-0 right-0 w-[40%] h-[45%] rounded-bl-3xl rounded-tr-3xl"
+      : "top-0 left-0 w-[50%] h-[40%] rounded-br-3xl rounded-tl-3xl";
+
   // Unique IDs for accessibility
   const headingId = `widget-heading-${reactId}`;
   const subheadingId = `widget-subheading-${reactId}`;
   const ctaId = `widget-cta-${reactId}`;
-  
+
   return (
     <div className="relative h-full w-full overflow-hidden rounded-3xl bg-white shadow-lg">
       {/* Accent Color Block - decorative gradient */}
-      <div 
+      <div
         className={cn(
           "absolute bg-gradient-to-br from-[var(--theme-primary)] to-[var(--theme-secondary)]",
-          accentPosition
+          accentPosition,
         )}
         aria-hidden="true" // Hide from screen readers as it's decorative
       />
-      
+
       {/* Content Container */}
-      <div className={cn(
-        "relative z-10 flex h-full flex-col justify-between",
-        contentPadding
-      )}>
+      <div
+        className={cn(
+          "relative z-10 flex h-full flex-col justify-between",
+          contentPadding,
+        )}
+      >
         {/* Header Section */}
         <div className="space-y-1">
-          <h3 
-            id={headingId} 
+          <h3
+            id={headingId}
             className="text-lg font-semibold text-[var(--theme-primary)]"
           >
-            {t('widget.reserve')}
+            {t("widget.reserve")}
           </h3>
-          
-          <h4 
+
+          <h4
             id={subheadingId}
             className="flex items-center gap-1 text-sm text-gray-600"
           >
             <CalendarIcon className="h-4 w-4" aria-hidden="true" />
-            <span>{t('widget.today')}</span>
+            <span>{t("widget.today")}</span>
           </h4>
         </div>
-        
+
         {/* Center Section with Icons */}
         <div className="my-auto text-center">
           <div className="inline-flex items-center gap-1 rounded-full bg-brand-50 px-3 py-1 text-sm">
-            <ChefHatIcon 
-              className="h-4 w-4 text-[var(--theme-primary)]" 
-              aria-hidden="true" 
+            <ChefHatIcon
+              className="h-4 w-4 text-[var(--theme-primary)]"
+              aria-hidden="true"
             />
             <span className="text-[var(--theme-secondary)] font-medium">
-              {t('widget.checkAvailability')}
+              {t("widget.checkAvailability")}
             </span>
           </div>
-          
+
           <div className="mt-2 flex items-center justify-center gap-1 text-xs text-gray-500">
             <ClockIcon className="h-3 w-3" aria-hidden="true" />
-            <span>{t('widget.responseTime')}</span>
+            <span>{t("widget.responseTime")}</span>
           </div>
         </div>
-        
+
         {/* Call-to-Action */}
         <div className="pt-2">
-          <div 
+          <div
             id={ctaId}
             className={cn(
               "bg-gradient-to-r from-[var(--theme-primary)] to-[var(--theme-accent)] rounded-2xl",
               "px-6 py-3 transform transition-all duration-200",
-              "motion-safe:group-hover:shadow-lg motion-safe:group-hover:scale-105"
+              "motion-safe:group-hover:shadow-lg motion-safe:group-hover:scale-105",
             )}
             role="presentation" // For button semantics clarity
           >
-            <span className={cn(
-              "block text-center font-sans text-sm font-bold text-white",
-              "tracking-widest uppercase letter-spacing-2"
-            )}>
-              {t('widget.checkDate')}
+            <span
+              className={cn(
+                "block text-center font-sans text-sm font-bold text-white",
+                "tracking-widest uppercase letter-spacing-2",
+              )}
+            >
+              {t("widget.checkDate")}
             </span>
           </div>
         </div>
@@ -376,11 +423,11 @@ function WidgetContent({ variant = 'corner' }: { variant?: WidgetVariant }) {
 
 /**
  * FloatingWidgetShell component
- * 
+ *
  * This component handles the layout, positioning, motion and container styling
  * for the floating booking widget. It manages position variants (corner/sidebar),
  * animations, and theme colors via CSS variables.
- * 
+ *
  * @param props - Component props
  * @param props.children - Content to render inside the shell
  * @param props.isVisible - Whether the widget is visible
@@ -396,7 +443,7 @@ function WidgetContent({ variant = 'corner' }: { variant?: WidgetVariant }) {
 function FloatingWidgetShell({
   children,
   isVisible,
-  variant = 'corner',
+  variant = "corner",
   className,
   onHoverStart,
   onHoverEnd,
@@ -416,26 +463,29 @@ function FloatingWidgetShell({
   themeColorAccent?: string;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>) {
   // Position classes based on variant
-  const positionClasses = variant === 'corner' 
-    ? "fixed bottom-8 right-8 z-50" 
-    : "fixed top-1/2 -translate-y-1/2 right-0 z-50";
-    
+  const positionClasses =
+    variant === "corner"
+      ? "fixed bottom-8 right-8 z-50"
+      : "fixed top-1/2 -translate-y-1/2 right-0 z-50";
+
   // Default theme colors with CSS variable support and prop overrides
   const themeStyles = {
-    '--theme-primary': themeColorPrimary || 'var(--color-theme-primary, #CC5D00)', // Brand orange
-    '--theme-secondary': themeColorSecondary || 'var(--color-theme-secondary, #2B4040)', // Brand teal
-    '--theme-accent': themeColorAccent || 'var(--color-theme-accent, #BB3A3C)', // Brand accent
+    "--theme-primary":
+      themeColorPrimary || "var(--color-theme-primary, #CC5D00)", // Brand orange
+    "--theme-secondary":
+      themeColorSecondary || "var(--color-theme-secondary, #2B4040)", // Brand teal
+    "--theme-accent": themeColorAccent || "var(--color-theme-accent, #BB3A3C)", // Brand accent
   } as React.CSSProperties;
 
   // Animation classes with motion-safe prefix
-  const motionSafe = 'motion-safe:';
+  const motionSafe = "motion-safe:";
   const animationClasses = cn(
-    motionSafe + 'transition-all', 
-    motionSafe + 'duration-700', 
-    motionSafe + 'ease-out',
-    isVisible ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0"
+    motionSafe + "transition-all",
+    motionSafe + "duration-700",
+    motionSafe + "ease-out",
+    isVisible ? "translate-y-0 opacity-100" : "translate-y-16 opacity-0",
   );
-  
+
   return (
     <button
       type="button"
@@ -446,33 +496,39 @@ function FloatingWidgetShell({
         "aspect-[4/3] w-64", // Consistent aspect ratio
         "group", // For group hover effects
         animationClasses,
-        className
+        className,
       )}
       style={themeStyles}
       onMouseEnter={onHoverStart}
       onMouseLeave={onHoverEnd}
       {...props}
     >
-      <div className="relative bg-gradient-to-br from-white to-neutral-50/90 rounded-3xl shadow-2xl h-full
+      <div
+        className="relative bg-gradient-to-br from-white to-neutral-50/90 rounded-3xl shadow-2xl h-full
                     border border-brand-500/20 backdrop-blur-sm
                     transition-all duration-300 ease-out cursor-pointer group
                     hover:shadow-[0_25px_50px_-12px_rgba(204,93,0,0.25)]
-                    hover:scale-105 hover:rotate-1">
+                    hover:scale-105 hover:rotate-1"
+      >
         {/* Corner Accent */}
         <div className="absolute -top-2 -right-2 w-6 h-6 bg-brand-500 rounded-full opacity-80 animate-pulse" />
         <div className="absolute -top-1 -right-1 w-3 h-3 bg-brand-900 rounded-full" />
-        
+
         {children}
-        
+
         {/* Glow Effect */}
-        <div className="absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300
+        <div
+          className="absolute inset-0 rounded-3xl opacity-0 transition-opacity duration-300
                       bg-gradient-to-br from-brand-500/5 to-brand-900/5
-                      group-hover:opacity-100" />
-        
+                      group-hover:opacity-100"
+        />
+
         {/* Floating Animation Indicator */}
-        <div className="absolute -bottom-2 left-1/2 transform -translate-x-1/2
+        <div
+          className="absolute -bottom-2 left-1/2 transform -translate-x-1/2
                       w-2 h-2 bg-brand-500 rounded-full opacity-60
-                      animate-bounce" />
+                      animate-bounce"
+        />
       </div>
     </button>
   );
@@ -486,7 +542,7 @@ function FloatingWidgetShell({
  * Main component - memoized for performance
  * This component provides the complete floating booking widget with all features
  * including analytics tracking, accessibility, animations, and theme customization.
- * 
+ *
  * @param props - Component properties
  * @returns A React component rendering the floating booking widget
  */
@@ -494,7 +550,7 @@ export const BookingWidgetFloating = React.memo(function BookingWidgetFloating({
   onBookingClick,
   delayMs = CONSTANTS.DEFAULT_DELAY_MS,
   id: propId,
-  variant = 'corner',
+  variant = "corner",
   themeColorPrimary,
   themeColorSecondary,
   themeColorAccent,
@@ -505,14 +561,14 @@ export const BookingWidgetFloating = React.memo(function BookingWidgetFloating({
   const reactId = useId();
   const id = propId ?? `booking-widget-${reactId}`;
   const announcementId = `${id}-announcement`;
-  
+
   // Use the floating widget hook for state management
   const { isVisible, handleClick, handleHover } = useFloatingWidget({
     delayMs,
     variant,
-    onBookingClick
+    onBookingClick,
   });
-  
+
   // Translation hook
   const { t } = useTranslation();
 
@@ -521,11 +577,9 @@ export const BookingWidgetFloating = React.memo(function BookingWidgetFloating({
     <>
       {/* Accessibility announcement */}
       {isVisible && (
-        <LiveRegion id={announcementId}>
-          {t('widget.announced')}
-        </LiveRegion>
+        <LiveRegion id={announcementId}>{t("widget.announced")}</LiveRegion>
       )}
-      
+
       {/* Main Widget */}
       <FloatingWidgetShell
         isVisible={isVisible}
@@ -545,18 +599,17 @@ export const BookingWidgetFloating = React.memo(function BookingWidgetFloating({
       </FloatingWidgetShell>
     </>
   );
-
 });
 
 /**
  * @file BookingWidgetFloating.tsx
  * @description Floating booking widget that appears in the corner of the screen
- * 
+ *
  * IMPLEMENTATION NOTES:
- * 
+ *
  * 1. Tailwind Theme Configuration
  * Add these color tokens to tailwind.config.js:
- * 
+ *
  * ```js
  * // tailwind.config.js
  * module.exports = {
@@ -574,50 +627,50 @@ export const BookingWidgetFloating = React.memo(function BookingWidgetFloating({
  *   }
  * }
  * ```
- * 
+ *
  * 2. Accessibility Features
  * - Uses semantic button element with proper ARIA attributes
  * - External live region for screen reader announcements
  * - aria-labelledby referencing heading IDs to avoid redundant speech
  * - Respects prefers-reduced-motion with motion-safe prefixes
  * - All interactive elements have proper ARIA roles and states
- * 
+ *
  * 3. Component Structure
  * - BookingWidgetFloating: Main exported component (React.memo for performance)
  * - useFloatingWidget: Custom hook for state management and analytics
  * - FloatingWidgetShell: Layout, positioning, and motion handling
  * - WidgetContent: Typography and visual content
  * - BookingWidgetFloatingSkeleton: Loading state placeholder
- * 
+ *
  * 4. Analytics Integration
  * - Centralized tracking with TypeScript enums for consistency
  * - Properly debounced hover tracking
  * - Accurate display duration tracking for conversion analysis
  * - Integration hooks for conversion funnel and breadcrumb tracking
- * 
+ *
  * 5. CSS Animation Alternative
  * For better performance, consider using pure CSS animation:
- * 
+ *
  * ```css
  * @keyframes fadeUp {
  *   to { opacity: 1; transform: translateY(0); }
  * }
- * 
+ *
  * .widget-reveal {
  *   opacity: 0;
  *   transform: translateY(4rem);
  *   animation: fadeUp 0.7s 1s forwards ease-out;
  * }
  * ```
- * 
+ *
  * 6. Usage Example
- * 
+ *
  * ```tsx
  * // Basic usage with default settings
  * <BookingWidgetFloating onBookingClick={() => setIsModalOpen(true)} />
- * 
+ *
  * // With custom theme colors and delay
- * <BookingWidgetFloating 
+ * <BookingWidgetFloating
  *   onBookingClick={handleBookingClick}
  *   delayMs={2000}
  *   variant="corner"
@@ -625,9 +678,9 @@ export const BookingWidgetFloating = React.memo(function BookingWidgetFloating({
  *   themeColorSecondary="#004E89"
  *   themeColorAccent="#FF5151"
  * />
- * 
+ *
  * // Sidebar variant with custom class
- * <BookingWidgetFloating 
+ * <BookingWidgetFloating
  *   variant="sidebar"
  *   className="lg:w-72"
  *   onBookingClick={openBookingModal}

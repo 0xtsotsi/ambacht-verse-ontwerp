@@ -15,11 +15,7 @@
         "dueDate": "2025-06-30T18:00:00.000Z",
         "completedDate": "2025-06-30T16:30:00.000Z",
         "completionComment": "EPIC COMPLETE: All 4 subtasks delivered production-ready. Core booking foundation established with floating widget, enhanced date checker, quote calculator, and database schema. 100% code compliance (≤300 LOC, TDD-tested, comprehensive logging). Conversion rate infrastructure deployed.",
-        "tags": [
-          "booking",
-          "ui",
-          "core"
-        ],
+        "tags": ["booking", "ui", "core"],
         "dependencies": [],
         "subtasks": [
           {
@@ -96,11 +92,7 @@
         "dueDate": "2025-06-30T18:00:00.000Z",
         "completedDate": "2025-06-30T17:45:00.000Z",
         "completionComment": "EPIC COMPLETE: Comprehensive logging system deployed with 3 parallel subagents. Component state tracking (prev/new values), API monitoring (timing/retries), user flow analytics (breadcrumbs). Winston-based centralized logger, error boundaries, performance monitoring. Production-ready with browser compatibility.",
-        "tags": [
-          "logging",
-          "monitoring",
-          "infrastructure"
-        ],
+        "tags": ["logging", "monitoring", "infrastructure"],
         "dependencies": [],
         "subtasks": [],
         "created": "2025-06-30T09:00:00.000Z",
@@ -120,11 +112,7 @@
         "dueDate": "2025-06-30T23:00:00.000Z",
         "completedDate": "2025-06-30T22:15:00.000Z",
         "completionComment": "EPIC COMPLETE: Testing infrastructure with mandatory TDD protocols, comprehensive documentation system, quality gates. Vitest configuration, 95%+ coverage requirements, pre-commit validation, Claude integration guides.",
-        "tags": [
-          "testing",
-          "documentation",
-          "quality"
-        ],
+        "tags": ["testing", "documentation", "quality"],
         "dependencies": ["task_logging"],
         "subtasks": [],
         "created": "2025-06-30T15:00:00.000Z",
@@ -141,14 +129,8 @@
         "assignee": "TBD",
         "startDate": "2025-07-01T09:00:00.000Z",
         "dueDate": "2025-07-07T18:00:00.000Z",
-        "tags": [
-          "pricing",
-          "services",
-          "ui"
-        ],
-        "dependencies": [
-          "task_001"
-        ],
+        "tags": ["pricing", "services", "ui"],
+        "dependencies": ["task_001"],
         "subtasks": [
           {
             "id": "task_002_1",
@@ -194,11 +176,7 @@
         "priority": "medium",
         "complexity": 6,
         "estimatedHours": 24,
-        "tags": [
-          "trust",
-          "testimonials",
-          "branding"
-        ],
+        "tags": ["trust", "testimonials", "branding"],
         "dependencies": [],
         "subtasks": [
           {
@@ -245,15 +223,8 @@
         "priority": "medium",
         "complexity": 7,
         "estimatedHours": 28,
-        "tags": [
-          "communication",
-          "integration",
-          "i18n"
-        ],
-        "dependencies": [
-          "task_001",
-          "task_002"
-        ],
+        "tags": ["communication", "integration", "i18n"],
+        "dependencies": ["task_001", "task_002"],
         "subtasks": [
           {
             "id": "task_004_1",
@@ -302,7 +273,7 @@
       "description": "Transform Wesley's Ambacht into a premium catering platform with comprehensive logging, testing, and enterprise-grade development standards",
       "achievements": [
         "Epic 1: Enhanced Booking Foundation - 100% COMPLETE",
-        "Comprehensive Logging System - 100% COMPLETE", 
+        "Comprehensive Logging System - 100% COMPLETE",
         "Testing Infrastructure & Documentation - 100% COMPLETE",
         "Enterprise-grade development standards established",
         "Production-ready monitoring and debugging capabilities"

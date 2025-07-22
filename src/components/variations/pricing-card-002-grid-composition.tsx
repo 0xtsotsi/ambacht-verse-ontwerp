@@ -1,9 +1,9 @@
-import React from 'react';
-import { cn } from '@/lib/utils';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
-import { Check, Crown, Users, Heart, Building } from 'lucide-react';
+import React from "react";
+import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Check, Crown, Users, Heart, Building } from "lucide-react";
 
 interface ServicePricingCardProps {
   className?: string;
@@ -11,7 +11,7 @@ interface ServicePricingCardProps {
 
 interface PricingTier {
   id: string;
-  category: 'Corporate' | 'Social' | 'Wedding' | 'Custom';
+  category: "Corporate" | "Social" | "Wedding" | "Custom";
   title: string;
   subtitle: string;
   priceRange: {
@@ -26,65 +26,65 @@ interface PricingTier {
 
 const pricingTiers: PricingTier[] = [
   {
-    id: 'corporate',
-    category: 'Corporate',
-    title: 'Zakelijk Catering',
-    subtitle: 'Professionele bedrijfsevenementen',
-    priceRange: { min: 18.50, max: 27.50 },
+    id: "corporate",
+    category: "Corporate",
+    title: "Zakelijk Catering",
+    subtitle: "Professionele bedrijfsevenementen",
+    priceRange: { min: 18.5, max: 27.5 },
     features: [
-      'Uitgebreide menuopties',
-      'Professionele service',
-      'Flexibele planning',
-      'Premium presentatie'
+      "Uitgebreide menuopties",
+      "Professionele service",
+      "Flexibele planning",
+      "Premium presentatie",
     ],
     icon: <Building className="w-6 h-6" />,
-    accent: 'bg-gradient-to-br from-blue-600 to-blue-700',
+    accent: "bg-gradient-to-br from-blue-600 to-blue-700",
   },
   {
-    id: 'wedding',
-    category: 'Wedding',
-    title: 'Bruiloft Catering',
-    subtitle: 'Uw perfecte dag verdient perfectie',
-    priceRange: { min: 22.50, max: 27.50 },
+    id: "wedding",
+    category: "Wedding",
+    title: "Bruiloft Catering",
+    subtitle: "Uw perfecte dag verdient perfectie",
+    priceRange: { min: 22.5, max: 27.5 },
     features: [
-      'Persoonlijke menusamenstelling',
-      'Ceremoniële service',
-      'Decoratieve presentatie',
-      'Fotografvriendelijke opmaak'
+      "Persoonlijke menusamenstelling",
+      "Ceremoniële service",
+      "Decoratieve presentatie",
+      "Fotografvriendelijke opmaak",
     ],
     highlighted: true,
     icon: <Heart className="w-6 h-6" />,
-    accent: 'bg-gradient-to-br from-rose-500 to-pink-600',
+    accent: "bg-gradient-to-br from-rose-500 to-pink-600",
   },
   {
-    id: 'social',
-    category: 'Social',
-    title: 'Sociale Evenementen',
-    subtitle: 'Familiefeesten en bijeenkomsten',
-    priceRange: { min: 12.50, max: 22.50 },
+    id: "social",
+    category: "Social",
+    title: "Sociale Evenementen",
+    subtitle: "Familiefeesten en bijeenkomsten",
+    priceRange: { min: 12.5, max: 22.5 },
     features: [
-      'Gezellige atmosfeer',
-      'Gevarieerde keuzes',
-      'Informele service',
-      'Betaalbare luxe'
+      "Gezellige atmosfeer",
+      "Gevarieerde keuzes",
+      "Informele service",
+      "Betaalbare luxe",
     ],
     icon: <Users className="w-6 h-6" />,
-    accent: 'bg-gradient-to-br from-green-600 to-emerald-700',
+    accent: "bg-gradient-to-br from-green-600 to-emerald-700",
   },
   {
-    id: 'custom',
-    category: 'Custom',
-    title: 'Maatwerk Service',
-    subtitle: 'Volledig aangepast aan uw wensen',
-    priceRange: { min: 15.00, max: 27.50 },
+    id: "custom",
+    category: "Custom",
+    title: "Maatwerk Service",
+    subtitle: "Volledig aangepast aan uw wensen",
+    priceRange: { min: 15.0, max: 27.5 },
     features: [
-      'Unieke menuontwikkeling',
-      'Themagerichte styling',
-      'Persoonlijke begeleiding',
-      'Creatieve vrijheid'
+      "Unieke menuontwikkeling",
+      "Themagerichte styling",
+      "Persoonlijke begeleiding",
+      "Creatieve vrijheid",
     ],
     icon: <Crown className="w-6 h-6" />,
-    accent: 'bg-gradient-to-br from-amber-600 to-orange-700',
+    accent: "bg-gradient-to-br from-amber-600 to-orange-700",
   },
 ];
 
@@ -96,23 +96,24 @@ export function ServicePricingCard({ className }: ServicePricingCardProps) {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
           <div className="lg:col-span-2 space-y-6">
             <div className="space-y-3">
-              <Badge 
-                variant="outline" 
+              <Badge
+                variant="outline"
                 className="text-[#CC5D00] border-[#CC5D00] bg-[#FFEFDA] font-medium"
               >
                 Transparante Prijzen
               </Badge>
               <h2 className="text-4xl lg:text-5xl font-serif text-[#2C2C2C] leading-tight">
-                Kwaliteit per persoon,{' '}
+                Kwaliteit per persoon,{" "}
                 <span className="text-[#CC5D00] italic">eerlijk geprijsd</span>
               </h2>
             </div>
             <p className="text-lg text-[#3D6160] leading-relaxed max-w-2xl">
-              Ontdek onze transparante tarieven voor elke gelegenheid. Van intieme bijeenkomsten 
-              tot grootschalige evenementen - wij bieden eerlijke prijzen zonder verborgen kosten.
+              Ontdek onze transparante tarieven voor elke gelegenheid. Van
+              intieme bijeenkomsten tot grootschalige evenementen - wij bieden
+              eerlijke prijzen zonder verborgen kosten.
             </p>
           </div>
-          
+
           {/* Trust Signal Cards in Sidebar */}
           <div className="space-y-4">
             <Card className="border-[#3D6160]/20 bg-gradient-to-br from-[#FFEFDA] to-white">
@@ -127,7 +128,9 @@ export function ServicePricingCard({ className }: ServicePricingCardProps) {
               <CardContent className="p-6">
                 <div className="text-center space-y-2">
                   <div className="text-2xl font-bold text-[#2B4040]">€850</div>
-                  <div className="text-sm text-[#3D6160]">Gemiddelde bestelling</div>
+                  <div className="text-sm text-[#3D6160]">
+                    Gemiddelde bestelling
+                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -142,10 +145,10 @@ export function ServicePricingCard({ className }: ServicePricingCardProps) {
               className={cn(
                 "group relative overflow-hidden border-2 transition-all duration-300 hover:shadow-xl",
                 "hover:-translate-y-2 cursor-pointer",
-                tier.highlighted 
-                  ? "border-[#CC5D00] shadow-lg scale-105 lg:scale-110 z-10" 
+                tier.highlighted
+                  ? "border-[#CC5D00] shadow-lg scale-105 lg:scale-110 z-10"
                   : "border-[#3D6160]/20 hover:border-[#CC5D00]/50",
-                tier.highlighted && "xl:col-span-1 xl:row-span-2" // Make highlighted card taller on XL screens
+                tier.highlighted && "xl:col-span-1 xl:row-span-2", // Make highlighted card taller on XL screens
               )}
             >
               {tier.highlighted && (
@@ -154,18 +157,22 @@ export function ServicePricingCard({ className }: ServicePricingCardProps) {
                 </div>
               )}
 
-              <CardHeader className={cn("relative", tier.highlighted && "pt-8")}>
+              <CardHeader
+                className={cn("relative", tier.highlighted && "pt-8")}
+              >
                 {/* Category Icon with Accent */}
-                <div className={cn(
-                  "w-12 h-12 rounded-xl flex items-center justify-center text-white mb-4",
-                  tier.accent
-                )}>
+                <div
+                  className={cn(
+                    "w-12 h-12 rounded-xl flex items-center justify-center text-white mb-4",
+                    tier.accent,
+                  )}
+                >
                   {tier.icon}
                 </div>
 
                 {/* Category Badge */}
-                <Badge 
-                  variant="secondary" 
+                <Badge
+                  variant="secondary"
                   className="w-fit mb-2 bg-[#3D6160]/10 text-[#3D6160] border-0"
                 >
                   {tier.category}
@@ -210,12 +217,12 @@ export function ServicePricingCard({ className }: ServicePricingCardProps) {
                 </div>
 
                 {/* CTA Button */}
-                <Button 
+                <Button
                   className={cn(
                     "w-full transition-all duration-300 font-medium",
                     tier.highlighted
                       ? "bg-[#CC5D00] hover:bg-[#BB3A3C] text-white shadow-lg hover:shadow-xl"
-                      : "bg-[#2B4040] hover:bg-[#3D6160] text-white"
+                      : "bg-[#2B4040] hover:bg-[#3D6160] text-white",
                   )}
                 >
                   Reserveer Nu
@@ -244,19 +251,19 @@ export function ServicePricingCard({ className }: ServicePricingCardProps) {
               Heeft u vragen over onze tarieven?
             </h3>
             <p className="text-[#3D6160] leading-relaxed">
-              Onze ervaren planners staan klaar om u persoonlijk te adviseren 
+              Onze ervaren planners staan klaar om u persoonlijk te adviseren
               over de beste keuze voor uw evenement.
             </p>
           </div>
-          
+
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Button 
+            <Button
               size="lg"
               className="bg-[#CC5D00] hover:bg-[#BB3A3C] text-white px-8 py-3 font-medium"
             >
               Gratis Offerte Aanvragen
             </Button>
-            <Button 
+            <Button
               variant="outline"
               size="lg"
               className="border-[#3D6160] text-[#3D6160] hover:bg-[#3D6160] hover:text-white px-8 py-3"

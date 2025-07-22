@@ -1,5 +1,5 @@
-import { useRef, useCallback } from 'react';
-import { ComponentLogger } from '@/lib/logger';
+import { useRef, useCallback } from "react";
+import { ComponentLogger } from "@/lib/logger";
 
 interface UseStateLoggerOptions<T> {
   componentName: string;
@@ -14,30 +14,36 @@ interface UseStateLoggerOptions<T> {
 export function useStateLogger<T>({
   componentName,
   stateName,
-  trigger = 'state_update'
+  trigger = "state_update",
 }: UseStateLoggerOptions<T>) {
   const previousStateRef = useRef<T>();
 
-  const logStateChange = useCallback((newState: T, customTrigger?: string) => {
-    try {
-      const prevState = previousStateRef.current;
-      const actualTrigger = customTrigger || trigger;
+  const logStateChange = useCallback(
+    (newState: T, customTrigger?: string) => {
+      try {
+        const prevState = previousStateRef.current;
+        const actualTrigger = customTrigger || trigger;
 
-      ComponentLogger.stateChange(
-        componentName,
-        prevState,
-        newState,
-        `${stateName}: ${actualTrigger}`
-      );
+        ComponentLogger.stateChange(
+          componentName,
+          prevState,
+          newState,
+          `${stateName}: ${actualTrigger}`,
+        );
 
-      previousStateRef.current = newState;
-    } catch (error) {
-      console.error(`State logging error for ${componentName}.${stateName}:`, error);
-    }
-  }, [componentName, stateName, trigger]);
+        previousStateRef.current = newState;
+      } catch (error) {
+        console.error(
+          `State logging error for ${componentName}.${stateName}:`,
+          error,
+        );
+      }
+    },
+    [componentName, stateName, trigger],
+  );
 
   return {
     logStateChange,
-    getPreviousState: () => previousStateRef.current
+    getPreviousState: () => previousStateRef.current,
   };
 }

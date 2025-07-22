@@ -1,5 +1,5 @@
-import { useRef, useMemo } from 'react';
-import { ComponentLogger } from '@/lib/logger';
+import { useRef, useMemo } from "react";
+import { ComponentLogger } from "@/lib/logger";
 
 interface UseRenderLoggerOptions {
   componentName: string;
@@ -14,7 +14,7 @@ interface UseRenderLoggerOptions {
 export function useRenderLogger({
   componentName,
   dependencies = [],
-  threshold = 100
+  threshold = 100,
 }: UseRenderLoggerOptions) {
   const renderCountRef = useRef(0);
   const lastRenderTimeRef = useRef(Date.now());
@@ -29,17 +29,26 @@ export function useRenderLogger({
     try {
       // Identify changed dependencies
       const changedDeps = dependencies
-        .map((dep, index) => ({ index, current: dep, previous: previousDepsRef.current[index] }))
+        .map((dep, index) => ({
+          index,
+          current: dep,
+          previous: previousDepsRef.current[index],
+        }))
         .filter(({ current, previous }) => current !== previous)
         .map(({ index }) => `dep[${index}]`);
 
-      const reason = changedDeps.length > 0 
-        ? `Dependencies changed: ${changedDeps.join(', ')}`
-        : 'Forced re-render or initial render';
+      const reason =
+        changedDeps.length > 0
+          ? `Dependencies changed: ${changedDeps.join(", ")}`
+          : "Forced re-render or initial render";
 
       // Log if render is frequent (less than threshold ms since last render)
       if (renderCountRef.current > 1 && timeSinceLastRender < threshold) {
-        ComponentLogger.rerender(componentName, `${reason} (frequent render)`, changedDeps);
+        ComponentLogger.rerender(
+          componentName,
+          `${reason} (frequent render)`,
+          changedDeps,
+        );
       } else if (renderCountRef.current > 1) {
         ComponentLogger.rerender(componentName, reason, changedDeps);
       }
@@ -50,17 +59,17 @@ export function useRenderLogger({
       return {
         renderCount: renderCountRef.current,
         timeSinceLastRender,
-        changedDependencies: changedDeps
+        changedDependencies: changedDeps,
       };
     } catch (error) {
       console.error(`Render logging error for ${componentName}:`, error);
       return {
         renderCount: renderCountRef.current,
         timeSinceLastRender,
-        changedDependencies: []
+        changedDependencies: [],
       };
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, dependencies);
 
   return renderInfo;

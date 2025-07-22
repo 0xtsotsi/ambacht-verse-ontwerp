@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { CheckCircle, ChevronDown, ChevronUp, Phone, MessageCircle } from 'lucide-react';
-import { 
-  COLOR_SCHEMES, 
-  SERVICE_ICONS, 
-  TRANSLATIONS, 
+import React, { useState } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import {
+  CheckCircle,
+  ChevronDown,
+  ChevronUp,
+  Phone,
+  MessageCircle,
+} from "lucide-react";
+import {
+  COLOR_SCHEMES,
+  SERVICE_ICONS,
+  TRANSLATIONS,
   SERVICE_INCLUSIONS,
   validatePricingCardProps,
   calculateFinalPrice,
   COMMON_STYLES,
   type ServiceType,
   type TierType,
-  type LanguageType
-} from '@/lib/pricing-card-constants';
+  type LanguageType,
+} from "@/lib/pricing-card-constants";
 
 interface PricingCardProps {
   serviceType: ServiceType;
@@ -33,16 +39,23 @@ const PricingCard007MobileFirst: React.FC<PricingCardProps> = ({
   pricePerPerson,
   tier,
   onBookNow,
-  language = 'nl'
+  language = "nl",
 }) => {
   // All hooks must be called first
   const [isExpanded, setIsExpanded] = useState(false);
-  const [activeAction, setActiveAction] = useState<'book' | 'call' | 'whatsapp' | null>(null);
+  const [activeAction, setActiveAction] = useState<
+    "book" | "call" | "whatsapp" | null
+  >(null);
 
   // Input validation after hooks
-  const validation = validatePricingCardProps({ serviceType, tier, language, pricePerPerson });
+  const validation = validatePricingCardProps({
+    serviceType,
+    tier,
+    language,
+    pricePerPerson,
+  });
   if (!validation.isValid) {
-    console.error('Invalid props:', validation.errors);
+    console.error("Invalid props:", validation.errors);
     return null;
   }
 
@@ -52,81 +65,97 @@ const PricingCard007MobileFirst: React.FC<PricingCardProps> = ({
   const finalPrice = calculateFinalPrice(serviceType, tier);
 
   const mobileTranslations = {
-    nl: { callNow: 'Bel Direct', whatsapp: 'WhatsApp', showDetails: 'Toon Details', hideDetails: 'Verberg Details', quickBook: 'Snel Boeken' },
-    en: { callNow: 'Call Now', whatsapp: 'WhatsApp', showDetails: 'Show Details', hideDetails: 'Hide Details', quickBook: 'Quick Book' }
+    nl: {
+      callNow: "Bel Direct",
+      whatsapp: "WhatsApp",
+      showDetails: "Toon Details",
+      hideDetails: "Verberg Details",
+      quickBook: "Snel Boeken",
+    },
+    en: {
+      callNow: "Call Now",
+      whatsapp: "WhatsApp",
+      showDetails: "Show Details",
+      hideDetails: "Hide Details",
+      quickBook: "Quick Book",
+    },
   };
   const mt = mobileTranslations[language];
 
   const serviceConfig = {
     corporate: {
-      basePrice: 12.50,
-      color: 'bg-blue-50 border-blue-200',
-      gradientFrom: 'from-blue-400',
-      gradientTo: 'to-blue-600',
-      icon: '🏢',
-      emoji: '💼'
+      basePrice: 12.5,
+      color: "bg-blue-50 border-blue-200",
+      gradientFrom: "from-blue-400",
+      gradientTo: "to-blue-600",
+      icon: "🏢",
+      emoji: "💼",
     },
     social: {
-      basePrice: 27.50,
-      color: 'bg-green-50 border-green-200', 
-      gradientFrom: 'from-green-400',
-      gradientTo: 'to-green-600',
-      icon: '🎉',
-      emoji: '🎊'
+      basePrice: 27.5,
+      color: "bg-green-50 border-green-200",
+      gradientFrom: "from-green-400",
+      gradientTo: "to-green-600",
+      icon: "🎉",
+      emoji: "🎊",
     },
     wedding: {
-      basePrice: 22.50,
-      color: 'bg-pink-50 border-pink-200',
-      gradientFrom: 'from-pink-400',
-      gradientTo: 'to-pink-600',
-      icon: '💒',
-      emoji: '💐'
+      basePrice: 22.5,
+      color: "bg-pink-50 border-pink-200",
+      gradientFrom: "from-pink-400",
+      gradientTo: "to-pink-600",
+      icon: "💒",
+      emoji: "💐",
     },
     custom: {
       basePrice: null,
-      color: 'bg-purple-50 border-purple-200',
-      gradientFrom: 'from-purple-400',
-      gradientTo: 'to-purple-600',
-      icon: '✨',
-      emoji: '🎨'
-    }
+      color: "bg-purple-50 border-purple-200",
+      gradientFrom: "from-purple-400",
+      gradientTo: "to-purple-600",
+      icon: "✨",
+      emoji: "🎨",
+    },
   };
 
   const tierMultipliers = {
     basis: 1.0,
     premium: 1.4,
-    luxe: 1.8
+    luxe: 1.8,
   };
 
   const config = serviceConfig[serviceType];
-  const finalPrice = config.basePrice ? config.basePrice * tierMultipliers[tier] : null;
+  const finalPrice = config.basePrice
+    ? config.basePrice * tierMultipliers[tier]
+    : null;
 
   const inclusions = {
     basis: [
-      language === 'nl' ? 'Professionele bediening' : 'Professional service',
-      language === 'nl' ? 'Verse ingrediënten' : 'Fresh ingredients',
-      language === 'nl' ? 'Standaard presentatie' : 'Standard presentation',
-      language === 'nl' ? 'Basis serviesgoed' : 'Basic tableware'
+      language === "nl" ? "Professionele bediening" : "Professional service",
+      language === "nl" ? "Verse ingrediënten" : "Fresh ingredients",
+      language === "nl" ? "Standaard presentatie" : "Standard presentation",
+      language === "nl" ? "Basis serviesgoed" : "Basic tableware",
     ],
     premium: [
-      language === 'nl' ? 'Uitgebreide bediening' : 'Extended service',
-      language === 'nl' ? 'Premium ingrediënten' : 'Premium ingredients', 
-      language === 'nl' ? 'Elegante presentatie' : 'Elegant presentation',
-      language === 'nl' ? 'Premium serviesgoed' : 'Premium tableware',
-      language === 'nl' ? 'Extra gerechten' : 'Additional dishes'
+      language === "nl" ? "Uitgebreide bediening" : "Extended service",
+      language === "nl" ? "Premium ingrediënten" : "Premium ingredients",
+      language === "nl" ? "Elegante presentatie" : "Elegant presentation",
+      language === "nl" ? "Premium serviesgoed" : "Premium tableware",
+      language === "nl" ? "Extra gerechten" : "Additional dishes",
     ],
     luxe: [
-      language === 'nl' ? 'Persoonlijke chef' : 'Personal chef',
-      language === 'nl' ? 'Luxe ingrediënten' : 'Luxury ingredients',
-      language === 'nl' ? 'Exclusieve presentatie' : 'Exclusive presentation', 
-      language === 'nl' ? 'Designer serviesgoed' : 'Designer tableware',
-      language === 'nl' ? 'Volledige verzorging' : 'Full service',
-      language === 'nl' ? 'Live cooking' : 'Live cooking'
-    ]
+      language === "nl" ? "Persoonlijke chef" : "Personal chef",
+      language === "nl" ? "Luxe ingrediënten" : "Luxury ingredients",
+      language === "nl" ? "Exclusieve presentatie" : "Exclusive presentation",
+      language === "nl" ? "Designer serviesgoed" : "Designer tableware",
+      language === "nl" ? "Volledige verzorging" : "Full service",
+      language === "nl" ? "Live cooking" : "Live cooking",
+    ],
   };
 
   return (
-    <Card className={`relative ${config.color} border-2 hover:shadow-lg transition-all duration-300 max-w-sm mx-auto`}>
+    <Card
+      className={`relative ${config.color} border-2 hover:shadow-lg transition-all duration-300 max-w-sm mx-auto`}
+    >
       {/* Mobile Header with Visual Hierarchy */}
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between mb-3">
@@ -138,34 +167,38 @@ const PricingCard007MobileFirst: React.FC<PricingCardProps> = ({
               </CardTitle>
               <Badge variant="secondary" className="text-xs mt-1">
                 {t[tier as keyof typeof t]}
-                {tier === 'premium' && <Star className="w-3 h-3 ml-1 fill-current" />}
+                {tier === "premium" && (
+                  <Star className="w-3 h-3 ml-1 fill-current" />
+                )}
               </Badge>
             </div>
           </div>
-          {tier === 'premium' && (
+          {tier === "premium" && (
             <Badge className="bg-orange-500 text-white text-xs px-2 py-1">
               {t.popular}
             </Badge>
           )}
         </div>
-        
+
         {/* Large, Touch-Friendly Pricing */}
-        <div className={`text-center py-6 bg-gradient-to-r ${config.gradientFrom} ${config.gradientTo} rounded-xl text-white shadow-md`}>
+        <div
+          className={`text-center py-6 bg-gradient-to-r ${config.gradientFrom} ${config.gradientTo} rounded-xl text-white shadow-md`}
+        >
           {finalPrice ? (
             <div>
               <div className="flex items-baseline justify-center gap-1">
-                <span className="text-lg font-medium opacity-90">{t.vanaf}</span>
-                <span className="text-4xl font-black">€{finalPrice.toFixed(2)}</span>
+                <span className="text-lg font-medium opacity-90">
+                  {t.vanaf}
+                </span>
+                <span className="text-4xl font-black">
+                  €{finalPrice.toFixed(2)}
+                </span>
                 <span className="text-lg opacity-90">{t.perPersoon}</span>
               </div>
-              <div className="text-sm opacity-90 mt-1">
-                {t.inclusief} BTW
-              </div>
+              <div className="text-sm opacity-90 mt-1">{t.inclusief} BTW</div>
             </div>
           ) : (
-            <div className="text-2xl font-bold">
-              {t.getQuote}
-            </div>
+            <div className="text-2xl font-bold">{t.getQuote}</div>
           )}
         </div>
       </CardHeader>
@@ -176,7 +209,7 @@ const PricingCard007MobileFirst: React.FC<PricingCardProps> = ({
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className="flex items-center justify-between w-full p-3 bg-white/60 rounded-lg border border-gray-200 hover:bg-white/80 transition-colors"
-            style={{ minHeight: '48px' }} // 48px minimum touch target
+            style={{ minHeight: "48px" }} // 48px minimum touch target
           >
             <span className="font-medium text-gray-800 text-sm">
               {t.inclusief} ({inclusions[tier].length} items)
@@ -187,7 +220,7 @@ const PricingCard007MobileFirst: React.FC<PricingCardProps> = ({
               <ChevronDown className="w-5 h-5 text-gray-600" />
             )}
           </button>
-          
+
           {isExpanded && (
             <div className="mt-3 space-y-2 pl-2">
               {inclusions[tier].map((item, index) => (
@@ -203,13 +236,13 @@ const PricingCard007MobileFirst: React.FC<PricingCardProps> = ({
         {/* Mobile Action Grid - Large Touch Targets */}
         <div className="space-y-3">
           {/* Primary Action */}
-          <Button 
+          <Button
             onClick={() => {
-              setActiveAction('book');
+              setActiveAction("book");
               onBookNow(serviceType, tier);
             }}
             className={`w-full h-14 bg-[#CC5D00] hover:bg-[#B54A00] text-white font-semibold text-lg transition-all duration-200 ${
-              activeAction === 'book' ? 'scale-95' : 'hover:scale-105'
+              activeAction === "book" ? "scale-95" : "hover:scale-105"
             }`}
           >
             <div className="flex items-center justify-center gap-2">
@@ -220,22 +253,22 @@ const PricingCard007MobileFirst: React.FC<PricingCardProps> = ({
 
           {/* Secondary Actions Grid */}
           <div className="grid grid-cols-2 gap-3">
-            <Button 
+            <Button
               variant="outline"
-              onClick={() => setActiveAction('call')}
+              onClick={() => setActiveAction("call")}
               className={`h-12 border-2 border-blue-200 bg-blue-50 hover:bg-blue-100 text-blue-700 font-medium transition-all duration-200 ${
-                activeAction === 'call' ? 'scale-95' : 'hover:scale-105'
+                activeAction === "call" ? "scale-95" : "hover:scale-105"
               }`}
             >
               <Phone className="w-4 h-4 mr-2" />
               {t.callNow}
             </Button>
-            
-            <Button 
+
+            <Button
               variant="outline"
-              onClick={() => setActiveAction('whatsapp')}
+              onClick={() => setActiveAction("whatsapp")}
               className={`h-12 border-2 border-green-200 bg-green-50 hover:bg-green-100 text-green-700 font-medium transition-all duration-200 ${
-                activeAction === 'whatsapp' ? 'scale-95' : 'hover:scale-105'
+                activeAction === "whatsapp" ? "scale-95" : "hover:scale-105"
               }`}
             >
               <MessageCircle className="w-4 h-4 mr-2" />
@@ -252,7 +285,9 @@ const PricingCard007MobileFirst: React.FC<PricingCardProps> = ({
             <span className="text-xs text-gray-500">• 500+ events</span>
           </div>
           <p className="text-xs text-gray-600">
-            {language === 'nl' ? 'Bevestiging binnen 4 uur' : 'Confirmation within 4 hours'}
+            {language === "nl"
+              ? "Bevestiging binnen 4 uur"
+              : "Confirmation within 4 hours"}
           </p>
         </div>
       </CardContent>

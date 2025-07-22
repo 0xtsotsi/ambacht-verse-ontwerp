@@ -1,12 +1,12 @@
-import { 
-  SERVICE_CATEGORIES, 
-  SERVICE_TIERS, 
-  ADD_ON_SERVICES, 
+import {
+  SERVICE_CATEGORIES,
+  SERVICE_TIERS,
+  ADD_ON_SERVICES,
   VOLUME_DISCOUNTS,
   type ServiceCategory,
   type ServiceTier,
-  type AddOnService
-} from './pricing-constants';
+  type AddOnService,
+} from "./pricing-constants";
 
 export interface QuoteInput {
   serviceCategory: string;
@@ -47,11 +47,13 @@ export interface VolumeDiscount {
  * Calculate a detailed quote breakdown based on user selections
  */
 export function calculateQuote(input: QuoteInput): QuoteBreakdown {
-  const category = SERVICE_CATEGORIES.find(cat => cat.id === input.serviceCategory);
-  const tier = SERVICE_TIERS.find(t => t.id === input.serviceTier);
+  const category = SERVICE_CATEGORIES.find(
+    (cat) => cat.id === input.serviceCategory,
+  );
+  const tier = SERVICE_TIERS.find((t) => t.id === input.serviceTier);
 
   if (!category || !tier) {
-    throw new Error('Invalid service category or tier');
+    throw new Error("Invalid service category or tier");
   }
 
   // Base pricing calculation
@@ -91,10 +93,13 @@ export function calculateQuote(input: QuoteInput): QuoteBreakdown {
 /**
  * Calculate add-on services pricing
  */
-function calculateAddOns(selectedAddOnIds: string[], guestCount: number): AddOnBreakdown[] {
+function calculateAddOns(
+  selectedAddOnIds: string[],
+  guestCount: number,
+): AddOnBreakdown[] {
   return selectedAddOnIds
-    .map(id => {
-      const addon = ADD_ON_SERVICES.find(service => service.id === id);
+    .map((id) => {
+      const addon = ADD_ON_SERVICES.find((service) => service.id === id);
       if (!addon) return null;
 
       let total = 0;
@@ -118,11 +123,14 @@ function calculateAddOns(selectedAddOnIds: string[], guestCount: number): AddOnB
 /**
  * Calculate volume discount based on guest count
  */
-function calculateVolumeDiscount(guestCount: number, subtotal: number): VolumeDiscount | null {
+function calculateVolumeDiscount(
+  guestCount: number,
+  subtotal: number,
+): VolumeDiscount | null {
   // Find the highest applicable discount
-  const applicableDiscount = VOLUME_DISCOUNTS
-    .filter(discount => guestCount >= discount.minGuests)
-    .sort((a, b) => b.discount - a.discount)[0];
+  const applicableDiscount = VOLUME_DISCOUNTS.filter(
+    (discount) => guestCount >= discount.minGuests,
+  ).sort((a, b) => b.discount - a.discount)[0];
 
   if (!applicableDiscount) {
     return null;
@@ -139,9 +147,12 @@ function calculateVolumeDiscount(guestCount: number, subtotal: number): VolumeDi
 /**
  * Get price range for a service category and tier combination
  */
-export function getPriceRange(categoryId: string, tierId: string): { min: number; max: number } {
-  const category = SERVICE_CATEGORIES.find(cat => cat.id === categoryId);
-  const tier = SERVICE_TIERS.find(t => t.id === tierId);
+export function getPriceRange(
+  categoryId: string,
+  tierId: string,
+): { min: number; max: number } {
+  const category = SERVICE_CATEGORIES.find((cat) => cat.id === categoryId);
+  const tier = SERVICE_TIERS.find((t) => t.id === tierId);
 
   if (!category || !tier) {
     return { min: 0, max: 0 };
@@ -157,9 +168,9 @@ export function getPriceRange(categoryId: string, tierId: string): { min: number
  * Format currency in Dutch locale
  */
 export function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('nl-NL', {
-    style: 'currency',
-    currency: 'EUR',
+  return new Intl.NumberFormat("nl-NL", {
+    style: "currency",
+    currency: "EUR",
   }).format(amount);
 }
 
@@ -167,12 +178,12 @@ export function formatCurrency(amount: number): string {
  * Calculate estimated total for quick display (simplified version)
  */
 export function calculateEstimatedTotal(
-  categoryId: string, 
-  tierId: string, 
-  guestCount: number
+  categoryId: string,
+  tierId: string,
+  guestCount: number,
 ): number {
-  const category = SERVICE_CATEGORIES.find(cat => cat.id === categoryId);
-  const tier = SERVICE_TIERS.find(t => t.id === tierId);
+  const category = SERVICE_CATEGORIES.find((cat) => cat.id === categoryId);
+  const tier = SERVICE_TIERS.find((t) => t.id === tierId);
 
   if (!category || !tier) {
     return 0;
@@ -185,21 +196,21 @@ export function calculateEstimatedTotal(
  * Get service category by ID
  */
 export function getServiceCategory(id: string): ServiceCategory | undefined {
-  return SERVICE_CATEGORIES.find(cat => cat.id === id);
+  return SERVICE_CATEGORIES.find((cat) => cat.id === id);
 }
 
 /**
  * Get service tier by ID
  */
 export function getServiceTier(id: string): ServiceTier | undefined {
-  return SERVICE_TIERS.find(tier => tier.id === id);
+  return SERVICE_TIERS.find((tier) => tier.id === id);
 }
 
 /**
  * Get add-on service by ID
  */
 export function getAddOnService(id: string): AddOnService | undefined {
-  return ADD_ON_SERVICES.find(addon => addon.id === id);
+  return ADD_ON_SERVICES.find((addon) => addon.id === id);
 }
 
 /**
@@ -209,19 +220,19 @@ export function validateQuoteInput(input: QuoteInput): string[] {
   const errors: string[] = [];
 
   if (!getServiceCategory(input.serviceCategory)) {
-    errors.push('Ongeldige service categorie geselecteerd');
+    errors.push("Ongeldige service categorie geselecteerd");
   }
 
   if (!getServiceTier(input.serviceTier)) {
-    errors.push('Ongeldige service tier geselecteerd');
+    errors.push("Ongeldige service tier geselecteerd");
   }
 
   if (input.guestCount < 10) {
-    errors.push('Minimum aantal gasten is 10');
+    errors.push("Minimum aantal gasten is 10");
   }
 
   if (input.guestCount > 500) {
-    errors.push('Maximum aantal gasten is 500');
+    errors.push("Maximum aantal gasten is 500");
   }
 
   // Validate all selected add-ons exist

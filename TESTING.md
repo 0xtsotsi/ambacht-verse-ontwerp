@@ -3,10 +3,11 @@
 ## 🚨 MANDATORY TESTING REQUIREMENTS
 
 ### TDD Cycle (ALWAYS Follow)
+
 Every single feature, bug fix, or enhancement MUST follow this cycle:
 
 1. **RED**: Write a failing test first
-2. **GREEN**: Write minimal code to make test pass  
+2. **GREEN**: Write minimal code to make test pass
 3. **REFACTOR**: Improve code while keeping tests green
 
 **NO EXCEPTIONS. NO SHORTCUTS.**
@@ -14,24 +15,28 @@ Every single feature, bug fix, or enhancement MUST follow this cycle:
 ## 📋 Test Types & Requirements
 
 ### Unit Tests (100% Required)
+
 - **Business Logic**: Every function with business logic
 - **Component Logic**: State management, event handlers, calculations
 - **Utility Functions**: All helper functions and utilities
 - **Error Handling**: Every error path and edge case
 
 ### Integration Tests (Required for APIs)
+
 - **API Endpoints**: All Supabase queries and mutations
 - **Data Flow**: Component → Hook → API → Database
 - **Error Scenarios**: Network failures, server errors, validation errors
 - **Performance**: Response times and timeout handling
 
 ### End-to-End Tests (Required for User Flows)
+
 - **Booking Flow**: Widget → Date Check → Form → Submission
-- **Quote Calculator**: Configuration → Calculation → Generation  
+- **Quote Calculator**: Configuration → Calculation → Generation
 - **Navigation**: Page transitions and deep linking
 - **Error Recovery**: How users recover from failures
 
 ### Accessibility Tests (Required for All UI)
+
 - **Screen Reader**: ARIA labels and semantic HTML
 - **Keyboard Navigation**: Tab order and focus management
 - **Color Contrast**: WCAG 2.1 AA compliance
@@ -40,63 +45,65 @@ Every single feature, bug fix, or enhancement MUST follow this cycle:
 ## 🔧 Test Configuration
 
 ### Vitest Configuration (`vitest.config.ts`)
+
 ```typescript
-import { defineConfig } from 'vitest/config';
-import react from '@vitejs/plugin-react';
-import path from 'path';
+import { defineConfig } from "vitest/config";
+import react from "@vitejs/plugin-react";
+import path from "path";
 
 export default defineConfig({
   plugins: [react()],
   test: {
-    environment: 'jsdom',
-    setupFiles: ['./src/test/setup.ts'],
+    environment: "jsdom",
+    setupFiles: ["./src/test/setup.ts"],
     coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html'],
+      provider: "v8",
+      reporter: ["text", "json", "html"],
       exclude: [
-        'node_modules/',
-        'src/test/',
-        '**/*.d.ts',
-        '**/*.config.*',
-        '**/coverage/**'
+        "node_modules/",
+        "src/test/",
+        "**/*.d.ts",
+        "**/*.config.*",
+        "**/coverage/**",
       ],
       thresholds: {
         global: {
           branches: 95,
           functions: 95,
           lines: 95,
-          statements: 95
+          statements: 95,
         },
         // Business logic requires 100%
-        'src/lib/': {
+        "src/lib/": {
           branches: 100,
           functions: 100,
           lines: 100,
-          statements: 100
+          statements: 100,
         },
-        'src/hooks/': {
+        "src/hooks/": {
           branches: 100,
           functions: 100,
           lines: 100,
-          statements: 100
-        }
-      }
-    }
+          statements: 100,
+        },
+      },
+    },
   },
   resolve: {
     alias: {
-      '@': path.resolve(__dirname, './src')
-    }
-  }
+      "@": path.resolve(__dirname, "./src"),
+    },
+  },
 });
 ```
 
 ### Testing Library Setup (`src/test/setup.ts`)
+
 ```typescript
-import '@testing-library/jest-dom';
-import { cleanup } from '@testing-library/react';
-import { afterEach, beforeAll, afterAll } from 'vitest';
-import { server } from './mocks/server';
+import "@testing-library/jest-dom";
+import { cleanup } from "@testing-library/react";
+import { afterEach, beforeAll, afterAll } from "vitest";
+import { server } from "./mocks/server";
 
 // Start MSW server before all tests
 beforeAll(() => server.listen());
@@ -111,38 +118,39 @@ afterEach(() => {
 afterAll(() => server.close());
 
 // Mock logger to prevent console spam in tests
-vi.mock('@/lib/logger', () => ({
+vi.mock("@/lib/logger", () => ({
   default: {
     info: vi.fn(),
     error: vi.fn(),
     debug: vi.fn(),
-    warn: vi.fn()
+    warn: vi.fn(),
   },
   ComponentLogger: {
     lifecycle: vi.fn(),
     stateChange: vi.fn(),
     rerender: vi.fn(),
-    performance: vi.fn()
+    performance: vi.fn(),
   },
   APILogger: {
     request: vi.fn(),
     response: vi.fn(),
     error: vi.fn(),
-    retry: vi.fn()
+    retry: vi.fn(),
   },
   UserFlowLogger: {
     navigation: vi.fn(),
     interaction: vi.fn(),
     form: vi.fn(),
     error: vi.fn(),
-    breadcrumb: vi.fn()
-  }
+    breadcrumb: vi.fn(),
+  },
 }));
 ```
 
 ## 📝 Test Naming Conventions
 
 ### Test File Names
+
 ```
 ComponentName.test.tsx        # Component tests
 utilityFunction.test.ts       # Utility function tests
@@ -151,18 +159,19 @@ booking-flow.e2e.test.ts      # E2E tests
 ```
 
 ### Test Function Names
+
 ```typescript
-describe('ComponentName', () => {
-  describe('when user clicks submit button', () => {
-    it('should call onSubmit with form data', () => {
+describe("ComponentName", () => {
+  describe("when user clicks submit button", () => {
+    it("should call onSubmit with form data", () => {
       // Test implementation
     });
-    
-    it('should show loading state', () => {
+
+    it("should show loading state", () => {
       // Test implementation
     });
-    
-    it('should handle submission errors', () => {
+
+    it("should handle submission errors", () => {
       // Test implementation
     });
   });
@@ -172,6 +181,7 @@ describe('ComponentName', () => {
 ## 🎯 Component Testing Standards
 
 ### Required Test Cases for Every Component
+
 ```typescript
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { ComponentName } from './ComponentName';
@@ -195,9 +205,9 @@ describe('ComponentName', () => {
   it('should handle user clicks correctly', async () => {
     const mockOnClick = vi.fn();
     render(<ComponentName onClick={mockOnClick} />);
-    
+
     fireEvent.click(screen.getByRole('button'));
-    
+
     await waitFor(() => {
       expect(mockOnClick).toHaveBeenCalledWith(expect.any(Object));
     });
@@ -233,6 +243,7 @@ describe('ComponentName', () => {
 ## 🌐 API Testing Standards
 
 ### Required Test Cases for Every API Hook
+
 ```typescript
 import { renderHook, waitFor } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
@@ -245,7 +256,7 @@ const createWrapper = () => {
       mutations: { retry: false }
     }
   });
-  
+
   return ({ children }: { children: React.ReactNode }) => (
     <QueryClientProvider client={queryClient}>
       {children}
@@ -311,94 +322,95 @@ describe('useApiHook', () => {
 ## 🎭 E2E Testing Standards
 
 ### Playwright Configuration (`playwright.config.ts`)
+
 ```typescript
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices } from "@playwright/test";
 
 export default defineConfig({
-  testDir: './e2e',
+  testDir: "./e2e",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
   workers: process.env.CI ? 1 : undefined,
-  reporter: [
-    ['html'],
-    ['json', { outputFile: 'test-results/results.json' }]
-  ],
+  reporter: [["html"], ["json", { outputFile: "test-results/results.json" }]],
   use: {
-    baseURL: 'http://localhost:8080',
-    trace: 'on-first-retry',
-    screenshot: 'only-on-failure'
+    baseURL: "http://localhost:8080",
+    trace: "on-first-retry",
+    screenshot: "only-on-failure",
   },
   projects: [
     {
-      name: 'chromium',
-      use: { ...devices['Desktop Chrome'] }
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
     },
     {
-      name: 'firefox', 
-      use: { ...devices['Desktop Firefox'] }
+      name: "firefox",
+      use: { ...devices["Desktop Firefox"] },
     },
     {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] }
+      name: "webkit",
+      use: { ...devices["Desktop Safari"] },
     },
     {
-      name: 'Mobile Chrome',
-      use: { ...devices['Pixel 5'] }
+      name: "Mobile Chrome",
+      use: { ...devices["Pixel 5"] },
     },
     {
-      name: 'Mobile Safari',
-      use: { ...devices['iPhone 12'] }
-    }
+      name: "Mobile Safari",
+      use: { ...devices["iPhone 12"] },
+    },
   ],
   webServer: {
-    command: 'npm run dev',
+    command: "npm run dev",
     port: 8080,
-    reuseExistingServer: !process.env.CI
-  }
+    reuseExistingServer: !process.env.CI,
+  },
 });
 ```
 
 ### Required E2E Test Cases
-```typescript
-import { test, expect } from '@playwright/test';
 
-test.describe('Booking Flow', () => {
-  test('user can complete full booking process', async ({ page }) => {
+```typescript
+import { test, expect } from "@playwright/test";
+
+test.describe("Booking Flow", () => {
+  test("user can complete full booking process", async ({ page }) => {
     // 1. Navigate to app
-    await page.goto('/');
-    
+    await page.goto("/");
+
     // 2. Open booking widget
     await page.click('[data-testid="floating-booking-widget"]');
-    
+
     // 3. Select date
     await page.click('[data-testid="date-picker"]');
     await page.click('[data-testid="date-option-tomorrow"]');
-    
+
     // 4. Select time
     await page.click('[data-testid="time-slot-18:00"]');
-    
+
     // 5. Set guest count
-    await page.fill('[data-testid="guest-count"]', '25');
-    
+    await page.fill('[data-testid="guest-count"]', "25");
+
     // 6. Fill booking form
-    await page.fill('[data-testid="name-input"]', 'John Doe');
-    await page.fill('[data-testid="email-input"]', 'john@example.com');
-    
+    await page.fill('[data-testid="name-input"]', "John Doe");
+    await page.fill('[data-testid="email-input"]', "john@example.com");
+
     // 7. Submit booking
     await page.click('[data-testid="submit-booking"]');
-    
+
     // 8. Verify success
     await expect(page.locator('[data-testid="booking-success"]')).toBeVisible();
   });
 
-  test('user receives helpful error messages for invalid input', async ({ page }) => {
-    await page.goto('/');
+  test("user receives helpful error messages for invalid input", async ({
+    page,
+  }) => {
+    await page.goto("/");
     await page.click('[data-testid="floating-booking-widget"]');
-    
+
     // Submit without required fields
     await page.click('[data-testid="submit-booking"]');
-    
+
     // Verify error messages
     await expect(page.locator('[data-testid="name-error"]')).toBeVisible();
     await expect(page.locator('[data-testid="email-error"]')).toBeVisible();
@@ -409,12 +421,14 @@ test.describe('Booking Flow', () => {
 ## 📊 Coverage Requirements
 
 ### Minimum Coverage Thresholds
+
 - **Business Logic (src/lib/, src/hooks/)**: 100%
 - **Components (src/components/)**: 95%
 - **Pages**: 90%
 - **Overall Project**: 95%
 
 ### Coverage Reports
+
 ```bash
 # Generate coverage report
 npm run test:coverage
@@ -429,6 +443,7 @@ npm run test:coverage -- --reporter=json-summary
 ## 🎯 Testing Commands
 
 ### Development Testing
+
 ```bash
 npm test                          # Run all unit tests
 npm run test:watch                # Watch mode for TDD
@@ -437,6 +452,7 @@ npm run test:coverage             # Generate coverage report
 ```
 
 ### Integration Testing
+
 ```bash
 npm run test:integration          # API integration tests
 npm run test:api                  # Supabase API tests
@@ -444,6 +460,7 @@ npm run test:hooks                # Custom hooks tests
 ```
 
 ### End-to-End Testing
+
 ```bash
 npm run test:e2e                  # Run E2E tests
 npm run test:e2e:headed           # Run with browser UI
@@ -452,6 +469,7 @@ npm run test:e2e:mobile           # Mobile-specific tests
 ```
 
 ### Accessibility Testing
+
 ```bash
 npm run test:a11y                 # Accessibility tests
 npm run test:lighthouse           # Lighthouse audits
@@ -459,6 +477,7 @@ npm run test:axe                  # Axe-core tests
 ```
 
 ### Pre-Commit Testing
+
 ```bash
 npm run test:pre-commit           # Quick test suite
 npm run test:full                 # Complete test suite
@@ -470,6 +489,7 @@ npm run test:ci                   # CI/CD test configuration
 Before marking any test complete, verify:
 
 ### Test Completeness
+
 ☐ All user scenarios tested
 ☐ Error paths covered
 ☐ Edge cases handled
@@ -477,6 +497,7 @@ Before marking any test complete, verify:
 ☐ Accessibility standards followed
 
 ### Test Quality
+
 ☐ Tests are deterministic (no flaky tests)
 ☐ Tests are isolated (no interdependencies)
 ☐ Tests are fast (unit tests <100ms)
@@ -484,6 +505,7 @@ Before marking any test complete, verify:
 ☐ Tests document expected behavior
 
 ### Coverage Verification
+
 ☐ Business logic: 100% coverage
 ☐ Error handling: 100% coverage
 ☐ User interactions: Complete coverage
@@ -493,20 +515,26 @@ Before marking any test complete, verify:
 ## 🔄 Continuous Testing
 
 ### Watch Mode Development
+
 Always run tests in watch mode during development:
+
 ```bash
 npm run test:watch
 ```
 
 ### Pre-Commit Hooks
+
 Tests run automatically before every commit:
+
 - Unit tests (fast subset)
 - Lint checks
 - Type checking
 - Build verification
 
 ### CI/CD Pipeline
+
 Full test suite runs on:
+
 - Pull requests
 - Main branch commits
 - Release tags
@@ -515,12 +543,14 @@ Full test suite runs on:
 ## 📚 Testing Resources
 
 ### Documentation
+
 - [Vitest Guide](https://vitest.dev/guide/)
 - [Testing Library](https://testing-library.com/docs/react-testing-library/intro/)
 - [Playwright Docs](https://playwright.dev/docs/intro)
 - [Accessibility Testing](https://web.dev/accessibility/)
 
 ### Internal Guides
+
 - Component Testing Patterns (`/docs/component-testing.md`)
 - API Testing Strategies (`/docs/api-testing.md`)
 - E2E Testing Best Practices (`/docs/e2e-testing.md`)

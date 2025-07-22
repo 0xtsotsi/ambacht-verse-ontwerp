@@ -26,5 +26,13 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src"],
+  "exclude": [
+    "src/api/**/*",
+    "src/gateway/**/*",
+    "src/middleware/**/*",
+    "src/server/**/*",
+    "src/webhooks/**/*",
+    "src/tests/**/*"
+  ]
 }

@@ -18,6 +18,7 @@
 Before writing ANY code, complete this checklist:
 
 ### Analysis Phase
+
 ☐ Read relevant documentation in CLAUDE.md
 ☐ Understand existing patterns and architecture
 ☐ Identify components that need logging integration
@@ -25,6 +26,7 @@ Before writing ANY code, complete this checklist:
 ☐ Design error handling strategy
 
 ### Setup Phase
+
 ☐ Create failing test first (TDD requirement)
 ☐ Plan logging integration points
 ☐ Identify performance monitoring needs
@@ -34,6 +36,7 @@ Before writing ANY code, complete this checklist:
 ## 🔬 TDD Development Cycle
 
 ### RED Phase (Write Failing Test)
+
 ```bash
 # 1. Create test file
 touch src/components/NewComponent.test.tsx
@@ -45,6 +48,7 @@ npm run test:watch NewComponent
 ```
 
 ### GREEN Phase (Make Test Pass)
+
 ```typescript
 // Minimal implementation to pass test
 export function NewComponent() {
@@ -53,6 +57,7 @@ export function NewComponent() {
 ```
 
 ### REFACTOR Phase (Improve Code)
+
 ```bash
 # Run tests while refactoring
 npm run test:watch
@@ -65,6 +70,7 @@ npm run typecheck
 ## 📊 Logging Integration Workflow
 
 ### Component Logging Integration
+
 ```typescript
 // 1. Import logging hooks
 import { useComponentLogger, usePerformanceLogger } from '@/hooks/useComponentLogger';
@@ -73,20 +79,20 @@ import { useComponentLogger, usePerformanceLogger } from '@/hooks/useComponentLo
 const NewComponent = (props) => {
   const { logStateChange, logLifecycle } = useComponentLogger('NewComponent');
   const { logPerformance } = usePerformanceLogger('NewComponent', 20);
-  
+
   // 3. Log lifecycle events
   useEffect(() => {
     logLifecycle('mount', props);
     return () => logLifecycle('unmount');
   }, []);
-  
+
   // 4. Log state changes
   const [state, setState] = useState(initialState);
   const handleStateChange = (newState, trigger) => {
     logStateChange(state, newState, trigger);
     setState(newState);
   };
-  
+
   return <div>Component Content</div>;
 };
 
@@ -95,48 +101,50 @@ export default withDetailedLogging(NewComponent, 'NewComponent');
 ```
 
 ### API Logging Integration
+
 ```typescript
 // 1. Replace standard hooks with logging versions
-import { useApiLoggerQuery, useApiLoggerMutation } from '@/hooks/useApiLogger';
+import { useApiLoggerQuery, useApiLoggerMutation } from "@/hooks/useApiLogger";
 
 // 2. Add comprehensive API logging
 const useBookingData = () => {
   const query = useApiLoggerQuery({
-    queryKey: ['bookings'],
+    queryKey: ["bookings"],
     queryFn: fetchBookings,
-    endpoint: 'bookings',
-    method: 'GET'
+    endpoint: "bookings",
+    method: "GET",
   });
-  
+
   const mutation = useApiLoggerMutation({
     mutationFn: createBooking,
-    endpoint: 'bookings',
-    method: 'POST'
+    endpoint: "bookings",
+    method: "POST",
   });
-  
+
   return { query, mutation };
 };
 ```
 
 ### User Flow Tracking Integration
+
 ```typescript
 // 1. Import user flow logger
-import { useUserFlowLogger } from '@/hooks/useUserFlowLogger';
+import { useUserFlowLogger } from "@/hooks/useUserFlowLogger";
 
 // 2. Track user interactions
 const BookingForm = () => {
   const { logInteraction, logBreadcrumb, logForm } = useUserFlowLogger();
-  
+
   const handleSubmit = (formData) => {
-    logInteraction('form_submit', 'booking_form', formData);
-    logBreadcrumb('booking_submission_started');
-    
+    logInteraction("form_submit", "booking_form", formData);
+    logBreadcrumb("booking_submission_started");
+
     try {
       await submitBooking(formData);
-      logForm('booking_form', 'submit', formData);
-      logBreadcrumb('booking_submission_completed');
+      logForm("booking_form", "submit", formData);
+      logBreadcrumb("booking_submission_completed");
     } catch (error) {
-      logForm('booking_form', 'error', formData, [error.message]);
+      logForm("booking_form", "error", formData, [error.message]);
     }
   };
 };
@@ -145,46 +153,54 @@ const BookingForm = () => {
 ## 🔍 Performance Monitoring Workflow
 
 ### Component Performance Tracking
+
 ```typescript
 // 1. Add performance monitoring
-const { logPerformance, getPerformanceStats } = usePerformanceLogger('ComponentName', 20);
+const { logPerformance, getPerformanceStats } = usePerformanceLogger(
+  "ComponentName",
+  20,
+);
 
 // 2. Monitor slow renders
 useEffect(() => {
   const stats = getPerformanceStats();
   if (stats.averageRenderTime > 25) {
-    console.warn(`Component ${componentName} has slow average render time: ${stats.averageRenderTime}ms`);
+    console.warn(
+      `Component ${componentName} has slow average render time: ${stats.averageRenderTime}ms`,
+    );
   }
 }, []);
 
 // 3. Track memory usage
 useEffect(() => {
   if (performance.memory) {
-    logPerformance('memory_usage', {
+    logPerformance("memory_usage", {
       used: performance.memory.usedJSHeapSize,
-      total: performance.memory.totalJSHeapSize
+      total: performance.memory.totalJSHeapSize,
     });
   }
 }, []);
 ```
 
 ### API Performance Tracking
+
 ```typescript
 // Automatic with useApiLogger hooks
 const { data, timing } = useApiLoggerQuery({
-  queryKey: ['data'],
+  queryKey: ["data"],
   queryFn: fetchData,
-  endpoint: 'data',
-  method: 'GET',
+  endpoint: "data",
+  method: "GET",
   onSlowResponse: (timing) => {
     console.warn(`Slow API response: ${timing}ms for endpoint data`);
-  }
+  },
 });
 ```
 
 ## 🚨 Error Handling Workflow
 
 ### Component Error Boundaries
+
 ```typescript
 // 1. Wrap ALL new components
 import { ErrorBoundary } from '@/components/ErrorBoundary';
@@ -212,6 +228,7 @@ import { ErrorBoundary } from '@/components/ErrorBoundary';
 ```
 
 ### Comprehensive Try/Catch Coverage
+
 ```typescript
 // 1. API calls
 try {
@@ -220,28 +237,32 @@ try {
   return result;
 } catch (error) {
   APILogger.error(endpoint, error, retryAttempt, requestId);
-  UserFlowLogger.error('api_failure', error.message, { endpoint, requestId });
+  UserFlowLogger.error("api_failure", error.message, { endpoint, requestId });
   throw error; // Re-throw after logging
 }
 
 // 2. User operations
 try {
   const processedData = processUserInput(userInput);
-  UserFlowLogger.interaction('data_processing_success', 'input_processor', processedData);
+  UserFlowLogger.interaction(
+    "data_processing_success",
+    "input_processor",
+    processedData,
+  );
   return processedData;
 } catch (error) {
-  UserFlowLogger.error('input_processing_failed', error.message, { userInput });
+  UserFlowLogger.error("input_processing_failed", error.message, { userInput });
   // Show user-friendly error
-  showUserError('Please check your input and try again.');
+  showUserError("Please check your input and try again.");
 }
 
 // 3. Component operations
 try {
   const calculationResult = performComplexCalculation(data);
-  ComponentLogger.performance('calculation_completed', calculationTime);
+  ComponentLogger.performance("calculation_completed", calculationTime);
   return calculationResult;
 } catch (error) {
-  ComponentLogger.error('calculation_failed', error, { data });
+  ComponentLogger.error("calculation_failed", error, { data });
   // Provide fallback behavior
   return fallbackCalculation(data);
 }
@@ -250,6 +271,7 @@ try {
 ## ✅ Pre-Commit Validation Workflow
 
 ### Automated Quality Checks
+
 ```bash
 # 1. Run complete test suite
 npm test
@@ -260,7 +282,7 @@ npm run lint
 # Must pass: Zero warnings
 
 # 3. Verify TypeScript
-npm run typecheck  
+npm run typecheck
 # Must pass: Zero errors
 
 # 4. Test production build
@@ -281,6 +303,7 @@ npm run test:performance
 ```
 
 ### Manual Quality Verification
+
 ☐ All new code has comprehensive logging
 ☐ Component state changes tracked with prev/new values
 ☐ API calls logged with timing and error handling  
@@ -294,9 +317,11 @@ npm run test:performance
 ## 🎯 Task Completion Workflow
 
 ### Definition of Done Verification
+
 Before marking ANY task complete:
 
 #### Code Quality Standards
+
 ☐ ≤300 LOC per file maintained
 ☐ ≤4 parameters per function maintained
 ☐ Proper TypeScript types implemented
@@ -304,6 +329,7 @@ Before marking ANY task complete:
 ☐ Code follows existing patterns
 
 #### Testing Standards
+
 ☐ TDD cycle followed completely
 ☐ Failing test written before implementation
 ☐ Test coverage >95% for business logic
@@ -313,6 +339,7 @@ Before marking ANY task complete:
 ☐ E2E tests for user flows
 
 #### Logging Standards
+
 ☐ Component lifecycle logged
 ☐ State changes logged with prev/new values
 ☐ API calls logged with timing
@@ -321,6 +348,7 @@ Before marking ANY task complete:
 ☐ Error logging comprehensive
 
 #### Performance Standards
+
 ☐ No render times >20ms for components
 ☐ No render times >25ms for calculators  
 ☐ No API responses >1s without logging
@@ -330,24 +358,26 @@ Before marking ANY task complete:
 ## 🔄 Continuous Development Practices
 
 ### Daily Development Routine
+
 ```bash
 # 1. Start development session
 npm run dev:debug              # Enhanced logging mode
 
 # 2. Run tests in watch mode
-npm run test:watch            
+npm run test:watch
 
 # 3. Monitor performance
-npm run log:performance       
+npm run log:performance
 
 # 4. Check logging compliance
-npm run log:components        
+npm run log:components
 
 # 5. End-of-day validation
-npm run test:full             
+npm run test:full
 ```
 
 ### Weekly Code Health Checks
+
 ```bash
 # 1. Full test suite
 npm run test:all
@@ -355,7 +385,7 @@ npm run test:all
 # 2. Performance audit
 npm run test:performance
 
-# 3. Accessibility audit  
+# 3. Accessibility audit
 npm run test:a11y
 
 # 4. Security audit
@@ -368,6 +398,7 @@ npm run update:dependencies
 ## 📊 Monitoring & Analytics
 
 ### Development Metrics Tracking
+
 - **Test Coverage**: Monitor coverage trends
 - **Build Times**: Track build performance
 - **Bundle Size**: Monitor size increases
@@ -375,6 +406,7 @@ npm run update:dependencies
 - **Error Rates**: Monitor error frequency and types
 
 ### User Experience Monitoring
+
 - **Component Performance**: Render times by component
 - **User Flow Completion**: Conversion funnel analytics
 - **Error Recovery**: How users recover from errors
@@ -383,6 +415,7 @@ npm run update:dependencies
 ## 🎮 Development Tools Integration
 
 ### VS Code Extensions (Recommended)
+
 - Vitest Runner
 - ESLint
 - Prettier
@@ -391,12 +424,14 @@ npm run update:dependencies
 - Error Lens
 
 ### Browser Dev Tools
+
 - React Developer Tools
 - Performance tab for render monitoring
 - Network tab for API monitoring
 - Console for logging verification
 
 ### Command Line Tools
+
 ```bash
 # Testing
 npm run test:watch            # TDD development
@@ -414,6 +449,7 @@ npm run format                # Format code
 ## 🚀 Deployment Workflow
 
 ### Pre-Deployment Checklist
+
 ☐ All tests pass in CI/CD
 ☐ Performance benchmarks met
 ☐ Security audit passed
@@ -423,6 +459,7 @@ npm run format                # Format code
 ☐ User flow analytics ready
 
 ### Post-Deployment Monitoring
+
 - Monitor error rates
 - Track performance metrics
 - Verify logging functionality

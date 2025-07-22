@@ -3,10 +3,15 @@
  * error classification, retry mechanisms, and performance monitoring.
  */
 
-import { APILogger, LoggerUtils } from './logger';
+import { APILogger, LoggerUtils } from "./logger";
 
 // Error classification types
-export type ErrorType = 'network' | 'server' | 'validation' | 'authentication' | 'unknown';
+export type ErrorType =
+  | "network"
+  | "server"
+  | "validation"
+  | "authentication"
+  | "unknown";
 
 export interface ApiCallMetrics {
   endpoint: string;
@@ -32,7 +37,7 @@ const DEFAULT_RETRY_CONFIG: RetryConfig = {
   maxAttempts: 3,
   baseDelay: 1000,
   maxDelay: 30000,
-  backoffMultiplier: 2
+  backoffMultiplier: 2,
 };
 
 // Define types for API error objects
@@ -46,29 +51,39 @@ export interface ApiError {
 /**
  * Classifies errors based on type and status code
  */
-export function classifyError(error: ApiError | Error, status?: number): ErrorType {
+export function classifyError(
+  error: ApiError | Error,
+  status?: number,
+): ErrorType {
   if (status) {
-    if (status === 401 || status === 403) return 'authentication';
-    if (status >= 400 && status < 500) return 'validation';
-    if (status >= 500) return 'server';
+    if (status === 401 || status === 403) return "authentication";
+    if (status >= 400 && status < 500) return "validation";
+    if (status >= 500) return "server";
   }
-  
-  if (error?.name === 'NetworkError' || error?.code === 'NETWORK_ERROR') {
-    return 'network';
+
+  if (error?.name === "NetworkError" || error?.code === "NETWORK_ERROR") {
+    return "network";
   }
-  
-  if (error?.message?.includes('timeout') || error?.message?.includes('fetch')) {
-    return 'network';
+
+  if (
+    error?.message?.includes("timeout") ||
+    error?.message?.includes("fetch")
+  ) {
+    return "network";
   }
-  
-  return 'unknown';
+
+  return "unknown";
 }
 
 /**
  * Calculates exponential backoff delay
  */
-export function calculateBackoffDelay(attempt: number, config: RetryConfig): number {
-  const delay = config.baseDelay * Math.pow(config.backoffMultiplier, attempt - 1);
+export function calculateBackoffDelay(
+  attempt: number,
+  config: RetryConfig,
+): number {
+  const delay =
+    config.baseDelay * Math.pow(config.backoffMultiplier, attempt - 1);
   return Math.min(delay, config.maxDelay);
 }
 
@@ -78,19 +93,19 @@ export function calculateBackoffDelay(attempt: number, config: RetryConfig): num
 export async function withApiLogging<T>(
   operation: () => Promise<T>,
   endpoint: string,
-  method: string = 'GET',
+  method: string = "GET",
   payload?: Record<string, unknown>,
-  retryConfig: RetryConfig = DEFAULT_RETRY_CONFIG
+  retryConfig: RetryConfig = DEFAULT_RETRY_CONFIG,
 ): Promise<T> {
   const requestId = LoggerUtils.generateRequestId();
   const sanitizedPayload = LoggerUtils.sanitizeData(payload);
-  
+
   const metrics: ApiCallMetrics = {
     endpoint,
     method,
     requestId,
     startTime: Date.now(),
-    retryAttempt: 0
+    retryAttempt: 0,
   };
 
   // Log initial request
@@ -98,49 +113,66 @@ export async function withApiLogging<T>(
 
   for (let attempt = 1; attempt <= retryConfig.maxAttempts; attempt++) {
     metrics.retryAttempt = attempt;
-    
+
     try {
       if (attempt > 1) {
         const delay = calculateBackoffDelay(attempt - 1, retryConfig);
-        APILogger.retry(endpoint, attempt, retryConfig.maxAttempts, delay, requestId);
-        await new Promise(resolve => setTimeout(resolve, delay));
+        APILogger.retry(
+          endpoint,
+          attempt,
+          retryConfig.maxAttempts,
+          delay,
+          requestId,
+        );
+        await new Promise((resolve) => setTimeout(resolve, delay));
       }
 
       const result = await operation();
-      
+
       // Calculate response metrics
       metrics.responseTime = Date.now() - metrics.startTime;
       metrics.status = 200; // Assume success if no error
       metrics.dataSize = result ? JSON.stringify(result).length : 0;
-      
+
       // Log successful response
-      APILogger.response(endpoint, 200, metrics.responseTime, requestId, result);
-      
+      APILogger.response(
+        endpoint,
+        200,
+        metrics.responseTime,
+        requestId,
+        result,
+      );
+
       return result;
     } catch (error) {
       const apiError = error as Error;
       metrics.error = apiError;
       metrics.responseTime = Date.now() - metrics.startTime;
-      
+
       // Extract status from Supabase error if available
-      const status = (error as ApiError)?.status || (error as ApiError)?.code || 500;
+      const status =
+        (error as ApiError)?.status || (error as ApiError)?.code || 500;
       metrics.status = status;
-      
+
       const errorType = classifyError(apiError, status);
-      
+
       // Log error with classification
       APILogger.error(endpoint, apiError, attempt, requestId);
-      
+
       // Don't retry on authentication or validation errors
-      if (errorType === 'authentication' || errorType === 'validation' || attempt === retryConfig.maxAttempts) {
+      if (
+        errorType === "authentication" ||
+        errorType === "validation" ||
+        attempt === retryConfig.maxAttempts
+      ) {
         // Log final response with error status
         APILogger.response(endpoint, status, metrics.responseTime, requestId);
         throw apiError;
       }
     }
   }
-  
-  throw new Error('Max retry attempts exceeded');
+
+  throw new Error("Max retry attempts exceeded");
 }
 
 /**
@@ -155,7 +187,7 @@ export interface SupabaseResponse<T> {
 export async function withSupabaseLogging<T>(
   queryBuilder: Promise<SupabaseResponse<T>>,
   endpoint: string,
-  method: string = 'GET'
+  method: string = "GET",
 ): Promise<T> {
   return withApiLogging(
     async () => {
@@ -164,7 +196,7 @@ export async function withSupabaseLogging<T>(
       return data;
     },
     endpoint,
-    method
+    method,
   );
 }
 
@@ -174,7 +206,7 @@ export async function withSupabaseLogging<T>(
 export async function withSupabaseRpcLogging<T>(
   rpcCall: () => Promise<SupabaseResponse<T>>,
   rpcName: string,
-  params?: Record<string, unknown>
+  params?: Record<string, unknown>,
 ): Promise<T> {
   return withApiLogging(
     async () => {
@@ -183,8 +215,8 @@ export async function withSupabaseRpcLogging<T>(
       return data;
     },
     `rpc/${rpcName}`,
-    'POST',
-    params
+    "POST",
+    params,
   );
 }
 
@@ -200,25 +232,25 @@ export function logApiError(
     userId?: string;
     sessionId?: string;
     retryAttempt?: number;
-  } = {}
+  } = {},
 ) {
   const requestId = LoggerUtils.generateRequestId();
   const sanitizedPayload = LoggerUtils.sanitizeData(context.payload);
-  
+
   APILogger.error(endpoint, error, context.retryAttempt || 0, requestId);
-  
+
   // Additional context logging
   if (context.userId || context.sessionId) {
     APILogger.request(
       endpoint,
-      context.method || 'UNKNOWN',
+      context.method || "UNKNOWN",
       {
         ...sanitizedPayload,
         userId: context.userId,
         sessionId: context.sessionId,
-        context: 'error_logging'
+        context: "error_logging",
       },
-      requestId
+      requestId,
     );
   }
 }
@@ -228,28 +260,28 @@ export function logApiError(
  */
 export class ApiPerformanceMonitor {
   private static metrics = new Map<string, number[]>();
-  
+
   static recordResponseTime(endpoint: string, responseTime: number) {
     if (!this.metrics.has(endpoint)) {
       this.metrics.set(endpoint, []);
     }
-    
+
     const times = this.metrics.get(endpoint)!;
     times.push(responseTime);
-    
+
     // Keep only last 100 measurements
     if (times.length > 100) {
       times.shift();
     }
   }
-  
+
   static getAverageResponseTime(endpoint: string): number {
     const times = this.metrics.get(endpoint) || [];
     if (times.length === 0) return 0;
-    
+
     return times.reduce((sum, time) => sum + time, 0) / times.length;
   }
-  
+
   static getSlowEndpoints(threshold: number = 2000): string[] {
     return Array.from(this.metrics.entries())
       .filter(([_, times]) => {

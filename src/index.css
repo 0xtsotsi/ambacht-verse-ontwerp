@@ -1,6 +1,5 @@
-
 /* Testing Claude Code hooks with CSS modifications */
-@import url('https://fonts.googleapis.com/css2?family=Baskerville:wght@400;700&family=Open+Sans:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Baskerville:wght@400;700&family=Open+Sans:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -47,7 +46,7 @@
     --deep-teal: 61 97 96;
     --natural-brown: 139 90 60;
     --clean-white: 255 255 255;
-    
+
     /* V5 Interactive Elegance - Terracotta Palette */
     --terracotta-50: 255 247 245;
     --terracotta-100: 255 235 230;
@@ -93,44 +92,49 @@
     @apply bg-background text-foreground font-body;
   }
 
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply font-serif;
   }
 }
 
 @layer utilities {
   .font-serif {
-    font-family: 'Baskerville', 'Times New Roman', serif;
+    font-family: "Baskerville", "Times New Roman", serif;
   }
-  
+
   .font-body {
-    font-family: 'Open Sans', sans-serif;
+    font-family: "Open Sans", sans-serif;
   }
-  
+
   .font-script {
-    font-family: 'Dancing Script', cursive;
+    font-family: "Dancing Script", cursive;
   }
 
   .text-forest-green {
     color: rgb(var(--forest-green));
   }
-  
+
   .text-warm-cream {
     color: rgb(var(--warm-cream));
   }
-  
+
   .text-beige {
     color: rgb(var(--beige));
   }
-  
+
   .text-burnt-orange {
     color: rgb(var(--burnt-orange));
   }
-  
+
   .text-deep-teal {
     color: rgb(var(--deep-teal));
   }
-  
+
   .text-natural-brown {
     color: rgb(var(--natural-brown));
   }
@@ -138,98 +142,192 @@
   .bg-forest-green {
     background-color: rgb(var(--forest-green));
   }
-  
+
   .bg-warm-cream {
     background-color: rgb(var(--warm-cream));
   }
-  
+
   .bg-beige {
     background-color: rgb(var(--beige));
   }
-  
+
   .bg-burnt-orange {
     background-color: rgb(var(--burnt-orange));
   }
-  
+
   .bg-deep-teal {
     background-color: rgb(var(--deep-teal));
   }
-  
+
   .bg-natural-brown {
     background-color: rgb(var(--natural-brown));
   }
 
   .rustic-pattern {
-    background-image: 
-      radial-gradient(circle at 1px 1px, rgba(139, 90, 60, 0.15) 1px, transparent 0);
+    background-image: radial-gradient(
+      circle at 1px 1px,
+      rgba(139, 90, 60, 0.15) 1px,
+      transparent 0
+    );
     background-size: 20px 20px;
   }
 
   .wood-texture {
-    background-image: linear-gradient(45deg, transparent 40%, rgba(139, 90, 60, 0.1) 50%, transparent 60%);
+    background-image: linear-gradient(
+      45deg,
+      transparent 40%,
+      rgba(139, 90, 60, 0.1) 50%,
+      transparent 60%
+    );
   }
 
   .delft-pattern {
-    background-image: 
+    background-image:
       linear-gradient(45deg, rgba(61, 97, 96, 0.1) 25%, transparent 25%),
       linear-gradient(-45deg, rgba(61, 97, 96, 0.1) 25%, transparent 25%);
     background-size: 8px 8px;
   }
 
   /* V5 Interactive Elegance - Terracotta Colors */
-  .text-terracotta-50 { color: rgb(var(--terracotta-50)); }
-  .text-terracotta-100 { color: rgb(var(--terracotta-100)); }
-  .text-terracotta-200 { color: rgb(var(--terracotta-200)); }
-  .text-terracotta-300 { color: rgb(var(--terracotta-300)); }
-  .text-terracotta-400 { color: rgb(var(--terracotta-400)); }
-  .text-terracotta-500 { color: rgb(var(--terracotta-500)); }
-  .text-terracotta-600 { color: rgb(var(--terracotta-600)); }
-  .text-terracotta-700 { color: rgb(var(--terracotta-700)); }
-  .text-terracotta-800 { color: rgb(var(--terracotta-800)); }
-  .text-terracotta-900 { color: rgb(var(--terracotta-900)); }
+  .text-terracotta-50 {
+    color: rgb(var(--terracotta-50));
+  }
+  .text-terracotta-100 {
+    color: rgb(var(--terracotta-100));
+  }
+  .text-terracotta-200 {
+    color: rgb(var(--terracotta-200));
+  }
+  .text-terracotta-300 {
+    color: rgb(var(--terracotta-300));
+  }
+  .text-terracotta-400 {
+    color: rgb(var(--terracotta-400));
+  }
+  .text-terracotta-500 {
+    color: rgb(var(--terracotta-500));
+  }
+  .text-terracotta-600 {
+    color: rgb(var(--terracotta-600));
+  }
+  .text-terracotta-700 {
+    color: rgb(var(--terracotta-700));
+  }
+  .text-terracotta-800 {
+    color: rgb(var(--terracotta-800));
+  }
+  .text-terracotta-900 {
+    color: rgb(var(--terracotta-900));
+  }
 
-  .bg-terracotta-50 { background-color: rgb(var(--terracotta-50)); }
-  .bg-terracotta-100 { background-color: rgb(var(--terracotta-100)); }
-  .bg-terracotta-200 { background-color: rgb(var(--terracotta-200)); }
-  .bg-terracotta-300 { background-color: rgb(var(--terracotta-300)); }
-  .bg-terracotta-400 { background-color: rgb(var(--terracotta-400)); }
-  .bg-terracotta-500 { background-color: rgb(var(--terracotta-500)); }
-  .bg-terracotta-600 { background-color: rgb(var(--terracotta-600)); }
-  .bg-terracotta-700 { background-color: rgb(var(--terracotta-700)); }
-  .bg-terracotta-800 { background-color: rgb(var(--terracotta-800)); }
-  .bg-terracotta-900 { background-color: rgb(var(--terracotta-900)); }
+  .bg-terracotta-50 {
+    background-color: rgb(var(--terracotta-50));
+  }
+  .bg-terracotta-100 {
+    background-color: rgb(var(--terracotta-100));
+  }
+  .bg-terracotta-200 {
+    background-color: rgb(var(--terracotta-200));
+  }
+  .bg-terracotta-300 {
+    background-color: rgb(var(--terracotta-300));
+  }
+  .bg-terracotta-400 {
+    background-color: rgb(var(--terracotta-400));
+  }
+  .bg-terracotta-500 {
+    background-color: rgb(var(--terracotta-500));
+  }
+  .bg-terracotta-600 {
+    background-color: rgb(var(--terracotta-600));
+  }
+  .bg-terracotta-700 {
+    background-color: rgb(var(--terracotta-700));
+  }
+  .bg-terracotta-800 {
+    background-color: rgb(var(--terracotta-800));
+  }
+  .bg-terracotta-900 {
+    background-color: rgb(var(--terracotta-900));
+  }
 
-  .border-terracotta-50 { border-color: rgb(var(--terracotta-50)); }
-  .border-terracotta-100 { border-color: rgb(var(--terracotta-100)); }
-  .border-terracotta-200 { border-color: rgb(var(--terracotta-200)); }
-  .border-terracotta-300 { border-color: rgb(var(--terracotta-300)); }
-  .border-terracotta-400 { border-color: rgb(var(--terracotta-400)); }
-  .border-terracotta-500 { border-color: rgb(var(--terracotta-500)); }
-  .border-terracotta-600 { border-color: rgb(var(--terracotta-600)); }
-  .border-terracotta-700 { border-color: rgb(var(--terracotta-700)); }
-  .border-terracotta-800 { border-color: rgb(var(--terracotta-800)); }
-  .border-terracotta-900 { border-color: rgb(var(--terracotta-900)); }
+  .border-terracotta-50 {
+    border-color: rgb(var(--terracotta-50));
+  }
+  .border-terracotta-100 {
+    border-color: rgb(var(--terracotta-100));
+  }
+  .border-terracotta-200 {
+    border-color: rgb(var(--terracotta-200));
+  }
+  .border-terracotta-300 {
+    border-color: rgb(var(--terracotta-300));
+  }
+  .border-terracotta-400 {
+    border-color: rgb(var(--terracotta-400));
+  }
+  .border-terracotta-500 {
+    border-color: rgb(var(--terracotta-500));
+  }
+  .border-terracotta-600 {
+    border-color: rgb(var(--terracotta-600));
+  }
+  .border-terracotta-700 {
+    border-color: rgb(var(--terracotta-700));
+  }
+  .border-terracotta-800 {
+    border-color: rgb(var(--terracotta-800));
+  }
+  .border-terracotta-900 {
+    border-color: rgb(var(--terracotta-900));
+  }
 
   /* V5 Interactive Elegance - Animations */
   @keyframes shimmer {
-    0% { transform: translateX(-100%); }
-    100% { transform: translateX(100%); }
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
   }
 
   @keyframes bounce-subtle {
-    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-2px); }
-    60% { transform: translateY(-1px); }
+    0%,
+    20%,
+    50%,
+    80%,
+    100% {
+      transform: translateY(0);
+    }
+    40% {
+      transform: translateY(-2px);
+    }
+    60% {
+      transform: translateY(-1px);
+    }
   }
 
   @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   @keyframes scaleIn {
-    from { opacity: 0; transform: scale(0.95); }
-    to { opacity: 1; transform: scale(1); }
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 
   .animate-shimmer {

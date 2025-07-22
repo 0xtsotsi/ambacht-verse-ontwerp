@@ -47,18 +47,7 @@ const PricingCardEnhanced: React.FC<PricingCardEnhancedProps> = memo(
     language = "nl",
     variant = "urgency",
   }) => {
-    // Input validation
-    const validation = validatePricingCardProps({
-      serviceType,
-      tier,
-      language,
-      pricePerPerson,
-    });
-    if (!validation.isValid) {
-      console.error("Invalid props:", validation.errors);
-      return null;
-    }
-
+    // React hooks must be called before any conditional returns
     const [timeLeft, setTimeLeft] = useState(3600);
     const [peopleViewing, setPeopleViewing] = useState(
       Math.floor(Math.random() * 8) + 3,
@@ -82,6 +71,18 @@ const PricingCardEnhanced: React.FC<PricingCardEnhancedProps> = memo(
         clearInterval(viewingTimer);
       };
     }, []);
+
+    // Input validation after all hooks
+    const validation = validatePricingCardProps({
+      serviceType,
+      tier,
+      language,
+      pricePerPerson,
+    });
+    if (!validation.isValid) {
+      console.error("Invalid props:", validation.errors);
+      return null;
+    }
 
     const formatTime = (seconds: number) => {
       const minutes = Math.floor(seconds / 60);

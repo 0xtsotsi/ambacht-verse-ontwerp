@@ -1,5 +1,10 @@
 {
   "mcpServers": {
+    "ken-you-code": {
+      "command": "npx",
+      "args": ["-y", "ken-you-code"],
+      "env": {}
+    },
     "ken-you-remember": {
       "command": "npx",
       "args": ["-y", "ken-you-remember"],
@@ -7,7 +12,9 @@
     },
     "zen": {
       "command": "/mnt/c/Users/schre/Users/Demo projects/zen-mcp-server/.zen_venv/bin/python",
-      "args": ["/mnt/c/Users/schre/Users/Demo projects/zen-mcp-server/server.py"],
+      "args": [
+        "/mnt/c/Users/schre/Users/Demo projects/zen-mcp-server/server.py"
+      ],
       "env": {}
     },
     "task-master-ai": {
@@ -19,7 +26,7 @@
         "OPENAI_API_KEY": "sk-...",
         "GOOGLE_API_KEY": "AIza...",
         "XAI_API_KEY": "xai-...",
-        "OPENROUTER_API_KEY": "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",
+        "OPENROUTER_API_KEY": "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",
         "MISTRAL_API_KEY": "...",
         "AZURE_OPENAI_API_KEY": "...",
         "OLLAMA_API_KEY": "..."
@@ -27,11 +34,16 @@
     },
     "notion": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-notion"],
+      "args": ["-y", "@notionhq/notion-mcp-server"],
       "env": {
-        "NOTION_API_KEY": "secret_...",
+        "NOTION_API_KEY": "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",
         "NOTION_DATABASE_ID": "21df23ab1c8f80ef914effd0d37a5b43"
       }
+    },
+    "ken-you-reflect": {
+      "command": "npx",
+      "args": ["-y", "ken-you-reflect"],
+      "env": {}
     }
   }
 }

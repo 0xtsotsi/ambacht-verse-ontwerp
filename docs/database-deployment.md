@@ -3,6 +3,7 @@
 ## Quick Setup
 
 ### 1. Apply Migrations
+
 ```bash
 # Reset database and apply all migrations
 supabase db reset
@@ -12,6 +13,7 @@ supabase db push
 ```
 
 ### 2. Verify Schema
+
 ```bash
 # Check tables were created
 supabase db list-tables
@@ -22,6 +24,7 @@ supabase db query "SELECT COUNT(*) FROM add_on_services;"
 ```
 
 ### 3. Test Database Functions
+
 ```bash
 # Test availability checking
 supabase db query "SELECT check_availability('2025-07-01', '18:00');"
@@ -31,13 +34,16 @@ supabase db query "SELECT reserve_time_slot('2025-07-01', '18:00');"
 ```
 
 ### 4. Configure Environment
+
 Ensure your `.env.local` file has:
+
 ```env
 VITE_SUPABASE_URL=https://izguihfmrfvwmjiwcysy.supabase.co
 VITE_SUPABASE_ANON_KEY=your-anon-key-here
 ```
 
 ### 5. Start Development Server
+
 ```bash
 npm run dev
 ```
@@ -45,11 +51,13 @@ npm run dev
 ## Production Deployment
 
 ### 1. Create Production Supabase Project
-1. Go to https://supabase.com/dashboard
+
+1. Go to <https://supabase.com/dashboard>
 2. Create new project
 3. Update `supabase/config.toml` with production project ID
 
 ### 2. Apply Migrations to Production
+
 ```bash
 # Link to production project
 supabase link --project-ref YOUR_PROD_PROJECT_ID
@@ -59,9 +67,11 @@ supabase db push
 ```
 
 ### 3. Update Production Environment Variables
+
 Update your hosting platform (Vercel, Netlify, etc.) with production Supabase URL and keys.
 
 ### 4. Verify Production Database
+
 - Test availability checking works
 - Verify booking creation works
 - Check real-time subscriptions are active
@@ -69,6 +79,7 @@ Update your hosting platform (Vercel, Netlify, etc.) with production Supabase UR
 ## Database Schema Overview
 
 ### Core Tables
+
 - `availability_slots` - Time slot management
 - `bookings` - Customer booking records
 - `quotes` - Pricing quotes
@@ -76,11 +87,13 @@ Update your hosting platform (Vercel, Netlify, etc.) with production Supabase UR
 - `booking_add_ons` - Junction table for selected services
 
 ### Key Functions
+
 - `check_availability(date, time)` - Check if slot is available
 - `reserve_time_slot(date, time)` - Reserve a slot atomically
 - `release_time_slot(date, time)` - Release a reserved slot
 
 ### Security
+
 - Row Level Security (RLS) enabled on all tables
 - Public read access to availability and services
 - Restricted write access to bookings
@@ -88,16 +101,19 @@ Update your hosting platform (Vercel, Netlify, etc.) with production Supabase UR
 ## Integration Points
 
 ### React Components
+
 - `DateCheckerModalEnhanced` - Uses real database availability
 - `PreliminaryQuoteCalculator` - Loads add-on services from database
 - Real-time subscriptions for live updates
 
 ### Hooks
+
 - `useAvailability` - Manages availability data and real-time updates
 - `useBooking` - Handles booking creation and updates
 - `useAddOnServices` - Provides service catalog
 
 ### Database Service Layer
+
 - `src/integrations/supabase/database.ts` - Type-safe database operations
 - Automatic TypeScript type generation
 - Error handling and validation
@@ -105,6 +121,7 @@ Update your hosting platform (Vercel, Netlify, etc.) with production Supabase UR
 ## Testing
 
 ### Run Database Integration Tests
+
 ```bash
 # Run Playwright tests
 npx playwright test tests/database-integration.spec.ts
@@ -114,6 +131,7 @@ npx playwright test tests/database-integration.spec.ts -g "availability slots"
 ```
 
 ### Manual Testing Checklist
+
 - [ ] Calendar loads availability data
 - [ ] Time slots appear for selected dates
 - [ ] Booking creation works end-to-end
@@ -126,25 +144,30 @@ npx playwright test tests/database-integration.spec.ts -g "availability slots"
 ### Common Issues
 
 **Database connection fails:**
+
 - Check Supabase URL and API key
 - Verify project is active
 - Check network connectivity
 
 **Migrations fail:**
+
 - Ensure you're linked to correct project
 - Check for syntax errors in SQL files
 - Verify database permissions
 
 **Real-time subscriptions not working:**
+
 - Check WebSocket connectivity
 - Verify RLS policies allow subscriptions
 - Check browser developer tools for connection errors
 
 **Type errors:**
+
 - Regenerate types: `supabase gen types typescript > src/integrations/supabase/types.ts`
 - Ensure database schema matches TypeScript types
 
 ### Database Monitoring
+
 - Monitor query performance in Supabase dashboard
 - Set up alerts for high error rates
 - Track real-time subscription connections
@@ -152,6 +175,7 @@ npx playwright test tests/database-integration.spec.ts -g "availability slots"
 ## Next Steps
 
 ### Planned Enhancements
+
 1. Automated email notifications
 2. Staff dashboard for booking management
 3. Advanced reporting and analytics
@@ -159,6 +183,7 @@ npx playwright test tests/database-integration.spec.ts -g "availability slots"
 5. Payment processing integration
 
 ### Performance Optimization
+
 1. Add database indexes for common queries
 2. Implement query caching strategies
 3. Set up database partitioning for large tables

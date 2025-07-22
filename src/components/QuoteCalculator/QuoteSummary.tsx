@@ -1,8 +1,8 @@
-import React from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
-import { Euro, Calculator, CheckCircle, ArrowRight } from 'lucide-react';
+import React from "react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import { Euro, Calculator, CheckCircle, ArrowRight } from "lucide-react";
 
 interface QuoteSummaryProps {
   quote: {
@@ -32,7 +32,7 @@ export function QuoteSummary({
   quote,
   isCalculating,
   onRequestDetailedQuote,
-  translations
+  translations,
 }: QuoteSummaryProps) {
   return (
     <Card className="border-0 shadow-elegant-panel bg-white/80 backdrop-blur-sm h-fit">
@@ -53,12 +53,18 @@ export function QuoteSummary({
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-gray-600">{translations.basePrice}:</span>
-                <span className="font-medium">€{quote.basePrice.toFixed(2)}</span>
+                <span className="font-medium">
+                  €{quote.basePrice.toFixed(2)}
+                </span>
               </div>
               {quote.addOnTotal > 0 && (
                 <div className="flex justify-between text-sm">
-                  <span className="text-gray-600">{translations.addOnTotal}:</span>
-                  <span className="font-medium">€{quote.addOnTotal.toFixed(2)}</span>
+                  <span className="text-gray-600">
+                    {translations.addOnTotal}:
+                  </span>
+                  <span className="font-medium">
+                    €{quote.addOnTotal.toFixed(2)}
+                  </span>
                 </div>
               )}
               <div className="flex justify-between text-sm">
@@ -66,9 +72,9 @@ export function QuoteSummary({
                 <span className="font-medium">€{quote.tax.toFixed(2)}</span>
               </div>
             </div>
-            
+
             <Separator />
-            
+
             <div className="text-center">
               <div className="text-3xl font-bold text-forest-green mb-1">
                 €{quote.total.toFixed(2)}
@@ -77,7 +83,7 @@ export function QuoteSummary({
                 €{quote.perPerson.toFixed(2)} {translations.perPersonPrice}
               </div>
             </div>
-            
+
             <Button
               onClick={onRequestDetailedQuote}
               className="w-full bg-burnt-orange hover:bg-burnt-orange/90 text-white"

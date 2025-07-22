@@ -3,9 +3,13 @@
  * Centralizes all analytics data collection and provides dashboard structure
  */
 
-import { formAnalytics, FormAnalytics } from './formLogger';
-import { conversionFunnel, ConversionMetrics, FUNNEL_DEFINITIONS } from './conversionFunnel';
-import { UserFlowLogger, LoggerUtils } from './logger';
+import { formAnalytics, FormAnalytics } from "./formLogger";
+import {
+  conversionFunnel,
+  ConversionMetrics,
+  FUNNEL_DEFINITIONS,
+} from "./conversionFunnel";
+import { UserFlowLogger, LoggerUtils } from "./logger";
 
 export interface UserSessionAnalytics {
   sessionId: string;
@@ -48,32 +52,72 @@ export interface AnalyticsDashboard {
   };
   conversions: {
     funnelMetrics: Record<string, ConversionMetrics>;
-    topConversionPaths: Array<{ path: string[]; count: number; avgTime: number }>;
-    dropOffAnalysis: Array<{ step: string; dropOffRate: number; recoveryRate: number }>;
-    conversionTrends: Array<{ date: string; conversions: number; rate: number }>;
+    topConversionPaths: Array<{
+      path: string[];
+      count: number;
+      avgTime: number;
+    }>;
+    dropOffAnalysis: Array<{
+      step: string;
+      dropOffRate: number;
+      recoveryRate: number;
+    }>;
+    conversionTrends: Array<{
+      date: string;
+      conversions: number;
+      rate: number;
+    }>;
   };
   forms: {
     formMetrics: Record<string, FormAnalytics>;
-    fieldAnalytics: Array<{ 
-      formName: string; 
-      fieldName: string; 
-      completionRate: number; 
-      errorRate: number; 
-      avgTime: number; 
+    fieldAnalytics: Array<{
+      formName: string;
+      fieldName: string;
+      completionRate: number;
+      errorRate: number;
+      avgTime: number;
     }>;
     abandonmentReasons: Record<string, number>;
-    submissionTrends: Array<{ date: string; submissions: number; errors: number }>;
+    submissionTrends: Array<{
+      date: string;
+      submissions: number;
+      errors: number;
+    }>;
   };
   userBehavior: {
-    sessionPatterns: Array<{ pattern: string; frequency: number; conversionRate: number }>;
-    deviceAnalytics: Record<string, { count: number; avgDuration: number; conversionRate: number }>;
+    sessionPatterns: Array<{
+      pattern: string;
+      frequency: number;
+      conversionRate: number;
+    }>;
+    deviceAnalytics: Record<
+      string,
+      { count: number; avgDuration: number; conversionRate: number }
+    >;
     timeOnSite: Array<{ timeRange: string; count: number; percentage: number }>;
-    heatmapData: Array<{ element: string; clicks: number; hovers: number; position: { x: number; y: number } }>;
+    heatmapData: Array<{
+      element: string;
+      clicks: number;
+      hovers: number;
+      position: { x: number; y: number };
+    }>;
   };
   performance: {
-    loadTimes: Array<{ page: string; avgLoadTime: number; p95LoadTime: number }>;
-    errorRates: Array<{ type: string; count: number; trend: 'up' | 'down' | 'stable' }>;
-    userFeedback: Array<{ type: 'positive' | 'negative' | 'neutral'; count: number; sources: string[] }>;
+    loadTimes: Array<{
+      page: string;
+      avgLoadTime: number;
+      p95LoadTime: number;
+    }>;
+    errorRates: Array<{
+      type: string;
+      count: number;
+      trend: "up" | "down" | "stable";
+    }>;
+    userFeedback: Array<{
+      type: "positive" | "negative" | "neutral";
+      count: number;
+      sources: string[];
+    }>;
   };
 }
 
@@ -93,17 +137,22 @@ class AnalyticsManager {
       conversions: 0,
       userAgent: navigator.userAgent,
       referrer: document.referrer,
-      language: navigator.language
+      language: navigator.language,
     };
 
     this.sessions.set(sessionId, session);
 
-    UserFlowLogger.interaction('analytics_session_start', 'session', {
+    UserFlowLogger.interaction(
+      "analytics_session_start",
+      "session",
+      {
+        sessionId,
+        userAgent: session.userAgent,
+        referrer: session.referrer,
+        language: session.language,
+      },
       sessionId,
-      userAgent: session.userAgent,
-      referrer: session.referrer,
-      language: session.language
-    }, sessionId);
+    );
   }
 
   // Track page view
@@ -113,21 +162,31 @@ class AnalyticsManager {
       session.pageViews++;
     }
 
-    UserFlowLogger.interaction('page_view', page, {
+    UserFlowLogger.interaction(
+      "page_view",
+      page,
+      {
+        sessionId,
+        timestamp: Date.now(),
+        pageViewCount: session?.pageViews || 1,
+      },
       sessionId,
-      timestamp: Date.now(),
-      pageViewCount: session?.pageViews || 1
-    }, sessionId);
+    );
   }
 
   // Track navigation
-  public trackNavigation(from: string, to: string, sessionId: string, userId?: string): void {
+  public trackNavigation(
+    from: string,
+    to: string,
+    sessionId: string,
+    userId?: string,
+  ): void {
     const navigationEvent: NavigationAnalytics = {
       from,
       to,
       timestamp: Date.now(),
       sessionId,
-      userId
+      userId,
     };
 
     this.navigationEvents.push(navigationEvent);
@@ -136,7 +195,12 @@ class AnalyticsManager {
   }
 
   // Track interaction
-  public trackInteraction(action: string, element: string, data: Record<string, unknown>, sessionId: string): void {
+  public trackInteraction(
+    action: string,
+    element: string,
+    data: Record<string, unknown>,
+    sessionId: string,
+  ): void {
     const session = this.sessions.get(sessionId);
     if (session) {
       session.interactions++;
@@ -147,7 +211,7 @@ class AnalyticsManager {
       element,
       timestamp: Date.now(),
       sessionId,
-      data: LoggerUtils.sanitizeData(data)
+      data: LoggerUtils.sanitizeData(data),
     };
 
     this.interactionEvents.push(interactionEvent);
@@ -156,18 +220,27 @@ class AnalyticsManager {
   }
 
   // Track conversion
-  public trackConversion(sessionId: string, conversionType: string, value?: number): void {
+  public trackConversion(
+    sessionId: string,
+    conversionType: string,
+    value?: number,
+  ): void {
     const session = this.sessions.get(sessionId);
     if (session) {
       session.conversions++;
     }
 
-    UserFlowLogger.interaction('conversion', conversionType, {
+    UserFlowLogger.interaction(
+      "conversion",
+      conversionType,
+      {
+        sessionId,
+        value,
+        timestamp: Date.now(),
+        totalConversions: session?.conversions || 1,
+      },
       sessionId,
-      value,
-      timestamp: Date.now(),
-      totalConversions: session?.conversions || 1
-    }, sessionId);
+    );
   }
 
   // End session
@@ -177,70 +250,96 @@ class AnalyticsManager {
       session.endTime = Date.now();
       session.duration = session.endTime - session.startTime;
 
-      UserFlowLogger.interaction('analytics_session_end', 'session', {
+      UserFlowLogger.interaction(
+        "analytics_session_end",
+        "session",
+        {
+          sessionId,
+          duration: session.duration,
+          pageViews: session.pageViews,
+          interactions: session.interactions,
+          conversions: session.conversions,
+        },
         sessionId,
-        duration: session.duration,
-        pageViews: session.pageViews,
-        interactions: session.interactions,
-        conversions: session.conversions
-      }, sessionId);
+      );
     }
   }
 
   // Generate analytics dashboard
-  public generateDashboard(timeRange?: { start: number; end: number }): AnalyticsDashboard {
+  public generateDashboard(timeRange?: {
+    start: number;
+    end: number;
+  }): AnalyticsDashboard {
     const now = Date.now();
-    const range = timeRange || { start: now - (30 * 24 * 60 * 60 * 1000), end: now }; // Default: last 30 days
+    const range = timeRange || {
+      start: now - 30 * 24 * 60 * 60 * 1000,
+      end: now,
+    }; // Default: last 30 days
 
     // Filter data by time range
     const filteredSessions = Array.from(this.sessions.values()).filter(
-      session => session.startTime >= range.start && session.startTime <= range.end
+      (session) =>
+        session.startTime >= range.start && session.startTime <= range.end,
     );
 
     const filteredNavigations = this.navigationEvents.filter(
-      nav => nav.timestamp >= range.start && nav.timestamp <= range.end
+      (nav) => nav.timestamp >= range.start && nav.timestamp <= range.end,
     );
 
     const filteredInteractions = this.interactionEvents.filter(
-      interaction => interaction.timestamp >= range.start && interaction.timestamp <= range.end
+      (interaction) =>
+        interaction.timestamp >= range.start &&
+        interaction.timestamp <= range.end,
     );
 
     // Calculate overview metrics
     const totalSessions = filteredSessions.length;
-    const uniqueUsers = new Set(filteredSessions.map(s => s.sessionId)).size;
-    const avgSessionDuration = filteredSessions.reduce((sum, s) => sum + (s.duration || 0), 0) / totalSessions;
-    const totalConversions = filteredSessions.reduce((sum, s) => sum + s.conversions, 0);
-    const conversionRate = totalSessions > 0 ? (totalConversions / totalSessions) * 100 : 0;
+    const uniqueUsers = new Set(filteredSessions.map((s) => s.sessionId)).size;
+    const avgSessionDuration =
+      filteredSessions.reduce((sum, s) => sum + (s.duration || 0), 0) /
+      totalSessions;
+    const totalConversions = filteredSessions.reduce(
+      (sum, s) => sum + s.conversions,
+      0,
+    );
+    const conversionRate =
+      totalSessions > 0 ? (totalConversions / totalSessions) * 100 : 0;
 
     // Calculate bounce rate (sessions with only 1 page view)
-    const bounceRate = filteredSessions.filter(s => s.pageViews <= 1).length / totalSessions * 100;
+    const bounceRate =
+      (filteredSessions.filter((s) => s.pageViews <= 1).length /
+        totalSessions) *
+      100;
 
     // Get top pages
     const pageViews = new Map<string, { count: number; totalTime: number }>();
-    filteredNavigations.forEach(nav => {
+    filteredNavigations.forEach((nav) => {
       const current = pageViews.get(nav.to) || { count: 0, totalTime: 0 };
-      pageViews.set(nav.to, { count: current.count + 1, totalTime: current.totalTime });
+      pageViews.set(nav.to, {
+        count: current.count + 1,
+        totalTime: current.totalTime,
+      });
     });
 
     const topPages = Array.from(pageViews.entries())
       .map(([page, data]) => ({
         page,
         views: data.count,
-        avgTime: data.totalTime / data.count
+        avgTime: data.totalTime / data.count,
       }))
       .sort((a, b) => b.views - a.views)
       .slice(0, 10);
 
     // Get top interactions
     const interactionCounts = new Map<string, number>();
-    filteredInteractions.forEach(interaction => {
+    filteredInteractions.forEach((interaction) => {
       const key = `${interaction.element}_${interaction.action}`;
       interactionCounts.set(key, (interactionCounts.get(key) || 0) + 1);
     });
 
     const topInteractions = Array.from(interactionCounts.entries())
       .map(([key, count]) => {
-        const [element, type] = key.split('_');
+        const [element, type] = key.split("_");
         return { element, count, type };
       })
       .sort((a, b) => b.count - a.count)
@@ -248,10 +347,10 @@ class AnalyticsManager {
 
     // Get conversion funnel metrics
     const funnelMetrics: Record<string, ConversionMetrics> = {};
-    Object.keys(FUNNEL_DEFINITIONS).forEach(funnelType => {
+    Object.keys(FUNNEL_DEFINITIONS).forEach((funnelType) => {
       funnelMetrics[funnelType] = conversionFunnel.getConversionMetrics(
         funnelType as keyof typeof FUNNEL_DEFINITIONS,
-        range
+        range,
       );
     });
 
@@ -263,31 +362,34 @@ class AnalyticsManager {
         bounceRate,
         conversionRate,
         topPages,
-        topInteractions
+        topInteractions,
       },
       conversions: {
         funnelMetrics,
         topConversionPaths: this.calculateConversionPaths(filteredSessions),
         dropOffAnalysis: this.calculateDropOffAnalysis(funnelMetrics),
-        conversionTrends: this.calculateConversionTrends(filteredSessions, range)
+        conversionTrends: this.calculateConversionTrends(
+          filteredSessions,
+          range,
+        ),
       },
       forms: {
         formMetrics: this.getFormMetrics(),
         fieldAnalytics: this.calculateFieldAnalytics(),
         abandonmentReasons: this.calculateAbandonmentReasons(),
-        submissionTrends: this.calculateSubmissionTrends(range)
+        submissionTrends: this.calculateSubmissionTrends(range),
       },
       userBehavior: {
         sessionPatterns: this.calculateSessionPatterns(filteredSessions),
         deviceAnalytics: this.calculateDeviceAnalytics(filteredSessions),
         timeOnSite: this.calculateTimeOnSite(filteredSessions),
-        heatmapData: this.calculateHeatmapData(filteredInteractions)
+        heatmapData: this.calculateHeatmapData(filteredInteractions),
       },
       performance: {
         loadTimes: this.calculateLoadTimes(),
         errorRates: this.calculateErrorRates(range),
-        userFeedback: this.calculateUserFeedback()
-      }
+        userFeedback: this.calculateUserFeedback(),
+      },
     };
   }
 
@@ -297,36 +399,52 @@ class AnalyticsManager {
     return [];
   }
 
-  private calculateDropOffAnalysis(funnelMetrics: Record<string, ConversionMetrics>) {
+  private calculateDropOffAnalysis(
+    funnelMetrics: Record<string, ConversionMetrics>,
+  ) {
     return Object.entries(funnelMetrics).map(([funnel, metrics]) => {
-      const totalDropOffs = Object.values(metrics.dropOffPoints).reduce((sum, count) => sum + count, 0);
-      const avgDropOffRate = totalDropOffs / metrics.totalSessions * 100;
-      
+      const totalDropOffs = Object.values(metrics.dropOffPoints).reduce(
+        (sum, count) => sum + count,
+        0,
+      );
+      const avgDropOffRate = (totalDropOffs / metrics.totalSessions) * 100;
+
       return {
         step: funnel,
         dropOffRate: avgDropOffRate,
-        recoveryRate: metrics.conversionRate // Simplified
+        recoveryRate: metrics.conversionRate, // Simplified
       };
     });
   }
 
-  private calculateConversionTrends(sessions: UserSessionAnalytics[], range: { start: number; end: number }) {
+  private calculateConversionTrends(
+    sessions: UserSessionAnalytics[],
+    range: { start: number; end: number },
+  ) {
     const dayMs = 24 * 60 * 60 * 1000;
     const days = Math.ceil((range.end - range.start) / dayMs);
     const trends = [];
 
     for (let i = 0; i < days; i++) {
-      const dayStart = range.start + (i * dayMs);
+      const dayStart = range.start + i * dayMs;
       const dayEnd = dayStart + dayMs;
-      
-      const daySessions = sessions.filter(s => s.startTime >= dayStart && s.startTime < dayEnd);
-      const dayConversions = daySessions.reduce((sum, s) => sum + s.conversions, 0);
-      const dayRate = daySessions.length > 0 ? (dayConversions / daySessions.length) * 100 : 0;
+
+      const daySessions = sessions.filter(
+        (s) => s.startTime >= dayStart && s.startTime < dayEnd,
+      );
+      const dayConversions = daySessions.reduce(
+        (sum, s) => sum + s.conversions,
+        0,
+      );
+      const dayRate =
+        daySessions.length > 0
+          ? (dayConversions / daySessions.length) * 100
+          : 0;
 
       trends.push({
-        date: new Date(dayStart).toISOString().split('T')[0],
+        date: new Date(dayStart).toISOString().split("T")[0],
         conversions: dayConversions,
-        rate: dayRate
+        rate: dayRate,
       });
     }
 
@@ -359,20 +477,23 @@ class AnalyticsManager {
   }
 
   private calculateDeviceAnalytics(sessions: UserSessionAnalytics[]) {
-    const deviceData: Record<string, { count: number; avgDuration: number; conversionRate: number }> = {};
-    
-    sessions.forEach(session => {
+    const deviceData: Record<
+      string,
+      { count: number; avgDuration: number; conversionRate: number }
+    > = {};
+
+    sessions.forEach((session) => {
       const device = this.getDeviceType(session.userAgent);
       if (!deviceData[device]) {
         deviceData[device] = { count: 0, avgDuration: 0, conversionRate: 0 };
       }
-      
+
       deviceData[device].count++;
       deviceData[device].avgDuration += session.duration || 0;
     });
 
     // Calculate averages
-    Object.keys(deviceData).forEach(device => {
+    Object.keys(deviceData).forEach((device) => {
       deviceData[device].avgDuration /= deviceData[device].count;
     });
 
@@ -381,50 +502,54 @@ class AnalyticsManager {
 
   private calculateTimeOnSite(sessions: UserSessionAnalytics[]) {
     const timeRanges = [
-      { range: '0-30s', min: 0, max: 30000 },
-      { range: '30s-1m', min: 30000, max: 60000 },
-      { range: '1-2m', min: 60000, max: 120000 },
-      { range: '2-5m', min: 120000, max: 300000 },
-      { range: '5m+', min: 300000, max: Infinity }
+      { range: "0-30s", min: 0, max: 30000 },
+      { range: "30s-1m", min: 30000, max: 60000 },
+      { range: "1-2m", min: 60000, max: 120000 },
+      { range: "2-5m", min: 120000, max: 300000 },
+      { range: "5m+", min: 300000, max: Infinity },
     ];
 
-    const results = timeRanges.map(range => ({
+    const results = timeRanges.map((range) => ({
       timeRange: range.range,
-      count: sessions.filter(s => {
+      count: sessions.filter((s) => {
         const duration = s.duration || 0;
         return duration >= range.min && duration < range.max;
       }).length,
-      percentage: 0
+      percentage: 0,
     }));
 
     // Calculate percentages
     const totalSessions = sessions.length;
-    results.forEach(result => {
-      result.percentage = totalSessions > 0 ? (result.count / totalSessions) * 100 : 0;
+    results.forEach((result) => {
+      result.percentage =
+        totalSessions > 0 ? (result.count / totalSessions) * 100 : 0;
     });
 
     return results;
   }
 
   private calculateHeatmapData(interactions: InteractionAnalytics[]) {
-    const heatmapData = new Map<string, { clicks: number; hovers: number; position: { x: number; y: number } }>();
+    const heatmapData = new Map<
+      string,
+      { clicks: number; hovers: number; position: { x: number; y: number } }
+    >();
 
-    interactions.forEach(interaction => {
-      const current = heatmapData.get(interaction.element) || { 
-        clicks: 0, 
-        hovers: 0, 
-        position: { x: 0, y: 0 } 
+    interactions.forEach((interaction) => {
+      const current = heatmapData.get(interaction.element) || {
+        clicks: 0,
+        hovers: 0,
+        position: { x: 0, y: 0 },
       };
 
-      if (interaction.action === 'click') current.clicks++;
-      if (interaction.action === 'hover') current.hovers++;
+      if (interaction.action === "click") current.clicks++;
+      if (interaction.action === "hover") current.hovers++;
 
       heatmapData.set(interaction.element, current);
     });
 
     return Array.from(heatmapData.entries()).map(([element, data]) => ({
       element,
-      ...data
+      ...data,
     }));
   }
 
@@ -444,15 +569,15 @@ class AnalyticsManager {
   }
 
   private getDeviceType(userAgent: string): string {
-    if (/Mobile|Android|iPhone|iPad/.test(userAgent)) return 'mobile';
-    if (/Tablet/.test(userAgent)) return 'tablet';
-    return 'desktop';
+    if (/Mobile|Android|iPhone|iPad/.test(userAgent)) return "mobile";
+    if (/Tablet/.test(userAgent)) return "tablet";
+    return "desktop";
   }
 
   // Cleanup old data
   public cleanup(maxAge: number = 30 * 24 * 60 * 60 * 1000): void {
     const cutoffTime = Date.now() - maxAge;
-    
+
     // Clean up sessions
     for (const [sessionId, session] of this.sessions) {
       if (session.startTime < cutoffTime) {
@@ -461,10 +586,14 @@ class AnalyticsManager {
     }
 
     // Clean up navigation events
-    this.navigationEvents = this.navigationEvents.filter(nav => nav.timestamp > cutoffTime);
-    
+    this.navigationEvents = this.navigationEvents.filter(
+      (nav) => nav.timestamp > cutoffTime,
+    );
+
     // Clean up interaction events
-    this.interactionEvents = this.interactionEvents.filter(interaction => interaction.timestamp > cutoffTime);
+    this.interactionEvents = this.interactionEvents.filter(
+      (interaction) => interaction.timestamp > cutoffTime,
+    );
 
     // Clean up conversion funnel data
     conversionFunnel.cleanupOldSessions(maxAge);
@@ -486,15 +615,29 @@ export const useAnalytics = () => {
     analyticsManager.trackPageView(sessionId, page);
   };
 
-  const trackNavigation = (from: string, to: string, sessionId: string, userId?: string) => {
+  const trackNavigation = (
+    from: string,
+    to: string,
+    sessionId: string,
+    userId?: string,
+  ) => {
     analyticsManager.trackNavigation(from, to, sessionId, userId);
   };
 
-  const trackInteraction = (action: string, element: string, data: Record<string, unknown>, sessionId: string) => {
+  const trackInteraction = (
+    action: string,
+    element: string,
+    data: Record<string, unknown>,
+    sessionId: string,
+  ) => {
     analyticsManager.trackInteraction(action, element, data, sessionId);
   };
 
-  const trackConversion = (sessionId: string, conversionType: string, value?: number) => {
+  const trackConversion = (
+    sessionId: string,
+    conversionType: string,
+    value?: number,
+  ) => {
     analyticsManager.trackConversion(sessionId, conversionType, value);
   };
 
@@ -513,6 +656,6 @@ export const useAnalytics = () => {
     trackInteraction,
     trackConversion,
     endSession,
-    getDashboard
+    getDashboard,
   };
 };

@@ -1,25 +1,28 @@
-import * as React from "react"
-import { cva, type VariantProps } from "class-variance-authority"
+import * as React from "react";
+import { cva, type VariantProps } from "class-variance-authority";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 const alertVariants = cva(
   "relative w-full rounded-2xl border p-6 [&>svg~*]:pl-7 [&>svg+div]:translate-y-[-3px] [&>svg]:absolute [&>svg]:left-6 [&>svg]:top-6 [&>svg]:text-foreground backdrop-blur-sm shadow-elegant-soft transition-all duration-500 hover:shadow-elegant-panel",
   {
     variants: {
       variant: {
-        default: "bg-white/90 border-terracotta-200/30 text-elegant-dark [&>svg]:text-terracotta-600",
+        default:
+          "bg-white/90 border-terracotta-200/30 text-elegant-dark [&>svg]:text-terracotta-600",
         destructive:
           "bg-red-50/90 border-red-300/50 text-red-800 [&>svg]:text-red-600",
-        success: "bg-green-50/90 border-green-300/50 text-green-800 [&>svg]:text-green-600",
-        warning: "bg-amber-50/90 border-amber-300/50 text-amber-800 [&>svg]:text-amber-600",
+        success:
+          "bg-green-50/90 border-green-300/50 text-green-800 [&>svg]:text-green-600",
+        warning:
+          "bg-amber-50/90 border-amber-300/50 text-amber-800 [&>svg]:text-amber-600",
       },
     },
     defaultVariants: {
       variant: "default",
     },
-  }
-)
+  },
+);
 
 const Alert = React.forwardRef<
   HTMLDivElement,
@@ -31,8 +34,8 @@ const Alert = React.forwardRef<
     className={cn(alertVariants({ variant }), className)}
     {...props}
   />
-))
-Alert.displayName = "Alert"
+));
+Alert.displayName = "Alert";
 
 const AlertTitle = React.forwardRef<
   HTMLParagraphElement,
@@ -43,8 +46,8 @@ const AlertTitle = React.forwardRef<
     className={cn("mb-1 font-medium leading-none tracking-tight", className)}
     {...props}
   />
-))
-AlertTitle.displayName = "AlertTitle"
+));
+AlertTitle.displayName = "AlertTitle";
 
 const AlertDescription = React.forwardRef<
   HTMLParagraphElement,
@@ -55,7 +58,7 @@ const AlertDescription = React.forwardRef<
     className={cn("text-sm [&_p]:leading-relaxed", className)}
     {...props}
   />
-))
-AlertDescription.displayName = "AlertDescription"
+));
+AlertDescription.displayName = "AlertDescription";
 
-export { Alert, AlertTitle, AlertDescription }
+export { Alert, AlertTitle, AlertDescription };

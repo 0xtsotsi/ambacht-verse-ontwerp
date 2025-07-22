@@ -1,6 +1,7 @@
 # Database Integration Documentation
 
 ## Overview
+
 The Wesley's Ambacht booking system now includes a production-ready Supabase database schema that enables real availability checking, booking management, and quote generation.
 
 ## Database Schema
@@ -8,7 +9,9 @@ The Wesley's Ambacht booking system now includes a production-ready Supabase dat
 ### Tables
 
 #### `availability_slots`
+
 Manages time slot availability for bookings.
+
 - `id`: UUID primary key
 - `date`: Date for the slot
 - `time_slot`: Time of the slot (e.g., '18:00')
@@ -17,7 +20,9 @@ Manages time slot availability for bookings.
 - `is_blocked`: Manual block flag for special circumstances
 
 #### `bookings`
+
 Stores customer booking requests and confirmations.
+
 - `id`: UUID primary key
 - Customer information: `customer_name`, `customer_email`, `customer_phone`, `company_name`
 - Event details: `event_date`, `event_time`, `guest_count`
@@ -26,7 +31,9 @@ Stores customer booking requests and confirmations.
 - Additional: `special_requests`, `dietary_restrictions`
 
 #### `quotes`
+
 Manages pricing quotes for bookings.
+
 - `id`: UUID primary key
 - `booking_id`: Reference to the booking
 - `service_details`: JSON object with service configuration
@@ -36,7 +43,9 @@ Manages pricing quotes for bookings.
 - `valid_until`: Quote expiration date
 
 #### `add_on_services`
+
 Catalog of additional services available for bookings.
+
 - `id`: UUID primary key
 - `name`: Service name
 - `description`: Service description
@@ -45,7 +54,9 @@ Catalog of additional services available for bookings.
 - `flat_rate`: Flat rate pricing (if applicable)
 
 #### `booking_add_ons`
+
 Junction table linking bookings to selected add-on services.
+
 - `booking_id`: Reference to booking
 - `add_on_service_id`: Reference to add-on service
 - `quantity`: Number of units
@@ -54,18 +65,23 @@ Junction table linking bookings to selected add-on services.
 ### Database Functions
 
 #### `check_availability(p_date, p_time)`
+
 Returns boolean indicating if a specific date/time slot is available.
 
 #### `reserve_time_slot(p_date, p_time)`
+
 Increments the current_bookings count for a slot (atomic operation).
 
 #### `release_time_slot(p_date, p_time)`
+
 Decrements the current_bookings count for a slot.
 
 ## Integration Points
 
 ### DateChecker Modal Enhancement
+
 The `DateCheckerModalEnhanced` component now:
+
 - Fetches real availability data from the database
 - Shows loading states during data fetches
 - Handles real-time availability updates
@@ -73,12 +89,14 @@ The `DateCheckerModalEnhanced` component now:
 - Creates preliminary booking records
 
 ### Quote Calculator Integration
+
 - Loads add-on services from the database
 - Calculates pricing based on current database prices
 - Supports both per-person and flat-rate services
 - Maintains pricing consistency across the application
 
 ### Real-time Features
+
 - WebSocket subscriptions for availability changes
 - Live updates when bookings are made/cancelled
 - Optimistic UI updates with fallback handling
@@ -86,20 +104,26 @@ The `DateCheckerModalEnhanced` component now:
 ## TypeScript Integration
 
 ### Types
+
 All database types are automatically generated and exported from `src/integrations/supabase/types.ts`:
+
 - `Database`: Complete database schema types
 - `Booking`, `Quote`, `AvailabilitySlot`: Table row types
 - `ServiceCategory`, `ServiceTier`, `BookingStatus`: Enum types
 
 ### Database Service
+
 The `src/integrations/supabase/database.ts` file provides:
+
 - Type-safe database operations
 - Error handling and validation
 - Helper functions for common operations
 - Real-time subscription management
 
 ### Hooks
+
 Custom React hooks provide easy component integration:
+
 - `useAvailability`: Manages availability data and real-time updates
 - `useBooking`: Handles booking creation and updates
 - `useAddOnServices`: Provides add-on service catalog
@@ -107,7 +131,9 @@ Custom React hooks provide easy component integration:
 ## Testing
 
 ### Playwright Integration Tests
+
 The `tests/database-integration.spec.ts` file includes:
+
 - End-to-end booking flow testing
 - Real-time update verification
 - Error state handling
@@ -115,6 +141,7 @@ The `tests/database-integration.spec.ts` file includes:
 - Database constraint testing
 
 ### Test Coverage
+
 - Availability checking functionality
 - Booking creation and status updates
 - Quote generation and management
@@ -124,12 +151,14 @@ The `tests/database-integration.spec.ts` file includes:
 ## Migration and Deployment
 
 ### Development Setup
+
 1. Ensure Supabase project is configured (`supabase/config.toml`)
 2. Run migrations: `supabase db reset` (applies all migrations)
 3. Verify seed data is loaded correctly
 4. Test real-time subscriptions are working
 
 ### Production Deployment
+
 1. Apply migrations to production Supabase instance
 2. Verify Row Level Security policies are active
 3. Test connection strings and API keys
@@ -137,22 +166,26 @@ The `tests/database-integration.spec.ts` file includes:
 5. Set up database backups and monitoring
 
 ### Migration Files
+
 - `001_initial_schema.sql`: Core schema creation with tables, functions, and RLS
 - `002_seed_data.sql`: Initial data load with sample bookings and availability
 
 ## Performance Considerations
 
 ### Indexing
+
 - Primary indexes on frequently queried columns (`event_date`, `status`)
 - Composite indexes for availability queries (`date + time_slot`)
 - Email indexes for customer lookups
 
 ### Real-time Optimization
+
 - Selective subscriptions to minimize data transfer
 - Client-side caching of availability data
 - Optimistic updates for better UX
 
 ### Scalability
+
 - Partitioning strategy for large availability_slots table
 - Archive strategy for old bookings and quotes
 - Rate limiting on booking creation endpoints
@@ -160,11 +193,13 @@ The `tests/database-integration.spec.ts` file includes:
 ## Security
 
 ### Row Level Security
+
 - Public read access to availability and add-on services
 - Restricted write access to bookings and quotes
 - User-specific access controls where needed
 
 ### Data Validation
+
 - Database-level constraints on all critical fields
 - Email format validation
 - Guest count limits (10-500)
@@ -173,12 +208,14 @@ The `tests/database-integration.spec.ts` file includes:
 ## Monitoring and Maintenance
 
 ### Key Metrics
+
 - Booking success rate
 - Average availability check response time
 - Real-time subscription connection stability
 - Database query performance
 
 ### Regular Maintenance
+
 - Clean up expired quotes
 - Archive completed bookings
 - Update availability slots for future dates
@@ -187,6 +224,7 @@ The `tests/database-integration.spec.ts` file includes:
 ## Next Steps
 
 ### Planned Enhancements
+
 1. Automated email confirmations via database triggers
 2. Integration with external calendar systems
 3. Advanced reporting and analytics tables
@@ -194,6 +232,7 @@ The `tests/database-integration.spec.ts` file includes:
 5. Staff dashboard for booking administration
 
 ### Additional Features
+
 1. Waitlist functionality for fully booked slots
 2. Recurring booking support
 3. Group booking discounts

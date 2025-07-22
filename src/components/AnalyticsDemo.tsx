@@ -3,26 +3,26 @@
  * Demonstrates the comprehensive user flow tracking system
  */
 
-import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { 
-  BarChart3, 
-  TrendingUp, 
-  Users, 
-  MousePointer, 
-  FileText, 
+import React, { useState, useEffect } from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import {
+  BarChart3,
+  TrendingUp,
+  Users,
+  MousePointer,
+  FileText,
   Target,
-  Activity
-} from 'lucide-react';
-import { 
-  useNavigationLogger, 
-  useInteractionLogger, 
-  useSessionLogger, 
-  useBreadcrumbLogger 
-} from '@/hooks/useUserFlowLogger';
+  Activity,
+} from "lucide-react";
+import {
+  useNavigationLogger,
+  useInteractionLogger,
+  useSessionLogger,
+  useBreadcrumbLogger,
+} from "@/hooks/useUserFlowLogger";
 
 export const AnalyticsDemo = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -31,39 +31,40 @@ export const AnalyticsDemo = () => {
   const { logNavigation, logSectionView } = useNavigationLogger();
   const { logClick, logButtonPress } = useInteractionLogger();
   const { sessionData, getSessionDuration } = useSessionLogger();
-  const { addBreadcrumb, getJourneyPath, logJourneySummary } = useBreadcrumbLogger();
+  const { addBreadcrumb, getJourneyPath, logJourneySummary } =
+    useBreadcrumbLogger();
 
   useEffect(() => {
     // Log analytics demo view
-    addBreadcrumb('analytics_demo_viewed');
-    logSectionView('analytics-demo', 0);
+    addBreadcrumb("analytics_demo_viewed");
+    logSectionView("analytics-demo", 0);
   }, [addBreadcrumb, logSectionView]);
 
   const simulateUserJourney = () => {
-    logButtonPress('simulate_journey', 'analytics_demo');
-    addBreadcrumb('user_journey_simulation_started');
+    logButtonPress("simulate_journey", "analytics_demo");
+    addBreadcrumb("user_journey_simulation_started");
 
     // Simulate a complete booking journey
     const steps = [
-      'widget_displayed',
-      'widget_hovered', 
-      'widget_clicked',
-      'date_checker_opened',
-      'date_selected',
-      'booking_form_opened',
-      'form_field_filled',
-      'form_submitted',
-      'booking_confirmed'
+      "widget_displayed",
+      "widget_hovered",
+      "widget_clicked",
+      "date_checker_opened",
+      "date_selected",
+      "booking_form_opened",
+      "form_field_filled",
+      "form_submitted",
+      "booking_confirmed",
     ];
 
     steps.forEach((step, index) => {
       setTimeout(() => {
         addBreadcrumb(`simulated_${step}`, { stepNumber: index + 1 });
         logClick(`demo_${step}`, { simulation: true });
-        
+
         if (index === steps.length - 1) {
-          logJourneySummary('completed');
-          addBreadcrumb('simulation_completed');
+          logJourneySummary("completed");
+          addBreadcrumb("simulation_completed");
         }
       }, index * 500);
     });
@@ -76,8 +77,8 @@ export const AnalyticsDemo = () => {
           Analytics Tracking Demo
         </h2>
         <p className="text-forest-green/80 max-w-2xl mx-auto">
-          Deze demo toont het uitgebreide user flow tracking systeem met breadcrumb logging,
-          conversion funnel tracking, en form analytics.
+          Deze demo toont het uitgebreide user flow tracking systeem met
+          breadcrumb logging, conversion funnel tracking, en form analytics.
         </p>
       </div>
 
@@ -91,16 +92,13 @@ export const AnalyticsDemo = () => {
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <Button 
-              onClick={simulateUserJourney} 
-              className="w-full"
-            >
+            <Button onClick={simulateUserJourney} className="w-full">
               <MousePointer className="w-4 h-4 mr-2" />
               Simuleer User Journey
             </Button>
-            
-            <Button 
-              onClick={() => addBreadcrumb('demo_interaction')} 
+
+            <Button
+              onClick={() => addBreadcrumb("demo_interaction")}
               variant="outline"
               className="w-full"
             >

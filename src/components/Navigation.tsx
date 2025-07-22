@@ -1,4 +1,3 @@
-
 import { useState, useEffect, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
@@ -8,21 +7,24 @@ export const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
 
-  const menuItems = useMemo(() => [
-    { name: "HOME", href: "#home" },
-    { name: "WIE ZIJN WIJ?", href: "#about" },
-    { name: "GALERIJ", href: "#gallery" },
-    { name: "GASTENBOEK", href: "#testimonials" },
-    { name: "CONTACT", href: "#contact" },
-  ], []);
+  const menuItems = useMemo(
+    () => [
+      { name: "HOME", href: "#home" },
+      { name: "WIE ZIJN WIJ?", href: "#about" },
+      { name: "GALERIJ", href: "#gallery" },
+      { name: "GASTENBOEK", href: "#testimonials" },
+      { name: "CONTACT", href: "#contact" },
+    ],
+    [],
+  );
 
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 50);
-      
+
       // Update active section based on scroll position
-      const sections = menuItems.map(item => item.href.slice(1));
-      const currentSection = sections.find(section => {
+      const sections = menuItems.map((item) => item.href.slice(1));
+      const currentSection = sections.find((section) => {
         const element = document.getElementById(section);
         if (element) {
           const rect = element.getBoundingClientRect();
@@ -38,11 +40,11 @@ export const Navigation = () => {
   }, [menuItems]);
 
   return (
-    <nav className={`fixed top-0 w-full z-50 backdrop-blur-md border-0 transition-all duration-700 ${
-      scrolled 
-        ? "bg-white/90 shadow-elegant-panel py-6" 
-        : "bg-white/80 py-8"
-    }`}>
+    <nav
+      className={`fixed top-0 w-full z-50 backdrop-blur-md border-0 transition-all duration-700 ${
+        scrolled ? "bg-white/90 shadow-elegant-panel py-6" : "bg-white/80 py-8"
+      }`}
+    >
       <div className="container mx-auto px-16">
         <div className="flex items-center justify-center">
           {/* Desktop Menu */}
@@ -57,16 +59,18 @@ export const Navigation = () => {
                     : "text-elegant-dark hover:text-terracotta-600"
                 }`}
                 style={{
-                  transitionDelay: `${index * 50}ms`
+                  transitionDelay: `${index * 50}ms`,
                 }}
               >
                 {item.name}
                 {/* Elegant underline with glow effect */}
-                <span className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-terracotta-500 to-terracotta-600 transition-all duration-500 transform origin-left ${
-                  activeSection === item.href.slice(1)
-                    ? "w-full animate-elegant-glow"
-                    : "w-0 group-hover:w-full"
-                }`}>
+                <span
+                  className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-terracotta-500 to-terracotta-600 transition-all duration-500 transform origin-left ${
+                    activeSection === item.href.slice(1)
+                      ? "w-full animate-elegant-glow"
+                      : "w-0 group-hover:w-full"
+                  }`}
+                >
                   <span className="absolute inset-0 blur-sm bg-terracotta-500/50"></span>
                 </span>
                 {/* Hover glow effect */}
@@ -92,9 +96,13 @@ export const Navigation = () => {
         </div>
 
         {/* Mobile Menu with elegant slide animation */}
-        <div className={`md:hidden overflow-hidden transition-all duration-700 transform ${
-          isOpen ? "max-h-96 opacity-100 translate-y-0" : "max-h-0 opacity-0 -translate-y-4"
-        }`}>
+        <div
+          className={`md:hidden overflow-hidden transition-all duration-700 transform ${
+            isOpen
+              ? "max-h-96 opacity-100 translate-y-0"
+              : "max-h-0 opacity-0 -translate-y-4"
+          }`}
+        >
           <div className="flex flex-col space-y-6 text-center mt-8 pb-8">
             {menuItems.map((item, index) => (
               <a
@@ -108,7 +116,9 @@ export const Navigation = () => {
                 onClick={() => setIsOpen(false)}
                 style={{
                   animationDelay: `${index * 100}ms`,
-                  animation: isOpen ? "interactive-slide-up 0.6s ease-out forwards" : "none"
+                  animation: isOpen
+                    ? "interactive-slide-up 0.6s ease-out forwards"
+                    : "none",
                 }}
               >
                 {item.name}

@@ -20,9 +20,9 @@ Competitive analysis of Sopranos Catering identified key success factors: promin
 
 ### Change Log
 
-| Date | Version | Description | Author |
-| :--- | :------ | :---------- | :----- |
-| 2025-06-28 | 1.0 | Initial PRD creation based on project brief and market research | John (PM) |
+| Date       | Version | Description                                                     | Author    |
+| :--------- | :------ | :-------------------------------------------------------------- | :-------- |
+| 2025-06-28 | 1.0     | Initial PRD creation based on project brief and market research | John (PM) |
 
 ## Requirements
 
@@ -430,7 +430,7 @@ so that I can explore services and save bookings even with poor connectivity.
 
 ## Checklist Results Report
 
-*This section will be populated after PM checklist execution.*
+_This section will be populated after PM checklist execution._
 
 ## Next Steps
 

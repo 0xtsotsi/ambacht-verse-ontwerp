@@ -412,6 +412,45 @@ These commands make AI calls and may take up to a minute:
 - Provides more informed task creation and updates
 - Recommended for complex technical tasks
 
+## Critical Operational Guidelines
+
+### Documentation as Source of Truth
+
+- Documentation is the absolute source of truth - never rely on outdated knowledge for third-party APIs
+- Always use the latest documentation provided before writing any files that use third-party APIs
+- Freshly scraped documentation should always override any existing knowledge
+
+### Docker & Self-Testing
+
+- All Python commands and unit tests must be run through Docker
+- Set up Docker for development and monitor Docker output for self-improvement
+- All features must work perfectly through Docker without requiring fixes
+- Docker can be used with Curl or test scripts to verify functionality
+
+### Agent Design
+
+- Design agents as intelligent human beings with decision-making capabilities
+- Agents must use Ref for detailed research, not basic prompts
+- Use reasoning and AI decision-making instead of programmatic solutions
+- Every agent should have at least 5 prompts in an agentic workflow for unique content
+- Each agent should maintain context of previous iterations' outputs
+
+### Research & Documentation
+
+- Only use official documentation pages for research
+- Use r.jina to scrape documentation pages mentioned in initial.md
+- Create llm.txt from scrapes in memory
+- Scrape 30-100 pages in total when researching
+- Store successful scrapes in a directory named after the technology, with .md or .txt files for each output
+- Always reference the /research/ directory before implementing features that use external APIs
+
+### Advanced Techniques
+
+- Use Ultrathink before every stage of PRD generation and code generation
+- Find exact model names from documentation and use only those specified in initial.md
+- Take specified technologies as sacred truth - research exactly what's specified
+- For maximum efficiency, run multiple independent operations (like research) in parallel rather than sequentially
+
 ---
 
 _This guide ensures Claude Code has immediate access to Task Master's essential functionality for agentic development workflows._

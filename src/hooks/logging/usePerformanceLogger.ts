@@ -1,5 +1,5 @@
-import { useRef, useCallback, useEffect } from 'react';
-import { ComponentLogger } from '@/lib/logger';
+import { useRef, useCallback, useEffect } from "react";
+import { ComponentLogger } from "@/lib/logger";
 
 interface UsePerformanceLoggerOptions {
   componentName: string;
@@ -21,7 +21,7 @@ interface PerformanceMetrics {
 export function usePerformanceLogger({
   componentName,
   slowRenderThreshold = 16, // 16ms = 60fps threshold
-  enableMemoryTracking = false
+  enableMemoryTracking = false,
 }: UsePerformanceLoggerOptions) {
   const renderStartTimeRef = useRef<number>();
   const performanceDataRef = useRef<PerformanceMetrics[]>([]);
@@ -37,29 +37,31 @@ export function usePerformanceLogger({
       if (renderStartTimeRef.current) {
         const renderTime = performance.now() - renderStartTimeRef.current;
         const isSlowRender = renderTime > slowRenderThreshold;
-        
+
         let memoryUsage: number | undefined;
-        if (enableMemoryTracking && 'memory' in performance) {
-          memoryUsage = (performance as Performance & { memory?: { usedJSHeapSize: number } }).memory?.usedJSHeapSize;
+        if (enableMemoryTracking && "memory" in performance) {
+          memoryUsage = (
+            performance as Performance & { memory?: { usedJSHeapSize: number } }
+          ).memory?.usedJSHeapSize;
         }
 
         const metrics: PerformanceMetrics = {
           renderTime,
           isSlowRender,
           memoryUsage,
-          timestamp: new Date().toISOString()
+          timestamp: new Date().toISOString(),
         };
 
         // Store metrics for analysis
         performanceDataRef.current.push(metrics);
-        
+
         // Keep only last 100 measurements to prevent memory leaks
         if (performanceDataRef.current.length > 100) {
           performanceDataRef.current = performanceDataRef.current.slice(-100);
         }
 
         ComponentLogger.performance(componentName, renderTime, isSlowRender);
-        
+
         renderStartTimeRef.current = undefined;
         return metrics;
       }
@@ -74,16 +76,17 @@ export function usePerformanceLogger({
     const data = performanceDataRef.current;
     if (data.length === 0) return null;
 
-    const renderTimes = data.map(d => d.renderTime);
-    const slowRenders = data.filter(d => d.isSlowRender).length;
+    const renderTimes = data.map((d) => d.renderTime);
+    const slowRenders = data.filter((d) => d.isSlowRender).length;
 
     return {
       totalRenders: data.length,
-      averageRenderTime: renderTimes.reduce((a, b) => a + b, 0) / renderTimes.length,
+      averageRenderTime:
+        renderTimes.reduce((a, b) => a + b, 0) / renderTimes.length,
       maxRenderTime: Math.max(...renderTimes),
       minRenderTime: Math.min(...renderTimes),
       slowRenderCount: slowRenders,
-      slowRenderPercentage: (slowRenders / data.length) * 100
+      slowRenderPercentage: (slowRenders / data.length) * 100,
     };
   }, []);
 
@@ -97,6 +100,6 @@ export function usePerformanceLogger({
     startMeasurement,
     endMeasurement,
     getPerformanceStats,
-    performanceHistory: performanceDataRef.current
+    performanceHistory: performanceDataRef.current,
   };
 }

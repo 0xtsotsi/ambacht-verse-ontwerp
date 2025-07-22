@@ -1,11 +1,11 @@
-import React from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import { 
+import React from "react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import {
   QUOTE_SERVICE_CATEGORIES,
-  type QuoteServiceCategory 
-} from '@/lib/quote-calculator-constants';
+  type QuoteServiceCategory,
+} from "@/lib/quote-calculator-constants";
 
 interface ServiceCategorySelectorProps {
   selectedCategory: QuoteServiceCategory;
@@ -22,7 +22,7 @@ interface ServiceCategorySelectorProps {
 export function ServiceCategorySelector({
   selectedCategory,
   onCategorySelect,
-  translations
+  translations,
 }: ServiceCategorySelectorProps) {
   return (
     <Card className="border-0 shadow-elegant-panel bg-white/80 backdrop-blur-sm">
@@ -40,9 +40,9 @@ export function ServiceCategorySelector({
               onClick={() => onCategorySelect(key as QuoteServiceCategory)}
               className={cn(
                 "h-auto p-4 flex-col items-start text-left transition-all duration-200",
-                selectedCategory === key 
-                  ? "bg-burnt-orange text-white shadow-md" 
-                  : "hover:bg-burnt-orange/5 hover:border-burnt-orange"
+                selectedCategory === key
+                  ? "bg-burnt-orange text-white shadow-md"
+                  : "hover:bg-burnt-orange/5 hover:border-burnt-orange",
               )}
             >
               <div className="flex items-center gap-3 w-full">

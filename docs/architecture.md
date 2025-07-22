@@ -9,13 +9,15 @@ This unified approach combines what would traditionally be separate backend and 
 ### Starter Template or Existing Project
 
 **Existing Project Enhancement**: This project builds upon an existing React + TypeScript + Supabase foundation. The current implementation includes:
+
 - Basic component structure with shadcn/ui components
-- Established Tailwind CSS styling framework  
+- Established Tailwind CSS styling framework
 - Supabase client configuration (currently with empty database schema)
 - React Query for state management
 - React Router for navigation
 
 **Constraints from Existing Project**:
+
 - Must maintain current React 18.3.1 + TypeScript 5.5.3 foundation
 - Must preserve existing Supabase integration and project structure
 - Must enhance rather than replace current component architecture
@@ -23,9 +25,9 @@ This unified approach combines what would traditionally be separate backend and 
 
 ### Change Log
 
-| Date | Version | Description | Author |
-| :--- | :------ | :---------- | :----- |
-| 2025-06-28 | 1.0 | Initial architecture document creation based on PRD and existing foundation | Winston (Architect) |
+| Date       | Version | Description                                                                 | Author              |
+| :--------- | :------ | :-------------------------------------------------------------------------- | :------------------ |
+| 2025-06-28 | 1.0     | Initial architecture document creation based on PRD and existing foundation | Winston (Architect) |
 
 ## High Level Architecture
 
@@ -38,11 +40,13 @@ Wesley's Ambacht enhancement follows a modern JAMstack architecture pattern with
 **Platform Selection Analysis**:
 
 1. **Vercel + Supabase** (Recommended) ✅
+
    - **Pros**: Seamless React deployment, edge functions, automatic scaling, existing Supabase integration
    - **Cons**: Vendor lock-in, limited backend customization
    - **Cost**: Free tier for development, predictable pricing for production
 
 2. **AWS Full Stack**
+
    - **Pros**: Maximum flexibility, enterprise-grade scalability
    - **Cons**: Complex setup, higher costs, requires DevOps expertise
    - **Cost**: Variable based on usage
@@ -73,20 +77,20 @@ The existing structure supports enhancement without major restructuring. New com
 graph TB
     Users[👥 Users<br/>Desktop/Mobile] --> CF[🌐 Vercel Edge Network]
     CF --> Web[⚛️ React Frontend<br/>Vite + TypeScript]
-    
+
     Web --> SB[🔧 Supabase Backend]
     SB --> DB[(🗄️ PostgreSQL Database)]
     SB --> RT[📡 Realtime Subscriptions]
     SB --> ST[📁 Storage]
-    
+
     Web --> WA[💬 WhatsApp Business API]
     Web --> PDF[📄 PDF Generation Service]
     Web --> GA[📊 Google Analytics 4]
-    
+
     DB --> Tables[📋 Tables:<br/>bookings, availability_slots,<br/>quotes, service_types,<br/>testimonials, suppliers]
-    
+
     RT --> Live[⚡ Live Availability<br/>Booking Updates]
-    
+
     style Web fill:#e1f5fe
     style SB fill:#f3e5f5
     style DB fill:#e8f5e8
@@ -106,30 +110,30 @@ graph TB
 
 ### Technology Stack Table
 
-| Category                 | Technology        | Version     | Purpose     | Rationale      |
-| :----------------------- | :---------------- | :---------- | :---------- | :------------- |
-| **Frontend Language**    | TypeScript        | 5.5.3       | Type-safe frontend development | Excellent tooling, catch errors at compile time, shared types with backend |
-| **Frontend Framework**   | React             | 18.3.1      | UI component framework | Existing foundation, excellent ecosystem, component reusability |
-| **Build Tool**           | Vite              | 5.4.1       | Fast development and production builds | Existing setup, fast HMR, optimized bundling |
-| **UI Component Library** | shadcn/ui         | Latest      | Accessible, customizable components | Existing foundation, Radix UI base, Tailwind integration |
-| **CSS Framework**        | Tailwind CSS      | 3.4.11      | Utility-first styling | Existing setup, rapid development, consistent design |
-| **State Management**     | React Query       | 5.56.2      | Server state management | Existing setup, excellent caching, real-time integration |
-| **Form Management**      | React Hook Form   | 7.53.0      | Form validation and state | Existing setup, excellent performance, Zod integration |
-| **Validation**           | Zod               | 3.23.8      | Runtime type validation | Existing setup, TypeScript integration, comprehensive validation |
-| **Routing**              | React Router      | 6.26.2      | Client-side routing | Existing setup, mature solution, good TypeScript support |
-| **Backend Platform**     | Supabase          | 2.50.0      | Backend-as-a-Service | Existing integration, PostgreSQL, real-time, auth, storage |
-| **Database**             | PostgreSQL        | 16.x        | Primary data store | Supabase managed, ACID compliance, JSON support, real-time |
-| **API Style**            | REST + Supabase Client | 2.50.0 | Type-safe API communication | Built-in with Supabase, auto-generated types, real-time subscriptions |
-| **Authentication**       | Supabase Auth     | 2.50.0      | User authentication | Integrated with backend, multiple providers, session management |
-| **File Storage**         | Supabase Storage  | 2.50.0      | Image and document storage | Integrated with database, CDN, automatic optimization |
-| **Real-time**            | Supabase Realtime | 2.50.0      | Live data synchronization | Built-in PostgreSQL CDC, WebSocket based, automatic reconnection |
-| **Frontend Testing**     | Jest + RTL        | Latest      | Component and unit testing | React ecosystem standard, good TypeScript support |
-| **E2E Testing**          | Playwright        | Latest      | End-to-end testing | Modern E2E solution, excellent debugging, cross-browser |
-| **Deployment**           | Vercel            | Latest      | Frontend hosting and deployment | Excellent React support, edge functions, automatic previews |
-| **Monitoring**           | Vercel Analytics  | Latest      | Performance monitoring | Integrated with hosting, Core Web Vitals, real user metrics |
-| **Analytics**            | Google Analytics  | GA4         | User behavior tracking | Industry standard, enhanced e-commerce, conversion tracking |
-| **External APIs**        | WhatsApp Business | Latest      | Customer communication | Direct messaging, business verification, automation |
-| **PDF Generation**       | jsPDF + html2canvas | Latest   | Menu and quote PDFs | Client-side generation, no server dependency, offline capability |
+| Category                 | Technology             | Version | Purpose                                | Rationale                                                                  |
+| :----------------------- | :--------------------- | :------ | :------------------------------------- | :------------------------------------------------------------------------- |
+| **Frontend Language**    | TypeScript             | 5.5.3   | Type-safe frontend development         | Excellent tooling, catch errors at compile time, shared types with backend |
+| **Frontend Framework**   | React                  | 18.3.1  | UI component framework                 | Existing foundation, excellent ecosystem, component reusability            |
+| **Build Tool**           | Vite                   | 5.4.1   | Fast development and production builds | Existing setup, fast HMR, optimized bundling                               |
+| **UI Component Library** | shadcn/ui              | Latest  | Accessible, customizable components    | Existing foundation, Radix UI base, Tailwind integration                   |
+| **CSS Framework**        | Tailwind CSS           | 3.4.11  | Utility-first styling                  | Existing setup, rapid development, consistent design                       |
+| **State Management**     | React Query            | 5.56.2  | Server state management                | Existing setup, excellent caching, real-time integration                   |
+| **Form Management**      | React Hook Form        | 7.53.0  | Form validation and state              | Existing setup, excellent performance, Zod integration                     |
+| **Validation**           | Zod                    | 3.23.8  | Runtime type validation                | Existing setup, TypeScript integration, comprehensive validation           |
+| **Routing**              | React Router           | 6.26.2  | Client-side routing                    | Existing setup, mature solution, good TypeScript support                   |
+| **Backend Platform**     | Supabase               | 2.50.0  | Backend-as-a-Service                   | Existing integration, PostgreSQL, real-time, auth, storage                 |
+| **Database**             | PostgreSQL             | 16.x    | Primary data store                     | Supabase managed, ACID compliance, JSON support, real-time                 |
+| **API Style**            | REST + Supabase Client | 2.50.0  | Type-safe API communication            | Built-in with Supabase, auto-generated types, real-time subscriptions      |
+| **Authentication**       | Supabase Auth          | 2.50.0  | User authentication                    | Integrated with backend, multiple providers, session management            |
+| **File Storage**         | Supabase Storage       | 2.50.0  | Image and document storage             | Integrated with database, CDN, automatic optimization                      |
+| **Real-time**            | Supabase Realtime      | 2.50.0  | Live data synchronization              | Built-in PostgreSQL CDC, WebSocket based, automatic reconnection           |
+| **Frontend Testing**     | Jest + RTL             | Latest  | Component and unit testing             | React ecosystem standard, good TypeScript support                          |
+| **E2E Testing**          | Playwright             | Latest  | End-to-end testing                     | Modern E2E solution, excellent debugging, cross-browser                    |
+| **Deployment**           | Vercel                 | Latest  | Frontend hosting and deployment        | Excellent React support, edge functions, automatic previews                |
+| **Monitoring**           | Vercel Analytics       | Latest  | Performance monitoring                 | Integrated with hosting, Core Web Vitals, real user metrics                |
+| **Analytics**            | Google Analytics       | GA4     | User behavior tracking                 | Industry standard, enhanced e-commerce, conversion tracking                |
+| **External APIs**        | WhatsApp Business      | Latest  | Customer communication                 | Direct messaging, business verification, automation                        |
+| **PDF Generation**       | jsPDF + html2canvas    | Latest  | Menu and quote PDFs                    | Client-side generation, no server dependency, offline capability           |
 
 ## Data Models
 
@@ -138,6 +142,7 @@ graph TB
 **Purpose:** Core entity representing catering service bookings with real-time availability tracking
 
 **Key Attributes:**
+
 - id: string (UUID) - Unique booking identifier
 - date: Date - Event date
 - time: string - Event time (HH:mm format)
@@ -175,21 +180,22 @@ interface CustomerInfo {
 }
 
 enum ServiceType {
-  CORPORATE = 'corporate',
-  SOCIAL = 'social', 
-  WEDDING = 'wedding',
-  CUSTOM = 'custom'
+  CORPORATE = "corporate",
+  SOCIAL = "social",
+  WEDDING = "wedding",
+  CUSTOM = "custom",
 }
 
 enum BookingStatus {
-  PENDING = 'pending',
-  CONFIRMED = 'confirmed',
-  CANCELLED = 'cancelled',
-  COMPLETED = 'completed'
+  PENDING = "pending",
+  CONFIRMED = "confirmed",
+  CANCELLED = "cancelled",
+  COMPLETED = "completed",
 }
 ```
 
 **Relationships:**
+
 - Belongs to one service type (n:1)
 - Has many quote line items (1:n)
 - References availability slots (n:1)
@@ -199,6 +205,7 @@ enum BookingStatus {
 **Purpose:** Defines catering service categories with pricing and configuration options
 
 **Key Attributes:**
+
 - id: string - Service identifier
 - name: string - Display name (Corporate Events, Weddings, etc.)
 - base_price_per_person: number - Starting price in euros
@@ -234,6 +241,7 @@ interface AddOnOption {
 ```
 
 **Relationships:**
+
 - Has many bookings (1:n)
 - Has many add-on options (1:n)
 
@@ -242,6 +250,7 @@ interface AddOnOption {
 **Purpose:** Stores preliminary and final pricing calculations for customer transparency
 
 **Key Attributes:**
+
 - id: string - Quote identifier
 - booking_id: string - Associated booking reference
 - service_selections: object - Selected services and add-ons
@@ -283,6 +292,7 @@ interface PricingBreakdown {
 ```
 
 **Relationships:**
+
 - Belongs to one booking (n:1)
 - References service types and add-ons (n:n)
 
@@ -291,6 +301,7 @@ interface PricingBreakdown {
 **Purpose:** Customer reviews and social proof for trust building
 
 **Key Attributes:**
+
 - id: string - Testimonial identifier
 - client_name: string - Customer name
 - company_name: string - Company or organization
@@ -319,6 +330,7 @@ interface Testimonial {
 ```
 
 **Relationships:**
+
 - May reference completed bookings (n:1)
 
 ## REST API Spec
@@ -367,7 +379,7 @@ WS     /realtime              // WebSocket for live updates
   "service_type": "corporate",
   "customer_info": {
     "name": "Jan van der Berg",
-    "email": "jan@techcorp.nl", 
+    "email": "jan@techcorp.nl",
     "phone": "+31-20-1234567",
     "company": "TechCorp Nederland",
     "event_type": "Company Meeting"
@@ -390,6 +402,7 @@ WS     /realtime              // WebSocket for live updates
 **Responsibility:** Persistent booking access throughout site navigation with real-time availability checking
 
 **Key Interfaces:**
+
 - `openBookingModal()` - Opens booking flow
 - `checkAvailability(date, time)` - Real-time availability checking
 - `calculateQuote(selections)` - Preliminary pricing
@@ -403,6 +416,7 @@ WS     /realtime              // WebSocket for live updates
 **Responsibility:** Multi-step booking form with date/time selection, guest count, and service type selection
 
 **Key Interfaces:**
+
 - `onDateSelect(date)` - Date selection handler
 - `onTimeSelect(time)` - Time slot selection
 - `onGuestCountChange(count)` - Guest count updates
@@ -417,6 +431,7 @@ WS     /realtime              // WebSocket for live updates
 **Responsibility:** Transparent pricing display with tiered service options and add-on selection
 
 **Key Interfaces:**
+
 - `onServiceSelect(serviceId)` - Service type selection
 - `onTierSelect(tier)` - Pricing tier selection
 - `onAddOnToggle(addOn)` - Add-on selection toggle
@@ -430,6 +445,7 @@ WS     /realtime              // WebSocket for live updates
 **Responsibility:** Professional credibility display through awards, certifications, and statistics
 
 **Key Interfaces:**
+
 - `loadAwards()` - Fetch awards and certifications
 - `displayStatistics()` - Show business metrics
 
@@ -442,6 +458,7 @@ WS     /realtime              // WebSocket for live updates
 **Responsibility:** Social proof through rotating customer testimonials with company attribution
 
 **Key Interfaces:**
+
 - `loadTestimonials()` - Fetch approved testimonials
 - `autoRotate()` - Automatic testimonial rotation
 - `navigateToTestimonial(index)` - Manual navigation
@@ -455,6 +472,7 @@ WS     /realtime              // WebSocket for live updates
 **Responsibility:** Local supplier partnerships display for quality assurance and authenticity
 
 **Key Interfaces:**
+
 - `loadSuppliers()` - Fetch supplier information
 - `displaySupplierDetails(supplier)` - Show detailed information
 
@@ -467,6 +485,7 @@ WS     /realtime              // WebSocket for live updates
 **Responsibility:** Direct customer communication through WhatsApp Business API
 
 **Key Interfaces:**
+
 - `initializeChat()` - Open WhatsApp conversation
 - `sendQuickMessage(template)` - Send predefined messages
 - `handleBusinessHours()` - Manage availability display
@@ -480,6 +499,7 @@ WS     /realtime              // WebSocket for live updates
 **Responsibility:** Content management for Dutch formal and English language support
 
 **Key Interfaces:**
+
 - `switchLanguage(locale)` - Language switching
 - `translate(key)` - Content translation
 - `getLocalizedContent(key)` - Dynamic content loading
@@ -496,26 +516,26 @@ graph TB
     App --> Router[🛣️ React Router]
     App --> Float[🎯 FloatingBookingWidget]
     App --> Lang[🌐 MultiLanguageProvider]
-    
+
     Router --> Home[🏡 Home Page]
     Router --> Services[⚙️ Services Page]
     Router --> About[ℹ️ About Page]
-    
+
     Home --> Hero[🎬 Hero Section]
     Home --> ServiceCards[💳 ServicePricingCards]
     Home --> Test[💬 TestimonialsCarousel]
     Home --> Awards[🏆 AwardsSection]
     Home --> Suppliers[🤝 SupplierShowcase]
-    
+
     Float --> Modal[📝 DateCheckerModal]
     Modal --> Calendar[📅 Calendar Component]
     Modal --> TimeSlots[⏰ Time Selection]
     Modal --> GuestCount[👥 Guest Counter]
     Modal --> Quote[💰 Quote Calculator]
-    
+
     Nav --> WhatsApp[💬 WhatsAppIntegration]
     Nav --> LangToggle[🔄 Language Toggle]
-    
+
     style App fill:#e3f2fd
     style Float fill:#f3e5f5
     style Modal fill:#e8f5e8
@@ -526,12 +546,13 @@ graph TB
 ### WhatsApp Business API
 
 - **Purpose:** Direct customer communication and support
-- **Documentation:** https://developers.facebook.com/docs/whatsapp/business-platform
+- **Documentation:** <https://developers.facebook.com/docs/whatsapp/business-platform>
 - **Base URL(s):** `https://graph.facebook.com/v18.0/`
 - **Authentication:** Bearer token with Business Account verification
 - **Rate Limits:** 1000 messages per day (standard), upgradeable based on business verification
 
 **Key Endpoints Used:**
+
 - `POST /{phone-number-id}/messages` - Send messages to customers
 - `GET /{phone-number-id}` - Get phone number information
 - `POST /{phone-number-id}/register` - Register phone number
@@ -541,12 +562,13 @@ graph TB
 ### Google Analytics 4 API
 
 - **Purpose:** Enhanced e-commerce tracking and conversion monitoring
-- **Documentation:** https://developers.google.com/analytics/devguides/collection/ga4
+- **Documentation:** <https://developers.google.com/analytics/devguides/collection/ga4>
 - **Base URL(s):** `https://www.googletagmanager.com/gtag/js`
 - **Authentication:** Google Analytics Measurement ID
 - **Rate Limits:** No explicit limits for standard tracking
 
 **Key Events Tracked:**
+
 - `begin_checkout` - Booking form initiation
 - `purchase` - Booking confirmation
 - `view_item` - Service page views
@@ -565,28 +587,28 @@ sequenceDiagram
     participant M as DateModal
     participant S as Supabase
     participant W as WhatsApp
-    
+
     U->>F: Click "Check Your Date"
     F->>M: Open booking modal
     M->>S: Load available dates
     S-->>M: Return availability data
-    
+
     U->>M: Select date & time
     M->>S: Check specific availability
     S-->>M: Confirm availability
-    
+
     U->>M: Enter guest count
     M->>M: Calculate preliminary quote
     M-->>U: Display pricing estimate
-    
+
     U->>M: Fill contact form
     M->>S: Create booking record
     S-->>M: Return booking ID
-    
+
     M->>S: Generate quote
     S-->>M: Quote details
     M-->>U: Show confirmation
-    
+
     opt WhatsApp Integration
         U->>W: Click WhatsApp contact
         W->>W: Open business chat
@@ -602,14 +624,14 @@ sequenceDiagram
     participant S as Supabase
     participant R as Realtime
     participant C as Client
-    
+
     A->>S: Update availability
     S->>R: Broadcast change
     R->>C: Notify subscribers
     C->>C: Update UI availability
-    
+
     Note over C: User sees live updates
-    
+
     C->>S: Attempt booking
     S->>S: Check current availability
     alt Available
@@ -771,27 +793,27 @@ DECLARE
 BEGIN
     -- Check if slot exists and is available
     SELECT is_available, max_capacity INTO slot_available, slot_capacity
-    FROM availability_slots 
+    FROM availability_slots
     WHERE date = check_date AND time_slot = check_time;
-    
+
     -- If no slot exists, assume available with default capacity
     IF slot_available IS NULL THEN
         slot_available := true;
         slot_capacity := 500;
     END IF;
-    
+
     -- If slot is marked unavailable, return false
     IF NOT slot_available THEN
         RETURN false;
     END IF;
-    
+
     -- Check current bookings for this slot
     SELECT COALESCE(SUM(guest_count), 0) INTO current_bookings
-    FROM bookings 
-    WHERE date = check_date 
-      AND time_slot = check_time 
+    FROM bookings
+    WHERE date = check_date
+      AND time_slot = check_time
       AND status IN ('confirmed', 'pending');
-    
+
     -- Return true if capacity allows
     RETURN (current_bookings + guest_count) <= slot_capacity;
 END;
@@ -814,28 +836,28 @@ DECLARE
 BEGIN
     -- Get base price per person
     SELECT base_price_per_person INTO base_price
-    FROM service_types 
+    FROM service_types
     WHERE id = service_type_id AND is_active = true;
-    
+
     IF base_price IS NULL THEN
         RAISE EXCEPTION 'Invalid service type';
     END IF;
-    
+
     -- Calculate base total
     base_total := base_price * guest_count;
-    
+
     -- Calculate add-ons (simplified - would need more complex logic for real implementation)
     -- add_on_total := (SELECT SUM((elem->>'price')::decimal * guest_count) FROM jsonb_array_elements(add_ons) AS elem);
-    
+
     -- Calculate service fee (5%)
     service_fee := (base_total + add_on_total) * 0.05;
-    
+
     -- Calculate tax (21% VAT for Netherlands)
     tax := (base_total + add_on_total + service_fee) * 0.21;
-    
+
     -- Calculate final total
     final_total := base_total + add_on_total + service_fee + tax;
-    
+
     -- Build breakdown JSON
     breakdown := jsonb_build_object(
         'base_service', base_total,
@@ -844,7 +866,7 @@ BEGIN
         'tax', tax,
         'total', final_total
     );
-    
+
     RETURN breakdown;
 END;
 $$ LANGUAGE plpgsql;
@@ -858,7 +880,7 @@ INSERT INTO service_types (name, base_price_per_person, description, min_guests,
 
 -- Insert sample availability slots (next 30 days, 11 hours per day)
 INSERT INTO availability_slots (date, time_slot, is_available, max_capacity)
-SELECT 
+SELECT
     CURRENT_DATE + INTERVAL '1 day' * generate_series(0, 29) as date,
     TIME '10:00:00' + INTERVAL '1 hour' * generate_series(0, 10) as time_slot,
     true as is_available,
@@ -952,10 +974,10 @@ interface AppState {
   currentBooking: Booking | null;
   bookingStep: number;
   isBookingModalOpen: boolean;
-  
+
   // Language state
-  currentLanguage: 'nl' | 'en';
-  
+  currentLanguage: "nl" | "en";
+
   // UI state
   isLoading: boolean;
   notifications: Notification[];
@@ -963,16 +985,17 @@ interface AppState {
 
 // Server state with React Query
 interface QueryKeys {
-  serviceTypes: ['service-types'];
-  availability: ['availability', date: string];
-  bookings: ['bookings', filters?: BookingFilters];
-  testimonials: ['testimonials', featured?: boolean];
-  suppliers: ['suppliers'];
-  awards: ['awards'];
+  serviceTypes: ["service-types"];
+  availability: ["availability", date: string];
+  bookings: ["bookings", filters?: BookingFilters];
+  testimonials: ["testimonials", featured?: boolean];
+  suppliers: ["suppliers"];
+  awards: ["awards"];
 }
 ```
 
 **State Management Patterns:**
+
 - React Query for server state and caching
 - Zustand for client state and UI interactions
 - React Context for theme and language preferences
@@ -997,11 +1020,11 @@ Routes:
 ```typescript
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { data: session } = useSession();
-  
+
   if (!session) {
     return <Navigate to="/login" replace />;
   }
-  
+
   return <>{children}</>;
 }
 ```
@@ -1011,35 +1034,38 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 **API Client Setup:**
 
 ```typescript
-import { createClient } from '@supabase/supabase-js';
-import type { Database } from '@/types/database';
+import { createClient } from "@supabase/supabase-js";
+import type { Database } from "@/types/database";
 
 export const supabase = createClient<Database>(
   process.env.VITE_SUPABASE_URL!,
-  process.env.VITE_SUPABASE_ANON_KEY!
+  process.env.VITE_SUPABASE_ANON_KEY!,
 );
 
 // Type-safe API client
 export class BookingService {
   async createBooking(booking: CreateBookingRequest): Promise<Booking> {
     const { data, error } = await supabase
-      .from('bookings')
+      .from("bookings")
       .insert(booking)
       .select()
       .single();
-      
+
     if (error) throw error;
     return data;
   }
-  
-  async checkAvailability(date: string, time: string, guestCount: number): Promise<boolean> {
-    const { data, error } = await supabase
-      .rpc('check_availability', {
-        check_date: date,
-        check_time: time,
-        guest_count: guestCount
-      });
-      
+
+  async checkAvailability(
+    date: string,
+    time: string,
+    guestCount: number,
+  ): Promise<boolean> {
+    const { data, error } = await supabase.rpc("check_availability", {
+      check_date: date,
+      check_time: time,
+      guest_count: guestCount,
+    });
+
     if (error) throw error;
     return data;
   }
@@ -1052,26 +1078,26 @@ export class BookingService {
 // Custom hook for booking operations
 export function useBooking() {
   const queryClient = useQueryClient();
-  
+
   const createBookingMutation = useMutation({
     mutationFn: BookingService.createBooking,
     onSuccess: () => {
-      queryClient.invalidateQueries(['bookings']);
-      queryClient.invalidateQueries(['availability']);
-    }
+      queryClient.invalidateQueries(["bookings"]);
+      queryClient.invalidateQueries(["availability"]);
+    },
   });
-  
+
   const availabilityQuery = useQuery({
-    queryKey: ['availability', date, time],
+    queryKey: ["availability", date, time],
     queryFn: () => BookingService.checkAvailability(date, time, guestCount),
-    enabled: !!date && !!time && !!guestCount
+    enabled: !!date && !!time && !!guestCount,
   });
-  
+
   return {
     createBooking: createBookingMutation.mutate,
     isCreating: createBookingMutation.isPending,
     availability: availabilityQuery.data,
-    isCheckingAvailability: availabilityQuery.isLoading
+    isCheckingAvailability: availabilityQuery.isLoading,
   };
 }
 ```
@@ -1111,6 +1137,7 @@ Supabase Services:
 ### Database Architecture
 
 **Schema Design Principles:**
+
 - Normalized structure with appropriate indexes
 - Row Level Security (RLS) for data protection
 - JSONB columns for flexible data structures
@@ -1123,26 +1150,30 @@ Supabase Services:
 // Type-safe database operations
 export class DatabaseService {
   private supabase = createClient<Database>();
-  
+
   async getServiceTypes(): Promise<ServiceType[]> {
     const { data, error } = await this.supabase
-      .from('service_types')
-      .select('*')
-      .eq('is_active', true)
-      .order('display_order');
-      
+      .from("service_types")
+      .select("*")
+      .eq("is_active", true)
+      .order("display_order");
+
     if (error) throw error;
     return data;
   }
-  
+
   async subscribeToAvailability(callback: (payload: any) => void) {
     return this.supabase
-      .channel('availability_changes')
-      .on('postgres_changes', {
-        event: '*',
-        schema: 'public',
-        table: 'availability_slots'
-      }, callback)
+      .channel("availability_changes")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "availability_slots",
+        },
+        callback,
+      )
       .subscribe();
   }
 }
@@ -1158,7 +1189,7 @@ sequenceDiagram
     participant F as Frontend
     participant S as Supabase Auth
     participant D as Database
-    
+
     U->>F: Access booking form
     F->>S: Check session
     alt No session
@@ -1168,7 +1199,7 @@ sequenceDiagram
     else Has session
         S-->>F: Valid JWT
     end
-    
+
     F->>D: Create booking (with JWT)
     D->>D: Check RLS policies
     D-->>F: Booking created
@@ -1180,9 +1211,9 @@ sequenceDiagram
 ```typescript
 // RLS Policies handle authorization at database level
 -- Example: Users can only access their own bookings
-CREATE POLICY "Users can access own bookings" ON bookings 
+CREATE POLICY "Users can access own bookings" ON bookings
 FOR ALL USING (
-  auth.uid() = (customer_info->>'user_id')::uuid 
+  auth.uid() = (customer_info->>'user_id')::uuid
   OR auth.jwt()->>'role' = 'admin'
 );
 
@@ -1190,9 +1221,9 @@ FOR ALL USING (
 export function withAuth<T extends object>(Component: React.ComponentType<T>) {
   return function AuthenticatedComponent(props: T) {
     const { data: session, isLoading } = useSession();
-    
+
     if (isLoading) return <LoadingSpinner />;
-    
+
     return <Component {...props} session={session} />;
   };
 }
@@ -1364,12 +1395,14 @@ VITE_ENABLE_DEBUG_MODE=true
 ### Deployment Strategy
 
 **Frontend Deployment:**
+
 - **Platform:** Vercel
 - **Build Command:** `npm run build`
 - **Output Directory:** `dist/`
 - **CDN/Edge:** Vercel Edge Network with automatic optimization
 
 **Backend Deployment:**
+
 - **Platform:** Supabase Cloud
 - **Database:** Managed PostgreSQL with automatic backups
 - **Deployment Method:** Git-based deployment with migrations
@@ -1391,18 +1424,18 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: '18'
-          cache: 'npm'
-      
+          node-version: "18"
+          cache: "npm"
+
       - run: npm ci
       - run: npm run type-check
       - run: npm run test
       - run: npm run build
-      
+
       - name: Run Lighthouse CI
         uses: treosh/lighthouse-ci-action@v10
         with:
-          configPath: './lighthouserc.js'
+          configPath: "./lighthouserc.js"
 
   deploy:
     needs: test
@@ -1410,15 +1443,15 @@ jobs:
     if: github.ref == 'refs/heads/main'
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Deploy to Vercel
         uses: amondnet/vercel-action@v25
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }}
           vercel-org-id: ${{ secrets.VERCEL_ORG_ID }}
           vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID }}
-          vercel-args: '--prod'
-      
+          vercel-args: "--prod"
+
       - name: Deploy Database Changes
         run: |
           supabase migration up --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
@@ -1426,27 +1459,30 @@ jobs:
 
 ### Environments
 
-| Environment | Frontend URL | Backend URL | Purpose |
-| :---------- | :----------- | :---------- | :------ |
-| Development | http://localhost:5173 | http://localhost:54321 | Local development |
-| Staging | https://staging.wesleyambacht.nl | https://staging-project.supabase.co | Pre-production testing |
-| Production | https://www.wesleyambacht.nl | https://project.supabase.co | Live environment |
+| Environment | Frontend URL                     | Backend URL                         | Purpose                |
+| :---------- | :------------------------------- | :---------------------------------- | :--------------------- |
+| Development | <http://localhost:5173>            | <http://localhost:54321>              | Local development      |
+| Staging     | <https://staging.wesleyambacht.nl> | <https://staging-project.supabase.co> | Pre-production testing |
+| Production  | <https://www.wesleyambacht.nl>     | <https://project.supabase.co>         | Live environment       |
 
 ## Security and Performance
 
 ### Security Requirements
 
 **Frontend Security:**
+
 - CSP Headers: `script-src 'self' 'unsafe-inline' vercel.live; style-src 'self' 'unsafe-inline';`
 - XSS Prevention: Input sanitization, React's built-in protection, dangerous HTML avoidance
 - Secure Storage: JWT in httpOnly cookies, sensitive data encryption
 
 **Backend Security:**
+
 - Input Validation: Zod schemas for all inputs, SQL injection prevention via Supabase
 - Rate Limiting: 100 requests/minute per IP, booking creation limited to 5/hour
 - CORS Policy: `["https://wesleyambacht.nl", "https://staging.wesleyambacht.nl"]`
 
 **Authentication Security:**
+
 - Token Storage: Supabase handles JWT securely
 - Session Management: Automatic refresh, secure logout
 - Password Policy: 8+ characters, complexity requirements
@@ -1454,11 +1490,13 @@ jobs:
 ### Performance Optimization
 
 **Frontend Performance:**
+
 - Bundle Size Target: <250KB initial bundle
 - Loading Strategy: Route-based code splitting, lazy loading for images
 - Caching Strategy: React Query caching, service worker for static assets
 
 **Backend Performance:**
+
 - Response Time Target: <300ms for API calls
 - Database Optimization: Proper indexing, query optimization, connection pooling
 - Caching Strategy: Supabase built-in caching, Redis for session data
@@ -1519,16 +1557,16 @@ import { FloatingBookingWidget } from '@/components/layout/FloatingBookingWidget
 describe('FloatingBookingWidget', () => {
   it('opens booking modal when clicked', async () => {
     const queryClient = new QueryClient();
-    
+
     render(
       <QueryClientProvider client={queryClient}>
         <FloatingBookingWidget />
       </QueryClientProvider>
     );
-    
+
     const button = screen.getByText('Check Your Date');
     fireEvent.click(button);
-    
+
     await waitFor(() => {
       expect(screen.getByRole('dialog')).toBeInTheDocument();
     });
@@ -1539,37 +1577,41 @@ describe('FloatingBookingWidget', () => {
 **E2E Test:**
 
 ```typescript
-import { test, expect } from '@playwright/test';
+import { test, expect } from "@playwright/test";
 
-test('complete booking flow', async ({ page }) => {
-  await page.goto('/');
-  
+test("complete booking flow", async ({ page }) => {
+  await page.goto("/");
+
   // Click floating booking widget
   await page.click('[data-testid="floating-booking-widget"]');
-  
+
   // Select date
   await page.click('[data-testid="date-picker"]');
   await page.click('[data-date="2025-07-15"]');
-  
+
   // Select time
-  await page.selectOption('[data-testid="time-selector"]', '18:00');
-  
+  await page.selectOption('[data-testid="time-selector"]', "18:00");
+
   // Enter guest count
-  await page.fill('[data-testid="guest-count"]', '50');
-  
+  await page.fill('[data-testid="guest-count"]', "50");
+
   // Verify pricing calculation
-  await expect(page.locator('[data-testid="quote-total"]')).toContainText('€625');
-  
+  await expect(page.locator('[data-testid="quote-total"]')).toContainText(
+    "€625",
+  );
+
   // Fill contact form
-  await page.fill('[name="name"]', 'Jan van der Berg');
-  await page.fill('[name="email"]', 'jan@techcorp.nl');
-  await page.fill('[name="phone"]', '+31-20-1234567');
-  
+  await page.fill('[name="name"]', "Jan van der Berg");
+  await page.fill('[name="email"]', "jan@techcorp.nl");
+  await page.fill('[name="phone"]', "+31-20-1234567");
+
   // Submit booking
   await page.click('[data-testid="submit-booking"]');
-  
+
   // Verify confirmation
-  await expect(page.locator('[data-testid="booking-confirmation"]')).toBeVisible();
+  await expect(
+    page.locator('[data-testid="booking-confirmation"]'),
+  ).toBeVisible();
 });
 ```
 
@@ -1583,19 +1625,19 @@ test('complete booking flow', async ({ page }) => {
 - **Form Validation:** Use Zod schemas for both frontend validation and backend data integrity
 - **Performance:** Implement React.memo for expensive components and useMemo for complex calculations
 - **Accessibility:** All interactive elements must have proper ARIA labels and keyboard navigation support
-- **Security:** Never expose sensitive environment variables to the client; use VITE_ prefix only for public variables
+- **Security:** Never expose sensitive environment variables to the client; use VITE\_ prefix only for public variables
 
 ### Naming Conventions
 
-| Element | Convention | Example |
-| :------ | :--------- | :------ |
-| Components | PascalCase | `FloatingBookingWidget.tsx` |
-| Hooks | camelCase with 'use' | `useBooking.ts` |
-| Services | camelCase with 'Service' | `bookingService.ts` |
-| Types | PascalCase | `BookingRequest` |
-| Database Tables | snake_case | `availability_slots` |
-| API Endpoints | kebab-case | `/api/check-availability` |
-| Environment Variables | SCREAMING_SNAKE_CASE | `VITE_SUPABASE_URL` |
+| Element               | Convention               | Example                     |
+| :-------------------- | :----------------------- | :-------------------------- |
+| Components            | PascalCase               | `FloatingBookingWidget.tsx` |
+| Hooks                 | camelCase with 'use'     | `useBooking.ts`             |
+| Services              | camelCase with 'Service' | `bookingService.ts`         |
+| Types                 | PascalCase               | `BookingRequest`            |
+| Database Tables       | snake_case               | `availability_slots`        |
+| API Endpoints         | kebab-case               | `/api/check-availability`   |
+| Environment Variables | SCREAMING_SNAKE_CASE     | `VITE_SUPABASE_URL`         |
 
 ## Error Handling Strategy
 
@@ -1643,25 +1685,27 @@ interface SupabaseError {
 ```typescript
 export function useErrorHandler() {
   const [error, setError] = useState<string | null>(null);
-  
+
   const handleError = useCallback((error: unknown) => {
     if (error instanceof Error) {
       // Log to monitoring service
-      console.error('Application error:', error);
-      
+      console.error("Application error:", error);
+
       // Show user-friendly message
-      if (error.message.includes('Failed to fetch')) {
-        setError('Connection problem. Please check your internet and try again.');
-      } else if (error.message.includes('availability')) {
-        setError('Unable to check availability. Please try a different date.');
+      if (error.message.includes("Failed to fetch")) {
+        setError(
+          "Connection problem. Please check your internet and try again.",
+        );
+      } else if (error.message.includes("availability")) {
+        setError("Unable to check availability. Please try a different date.");
       } else {
-        setError('Something went wrong. Please try again or contact support.');
+        setError("Something went wrong. Please try again or contact support.");
       }
     }
   }, []);
-  
+
   const clearError = useCallback(() => setError(null), []);
-  
+
   return { error, handleError, clearError };
 }
 ```
@@ -1688,7 +1732,7 @@ BEGIN
             )
         );
     END IF;
-    
+
     -- Check availability
     IF NOT check_availability(
         (booking_data->>'date')::date,
@@ -1704,7 +1748,7 @@ BEGIN
             )
         );
     END IF;
-    
+
     -- Create booking
     INSERT INTO bookings (date, time_slot, guest_count, customer_info, service_type_id)
     VALUES (
@@ -1715,12 +1759,12 @@ BEGIN
         (booking_data->>'service_type_id')::uuid
     )
     RETURNING id INTO booking_id;
-    
+
     RETURN jsonb_build_object(
         'success', true,
         'data', jsonb_build_object('booking_id', booking_id)
     );
-    
+
 EXCEPTION WHEN OTHERS THEN
     RETURN jsonb_build_object(
         'success', false,
@@ -1746,18 +1790,21 @@ $$ LANGUAGE plpgsql;
 ### Key Metrics
 
 **Frontend Metrics:**
+
 - Core Web Vitals (LCP < 2.5s, FID < 100ms, CLS < 0.1)
 - JavaScript errors and unhandled rejections
 - API response times and success rates
 - Booking conversion funnel metrics
 
 **Backend Metrics:**
+
 - Database query performance and connection count
 - API endpoint response times and error rates
 - Booking creation success rate and validation failures
 - Real-time subscription connection health
 
 **Business Metrics:**
+
 - Booking conversion rate (target: 40% improvement)
 - Average order value (target: €850)
 - Quote-to-booking time (target: <4 hours)
@@ -1770,50 +1817,55 @@ $$ LANGUAGE plpgsql;
 **Purpose:** Automated task tracking and project management integration for development workflow visibility.
 
 **Integration Points:**
+
 - Git commit hooks for automatic task completion detection
-- GitHub Actions workflows for CI/CD milestone tracking  
+- GitHub Actions workflows for CI/CD milestone tracking
 - Manual sync commands for ad-hoc project updates
 - Task Master integration for dynamic task retrieval
 
 **Sync Triggers:**
+
 ```mermaid
 flowchart TD
     A[Git Commit] -->|Pattern Match| B[Post-Commit Hook]
     C[GitHub Action] -->|Workflow Complete| D[Story Sync]
     E[Manual Command] -->|npm run sync:notion| F[Direct Sync]
     G[Task Master] -->|Dynamic Data| F
-    
+
     B --> H[sync-to-notion.cjs]
     D --> H
     F --> H
-    
+
     H --> I[Notion API]
     I --> J[Task Database]
-    
+
     style H fill:#e1f5fe
     style J fill:#f3e5f5
 ```
 
 **Configuration:**
+
 - **Database ID:** 21df23ab1c8f80ef914effd0d37a5b43
 - **API Integration:** Secure token-based authentication
 - **Sync Status:** ✅ 8/8 tasks successfully synchronized
 - **Environment:** Configurable via `NOTION_SYNC_ENABLED` flag
 
 **Task Data Structure:**
+
 ```typescript
 interface NotionTask {
-  title: string;           // Task name with emoji prefix
-  summary: string;         // Brief description  
-  description: string;     // Detailed information
-  priority: 'Low' | 'Medium' | 'High';
-  status: 'Not started' | 'In progress' | 'Done';
-  types: string[];         // Multi-select categories
-  effort: 'Low' | 'Medium' | 'High';
+  title: string; // Task name with emoji prefix
+  summary: string; // Brief description
+  description: string; // Detailed information
+  priority: "Low" | "Medium" | "High";
+  status: "Not started" | "In progress" | "Done";
+  types: string[]; // Multi-select categories
+  effort: "Low" | "Medium" | "High";
 }
 ```
 
 **Workflow Integration:**
+
 - Automatic sync on story/epic completion
 - Status updates for task progression
 - Integration with existing GitHub workflows

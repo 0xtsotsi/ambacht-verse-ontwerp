@@ -1,11 +1,11 @@
 "use client";
 
-import React, { useState } from 'react';
-import { cn } from '@/lib/utils';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { CheckCircle, Star, Users, Calendar, Trophy } from 'lucide-react';
+import React, { useState } from "react";
+import { cn } from "@/lib/utils";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { CheckCircle, Star, Users, Calendar, Trophy } from "lucide-react";
 
 interface ServiceCategory {
   id: string;
@@ -28,77 +28,90 @@ interface ServicePricingCardProps {
 
 const serviceCategories: ServiceCategory[] = [
   {
-    id: 'corporate',
-    name: 'Zakelijke Catering',
-    description: 'Professionele catering voor bedrijfsevenementen en zakelijke bijeenkomsten',
-    minPrice: 18.50,
-    maxPrice: 27.50,
+    id: "corporate",
+    name: "Zakelijke Catering",
+    description:
+      "Professionele catering voor bedrijfsevenementen en zakelijke bijeenkomsten",
+    minPrice: 18.5,
+    maxPrice: 27.5,
     features: [
-      'Professionele presentatie',
-      'Flexibele menuopties',
-      'Gediplomeerde chefs',
-      'Premium ingrediënten',
-      'Volledige service',
+      "Professionele presentatie",
+      "Flexibele menuopties",
+      "Gediplomeerde chefs",
+      "Premium ingrediënten",
+      "Volledige service",
     ],
-    popularFeatures: ['Meest gekozen door Fortune 500', 'Gediplomeerde chefs'],
+    popularFeatures: ["Meest gekozen door Fortune 500", "Gediplomeerde chefs"],
     icon: <Users className="h-6 w-6" />,
-    badge: 'Meest Populair',
-    gradient: 'from-sopranos-gold/10 via-sophisticated-green/5 to-elegant-cream/20',
+    badge: "Meest Populair",
+    gradient:
+      "from-sopranos-gold/10 via-sophisticated-green/5 to-elegant-cream/20",
   },
   {
-    id: 'social',
-    name: 'Sociale Evenementen',
-    description: 'Verfijnde catering voor privé feesten en sociale gelegenheden',
+    id: "social",
+    name: "Sociale Evenementen",
+    description:
+      "Verfijnde catering voor privé feesten en sociale gelegenheden",
     minPrice: 15.75,
-    maxPrice: 24.50,
+    maxPrice: 24.5,
     features: [
-      'Creatieve menusamenstelling',
-      'Seizoensgebonden specialiteiten',
-      'Ambachtelijke preparatie',
-      'Lokale leveranciers',
-      'Persoonlijke service',
+      "Creatieve menusamenstelling",
+      "Seizoensgebonden specialiteiten",
+      "Ambachtelijke preparatie",
+      "Lokale leveranciers",
+      "Persoonlijke service",
     ],
-    popularFeatures: ['Seizoensgebonden specialiteiten', 'Lokale leveranciers'],
+    popularFeatures: ["Seizoensgebonden specialiteiten", "Lokale leveranciers"],
     icon: <Star className="h-6 w-6" />,
-    gradient: 'from-refined-teal/10 via-elegant-cream/10 to-sophisticated-green/5',
+    gradient:
+      "from-refined-teal/10 via-elegant-cream/10 to-sophisticated-green/5",
   },
   {
-    id: 'wedding',
-    name: 'Bruiloft Catering',
-    description: 'Exclusieve culinaire ervaring voor uw perfecte dag',
-    minPrice: 22.00,
-    maxPrice: 35.00,
+    id: "wedding",
+    name: "Bruiloft Catering",
+    description: "Exclusieve culinaire ervaring voor uw perfecte dag",
+    minPrice: 22.0,
+    maxPrice: 35.0,
     features: [
-      'Gepersonaliseerde menu\'s',
-      'Uitgebreide proeverij',
-      'Exclusieve locatie service',
-      'Bruiloft specialisten',
-      'Premium presentatie',
+      "Gepersonaliseerde menu's",
+      "Uitgebreide proeverij",
+      "Exclusieve locatie service",
+      "Bruiloft specialisten",
+      "Premium presentatie",
     ],
-    popularFeatures: ['Gepersonaliseerde menu\'s', 'Uitgebreide proeverij'],
+    popularFeatures: ["Gepersonaliseerde menu's", "Uitgebreide proeverij"],
     icon: <Trophy className="h-6 w-6" />,
-    gradient: 'from-classic-brown/10 via-sopranos-gold/5 to-elegant-cream/15',
+    gradient: "from-classic-brown/10 via-sopranos-gold/5 to-elegant-cream/15",
   },
   {
-    id: 'custom',
-    name: 'Maatwerk Service',
-    description: 'Volledig op maat gemaakte culinaire concepten voor unieke evenementen',
-    minPrice: 12.50,
-    maxPrice: 42.50,
+    id: "custom",
+    name: "Maatwerk Service",
+    description:
+      "Volledig op maat gemaakte culinaire concepten voor unieke evenementen",
+    minPrice: 12.5,
+    maxPrice: 42.5,
     features: [
-      'Volledig maatwerk concept',
-      'Persoonlijke chef consultant',
-      'Unieke menu creatie',
-      'Exclusieve ingrediënten',
-      'White-glove service',
+      "Volledig maatwerk concept",
+      "Persoonlijke chef consultant",
+      "Unieke menu creatie",
+      "Exclusieve ingrediënten",
+      "White-glove service",
     ],
-    popularFeatures: ['Volledig maatwerk concept', 'Persoonlijke chef consultant'],
+    popularFeatures: [
+      "Volledig maatwerk concept",
+      "Persoonlijke chef consultant",
+    ],
     icon: <Calendar className="h-6 w-6" />,
-    gradient: 'from-deep-charcoal/5 via-sophisticated-green/10 to-refined-teal/5',
+    gradient:
+      "from-deep-charcoal/5 via-sophisticated-green/10 to-refined-teal/5",
   },
 ];
 
-export function ServicePricingCard({ className, onBookNow, featured = 'corporate' }: ServicePricingCardProps) {
+export function ServicePricingCard({
+  className,
+  onBookNow,
+  featured = "corporate",
+}: ServicePricingCardProps) {
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [focusedCard, setFocusedCard] = useState<string | null>(null);
 
@@ -114,7 +127,8 @@ export function ServicePricingCard({ className, onBookNow, featured = 'corporate
           Transparante Prijsstelling
         </h2>
         <p className="text-lg text-sophisticated-green/80 max-w-2xl mx-auto leading-relaxed">
-          Eerlijke, transparante prijzen per persoon. Geen verborgen kosten, wel uitstekende kwaliteit.
+          Eerlijke, transparante prijzen per persoon. Geen verborgen kosten, wel
+          uitstekende kwaliteit.
         </p>
         <div className="flex items-center justify-center gap-2 text-sm text-sopranos-gold font-medium">
           <CheckCircle className="h-4 w-4" />
@@ -138,8 +152,9 @@ export function ServicePricingCard({ className, onBookNow, featured = 'corporate
                 "border-2 hover:shadow-2xl hover:shadow-sopranos-gold/20",
                 "transform hover:scale-[1.02] hover:-translate-y-2",
                 isFeatured && "ring-2 ring-sopranos-gold/50 shadow-lg",
-                isActive && "shadow-2xl shadow-sopranos-gold/30 scale-[1.02] -translate-y-2",
-                "focus-within:ring-2 focus-within:ring-sopranos-gold focus-within:outline-none"
+                isActive &&
+                  "shadow-2xl shadow-sopranos-gold/30 scale-[1.02] -translate-y-2",
+                "focus-within:ring-2 focus-within:ring-sopranos-gold focus-within:outline-none",
               )}
               onMouseEnter={() => setHoveredCard(category.id)}
               onMouseLeave={() => setHoveredCard(null)}
@@ -148,22 +163,22 @@ export function ServicePricingCard({ className, onBookNow, featured = 'corporate
               tabIndex={0}
             >
               {/* Animated Background Gradient */}
-              <div 
+              <div
                 className={cn(
                   "absolute inset-0 bg-gradient-to-br transition-opacity duration-500",
                   category.gradient,
-                  isActive ? "opacity-100" : "opacity-50"
+                  isActive ? "opacity-100" : "opacity-50",
                 )}
               />
-              
+
               {/* Featured Badge */}
               {isFeatured && category.badge && (
                 <div className="absolute -top-1 -right-1 z-10">
-                  <Badge 
+                  <Badge
                     className={cn(
                       "bg-sopranos-gold text-warm-white px-3 py-1 text-xs font-medium",
                       "animate-pulse hover:animate-none transition-all duration-300",
-                      isActive && "scale-110"
+                      isActive && "scale-110",
                     )}
                   >
                     {category.badge}
@@ -173,14 +188,18 @@ export function ServicePricingCard({ className, onBookNow, featured = 'corporate
 
               <CardHeader className="relative z-10 pb-4">
                 {/* Icon with Animation */}
-                <div className={cn(
-                  "flex items-center gap-3 transition-all duration-300",
-                  isActive && "transform scale-110"
-                )}>
-                  <div className={cn(
-                    "p-3 rounded-xl bg-white/90 transition-all duration-300",
-                    isActive && "bg-sopranos-gold text-white shadow-lg"
-                  )}>
+                <div
+                  className={cn(
+                    "flex items-center gap-3 transition-all duration-300",
+                    isActive && "transform scale-110",
+                  )}
+                >
+                  <div
+                    className={cn(
+                      "p-3 rounded-xl bg-white/90 transition-all duration-300",
+                      isActive && "bg-sopranos-gold text-white shadow-lg",
+                    )}
+                  >
                     {category.icon}
                   </div>
                   <div>
@@ -215,28 +234,39 @@ export function ServicePricingCard({ className, onBookNow, featured = 'corporate
                 {/* Features List */}
                 <div className="space-y-3">
                   {category.features.map((feature, index) => {
-                    const isPopular = category.popularFeatures.includes(feature);
+                    const isPopular =
+                      category.popularFeatures.includes(feature);
                     return (
-                      <div 
+                      <div
                         key={index}
                         className={cn(
                           "flex items-start gap-2 transition-all duration-300",
-                          isActive && "transform translate-x-1"
+                          isActive && "transform translate-x-1",
                         )}
-                        style={{ transitionDelay: isActive ? `${index * 50}ms` : '0ms' }}
+                        style={{
+                          transitionDelay: isActive ? `${index * 50}ms` : "0ms",
+                        }}
                       >
-                        <CheckCircle 
+                        <CheckCircle
                           className={cn(
                             "h-4 w-4 mt-0.5 transition-colors duration-300",
-                            isPopular ? "text-sopranos-gold" : "text-sophisticated-green",
-                            isActive && isPopular && "text-sopranos-gold scale-110"
-                          )} 
+                            isPopular
+                              ? "text-sopranos-gold"
+                              : "text-sophisticated-green",
+                            isActive &&
+                              isPopular &&
+                              "text-sopranos-gold scale-110",
+                          )}
                         />
-                        <span className={cn(
-                          "text-sm transition-all duration-300",
-                          isPopular ? "text-deep-charcoal font-medium" : "text-sophisticated-green/80",
-                          isActive && "text-deep-charcoal"
-                        )}>
+                        <span
+                          className={cn(
+                            "text-sm transition-all duration-300",
+                            isPopular
+                              ? "text-deep-charcoal font-medium"
+                              : "text-sophisticated-green/80",
+                            isActive && "text-deep-charcoal",
+                          )}
+                        >
                           {feature}
                         </span>
                       </div>
@@ -251,23 +281,25 @@ export function ServicePricingCard({ className, onBookNow, featured = 'corporate
                     "w-full mt-6 transition-all duration-300 transform",
                     "bg-sopranos-gold hover:bg-sopranos-gold/90 text-warm-white",
                     "hover:shadow-lg hover:shadow-sopranos-gold/30",
-                    isActive && "scale-105 shadow-lg shadow-sopranos-gold/30"
+                    isActive && "scale-105 shadow-lg shadow-sopranos-gold/30",
                   )}
                   size="lg"
                 >
                   <span className="transition-all duration-300">
-                    {isActive ? 'Reserveer Nu' : 'Meer Informatie'}
+                    {isActive ? "Reserveer Nu" : "Meer Informatie"}
                   </span>
                 </Button>
               </CardContent>
 
               {/* Subtle Border Animation */}
-              <div className={cn(
-                "absolute inset-0 border-2 border-transparent rounded-lg",
-                "bg-gradient-to-r from-sopranos-gold via-elegant-cream to-sopranos-gold",
-                "opacity-0 transition-opacity duration-500",
-                isActive && "opacity-20"
-              )} />
+              <div
+                className={cn(
+                  "absolute inset-0 border-2 border-transparent rounded-lg",
+                  "bg-gradient-to-r from-sopranos-gold via-elegant-cream to-sopranos-gold",
+                  "opacity-0 transition-opacity duration-500",
+                  isActive && "opacity-20",
+                )}
+              />
             </Card>
           );
         })}
@@ -290,8 +322,9 @@ export function ServicePricingCard({ className, onBookNow, featured = 'corporate
           </div>
         </div>
         <p className="text-xs text-sophisticated-green/50 max-w-2xl mx-auto">
-          Alle prijzen zijn richtprijzen en kunnen variëren afhankelijk van specifieke wensen, 
-          locatie en seizoen. Voor een exacte offerte nodigen wij u uit voor een persoonlijk gesprek.
+          Alle prijzen zijn richtprijzen en kunnen variëren afhankelijk van
+          specifieke wensen, locatie en seizoen. Voor een exacte offerte nodigen
+          wij u uit voor een persoonlijk gesprek.
         </p>
       </div>
     </div>

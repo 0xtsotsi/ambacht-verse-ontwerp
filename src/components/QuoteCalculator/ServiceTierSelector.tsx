@@ -1,12 +1,12 @@
-import React from 'react';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { cn } from '@/lib/utils';
-import { 
+import React from "react";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { cn } from "@/lib/utils";
+import {
   QUOTE_SERVICE_TIERS,
-  type QuoteServiceTier 
-} from '@/lib/quote-calculator-constants';
+  type QuoteServiceTier,
+} from "@/lib/quote-calculator-constants";
 
 interface ServiceTierSelectorProps {
   selectedTier: QuoteServiceTier;
@@ -24,7 +24,7 @@ interface ServiceTierSelectorProps {
 export function ServiceTierSelector({
   selectedTier,
   onTierSelect,
-  translations
+  translations,
 }: ServiceTierSelectorProps) {
   return (
     <Card className="border-0 shadow-elegant-panel bg-white/80 backdrop-blur-sm">
@@ -42,9 +42,9 @@ export function ServiceTierSelector({
               onClick={() => onTierSelect(key as QuoteServiceTier)}
               className={cn(
                 "h-auto p-4 flex-col items-center text-center transition-all duration-200",
-                selectedTier === key 
-                  ? "bg-burnt-orange text-white shadow-md" 
-                  : "hover:bg-burnt-orange/5 hover:border-burnt-orange"
+                selectedTier === key
+                  ? "bg-burnt-orange text-white shadow-md"
+                  : "hover:bg-burnt-orange/5 hover:border-burnt-orange",
               )}
             >
               <div className="flex items-center gap-2 mb-2">
@@ -56,9 +56,7 @@ export function ServiceTierSelector({
                   </Badge>
                 )}
               </div>
-              <div className="text-sm opacity-80">
-                {tier.description}
-              </div>
+              <div className="text-sm opacity-80">{tier.description}</div>
               <div className="text-xs mt-2 font-medium">
                 {tier.multiplier}x prijs
               </div>

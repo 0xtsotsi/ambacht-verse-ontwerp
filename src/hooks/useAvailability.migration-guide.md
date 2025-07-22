@@ -7,26 +7,31 @@ The optimized version of `useAvailability` maintains the exact same API surface 
 ## Key Performance Improvements
 
 ### 1. **Eliminated Repeated Computations**
+
 - **Problem**: `mapAvailabilityToDateChecker` was recreating all arrays and objects on every render
 - **Solution**: Hash-based comparison to return cached results when data hasn't changed
 - **Impact**: Zero allocations when availability data is unchanged
 
 ### 2. **O(1) Date Lookups**
+
 - **Problem**: `isDateBooked` and `isDateLimited` used `Array.some()` with O(n) complexity
 - **Solution**: Pre-computed Sets for O(1) lookups
 - **Impact**: 100x faster for large date ranges
 
 ### 3. **Date Formatting Cache**
+
 - **Problem**: `format(date, 'yyyy-MM-dd')` called repeatedly for the same dates
 - **Solution**: Cached formatted dates with `useRef(Map)`
 - **Impact**: 90% reduction in date formatting operations
 
 ### 4. **Smart Cache Invalidation**
+
 - **Problem**: Entire cache cleared on any data change
 - **Solution**: Selective invalidation only for changed data
 - **Impact**: Higher cache hit rates, less computation
 
 ### 5. **Memory-Efficient Data Structures**
+
 - **Problem**: Multiple array iterations and temporary objects
 - **Solution**: Single-pass processing with reusable data structures
 - **Impact**: Reduced garbage collection pressure
@@ -39,10 +44,10 @@ For most use cases, you can simply replace the import:
 
 ```typescript
 // Before
-import { useAvailability } from '@/hooks/useAvailability';
+import { useAvailability } from "@/hooks/useAvailability";
 
 // After
-import { useAvailability } from '@/hooks/useAvailabilityOptimized';
+import { useAvailability } from "@/hooks/useAvailabilityOptimized";
 ```
 
 ### 2. API Compatibility
@@ -51,19 +56,19 @@ The optimized version maintains 100% API compatibility:
 
 ```typescript
 const {
-  availability,        // Same structure
-  availableSlots,      // Same data
-  loading,             // Same behavior
-  error,               // Same error handling
-  refresh,             // Same function
+  availability, // Same structure
+  availableSlots, // Same data
+  loading, // Same behavior
+  error, // Same error handling
+  refresh, // Same function
   getTimeSlotsForDate, // Same async function
-  isDateAvailable,     // Same function, faster
-  isDateBooked,        // Same function, faster
-  isDateLimited,       // Same function, faster
-  checkSlotAvailability // Same async function
+  isDateAvailable, // Same function, faster
+  isDateBooked, // Same function, faster
+  isDateLimited, // Same function, faster
+  checkSlotAvailability, // Same async function
 } = useAvailability({
-  daysAhead: 180,      // Same options
-  enableRealTime: true // Same options
+  daysAhead: 180, // Same options
+  enableRealTime: true, // Same options
 });
 ```
 
@@ -93,11 +98,13 @@ The following components will see the biggest improvements:
 ### Scenario: Calendar displaying 180 days
 
 **Before (Original Implementation):**
+
 - Initial render: ~150ms
 - Date navigation: ~80ms per click
 - Memory: ~12MB allocated per minute
 
 **After (Optimized Implementation):**
+
 - Initial render: ~40ms (73% improvement)
 - Date navigation: ~5ms per click (94% improvement)
 - Memory: ~2MB allocated per minute (83% improvement)
@@ -105,6 +112,7 @@ The following components will see the biggest improvements:
 ### Scenario: Checking 1000 dates
 
 **Before:**
+
 ```
 isDateBooked x1000: 125ms
 isDateLimited x1000: 118ms
@@ -112,6 +120,7 @@ isDateAvailable x1000: 95ms
 ```
 
 **After:**
+
 ```
 isDateBooked x1000: 8ms (94% improvement)
 isDateLimited x1000: 7ms (94% improvement)

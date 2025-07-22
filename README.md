@@ -7,11 +7,12 @@ A comprehensive enhancement of Wesley's Ambacht catering website, implementing C
 ### 🏆 Current Status: Epic 1 - 50% Complete
 
 **Completed Components:**
+
 - ✅ Mobile-adaptive floating booking widget with accessibility compliance
-- ✅ 3-step progressive booking modal with Dutch localization  
+- ✅ 3-step progressive booking modal with Dutch localization
 - ✅ Comprehensive Playwright testing suite (6 scenarios, 5 browsers)
 - ✅ CEO Intelligence memory system for context preservation
-- ✅ **Notion integration for task tracking and project management** *(8/8 tasks synced successfully)*
+- ✅ **Notion integration for task tracking and project management** _(8/8 tasks synced successfully)_
 
 **Next Implementation:** Quote Calculator with price transparency
 
@@ -24,6 +25,7 @@ This project includes automated Notion synchronization for task tracking and pro
 ### Configuration
 
 1. **Set up environment variables** in `.env`:
+
 ```env
 NOTION_API_KEY="your_notion_integration_token"
 NOTION_DATABASE_ID="your_notion_database_id"
@@ -31,6 +33,7 @@ NOTION_SYNC_ENABLED="true"  # Set to false to disable
 ```
 
 2. **GitHub Secrets** (for automated workflows):
+
    - Go to Repository Settings → Secrets and variables → Actions
    - Add: `NOTION_API_KEY` with your integration token
    - Add: `NOTION_DATABASE_ID` with your database ID
@@ -43,25 +46,29 @@ NOTION_SYNC_ENABLED="true"  # Set to false to disable
 ### Usage
 
 #### Manual Sync Commands
+
 ```bash
 npm run sync:notion         # Sync all tasks
 npm run sync:epic          # Sync only epics
-npm run sync:story         # Sync only stories  
+npm run sync:story         # Sync only stories
 npm run sync:task          # Sync individual tasks
 ```
 
 #### Automatic Sync Triggers
 
 1. **Git Commits**: Automatically syncs when commit messages match patterns:
+
    - `feat: complete task_001_1`
    - `fix: finish story implementation`
    - `feat: done epic 1`
 
 2. **GitHub Actions**: Syncs on workflow dispatch:
+
    - Story completion workflow
    - Task sync workflow
 
 3. **Command Line Options**:
+
 ```bash
 # Sync specific task
 node sync-to-notion.cjs --task=task_001_1 --status=done
@@ -79,6 +86,7 @@ node sync-to-notion.cjs --status=done
 ### GitHub Workflow Integration
 
 Trigger story/task completion workflows:
+
 ```bash
 gh workflow run story-complete.yml \
   -f story_id="task_001" \
@@ -89,8 +97,9 @@ gh workflow run story-complete.yml \
 ### ✅ Sync Status
 
 **Last Successful Sync**: 8/8 tasks created successfully
+
 - 🚀 Epic 1 - Enhanced Booking Foundation
-- 📱 Floating Booking Widget Implementation  
+- 📱 Floating Booking Widget Implementation
 - 📅 Enhanced DateChecker Modal
 - 💰 Preliminary Quote Calculator
 - 🗄️ Booking Database Schema Enhancement
@@ -108,7 +117,7 @@ gh workflow run story-complete.yml \
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/a1023e3f-928d-4dd5-93a1-518a4fb99a1f
+**URL**: <https://lovable.dev/projects/a1023e3f-928d-4dd5-93a1-518a4fb99a1f>
 
 ## How can I edit this code?
 
@@ -179,6 +188,7 @@ To connect a domain, navigate to Project > Settings > Domains and click Connect 
 Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
 
 <!-- TASKMASTER_EXPORT_START -->
+
 > 🎯 **Taskmaster Export** - 2025-06-28 09:11:19 UTC
 > 📋 Export: with subtasks • Status filter: none
 > 🔗 Powered by [Task Master](https://task-master.dev?utm_source=github-readme&utm_medium=readme-export&utm_campaign=ambacht-verse-ontwerp&utm_content=task-export-link)
@@ -249,35 +259,35 @@ Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-trick
 ```
 
 ╭────────────────────────────────────────────── ⚡ RECOMMENDED NEXT TASK ⚡ ──────────────────────────────────────────────╮
-│                                                                                                                         │
-│  🔥 Next Task to Work On: #task_001 - Epic 1 - Enhanced Booking Foundation                                  │
-│                                                                                                                         │
-│  Priority: high   Status: ○ pending                                                                                     │
-│  Dependencies: None                                                                                                     │
-│                                                                                                                         │
-│  Description: Establish the core booking experience that positions Wesley's Ambacht as a professional, accessible catering service. This epic delivers the fundamental infrastructure for improved conversion rates through streamlined booking access and enhanced date/time selection capabilities.     │
-│                                                                                                                         │
-│  Subtasks:                                                                                              │
-│  task_001.task_001_1 [pending] Floating Booking Widget Implementation                                         │
-│  task_001.task_001_2 [pending] Enhanced DateChecker Modal                                         │
-│  task_001.task_001_3 [pending] Preliminary Quote Calculator                                         │
-│  task_001.task_001_4 [pending] Booking Database Schema Enhancement                                         │
-│                                                                                                                         │
-│  Start working: task-master set-status --id=task_001 --status=in-progress                                                     │
-│  View details: task-master show task_001                                                                      │
-│                                                                                                                         │
+│ │
+│ 🔥 Next Task to Work On: #task_001 - Epic 1 - Enhanced Booking Foundation │
+│ │
+│ Priority: high Status: ○ pending │
+│ Dependencies: None │
+│ │
+│ Description: Establish the core booking experience that positions Wesley's Ambacht as a professional, accessible catering service. This epic delivers the fundamental infrastructure for improved conversion rates through streamlined booking access and enhanced date/time selection capabilities. │
+│ │
+│ Subtasks: │
+│ task_001.task_001_1 [pending] Floating Booking Widget Implementation │
+│ task_001.task_001_2 [pending] Enhanced DateChecker Modal │
+│ task_001.task_001_3 [pending] Preliminary Quote Calculator │
+│ task_001.task_001_4 [pending] Booking Database Schema Enhancement │
+│ │
+│ Start working: task-master set-status --id=task_001 --status=in-progress │
+│ View details: task-master show task_001 │
+│ │
 ╰─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────╯
 
-
 ╭──────────────────────────────────────────────────────────────────────────────────────╮
-│                                                                                      │
-│   Suggested Next Steps:                                                              │
-│                                                                                      │
-│   1. Run task-master next to see what to work on next                                │
-│   2. Run task-master expand --id=<id> to break down a task into subtasks             │
-│   3. Run task-master set-status --id=<id> --status=done to mark a task as complete   │
-│                                                                                      │
+│ │
+│ Suggested Next Steps: │
+│ │
+│ 1. Run task-master next to see what to work on next │
+│ 2. Run task-master expand --id=<id> to break down a task into subtasks │
+│ 3. Run task-master set-status --id=<id> --status=done to mark a task as complete │
+│ │
 ╰──────────────────────────────────────────────────────────────────────────────────────╯
 
 > 📋 **End of Taskmaster Export** - Tasks are synced from your project using the `sync-readme` command.
+
 <!-- TASKMASTER_EXPORT_END -->

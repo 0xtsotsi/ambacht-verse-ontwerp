@@ -3,14 +3,22 @@
  * Tracks form interactions, submissions, errors, and conversion funnels
  */
 
-import { UserFlowLogger, LoggerUtils } from '@/lib/logger';
+import { UserFlowLogger, LoggerUtils } from "@/lib/logger";
 
 // Define form field value types
 export type FormFieldValue = string | number | boolean | Date | string[] | null;
 
 export interface FormField {
   name: string;
-  type: 'text' | 'email' | 'textarea' | 'select' | 'checkbox' | 'radio' | 'number' | 'date';
+  type:
+    | "text"
+    | "email"
+    | "textarea"
+    | "select"
+    | "checkbox"
+    | "radio"
+    | "number"
+    | "date";
   required: boolean;
   value?: FormFieldValue;
 }
@@ -52,7 +60,7 @@ export interface FormAbandonmentAnalytics {
   lastFieldInteracted: string;
   completionPercentage: number;
   timeSpent: number;
-  reason?: 'navigation' | 'timeout' | 'error' | 'unknown';
+  reason?: "navigation" | "timeout" | "error" | "unknown";
 }
 
 export interface FormErrorAnalytics {
@@ -73,7 +81,7 @@ class FormAnalyticsManager {
   public initializeForm(formName: string, fields: FormField[]): string {
     const sessionId = LoggerUtils.generateSessionId();
     const formKey = `${formName}_${sessionId}`;
-    
+
     const formAnalytics: FormAnalytics = {
       formName,
       sessionId,
@@ -81,11 +89,11 @@ class FormAnalyticsManager {
       fields: {},
       submissions: [],
       abandonments: [],
-      errors: []
+      errors: [],
     };
 
     // Initialize field analytics
-    fields.forEach(field => {
+    fields.forEach((field) => {
       formAnalytics.fields[field.name] = {
         fieldName: field.name,
         focusCount: 0,
@@ -93,23 +101,27 @@ class FormAnalyticsManager {
         changeCount: 0,
         errorCount: 0,
         completionRate: 0,
-        averageCharLength: 0
+        averageCharLength: 0,
       };
     });
 
     this.activeFormsData.set(formKey, formAnalytics);
-    
+
     // Log form initialization
-    UserFlowLogger.form(formName, 'initialize', {
+    UserFlowLogger.form(formName, "initialize", {
       fieldCount: fields.length,
-      requiredFields: fields.filter(f => f.required).length,
-      fieldTypes: fields.map(f => f.type)
+      requiredFields: fields.filter((f) => f.required).length,
+      fieldTypes: fields.map((f) => f.type),
     });
 
-    UserFlowLogger.breadcrumb('form_initialized', {
-      formName,
-      fieldCount: fields.length
-    }, sessionId);
+    UserFlowLogger.breadcrumb(
+      "form_initialized",
+      {
+        formName,
+        fieldCount: fields.length,
+      },
+      sessionId,
+    );
 
     return formKey;
   }
@@ -130,10 +142,15 @@ class FormAnalyticsManager {
     const timerKey = `${formKey}_${fieldName}`;
     this.fieldFocusTimers.set(timerKey, Date.now());
 
-    UserFlowLogger.interaction('field_focus', `${formData.formName}_${fieldName}`, {
-      focusCount: field.focusCount,
-      fieldType: this.getFieldType(formData.formName, fieldName)
-    }, formData.sessionId);
+    UserFlowLogger.interaction(
+      "field_focus",
+      `${formData.formName}_${fieldName}`,
+      {
+        focusCount: field.focusCount,
+        fieldType: this.getFieldType(formData.formName, fieldName),
+      },
+      formData.sessionId,
+    );
   }
 
   // Track field blur
@@ -147,7 +164,7 @@ class FormAnalyticsManager {
     // Calculate focus time
     const timerKey = `${formKey}_${fieldName}`;
     const focusStartTime = this.fieldFocusTimers.get(timerKey);
-    
+
     if (focusStartTime) {
       const focusTime = Date.now() - focusStartTime;
       field.totalFocusTime += focusTime;
@@ -156,14 +173,23 @@ class FormAnalyticsManager {
 
     field.lastInteraction = Date.now();
 
-    UserFlowLogger.interaction('field_blur', `${formData.formName}_${fieldName}`, {
-      totalFocusTime: field.totalFocusTime,
-      averageFocusTime: field.totalFocusTime / field.focusCount
-    }, formData.sessionId);
+    UserFlowLogger.interaction(
+      "field_blur",
+      `${formData.formName}_${fieldName}`,
+      {
+        totalFocusTime: field.totalFocusTime,
+        averageFocusTime: field.totalFocusTime / field.focusCount,
+      },
+      formData.sessionId,
+    );
   }
 
   // Track field value changes
-  public trackFieldChange(formKey: string, fieldName: string, value: FormFieldValue): void {
+  public trackFieldChange(
+    formKey: string,
+    fieldName: string,
+    value: FormFieldValue,
+  ): void {
     const formData = this.activeFormsData.get(formKey);
     if (!formData) return;
 
@@ -172,34 +198,45 @@ class FormAnalyticsManager {
 
     field.changeCount++;
     field.lastInteraction = Date.now();
-    
+
     // Calculate completion rate and average character length
-    if (typeof value === 'string') {
-      field.averageCharLength = (field.averageCharLength * (field.changeCount - 1) + value.length) / field.changeCount;
+    if (typeof value === "string") {
+      field.averageCharLength =
+        (field.averageCharLength * (field.changeCount - 1) + value.length) /
+        field.changeCount;
       field.completionRate = value.length > 0 ? 100 : 0;
     }
 
-    UserFlowLogger.interaction('field_change', `${formData.formName}_${fieldName}`, {
-      changeCount: field.changeCount,
-      valueLength: typeof value === 'string' ? value.length : 0,
-      completionRate: field.completionRate
-    }, formData.sessionId);
+    UserFlowLogger.interaction(
+      "field_change",
+      `${formData.formName}_${fieldName}`,
+      {
+        changeCount: field.changeCount,
+        valueLength: typeof value === "string" ? value.length : 0,
+        completionRate: field.completionRate,
+      },
+      formData.sessionId,
+    );
 
-    UserFlowLogger.breadcrumb('field_updated', {
-      form: formData.formName,
-      field: fieldName,
-      progress: this.calculateFormProgress(formKey)
-    }, formData.sessionId);
+    UserFlowLogger.breadcrumb(
+      "field_updated",
+      {
+        form: formData.formName,
+        field: fieldName,
+        progress: this.calculateFormProgress(formKey),
+      },
+      formData.sessionId,
+    );
   }
 
   // Track validation errors
   public trackValidationError(
-    formKey: string, 
-    fieldName: string, 
-    errorType: string, 
+    formKey: string,
+    fieldName: string,
+    errorType: string,
     errorMessage: string,
     userInput: FormFieldValue,
-    validationRule: string
+    validationRule: string,
   ): void {
     const formData = this.activeFormsData.get(formKey);
     if (!formData) return;
@@ -215,41 +252,52 @@ class FormAnalyticsManager {
       errorType,
       errorMessage,
       userInput: LoggerUtils.sanitizeData(userInput),
-      validationRule
+      validationRule,
     };
 
     formData.errors.push(errorAnalytics);
 
-    UserFlowLogger.form(formData.formName, 'error', {
-      fieldName,
-      errorType,
-      errorMessage,
-      totalErrors: formData.errors.length
-    }, [errorMessage]);
+    UserFlowLogger.form(
+      formData.formName,
+      "error",
+      {
+        fieldName,
+        errorType,
+        errorMessage,
+        totalErrors: formData.errors.length,
+      },
+      [errorMessage],
+    );
 
-    UserFlowLogger.breadcrumb('validation_error', {
-      form: formData.formName,
-      field: fieldName,
-      errorType
-    }, formData.sessionId);
+    UserFlowLogger.breadcrumb(
+      "validation_error",
+      {
+        form: formData.formName,
+        field: fieldName,
+        errorType,
+      },
+      formData.sessionId,
+    );
   }
 
   // Track form submission
   public trackFormSubmission(
-    formKey: string, 
-    formValues: Record<string, FormFieldValue>, 
+    formKey: string,
+    formValues: Record<string, FormFieldValue>,
     validationErrors: string[] = [],
-    successful: boolean = true
+    successful: boolean = true,
   ): void {
     const formData = this.activeFormsData.get(formKey);
     if (!formData) return;
 
     const completionTime = Date.now() - formData.startTime;
-    const fieldsCompleted = Object.keys(formValues).filter(key => {
+    const fieldsCompleted = Object.keys(formValues).filter((key) => {
       const value = formValues[key];
-      return value !== null && value !== undefined && value !== '';
+      return value !== null && value !== undefined && value !== "";
     });
-    const fieldsEmpty = Object.keys(formData.fields).filter(key => !fieldsCompleted.includes(key));
+    const fieldsEmpty = Object.keys(formData.fields).filter(
+      (key) => !fieldsCompleted.includes(key),
+    );
 
     const submissionAnalytics: FormSubmissionAnalytics = {
       timestamp: Date.now(),
@@ -258,41 +306,50 @@ class FormAnalyticsManager {
       fieldsEmpty,
       validationErrors,
       successful,
-      retryCount: formData.submissions.length
+      retryCount: formData.submissions.length,
     };
 
     formData.submissions.push(submissionAnalytics);
 
-    UserFlowLogger.form(formData.formName, 'submit', {
-      completionTime,
-      fieldsCompleted: fieldsCompleted.length,
-      fieldsEmpty: fieldsEmpty.length,
-      validationErrors: validationErrors.length,
-      successful,
-      retryCount: submissionAnalytics.retryCount
-    }, validationErrors);
+    UserFlowLogger.form(
+      formData.formName,
+      "submit",
+      {
+        completionTime,
+        fieldsCompleted: fieldsCompleted.length,
+        fieldsEmpty: fieldsEmpty.length,
+        validationErrors: validationErrors.length,
+        successful,
+        retryCount: submissionAnalytics.retryCount,
+      },
+      validationErrors,
+    );
 
-    UserFlowLogger.breadcrumb('form_submitted', {
-      form: formData.formName,
-      successful,
-      completionTime,
-      retryCount: submissionAnalytics.retryCount
-    }, formData.sessionId);
+    UserFlowLogger.breadcrumb(
+      "form_submitted",
+      {
+        form: formData.formName,
+        successful,
+        completionTime,
+        retryCount: submissionAnalytics.retryCount,
+      },
+      formData.sessionId,
+    );
 
     // Log conversion funnel completion
     if (successful) {
-      this.logConversionFunnelStep(formKey, 'form_submission_success', {
+      this.logConversionFunnelStep(formKey, "form_submission_success", {
         formName: formData.formName,
         completionTime,
-        fieldsCompleted: fieldsCompleted.length
+        fieldsCompleted: fieldsCompleted.length,
       });
     }
   }
 
   // Track form abandonment
   public trackFormAbandonment(
-    formKey: string, 
-    reason: 'navigation' | 'timeout' | 'error' | 'unknown' = 'unknown'
+    formKey: string,
+    reason: "navigation" | "timeout" | "error" | "unknown" = "unknown",
   ): void {
     const formData = this.activeFormsData.get(formKey);
     if (!formData) return;
@@ -306,46 +363,64 @@ class FormAnalyticsManager {
       lastFieldInteracted,
       completionPercentage,
       timeSpent,
-      reason
+      reason,
     };
 
     formData.abandonments.push(abandonmentAnalytics);
 
-    UserFlowLogger.interaction('form_abandonment', formData.formName, {
-      reason,
-      lastFieldInteracted,
-      completionPercentage,
-      timeSpent
-    }, formData.sessionId);
+    UserFlowLogger.interaction(
+      "form_abandonment",
+      formData.formName,
+      {
+        reason,
+        lastFieldInteracted,
+        completionPercentage,
+        timeSpent,
+      },
+      formData.sessionId,
+    );
 
-    UserFlowLogger.breadcrumb('form_abandoned', {
-      form: formData.formName,
-      reason,
-      progress: completionPercentage
-    }, formData.sessionId);
+    UserFlowLogger.breadcrumb(
+      "form_abandoned",
+      {
+        form: formData.formName,
+        reason,
+        progress: completionPercentage,
+      },
+      formData.sessionId,
+    );
   }
 
   // Log conversion funnel steps
   public logConversionFunnelStep(
-    formKey: string, 
-    stepName: string, 
-    stepData?: Record<string, unknown>
+    formKey: string,
+    stepName: string,
+    stepData?: Record<string, unknown>,
   ): void {
     const formData = this.activeFormsData.get(formKey);
     if (!formData) return;
 
-    UserFlowLogger.interaction('funnel_step', stepName, {
-      ...stepData,
-      formName: formData.formName,
-      stepTimestamp: Date.now(),
-      timeFromFormStart: Date.now() - formData.startTime
-    }, formData.sessionId);
+    UserFlowLogger.interaction(
+      "funnel_step",
+      stepName,
+      {
+        ...stepData,
+        formName: formData.formName,
+        stepTimestamp: Date.now(),
+        timeFromFormStart: Date.now() - formData.startTime,
+      },
+      formData.sessionId,
+    );
 
-    UserFlowLogger.breadcrumb('funnel_progress', {
-      step: stepName,
-      form: formData.formName,
-      data: stepData
-    }, formData.sessionId);
+    UserFlowLogger.breadcrumb(
+      "funnel_progress",
+      {
+        step: stepName,
+        form: formData.formName,
+        data: stepData,
+      },
+      formData.sessionId,
+    );
   }
 
   // Generate form analytics report
@@ -356,7 +431,7 @@ class FormAnalyticsManager {
   // Cleanup form data
   public cleanupForm(formKey: string): void {
     this.activeFormsData.delete(formKey);
-    
+
     // Clear any remaining timers
     for (const [timerKey, _] of this.fieldFocusTimers) {
       if (timerKey.startsWith(formKey)) {
@@ -368,7 +443,7 @@ class FormAnalyticsManager {
   // Private helper methods
   private getFieldType(formName: string, fieldName: string): string {
     // This would ideally come from form configuration
-    return 'text'; // Default fallback
+    return "text"; // Default fallback
   }
 
   private calculateFormProgress(formKey: string): number {
@@ -377,7 +452,7 @@ class FormAnalyticsManager {
 
     const totalFields = Object.keys(formData.fields).length;
     const completedFields = Object.values(formData.fields).filter(
-      field => field.completionRate > 0
+      (field) => field.completionRate > 0,
     ).length;
 
     return totalFields > 0 ? (completedFields / totalFields) * 100 : 0;
@@ -385,12 +460,12 @@ class FormAnalyticsManager {
 
   private getLastInteractedField(formKey: string): string {
     const formData = this.activeFormsData.get(formKey);
-    if (!formData) return '';
+    if (!formData) return "";
 
-    let lastField = '';
+    let lastField = "";
     let lastTime = 0;
 
-    Object.values(formData.fields).forEach(field => {
+    Object.values(formData.fields).forEach((field) => {
       if (field.lastInteraction && field.lastInteraction > lastTime) {
         lastTime = field.lastInteraction;
         lastField = field.fieldName;
@@ -425,20 +500,50 @@ export const useFormAnalytics = (formName: string, fields: FormField[]) => {
     if (formKey) formAnalytics.trackFieldChange(formKey, fieldName, value);
   };
 
-  const trackError = (fieldName: string, errorType: string, errorMessage: string, userInput: FormFieldValue, validationRule: string) => {
-    if (formKey) formAnalytics.trackValidationError(formKey, fieldName, errorType, errorMessage, userInput, validationRule);
+  const trackError = (
+    fieldName: string,
+    errorType: string,
+    errorMessage: string,
+    userInput: FormFieldValue,
+    validationRule: string,
+  ) => {
+    if (formKey)
+      formAnalytics.trackValidationError(
+        formKey,
+        fieldName,
+        errorType,
+        errorMessage,
+        userInput,
+        validationRule,
+      );
   };
 
-  const trackSubmission = (formValues: Record<string, FormFieldValue>, validationErrors: string[] = [], successful: boolean = true) => {
-    if (formKey) formAnalytics.trackFormSubmission(formKey, formValues, validationErrors, successful);
+  const trackSubmission = (
+    formValues: Record<string, FormFieldValue>,
+    validationErrors: string[] = [],
+    successful: boolean = true,
+  ) => {
+    if (formKey)
+      formAnalytics.trackFormSubmission(
+        formKey,
+        formValues,
+        validationErrors,
+        successful,
+      );
   };
 
-  const trackAbandonment = (reason: 'navigation' | 'timeout' | 'error' | 'unknown' = 'unknown') => {
+  const trackAbandonment = (
+    reason: "navigation" | "timeout" | "error" | "unknown" = "unknown",
+  ) => {
     if (formKey) formAnalytics.trackFormAbandonment(formKey, reason);
   };
 
-  const logFunnelStep = (stepName: string, stepData?: Record<string, unknown>) => {
-    if (formKey) formAnalytics.logConversionFunnelStep(formKey, stepName, stepData);
+  const logFunnelStep = (
+    stepName: string,
+    stepData?: Record<string, unknown>,
+  ) => {
+    if (formKey)
+      formAnalytics.logConversionFunnelStep(formKey, stepName, stepData);
   };
 
   const cleanup = () => {
@@ -454,6 +559,6 @@ export const useFormAnalytics = (formName: string, fields: FormField[]) => {
     trackSubmission,
     trackAbandonment,
     logFunnelStep,
-    cleanup
+    cleanup,
   };
 };

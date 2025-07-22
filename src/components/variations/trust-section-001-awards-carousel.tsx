@@ -1,27 +1,27 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { cn } from "@/lib/utils"
-import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { 
-  Carousel, 
-  CarouselContent, 
-  CarouselItem, 
-  CarouselNext, 
-  CarouselPrevious 
-} from "@/components/ui/carousel"
-import { 
-  Award, 
-  Star, 
-  Users, 
-  TrendingUp, 
-  Shield, 
+import { useState, useEffect } from "react";
+import { cn } from "@/lib/utils";
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
+import {
+  Award,
+  Star,
+  Users,
+  TrendingUp,
+  Shield,
   Clock,
   MapPin,
-  Quote
-} from "lucide-react"
+  Quote,
+} from "lucide-react";
 
 interface TrustSignalSectionProps {
   className?: string;
@@ -73,16 +73,16 @@ const awards: Award[] = [
     year: 2024,
     description: "Uitmuntendheid in cateringservices en gastvrijheid",
     icon: <Award className="h-8 w-8 text-[#CC5D00]" />,
-    category: "quality"
+    category: "quality",
   },
   {
-    id: "2", 
+    id: "2",
     title: "Duurzame Catering Certificaat",
     organization: "Milieu Centraal",
     year: 2023,
     description: "Erkend voor duurzame inkoop en afvalvermindering",
     icon: <Shield className="h-8 w-8 text-[#2B4040]" />,
-    category: "sustainability"
+    category: "sustainability",
   },
   {
     id: "3",
@@ -91,7 +91,7 @@ const awards: Award[] = [
     year: 2024,
     description: "Winnaar in de categorie innovatieve bedrijfscatering",
     icon: <TrendingUp className="h-8 w-8 text-[#3D6160]" />,
-    category: "innovation"
+    category: "innovation",
   },
   {
     id: "4",
@@ -100,41 +100,44 @@ const awards: Award[] = [
     year: 2024,
     description: "Hoogste waardering voor klantenservice en betrouwbaarheid",
     icon: <Star className="h-8 w-8 text-[#CC5D00]" />,
-    category: "service"
-  }
+    category: "service",
+  },
 ];
 
 const testimonials: Testimonial[] = [
   {
     id: "1",
-    content: "Wesley's Ambacht heeft ons corporate event naar een hoger niveau getild. De kwaliteit van het eten en de professionele uitstraling waren werkelijk uitzonderlijk. Onze internationale gasten waren zeer onder de indruk.",
+    content:
+      "Wesley's Ambacht heeft ons corporate event naar een hoger niveau getild. De kwaliteit van het eten en de professionele uitstraling waren werkelijk uitzonderlijk. Onze internationale gasten waren zeer onder de indruk.",
     author: "Dr. Maria van den Berg",
     company: "TechnoVision B.V.",
     role: "Directeur Zakelijke Relaties",
     rating: 5,
     event: "Annual Tech Summit",
-    location: "Amsterdam"
+    location: "Amsterdam",
   },
   {
     id: "2",
-    content: "Voor onze bruiloft zochten wij een caterer die zowel traditie als moderne elegantie kon combineren. Wesley's team heeft onze verwachtingen overtroffen met hun authentieke Nederlandse gerechten en onberispelijke service.",
+    content:
+      "Voor onze bruiloft zochten wij een caterer die zowel traditie als moderne elegantie kon combineren. Wesley's team heeft onze verwachtingen overtroffen met hun authentieke Nederlandse gerechten en onberispelijke service.",
     author: "Jeroen & Sophie Hendricks",
     company: "Particuliere klant",
     role: "Bruidspaar",
     rating: 5,
     event: "Huwelijksfeest",
-    location: "Utrecht"
+    location: "Utrecht",
   },
   {
     id: "3",
-    content: "Als onderdeel van onze ESG-strategie kozen wij bewust voor Wesley's Ambacht vanwege hun duurzame aanpak. De transparantie in hun leveranciersketen en de lokale focus passen perfect bij onze bedrijfswaarden.",
+    content:
+      "Als onderdeel van onze ESG-strategie kozen wij bewust voor Wesley's Ambacht vanwege hun duurzame aanpak. De transparantie in hun leveranciersketen en de lokale focus passen perfect bij onze bedrijfswaarden.",
     author: "Drs. Peter Janssen",
     company: "Sustainable Finance Group",
-    role: "Chief Sustainability Officer", 
+    role: "Chief Sustainability Officer",
     rating: 5,
     event: "ESG Conference",
-    location: "Den Haag"
-  }
+    location: "Den Haag",
+  },
 ];
 
 const suppliers: Supplier[] = [
@@ -144,7 +147,7 @@ const suppliers: Supplier[] = [
     category: "Biologische groenten",
     partnership: "Exclusieve leverancier sinds 2018",
     location: "Waterland",
-    certification: "EKO-keurmerk"
+    certification: "EKO-keurmerk",
   },
   {
     id: "2",
@@ -152,7 +155,7 @@ const suppliers: Supplier[] = [
     category: "Ambachtelijke kazen",
     partnership: "Traditionele partner sinds 2016",
     location: "Noord-Holland",
-    certification: "Streekproduct erkend"
+    certification: "Streekproduct erkend",
   },
   {
     id: "3",
@@ -160,7 +163,7 @@ const suppliers: Supplier[] = [
     category: "Duurzame vis & zeevruchten",
     partnership: "MSC-gecertificeerde leverancier",
     location: "IJsselmeer regio",
-    certification: "MSC Sustainable"
+    certification: "MSC Sustainable",
   },
   {
     id: "4",
@@ -168,8 +171,8 @@ const suppliers: Supplier[] = [
     category: "Artisanaal brood & gebak",
     partnership: "Dagverse leveringen sinds 2019",
     location: "Utrecht Centrum",
-    certification: "Ambachtelijk Bakker"
-  }
+    certification: "Ambachtelijk Bakker",
+  },
 ];
 
 const statistics: Statistic[] = [
@@ -178,29 +181,29 @@ const statistics: Statistic[] = [
     value: "2,400+",
     label: "Succesvolle evenementen",
     icon: <Users className="h-6 w-6" />,
-    trend: "up"
+    trend: "up",
   },
   {
-    id: "2", 
+    id: "2",
     value: "98%",
     label: "Klanttevredenheid",
     icon: <Star className="h-6 w-6" />,
-    trend: "stable"
+    trend: "stable",
   },
   {
     id: "3",
     value: "15+",
     label: "Jaar ervaring",
     icon: <Clock className="h-6 w-6" />,
-    trend: "up"
+    trend: "up",
   },
   {
     id: "4",
     value: "50+",
     label: "Lokale partners",
     icon: <MapPin className="h-6 w-6" />,
-    trend: "up"
-  }
+    trend: "up",
+  },
 ];
 
 export function TrustSignalSection({ className }: TrustSignalSectionProps) {
@@ -215,7 +218,12 @@ export function TrustSignalSection({ className }: TrustSignalSectionProps) {
   }, []);
 
   return (
-    <section className={cn("py-24 bg-gradient-to-b from-[#FEFEFE] to-[#FFEFDA]", className)}>
+    <section
+      className={cn(
+        "py-24 bg-gradient-to-b from-[#FEFEFE] to-[#FFEFDA]",
+        className,
+      )}
+    >
       <div className="container mx-auto px-4 max-w-7xl">
         {/* Section Header */}
         <div className="text-center mb-16">
@@ -225,19 +233,25 @@ export function TrustSignalSection({ className }: TrustSignalSectionProps) {
           <h2 className="text-4xl md:text-5xl font-bold text-[#2C2C2C] mb-6">
             <span className="font-serif">Erkende excellentie</span>
             <br />
-            <span className="text-[#CC5D00] font-serif">in cateringservices</span>
+            <span className="text-[#CC5D00] font-serif">
+              in cateringservices
+            </span>
           </h2>
           <p className="text-lg text-[#2B4040] max-w-3xl mx-auto leading-relaxed">
-            Ontdek waarom Nederlandse bedrijven en particulieren hun belangrijkste evenementen 
-            toevertrouwen aan Wesley's Ambacht. Onze awards, klantbeoordelingen en 
-            duurzame partnerships spreken voor zich.
+            Ontdek waarom Nederlandse bedrijven en particulieren hun
+            belangrijkste evenementen toevertrouwen aan Wesley's Ambacht. Onze
+            awards, klantbeoordelingen en duurzame partnerships spreken voor
+            zich.
           </p>
         </div>
 
         {/* Statistics Bar */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-20">
           {statistics.map((stat) => (
-            <Card key={stat.id} className="text-center border-[#CC5D00]/20 bg-white/80 backdrop-blur-sm hover:shadow-lg transition-all duration-300">
+            <Card
+              key={stat.id}
+              className="text-center border-[#CC5D00]/20 bg-white/80 backdrop-blur-sm hover:shadow-lg transition-all duration-300"
+            >
               <CardContent className="p-6">
                 <div className="flex justify-center mb-3 text-[#CC5D00]">
                   {stat.icon}
@@ -263,7 +277,7 @@ export function TrustSignalSection({ className }: TrustSignalSectionProps) {
               Erkende kwaliteit
             </h3>
             <p className="text-[#2B4040] max-w-2xl mx-auto">
-              Onze toewijding aan excellentie wordt erkend door toonaangevende 
+              Onze toewijding aan excellentie wordt erkend door toonaangevende
               organisaties in de Nederlandse horeca- en evenementenbranche.
             </p>
           </div>
@@ -271,34 +285,35 @@ export function TrustSignalSection({ className }: TrustSignalSectionProps) {
           <Carousel className="max-w-5xl mx-auto">
             <CarouselContent>
               {awards.map((award) => (
-                <CarouselItem key={award.id} className="md:basis-1/2 lg:basis-1/3">
+                <CarouselItem
+                  key={award.id}
+                  className="md:basis-1/2 lg:basis-1/3"
+                >
                   <Card className="h-full border-[#CC5D00]/20 bg-white hover:shadow-xl transition-all duration-300 group">
                     <CardContent className="p-8 h-full flex flex-col">
                       <div className="flex items-center justify-between mb-6">
-                        <div className="flex-shrink-0">
-                          {award.icon}
-                        </div>
-                        <Badge 
-                          variant="outline" 
+                        <div className="flex-shrink-0">{award.icon}</div>
+                        <Badge
+                          variant="outline"
                           className="text-xs border-[#CC5D00]/30 text-[#CC5D00]"
                         >
                           {award.year}
                         </Badge>
                       </div>
-                      
+
                       <h4 className="text-xl font-bold text-[#2C2C2C] mb-2 group-hover:text-[#CC5D00] transition-colors">
                         {award.title}
                       </h4>
-                      
+
                       <p className="text-sm font-medium text-[#3D6160] mb-3">
                         {award.organization}
                       </p>
-                      
+
                       <p className="text-sm text-[#2B4040] leading-relaxed flex-grow">
                         {award.description}
                       </p>
-                      
-                      <Badge 
+
+                      <Badge
                         className="mt-4 w-fit bg-[#FFEFDA] text-[#CC5D00] border-[#CC5D00]/20"
                         variant="outline"
                       >
@@ -324,8 +339,8 @@ export function TrustSignalSection({ className }: TrustSignalSectionProps) {
               Klantbeoordelingen
             </h3>
             <p className="text-[#2B4040] max-w-2xl mx-auto">
-              Lees wat onze klanten zeggen over hun ervaring met Wesley's Ambacht 
-              en ontdek waarom zij ons aanbevelen.
+              Lees wat onze klanten zeggen over hun ervaring met Wesley's
+              Ambacht en ontdek waarom zij ons aanbevelen.
             </p>
           </div>
 
@@ -335,9 +350,14 @@ export function TrustSignalSection({ className }: TrustSignalSectionProps) {
                 <div className="text-center mb-8">
                   <Quote className="h-12 w-12 text-[#CC5D00] mx-auto mb-6" />
                   <div className="flex justify-center mb-4">
-                    {[...Array(testimonials[activeTestimonial].rating)].map((_, i) => (
-                      <Star key={i} className="h-5 w-5 text-[#CC5D00] fill-current" />
-                    ))}
+                    {[...Array(testimonials[activeTestimonial].rating)].map(
+                      (_, i) => (
+                        <Star
+                          key={i}
+                          className="h-5 w-5 text-[#CC5D00] fill-current"
+                        />
+                      ),
+                    )}
                   </div>
                 </div>
 
@@ -353,7 +373,8 @@ export function TrustSignalSection({ className }: TrustSignalSectionProps) {
                     {testimonials[activeTestimonial].role}
                   </div>
                   <div className="text-sm text-[#2B4040]">
-                    {testimonials[activeTestimonial].company} • {testimonials[activeTestimonial].event}
+                    {testimonials[activeTestimonial].company} •{" "}
+                    {testimonials[activeTestimonial].event}
                   </div>
                   <div className="text-xs text-[#3D6160] mt-1">
                     {testimonials[activeTestimonial].location}
@@ -370,9 +391,9 @@ export function TrustSignalSection({ className }: TrustSignalSectionProps) {
                   onClick={() => setActiveTestimonial(index)}
                   className={cn(
                     "h-3 w-3 rounded-full transition-all duration-300",
-                    index === activeTestimonial 
-                      ? "bg-[#CC5D00] w-8" 
-                      : "bg-[#CC5D00]/30 hover:bg-[#CC5D00]/50"
+                    index === activeTestimonial
+                      ? "bg-[#CC5D00] w-8"
+                      : "bg-[#CC5D00]/30 hover:bg-[#CC5D00]/50",
                   )}
                 />
               ))}
@@ -387,14 +408,17 @@ export function TrustSignalSection({ className }: TrustSignalSectionProps) {
               Lokale partnerships
             </h3>
             <p className="text-[#2B4040] max-w-2xl mx-auto">
-              Wij werken samen met de beste lokale leveranciers om u verse, 
+              Wij werken samen met de beste lokale leveranciers om u verse,
               duurzame en authentieke Nederlandse producten te garanderen.
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {suppliers.map((supplier) => (
-              <Card key={supplier.id} className="border-[#CC5D00]/20 bg-white hover:shadow-lg transition-all duration-300 group">
+              <Card
+                key={supplier.id}
+                className="border-[#CC5D00]/20 bg-white hover:shadow-lg transition-all duration-300 group"
+              >
                 <CardContent className="p-6">
                   <div className="mb-4">
                     <h4 className="font-bold text-[#2C2C2C] group-hover:text-[#CC5D00] transition-colors mb-1">
@@ -404,19 +428,19 @@ export function TrustSignalSection({ className }: TrustSignalSectionProps) {
                       {supplier.category}
                     </p>
                   </div>
-                  
+
                   <div className="text-sm text-[#2B4040] mb-3">
                     {supplier.partnership}
                   </div>
-                  
+
                   <div className="flex items-center justify-between text-xs">
                     <span className="text-[#3D6160] flex items-center">
                       <MapPin className="h-3 w-3 mr-1" />
                       {supplier.location}
                     </span>
                     {supplier.certification && (
-                      <Badge 
-                        variant="outline" 
+                      <Badge
+                        variant="outline"
                         className="text-xs border-green-200 text-green-700 bg-green-50"
                       >
                         {supplier.certification}
@@ -437,10 +461,10 @@ export function TrustSignalSection({ className }: TrustSignalSectionProps) {
                 Ervaar zelf ons vakmanschap
               </h4>
               <p className="text-[#2B4040] mb-6">
-                Ontdek waarom meer dan 2,400 klanten ons hun vertrouwen hebben geschonken. 
-                Vraag vandaag nog uw persoonlijke offerte aan.
+                Ontdek waarom meer dan 2,400 klanten ons hun vertrouwen hebben
+                geschonken. Vraag vandaag nog uw persoonlijke offerte aan.
               </p>
-              <Button 
+              <Button
                 size="lg"
                 className="bg-[#CC5D00] hover:bg-[#CC5D00]/90 text-white px-8 py-6 text-lg font-medium"
               >

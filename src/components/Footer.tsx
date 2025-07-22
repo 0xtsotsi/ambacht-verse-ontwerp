@@ -1,4 +1,3 @@
-
 import { Heart, Phone, Mail, MapPin } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
@@ -10,13 +9,13 @@ export const Footer = () => {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
-        entries.forEach(entry => {
+        entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setIsVisible(true);
           }
         });
       },
-      { threshold: 0.1 }
+      { threshold: 0.1 },
     );
 
     if (footerRef.current) {
@@ -32,18 +31,18 @@ export const Footer = () => {
       <div className="container mx-auto px-16 py-32 relative">
         {/* Background glow effect */}
         <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/95 to-gray-900/90 pointer-events-none"></div>
-        
+
         <div className="max-w-7xl mx-auto relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-24">
             {/* Interactive Brand Column */}
-            <div 
+            <div
               className="md:col-span-2 group cursor-pointer"
-              onMouseEnter={() => setHoveredSection('brand')}
+              onMouseEnter={() => setHoveredSection("brand")}
               onMouseLeave={() => setHoveredSection(null)}
               style={{
                 opacity: isVisible ? 1 : 0,
-                transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-                transition: 'all 1s ease-out'
+                transform: isVisible ? "translateY(0)" : "translateY(30px)",
+                transition: "all 1s ease-out",
               }}
             >
               <div className="mb-16">
@@ -55,13 +54,14 @@ export const Footer = () => {
                   Ambachtelijk en vers... zoals vroeger
                 </p>
               </div>
-              
+
               <p className="text-gray-300 leading-relaxed mb-16 max-w-lg text-lg font-elegant-body font-light transition-all duration-700 group-hover:text-white transform group-hover:translate-x-2">
-                Met passie en vakmanschap creëren wij onvergetelijke culinaire ervaringen. 
-                Van traditionele smoking technieken tot moderne catering concepten - 
-                altijd met respect voor ambachtelijkheid en kwaliteit.
+                Met passie en vakmanschap creëren wij onvergetelijke culinaire
+                ervaringen. Van traditionele smoking technieken tot moderne
+                catering concepten - altijd met respect voor ambachtelijkheid en
+                kwaliteit.
               </p>
-              
+
               <div className="flex items-center space-x-4 transition-all duration-500 group-hover:scale-105">
                 <Heart className="w-5 h-5 text-terracotta-600 animate-pulse" />
                 <span className="text-gray-400 font-elegant-body font-light group-hover:text-terracotta-200 transition-colors duration-500">
@@ -71,14 +71,14 @@ export const Footer = () => {
             </div>
 
             {/* Interactive Contact Column */}
-            <div 
+            <div
               className="group"
-              onMouseEnter={() => setHoveredSection('contact')}
+              onMouseEnter={() => setHoveredSection("contact")}
               onMouseLeave={() => setHoveredSection(null)}
               style={{
                 opacity: isVisible ? 1 : 0,
-                transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-                transition: 'all 1.2s ease-out 0.2s'
+                transform: isVisible ? "translateY(0)" : "translateY(30px)",
+                transition: "all 1.2s ease-out 0.2s",
               }}
             >
               <h4 className="font-elegant-heading text-2xl font-light mb-12 text-white transition-all duration-700 group-hover:text-terracotta-600">
@@ -88,17 +88,22 @@ export const Footer = () => {
                 {[
                   { icon: Phone, text: "0639581128" },
                   { icon: Mail, text: "info@wesleysambacht.nl" },
-                  { icon: MapPin, text: "Gelderland, Nederland", mt: true }
+                  { icon: MapPin, text: "Gelderland, Nederland", mt: true },
                 ].map((item, index) => (
-                  <div 
+                  <div
                     key={index}
                     className="flex items-center space-x-4 transition-all duration-500 hover:translate-x-2 hover:scale-105 group/item cursor-pointer"
                     style={{
                       animationDelay: `${index * 0.1}s`,
-                      animation: hoveredSection === 'contact' ? 'elegant-fade-in 0.6s ease-out forwards' : 'none'
+                      animation:
+                        hoveredSection === "contact"
+                          ? "elegant-fade-in 0.6s ease-out forwards"
+                          : "none",
                     }}
                   >
-                    <item.icon className={`w-5 h-5 text-terracotta-600 transition-all duration-500 group-hover/item:scale-125 ${item.mt ? 'mt-0.5' : ''}`} />
+                    <item.icon
+                      className={`w-5 h-5 text-terracotta-600 transition-all duration-500 group-hover/item:scale-125 ${item.mt ? "mt-0.5" : ""}`}
+                    />
                     <span className="text-gray-300 font-elegant-body font-light group-hover/item:text-white transition-colors duration-500">
                       {item.text}
                     </span>
@@ -108,14 +113,14 @@ export const Footer = () => {
             </div>
 
             {/* Interactive Services Column */}
-            <div 
+            <div
               className="group"
-              onMouseEnter={() => setHoveredSection('services')}
+              onMouseEnter={() => setHoveredSection("services")}
               onMouseLeave={() => setHoveredSection(null)}
               style={{
                 opacity: isVisible ? 1 : 0,
-                transform: isVisible ? 'translateY(0)' : 'translateY(30px)',
-                transition: 'all 1.4s ease-out 0.4s'
+                transform: isVisible ? "translateY(0)" : "translateY(30px)",
+                transition: "all 1.4s ease-out 0.4s",
               }}
             >
               <h4 className="font-elegant-heading text-2xl font-light mb-12 text-white transition-all duration-700 group-hover:text-terracotta-600">
@@ -124,17 +129,20 @@ export const Footer = () => {
               <ul className="space-y-6">
                 {[
                   "Kantoor Catering",
-                  "BBQ Services", 
+                  "BBQ Services",
                   "Evenement Buffets",
                   "Smoking Specialiteiten",
-                  "Maatwerk Catering"
+                  "Maatwerk Catering",
                 ].map((service, index) => (
-                  <li 
+                  <li
                     key={service}
                     className="text-gray-300 hover:text-terracotta-600 transition-all duration-500 cursor-pointer font-elegant-body font-light transform hover:translate-x-2 hover:scale-105 relative group/service"
                     style={{
                       animationDelay: `${index * 0.1}s`,
-                      animation: hoveredSection === 'services' ? 'elegant-fade-in 0.6s ease-out forwards' : 'none'
+                      animation:
+                        hoveredSection === "services"
+                          ? "elegant-fade-in 0.6s ease-out forwards"
+                          : "none",
                     }}
                   >
                     <span className="relative z-10">{service}</span>
@@ -146,23 +154,23 @@ export const Footer = () => {
           </div>
 
           {/* Interactive Separator */}
-          <div 
+          <div
             className="relative w-full h-px bg-gray-800 my-24 overflow-hidden"
             style={{
               opacity: isVisible ? 1 : 0,
-              transition: 'opacity 1.5s ease-out 0.6s'
+              transition: "opacity 1.5s ease-out 0.6s",
             }}
           >
             <span className="absolute inset-0 bg-gradient-to-r from-transparent via-terracotta-600 to-transparent animate-pulse"></span>
           </div>
 
           {/* Interactive Partners Section */}
-          <div 
+          <div
             className="text-center mb-24"
             style={{
               opacity: isVisible ? 1 : 0,
-              transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'all 1.6s ease-out 0.8s'
+              transform: isVisible ? "translateY(0)" : "translateY(20px)",
+              transition: "all 1.6s ease-out 0.8s",
             }}
           >
             <h4 className="font-elegant-heading text-3xl font-light mb-16 text-white relative inline-block group">
@@ -172,15 +180,17 @@ export const Footer = () => {
             <div className="flex flex-wrap justify-center items-center gap-16 text-gray-400">
               {[
                 "Kaasboerderij van Schaik",
-                "Bakkerij van Harberden", 
-                "Vishandel Sperling"
+                "Bakkerij van Harberden",
+                "Vishandel Sperling",
               ].map((partner, index) => (
-                <span 
-                  key={partner} 
+                <span
+                  key={partner}
                   className="font-elegant-body font-light hover:text-terracotta-600 transition-all duration-500 cursor-pointer transform hover:scale-110 hover:-translate-y-1 relative group"
                   style={{
                     animationDelay: `${index * 0.2}s`,
-                    animation: isVisible ? 'elegant-fade-in 1s ease-out forwards' : 'none'
+                    animation: isVisible
+                      ? "elegant-fade-in 1s ease-out forwards"
+                      : "none",
                   }}
                 >
                   <span className="relative z-10">{partner}</span>
@@ -195,27 +205,29 @@ export const Footer = () => {
       {/* Interactive Bottom Bar */}
       <div className="border-t border-gray-800 py-16 bg-black/90 backdrop-blur-sm">
         <div className="container mx-auto px-16">
-          <div 
+          <div
             className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center text-gray-400 font-elegant-body"
             style={{
               opacity: isVisible ? 1 : 0,
-              transform: isVisible ? 'translateY(0)' : 'translateY(20px)',
-              transition: 'all 1.8s ease-out 1s'
+              transform: isVisible ? "translateY(0)" : "translateY(20px)",
+              transition: "all 1.8s ease-out 1s",
             }}
           >
             <div className="mb-6 md:mb-0 font-light transition-all duration-500 hover:text-white">
               © 2024 Wesley's Ambacht. Alle rechten voorbehouden.
             </div>
             <div className="flex space-x-12">
-              {["Privacy Beleid", "Algemene Voorwaarden", "Cookies"].map((link, index) => (
-                <span 
-                  key={link}
-                  className="hover:text-terracotta-600 transition-all duration-500 cursor-pointer font-light transform hover:scale-110 hover:-translate-y-0.5 relative group"
-                >
-                  <span className="relative z-10">{link}</span>
-                  <span className="absolute inset-0 bg-terracotta-600/10 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-                </span>
-              ))}
+              {["Privacy Beleid", "Algemene Voorwaarden", "Cookies"].map(
+                (link, index) => (
+                  <span
+                    key={link}
+                    className="hover:text-terracotta-600 transition-all duration-500 cursor-pointer font-light transform hover:scale-110 hover:-translate-y-0.5 relative group"
+                  >
+                    <span className="relative z-10">{link}</span>
+                    <span className="absolute inset-0 bg-terracotta-600/10 rounded opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
+                  </span>
+                ),
+              )}
             </div>
           </div>
         </div>
