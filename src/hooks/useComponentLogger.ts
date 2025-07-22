@@ -9,10 +9,17 @@ export type LoggableValue =
   | { [key: string]: LoggableValue }
   | LoggableValue[];
 
+export interface BookingState {
+  selectedDate: Date;
+  [key: string]: any;
+}
+
 interface LoggerConfig {
   componentName: string;
   props?: Record<string, LoggableValue>;
   enablePropLogging?: boolean;
+  dependencies?: any[];
+  stateName?: string;
 }
 
 interface PerformanceLoggerOptions {
@@ -33,6 +40,9 @@ interface PerformanceStats {
   };
 }
 
+/**
+ * Hook for tracking component performance metrics
+ */
 export function usePerformanceLogger(options: PerformanceLoggerOptions) {
   const {
     componentName,
@@ -94,7 +104,15 @@ export function usePerformanceLogger(options: PerformanceLoggerOptions) {
   };
 }
 
-export function useLifecycleLogger(config: LoggerConfig) {
+/**
+ * Hook for tracking component lifecycle events
+ * Works with either a string componentName or a config object
+ */
+export function useLifecycleLogger(configOrName: LoggerConfig | string, props?: Record<string, LoggableValue>) {
+  const config = typeof configOrName === 'string' 
+    ? { componentName: configOrName, props } 
+    : configOrName;
+
   useEffect(() => {
     const { componentName, props } = config;
     console.log(`[${componentName}] Mounted`, props || '');
@@ -110,8 +128,15 @@ export function useLifecycleLogger(config: LoggerConfig) {
   };
 }
 
-export function useRenderLogger(config: LoggerConfig) {
+/**
+ * Hook for tracking component renders
+ * Works with either a string componentName or a config object
+ */
+export function useRenderLogger(configOrName: LoggerConfig | string, props?: Record<string, LoggableValue>) {
   const renderCount = useRef(0);
+  const config = typeof configOrName === 'string' 
+    ? { componentName: configOrName, props, enablePropLogging: !!props } 
+    : configOrName;
   
   useEffect(() => {
     renderCount.current += 1;
@@ -123,12 +148,100 @@ export function useRenderLogger(config: LoggerConfig) {
   return renderCount.current;
 }
 
-export function useStateLogger<T>(initialState: T) {
-  const [state, setState] = useState<T>(initialState);
+/**
+ * Hook for tracking state changes
+ */
+export function useStateLogger<T>(initialStateOrConfig: T | LoggerConfig, initialState?: T) {
+  const isConfig = typeof initialStateOrConfig === 'object' && 'componentName' in initialStateOrConfig;
+  const actualInitialState = isConfig ? (initialState || {} as T) : initialStateOrConfig;
+  const config = isConfig ? initialStateOrConfig as LoggerConfig : { componentName: 'Component' };
+  
+  const [state, setState] = useState<T>(actualInitialState as T);
+  const prevStateRef = useRef<T>(actualInitialState as T);
+  
+  const logStateChange = useCallback((newState: T, description?: string) => {
+    console.log(`[${config.componentName}] State${config.stateName ? ` (${config.stateName})` : ''} changed:`, {
+      description,
+      from: prevStateRef.current,
+      to: newState
+    });
+    prevStateRef.current = newState;
+  }, [config]);
   
   const wrappedSetState = useCallback((newState: T | ((prev: T) => T)) => {
-    setState(newState);
-  }, []);
+    setState(s => {
+      const nextState = typeof newState === 'function' 
+        ? (newState as ((prev: T) => T))(s) 
+        : newState;
+      
+      logStateChange(nextState);
+      return nextState;
+    });
+  }, [logStateChange]);
   
-  return [state, wrappedSetState] as const;
+  // For compatibility with existing code
+  const returnValue = [state, wrappedSetState] as const;
+  (returnValue as any).logStateChange = logStateChange;
+  
+  return returnValue;
+}
+
+/**
+ * Component tracking hook with support for props, state, and performance
+ */
+export function useComponentTracking(componentNameOrConfig: string | LoggerConfig, options?: {
+  props?: Record<string, LoggableValue>;
+  dependencies?: any[];
+}) {
+  const config = typeof componentNameOrConfig === 'string' 
+    ? { componentName: componentNameOrConfig, ...options } 
+    : componentNameOrConfig;
+    
+  const mountTime = useRef(Date.now());
+  const renderCount = useRef(0);
+  const lastRenderTime = useRef(Date.now());
+  
+  useEffect(() => {
+    console.log(`[${config.componentName}] Mounted`, config.props || {});
+    return () => {
+      const unmountTime = Date.now();
+      const lifespanMs = unmountTime - mountTime.current;
+      console.log(`[${config.componentName}] Unmounted after ${lifespanMs}ms`);
+    };
+  }, [config]);
+  
+  useEffect(() => {
+    if (config.dependencies && config.dependencies.length > 0) {
+      renderCount.current += 1;
+      const now = Date.now();
+      const timeSinceLastRender = now - lastRenderTime.current;
+      lastRenderTime.current = now;
+      console.log(`[${config.componentName}] Dependency update #${renderCount.current}`, {
+        timeSinceLastRender
+      });
+    }
+  }, config.dependencies || []);
+  
+  const trackEvent = useCallback((eventName: string, data?: Record<string, LoggableValue>) => {
+    console.log(`[${config.componentName}] ${eventName}`, data || {});
+  }, [config.componentName]);
+  
+  return { 
+    trackEvent,
+    renderInfo: {
+      count: renderCount.current,
+      timeSinceLastRender: Date.now() - lastRenderTime.current,
+      renderCount: renderCount.current
+    },
+    performance: {
+      mountTime: mountTime.current,
+      getDuration: () => Date.now() - mountTime.current,
+      getPerformanceStats: () => ({
+        renderCount: renderCount.current,
+        duration: Date.now() - mountTime.current,
+        averageRenderTime: renderCount.current > 0 ? 
+          (Date.now() - mountTime.current) / renderCount.current : 0
+      })
+    }
+  };
 }

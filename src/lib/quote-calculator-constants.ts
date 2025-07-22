@@ -165,6 +165,7 @@ export const QUOTE_TRANSLATIONS = {
 export const validateQuoteCalculatorProps = (props: {
   initialGuestCount?: number;
   onQuoteCalculated?: (quote: unknown) => void;
+  onRequestDetailedQuote?: (quote: unknown, input: unknown) => void;
 }) => {
   const errors: string[] = [];
 
@@ -185,6 +186,13 @@ export const validateQuoteCalculatorProps = (props: {
     typeof props.onQuoteCalculated !== "function"
   ) {
     errors.push("onQuoteCalculated must be a function");
+  }
+  
+  if (
+    props.onRequestDetailedQuote &&
+    typeof props.onRequestDetailedQuote !== "function"
+  ) {
+    errors.push("onRequestDetailedQuote must be a function");
   }
 
   return {
@@ -273,8 +281,41 @@ export const QUOTE_CALCULATOR_STYLES = {
 } as const;
 
 // Type definitions for better type safety
-
 export type QuoteServiceCategory = keyof typeof QUOTE_SERVICE_CATEGORIES;
 export type QuoteServiceTier = keyof typeof QUOTE_SERVICE_TIERS;
 export type QuoteAddOn = keyof typeof QUOTE_ADD_ONS;
 export type QuoteLanguageType = keyof typeof QUOTE_TRANSLATIONS;
+
+// Helper functions for working with categories and tiers
+export const getCategoryIcon = (category: QuoteServiceCategory) => {
+  return QUOTE_SERVICE_CATEGORIES[category].icon;
+};
+
+export const getTierIcon = (tier: QuoteServiceTier) => {
+  return QUOTE_SERVICE_TIERS[tier].icon;
+};
+
+export const getCategoryLabel = (category: QuoteServiceCategory) => {
+  return QUOTE_SERVICE_CATEGORIES[category].label;
+};
+
+export const getTierLabel = (tier: QuoteServiceTier) => {
+  return QUOTE_SERVICE_TIERS[tier].label;
+};
+
+export const getCategoryDescription = (category: QuoteServiceCategory) => {
+  return QUOTE_SERVICE_CATEGORIES[category].description;
+};
+
+export const getTierDescription = (tier: QuoteServiceTier) => {
+  return QUOTE_SERVICE_TIERS[tier].description;
+};
+
+// Mock implementation for functions referenced in PreliminaryQuoteCalculator
+export const renderServiceCategories = () => {
+  return null; // Stub implementation
+};
+
+export const renderServiceTiers = () => {
+  return null; // Stub implementation
+};
