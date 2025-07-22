@@ -25,12 +25,11 @@ import {
   QUOTE_CALCULATOR_STYLES,
   validateQuoteCalculatorProps,
   calculateTotalQuote,
-  renderServiceCategories,
-  renderServiceTiers,
   type QuoteServiceCategory,
   type QuoteServiceTier,
   type QuoteAddOn,
 } from "@/lib/quote-calculator-constants";
+import { renderServiceCategories, renderServiceTiers } from "@/components/QuoteCalculator/QuoteRenderers";
 import { type QuoteBreakdown } from "@/lib/quote-calculations";
 
 interface PreliminaryQuoteCalculatorProps {
@@ -311,12 +310,7 @@ export function PreliminaryQuoteCalculator({
               <h3 className="text-xl font-serif">{t.serviceCategory}</h3>
             </CardHeader>
             <CardContent>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {renderServiceCategories(
-                  selectedCategory,
-                  handleCategorySelect,
-                )}
-              </div>
+              {renderServiceCategories(selectedCategory, handleCategorySelect)}
             </CardContent>
           </Card>
 
@@ -327,9 +321,7 @@ export function PreliminaryQuoteCalculator({
                 <h3 className="text-xl font-serif">{t.serviceTier}</h3>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {renderServiceTiers(selectedTier, handleTierSelect)}
-                </div>
+                {renderServiceTiers(selectedTier, handleTierSelect)}
               </CardContent>
             </Card>
           )}
