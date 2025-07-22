@@ -1,20 +1,20 @@
 /**
  * Wesley's Ambacht REST API Routes
  * Comprehensive REST API endpoints for catering website functionality
- * 
+ *
  * Agent 2: REST API Endpoints Implementation
  * Leverages existing Supabase database layer and validation services
  */
 
-import { Express, Request, Response, NextFunction } from 'express';
-import { bookingRoutes } from './bookings';
-import { availabilityRoutes } from './availability';
-import { quoteRoutes } from './quotes';
-import { addOnRoutes } from './addOns';
-import { webhookRoutes } from './webhooks';
-import { ValidationService } from '@/services/ValidationService';
-import { ErrorHandlingService } from '@/services/ErrorHandlingService';
-import { SafeLogger } from '@/lib/LoggerUtils';
+import { Express, Request, Response, NextFunction } from "express";
+import { bookingRoutes } from "./bookings";
+import { availabilityRoutes } from "./availability";
+import { quoteRoutes } from "./quotes";
+import { addOnRoutes } from "./addOns";
+import { webhookRoutes } from "./webhooks";
+import { ValidationService } from "@/services/ValidationService";
+import { ErrorHandlingService } from "@/services/ErrorHandlingService";
+import { SafeLogger } from "@/lib/LoggerUtils";
 
 // API Response interface
 export interface APIResponse<T = any> {
@@ -48,7 +48,7 @@ export function setupAPIMiddleware(app: Express) {
   const errorService = ErrorHandlingService.getInstance();
 
   // Request ID and timing middleware
-  app.use('/api/v3', (req: Request, res: Response, next: NextFunction) => {
+  app.use("/api/v3", (req: Request, res: Response, next: NextFunction) => {
     const context = req as RequestContext;
     context.requestId = `req_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
     context.startTime = Date.now();
@@ -56,33 +56,33 @@ export function setupAPIMiddleware(app: Express) {
     context.errorService = errorService;
 
     // Add request ID to response headers
-    res.setHeader('X-Request-ID', context.requestId);
-    res.setHeader('X-API-Version', 'v3');
+    res.setHeader("X-Request-ID", context.requestId);
+    res.setHeader("X-API-Version", "v3");
 
     next();
   });
 
   // Request logging middleware
-  app.use('/api/v3', (req: Request, res: Response, next: NextFunction) => {
+  app.use("/api/v3", (req: Request, res: Response, next: NextFunction) => {
     const context = req as RequestContext;
-    
-    SafeLogger.info('API Request', {
+
+    SafeLogger.info("API Request", {
       requestId: context.requestId,
       method: req.method,
       path: req.path,
-      userAgent: req.get('User-Agent'),
+      userAgent: req.get("User-Agent"),
       ip: req.ip,
       timestamp: new Date().toISOString(),
     });
 
     // Log response on finish
-    res.on('finish', () => {
+    res.on("finish", () => {
       const duration = Date.now() - context.startTime;
-      SafeLogger.info('API Response', {
+      SafeLogger.info("API Response", {
         requestId: context.requestId,
         statusCode: res.statusCode,
         duration: `${duration}ms`,
-        contentLength: res.get('Content-Length'),
+        contentLength: res.get("Content-Length"),
       });
     });
 
@@ -90,14 +90,18 @@ export function setupAPIMiddleware(app: Express) {
   });
 
   // JSON parsing with error handling
-  app.use('/api/v3', (req: Request, res: Response, next: NextFunction) => {
-    if (req.method === 'POST' || req.method === 'PATCH') {
-      if (!req.is('application/json')) {
-        return res.status(400).json(createErrorResponse(
-          'Invalid content type. Expected application/json',
-          'INVALID_CONTENT_TYPE',
-          (req as RequestContext).requestId
-        ));
+  app.use("/api/v3", (req: Request, res: Response, next: NextFunction) => {
+    if (req.method === "POST" || req.method === "PATCH") {
+      if (!req.is("application/json")) {
+        return res
+          .status(400)
+          .json(
+            createErrorResponse(
+              "Invalid content type. Expected application/json",
+              "INVALID_CONTENT_TYPE",
+              (req as RequestContext).requestId,
+            ),
+          );
       }
     }
     next();
@@ -109,61 +113,82 @@ export function setupAPIMiddleware(app: Express) {
  */
 export function setupAPIRoutes(app: Express) {
   // Health check endpoint
-  app.get('/api/v3/health', (req: Request, res: Response) => {
+  app.get("/api/v3/health", (req: Request, res: Response) => {
     const context = req as RequestContext;
-    res.json(createSuccessResponse({
-      status: 'healthy',
-      timestamp: new Date().toISOString(),
-      version: 'v3',
-      services: {
-        database: 'connected',
-        validation: 'active',
-        errorHandling: 'active',
-      }
-    }, context.requestId));
+    res.json(
+      createSuccessResponse(
+        {
+          status: "healthy",
+          timestamp: new Date().toISOString(),
+          version: "v3",
+          services: {
+            database: "connected",
+            validation: "active",
+            errorHandling: "active",
+          },
+        },
+        context.requestId,
+      ),
+    );
   });
 
   // Register route modules
-  app.use('/api/v3', bookingRoutes);
-  app.use('/api/v3', availabilityRoutes);
-  app.use('/api/v3', quoteRoutes);
-  app.use('/api/v3', addOnRoutes);
-  app.use('/api/v3', webhookRoutes);
+  app.use("/api/v3", bookingRoutes);
+  app.use("/api/v3", availabilityRoutes);
+  app.use("/api/v3", quoteRoutes);
+  app.use("/api/v3", addOnRoutes);
+  app.use("/api/v3", webhookRoutes);
 
   // 404 handler for API routes
-  app.use('/api/v3/*', (req: Request, res: Response) => {
+  app.use("/api/v3/*", (req: Request, res: Response) => {
     const context = req as RequestContext;
-    res.status(404).json(createErrorResponse(
-      `API endpoint ${req.method} ${req.path} not found`,
-      'ENDPOINT_NOT_FOUND',
-      context.requestId
-    ));
+    res
+      .status(404)
+      .json(
+        createErrorResponse(
+          `API endpoint ${req.method} ${req.path} not found`,
+          "ENDPOINT_NOT_FOUND",
+          context.requestId,
+        ),
+      );
   });
 
   // Global error handler for API routes
-  app.use('/api/v3', (error: Error, req: Request, res: Response, next: NextFunction) => {
-    const context = req as RequestContext;
-    
-    const errorResponse = context.errorService.handleError(error, {
-      componentName: 'API',
-      action: `${req.method} ${req.path}`,
-      additionalData: {
-        requestId: context.requestId,
-        body: req.body,
-        query: req.query,
-        params: req.params,
-      }
-    });
+  app.use(
+    "/api/v3",
+    (error: Error, req: Request, res: Response, next: NextFunction) => {
+      const context = req as RequestContext;
 
-    const statusCode = getStatusCodeFromError(error, errorResponse.classification.severity);
-    
-    res.status(statusCode).json(createErrorResponse(
-      errorResponse.userMessage,
-      errorResponse.classification.category.toUpperCase(),
-      context.requestId,
-      errorResponse.shouldRetry ? { retryAfter: errorResponse.retryDelay } : undefined
-    ));
-  });
+      const errorResponse = context.errorService.handleError(error, {
+        componentName: "API",
+        action: `${req.method} ${req.path}`,
+        additionalData: {
+          requestId: context.requestId,
+          body: req.body,
+          query: req.query,
+          params: req.params,
+        },
+      });
+
+      const statusCode = getStatusCodeFromError(
+        error,
+        errorResponse.classification.severity,
+      );
+
+      res
+        .status(statusCode)
+        .json(
+          createErrorResponse(
+            errorResponse.userMessage,
+            errorResponse.classification.category.toUpperCase(),
+            context.requestId,
+            errorResponse.shouldRetry
+              ? { retryAfter: errorResponse.retryDelay }
+              : undefined,
+          ),
+        );
+    },
+  );
 }
 
 /**
@@ -172,14 +197,14 @@ export function setupAPIRoutes(app: Express) {
 export function createSuccessResponse<T>(
   data: T,
   requestId: string,
-  meta?: Record<string, any>
+  meta?: Record<string, any>,
 ): APIResponse<T> {
   return {
     success: true,
     data,
     meta: {
       timestamp: new Date().toISOString(),
-      version: 'v3',
+      version: "v3",
       requestId,
       ...meta,
     },
@@ -193,7 +218,7 @@ export function createErrorResponse(
   message: string,
   code: string,
   requestId: string,
-  details?: any
+  details?: any,
 ): APIResponse {
   return {
     success: false,
@@ -204,7 +229,7 @@ export function createErrorResponse(
     },
     meta: {
       timestamp: new Date().toISOString(),
-      version: 'v3',
+      version: "v3",
       requestId,
     },
   };
@@ -215,40 +240,44 @@ export function createErrorResponse(
  */
 function getStatusCodeFromError(error: Error, severity: string): number {
   const message = error.message.toLowerCase();
-  
+
   // Validation errors
-  if (message.includes('validation') || message.includes('invalid') || message.includes('required')) {
+  if (
+    message.includes("validation") ||
+    message.includes("invalid") ||
+    message.includes("required")
+  ) {
     return 400;
   }
-  
+
   // Not found errors
-  if (message.includes('not found') || message.includes('does not exist')) {
+  if (message.includes("not found") || message.includes("does not exist")) {
     return 404;
   }
-  
+
   // Availability/business logic errors
-  if (message.includes('not available') || message.includes('unavailable')) {
+  if (message.includes("not available") || message.includes("unavailable")) {
     return 409; // Conflict
   }
-  
+
   // Unauthorized errors
-  if (message.includes('unauthorized') || message.includes('forbidden')) {
+  if (message.includes("unauthorized") || message.includes("forbidden")) {
     return 403;
   }
-  
+
   // Rate limit errors
-  if (message.includes('rate limit') || message.includes('too many requests')) {
+  if (message.includes("rate limit") || message.includes("too many requests")) {
     return 429;
   }
-  
+
   // Server errors based on severity
   switch (severity) {
-    case 'low':
+    case "low":
       return 400;
-    case 'medium':
+    case "medium":
       return 500;
-    case 'high':
-    case 'critical':
+    case "high":
+    case "critical":
       return 503; // Service Unavailable
     default:
       return 500;
@@ -259,7 +288,11 @@ function getStatusCodeFromError(error: Error, severity: string): number {
  * Async wrapper for route handlers
  */
 export function asyncHandler(
-  handler: (req: RequestContext, res: Response, next: NextFunction) => Promise<void>
+  handler: (
+    req: RequestContext,
+    res: Response,
+    next: NextFunction,
+  ) => Promise<void>,
 ) {
   return (req: Request, res: Response, next: NextFunction) => {
     const context = req as RequestContext;
@@ -271,28 +304,36 @@ export function asyncHandler(
  * Validation middleware factory
  */
 export function validateRequest(
-  validationFn: (data: any) => { isValid: boolean; errors: string[]; warnings: string[] }
+  validationFn: (data: any) => {
+    isValid: boolean;
+    errors: string[];
+    warnings: string[];
+  },
 ) {
   return (req: Request, res: Response, next: NextFunction) => {
     const context = req as RequestContext;
     const dataToValidate = { ...req.body, ...req.query, ...req.params };
-    
+
     const validation = validationFn(dataToValidate);
-    
+
     if (!validation.isValid) {
-      return res.status(400).json(createErrorResponse(
-        validation.errors.join(', '),
-        'VALIDATION_ERROR',
-        context.requestId,
-        { errors: validation.errors, warnings: validation.warnings }
-      ));
+      return res
+        .status(400)
+        .json(
+          createErrorResponse(
+            validation.errors.join(", "),
+            "VALIDATION_ERROR",
+            context.requestId,
+            { errors: validation.errors, warnings: validation.warnings },
+          ),
+        );
     }
-    
+
     // Attach warnings to request context for potential response inclusion
     if (validation.warnings.length > 0) {
       context.validationWarnings = validation.warnings;
     }
-    
+
     next();
   };
 }

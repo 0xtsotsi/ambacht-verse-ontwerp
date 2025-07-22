@@ -9,7 +9,10 @@ test.describe("Accessibility Tests - Floating Booking Widget", () => {
 
     // Trigger widget visibility
     await page.evaluate(() => window.scrollBy(0, 300));
-    await page.waitForTimeout(1500);
+    await page.waitForSelector(".fixed.z-50", {
+      state: "visible",
+      timeout: 5000,
+    });
 
     // Run accessibility scan
     const accessibilityScanResults = await new AxeBuilder({ page })
@@ -26,9 +29,12 @@ test.describe("Accessibility Tests - Floating Booking Widget", () => {
 
     // Trigger and expand widget
     await page.evaluate(() => window.scrollBy(0, 300));
-    await page.waitForTimeout(1000);
+    await page.waitForSelector(".fixed.z-50", {
+      state: "visible",
+      timeout: 5000,
+    });
     await page.click('button:has-text("Reserveer Vandaag")');
-    await page.waitForTimeout(500);
+    await page.waitForSelector("text=Wesley's Ambacht", { timeout: 3000 });
 
     // Run accessibility scan
     const accessibilityScanResults = await new AxeBuilder({ page })
@@ -43,7 +49,10 @@ test.describe("Accessibility Tests - Floating Booking Widget", () => {
 
     // Trigger widget
     await page.evaluate(() => window.scrollBy(0, 300));
-    await page.waitForTimeout(1000);
+    await page.waitForSelector(".fixed.z-50", {
+      state: "visible",
+      timeout: 5000,
+    });
 
     // Tab to widget
     await page.keyboard.press("Tab");
@@ -75,8 +84,12 @@ test.describe("Accessibility Tests - Floating Booking Widget", () => {
 
     // Trigger and expand widget
     await page.evaluate(() => window.scrollBy(0, 300));
-    await page.waitForTimeout(1000);
+    await page.waitForSelector(".fixed.z-50", {
+      state: "visible",
+      timeout: 5000,
+    });
     await page.click('button:has-text("Reserveer Vandaag")');
+    await page.waitForSelector("text=Wesley's Ambacht", { timeout: 3000 });
 
     // Check specific color contrast requirements
     const results = await new AxeBuilder({ page })
@@ -94,7 +107,10 @@ test.describe("Accessibility Tests - Floating Booking Widget", () => {
 
     // Trigger widget
     await page.evaluate(() => window.scrollBy(0, 300));
-    await page.waitForTimeout(1000);
+    await page.waitForSelector(".fixed.z-50", {
+      state: "visible",
+      timeout: 5000,
+    });
 
     // Check for screen reader announcements
     const widget = page.locator(".fixed.z-50").first();
@@ -139,7 +155,10 @@ test.describe("Accessibility Tests - Floating Booking Widget", () => {
 
     // Trigger widget
     await page.evaluate(() => window.scrollBy(0, 300));
-    await page.waitForTimeout(100); // Shorter wait since animations should be disabled
+    await page.waitForSelector(".fixed.z-50", {
+      state: "visible",
+      timeout: 2000,
+    });
 
     // Widget should appear without animation
     const widget = page.locator(".fixed.z-50").first();
@@ -162,7 +181,10 @@ test.describe("Accessibility Tests - Floating Booking Widget", () => {
 
     // Trigger widget
     await page.evaluate(() => window.scrollBy(0, 250));
-    await page.waitForTimeout(1000);
+    await page.waitForSelector(".fixed.z-50", {
+      state: "visible",
+      timeout: 5000,
+    });
 
     // Check collapsed button size
     const collapsedButton = page.locator(
@@ -196,8 +218,12 @@ test.describe("Accessibility Tests - Floating Booking Widget", () => {
 
     // Trigger and expand widget
     await page.evaluate(() => window.scrollBy(0, 300));
-    await page.waitForTimeout(1000);
+    await page.waitForSelector(".fixed.z-50", {
+      state: "visible",
+      timeout: 5000,
+    });
     await page.click('button:has-text("Reserveer Vandaag")');
+    await page.waitForSelector("text=Wesley's Ambacht", { timeout: 3000 });
 
     // Check that icon-only buttons have proper labels
     const closeButton = page.locator('[aria-label="Sluit widget"]');
@@ -218,14 +244,16 @@ test.describe("Accessibility Tests - Floating Booking Widget", () => {
 
     // Trigger widget
     await page.evaluate(() => window.scrollBy(0, 300));
-    await page.waitForTimeout(1000);
+    await page.waitForSelector(".fixed.z-50", {
+      state: "visible",
+      timeout: 5000,
+    });
 
     // Tab to widget
     await page.keyboard.press("Tab");
     await page.keyboard.press("Enter"); // Expand
 
     // Tab forward through all elements
-    const elements = [];
     for (let i = 0; i < 3; i++) {
       await page.keyboard.press("Tab");
       const focused = await page.evaluate(
@@ -233,7 +261,8 @@ test.describe("Accessibility Tests - Floating Booking Widget", () => {
           document.activeElement?.textContent ||
           document.activeElement?.getAttribute("aria-label"),
       );
-      elements.push(focused);
+      // Ensure we can tab through interactive elements
+      expect(focused).toBeTruthy();
     }
 
     // Tab backward
