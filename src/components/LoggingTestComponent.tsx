@@ -1,3 +1,4 @@
+
 /**
  * Test component to demonstrate logging functionality
  * This can be removed in production - it's for testing the logging system
@@ -14,6 +15,12 @@ interface TestComponentProps {
   title?: string;
   onAction?: (data: { count: number; text: string }) => void;
 }
+
+// Modified the type definition to match LoggableValue requirements
+type LoggableProps = {
+  title?: string;
+  onAction?: string; // Changed to string to match LoggableValue
+};
 
 // Basic component for testing logging
 const LoggingTestComponentBase: React.FC<TestComponentProps> = ({
@@ -39,7 +46,9 @@ const LoggingTestComponentBase: React.FC<TestComponentProps> = ({
         newValue: newCount,
       });
 
-      onAction?.({ action: "increment", count: newCount });
+      if (onAction) {
+        onAction({ count: newCount, text });
+      }
     } catch (error) {
       console.error("Increment error:", error);
       UserFlowLogger.error("increment_error", "Failed to increment counter", {
@@ -118,22 +127,38 @@ const LoggingTestComponentBase: React.FC<TestComponentProps> = ({
   );
 };
 
+// Converting component to have LoggableProps for HOC compatibility
+const LoggingTestComponentForHOC = (props: TestComponentProps) => {
+  // Convert non-loggable props to loggable ones
+  const loggableProps: LoggableProps = {
+    title: props.title,
+    onAction: props.onAction ? "function" : undefined,
+  };
+
+  return <LoggingTestComponentBase {...props} />;
+};
+
 // Export both wrapped and unwrapped versions for testing
 export const LoggingTestComponent = withDetailedLogging(
-  LoggingTestComponentBase,
+  LoggingTestComponentForHOC as React.ComponentType<LoggableProps>,
   "LoggingTestComponent",
 );
+
 export const LoggingTestComponentVerbose = withLogging(
-  LoggingTestComponentBase,
+  LoggingTestComponentForHOC as React.ComponentType<LoggableProps>,
   {
     componentName: "LoggingTestComponentVerbose",
     config: { level: "verbose" },
   },
 );
-export const LoggingTestComponentBasic = withLogging(LoggingTestComponentBase, {
-  componentName: "LoggingTestComponentBasic",
-  config: { level: "basic" },
-});
+
+export const LoggingTestComponentBasic = withLogging(
+  LoggingTestComponentForHOC as React.ComponentType<LoggableProps>,
+  {
+    componentName: "LoggingTestComponentBasic",
+    config: { level: "basic" },
+  },
+);
 
 // Example of HOC usage patterns
 export default LoggingTestComponent;

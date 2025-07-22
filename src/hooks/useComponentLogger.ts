@@ -1,3 +1,4 @@
+
 import { useRef, useEffect, useCallback, useState } from "react";
 
 export type LoggableValue = 
@@ -182,6 +183,7 @@ export function useStateLogger<T>(initialStateOrConfig: T | LoggerConfig, initia
   // For compatibility with existing code
   const returnValue = [state, wrappedSetState] as const;
   (returnValue as any).logStateChange = logStateChange;
+  (returnValue as any).getPreviousState = () => prevStateRef.current;
   
   return returnValue;
 }
@@ -192,6 +194,10 @@ export function useStateLogger<T>(initialStateOrConfig: T | LoggerConfig, initia
 export function useComponentTracking(componentNameOrConfig: string | LoggerConfig, options?: {
   props?: Record<string, LoggableValue>;
   dependencies?: any[];
+  enableLifecycleLogging?: boolean;
+  enableRenderLogging?: boolean;
+  enablePerformanceLogging?: boolean;
+  enableStateLogging?: boolean;
 }) {
   const config = typeof componentNameOrConfig === 'string' 
     ? { componentName: componentNameOrConfig, ...options } 
@@ -202,16 +208,20 @@ export function useComponentTracking(componentNameOrConfig: string | LoggerConfi
   const lastRenderTime = useRef(Date.now());
   
   useEffect(() => {
-    console.log(`[${config.componentName}] Mounted`, config.props || {});
+    if (config.enableLifecycleLogging) {
+      console.log(`[${config.componentName}] Mounted`, config.props || {});
+    }
     return () => {
-      const unmountTime = Date.now();
-      const lifespanMs = unmountTime - mountTime.current;
-      console.log(`[${config.componentName}] Unmounted after ${lifespanMs}ms`);
+      if (config.enableLifecycleLogging) {
+        const unmountTime = Date.now();
+        const lifespanMs = unmountTime - mountTime.current;
+        console.log(`[${config.componentName}] Unmounted after ${lifespanMs}ms`);
+      }
     };
   }, [config]);
   
   useEffect(() => {
-    if (config.dependencies && config.dependencies.length > 0) {
+    if (config.dependencies && config.dependencies.length > 0 && config.enableRenderLogging) {
       renderCount.current += 1;
       const now = Date.now();
       const timeSinceLastRender = now - lastRenderTime.current;
@@ -225,9 +235,26 @@ export function useComponentTracking(componentNameOrConfig: string | LoggerConfi
   const trackEvent = useCallback((eventName: string, data?: Record<string, LoggableValue>) => {
     console.log(`[${config.componentName}] ${eventName}`, data || {});
   }, [config.componentName]);
+
+  // Add state logger creation function
+  const createStateLogger = useCallback(<T>(stateName: string) => {
+    const prevValueRef = useRef<T>();
+
+    return {
+      logStateChange: (newValue: T, trigger = "update") => {
+        console.log(`[${config.componentName}][${stateName}] ${trigger}:`, {
+          previous: prevValueRef.current,
+          current: newValue,
+        });
+        prevValueRef.current = newValue;
+      },
+      getPreviousValue: () => prevValueRef.current,
+    };
+  }, [config.componentName]);
   
   return { 
     trackEvent,
+    createStateLogger,
     renderInfo: {
       count: renderCount.current,
       timeSinceLastRender: Date.now() - lastRenderTime.current,
