@@ -40,6 +40,7 @@ import {
   GUEST_COUNT_PRESETS,
   MIN_GUEST_COUNT,
   MAX_GUEST_COUNT,
+  BASE_PRICE_PER_PERSON,
 } from "@/lib/pricing-constants";
 import {
   calculateQuote,
@@ -287,12 +288,8 @@ export function StepByStepQuoteCalculator({
     onOpenChange(false);
   };
 
-  const selectedCategoryData = SERVICE_CATEGORIES.find(
-    (cat) => cat.id === selectedCategory,
-  );
-  const selectedTierData = SERVICE_TIERS.find(
-    (tier) => tier.id === selectedTier,
-  );
+  const selectedCategoryData = SERVICE_CATEGORIES[selectedCategory as keyof typeof SERVICE_CATEGORIES];
+  const selectedTierData = SERVICE_TIERS[selectedTier as keyof typeof SERVICE_TIERS];
 
   const getTierIcon = (tierId: string) => {
     switch (tierId) {
@@ -408,15 +405,15 @@ export function StepByStepQuoteCalculator({
                   onValueChange={handleCategorySelect}
                 >
                   <div className="space-y-3">
-                    {SERVICE_CATEGORIES.map((category) => (
-                      <div key={category.id} className="relative">
+                    {Object.entries(SERVICE_CATEGORIES).map(([categoryId, category]) => (
+                      <div key={categoryId} className="relative">
                         <RadioGroupItem
-                          value={category.id}
-                          id={category.id}
+                          value={categoryId}
+                          id={categoryId}
                           className="peer sr-only"
                         />
                         <Label
-                          htmlFor={category.id}
+                          htmlFor={categoryId}
                           className={cn(
                             "block p-4 rounded-lg border-2 cursor-pointer transition-all duration-200",
                             "hover:border-burnt-orange hover:bg-warm-cream/30",
@@ -428,7 +425,7 @@ export function StepByStepQuoteCalculator({
                               <h4 className="font-semibold text-forest-green">
                                 {category.name}
                               </h4>
-                              {category.id === "corporate" && (
+                              {categoryId === "corporate" && (
                                 <Badge variant="secondary" className="text-xs">
                                   Populair
                                 </Badge>
@@ -438,8 +435,8 @@ export function StepByStepQuoteCalculator({
                               {category.description}
                             </p>
                             <div className="text-sm font-medium text-burnt-orange">
-                              €{category.minPrice.toFixed(2)} - €
-                              {category.maxPrice.toFixed(2)} per persoon
+                              €{(BASE_PRICE_PER_PERSON * category.multiplier * 0.8).toFixed(2)} - €
+                              {(BASE_PRICE_PER_PERSON * category.multiplier * 1.4).toFixed(2)} per persoon
                             </div>
                           </div>
                         </Label>

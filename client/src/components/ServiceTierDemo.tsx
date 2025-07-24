@@ -9,7 +9,7 @@ import { SERVICE_CATEGORIES } from "@/lib/pricing-constants";
 
 export const ServiceTierDemo: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState(
-    SERVICE_CATEGORIES[0],
+    Object.values(SERVICE_CATEGORIES)[0],
   );
   const [selectedTier, setSelectedTier] = useState("essential");
   const [guestCount, setGuestCount] = useState(50);
@@ -53,15 +53,15 @@ export const ServiceTierDemo: React.FC = () => {
               <select
                 value={selectedCategory.id}
                 onChange={(e) => {
-                  const category = SERVICE_CATEGORIES.find(
-                    (c) => c.id === e.target.value,
-                  );
+                  const category = Object.entries(SERVICE_CATEGORIES).find(
+                    ([id]) => id === e.target.value,
+                  )?.[1];
                   if (category) setSelectedCategory(category);
                 }}
                 className="w-full p-2 border border-beige rounded-lg focus:border-accent"
               >
-                {SERVICE_CATEGORIES.map((category) => (
-                  <option key={category.id} value={category.id}>
+                {Object.entries(SERVICE_CATEGORIES).map(([categoryId, category]) => (
+                  <option key={categoryId} value={categoryId}>
                     {category.name}
                   </option>
                 ))}

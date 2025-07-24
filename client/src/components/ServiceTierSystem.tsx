@@ -90,8 +90,7 @@ const ServiceTierSystemInternal: React.FC<ServiceTierSystemProps> = ({
 
   const validGuestCount = Math.max(1, guestCount || 25);
 
-  const currentTier =
-    SERVICE_TIERS.find((tier) => tier.id === selectedTier) || SERVICE_TIERS[0];
+  const currentTier = SERVICE_TIERS[selectedTier as keyof typeof SERVICE_TIERS] || SERVICE_TIERS.premium;
 
   // Calculate price based on current selections
   const calculatePrice = useCallback(
@@ -113,8 +112,7 @@ const ServiceTierSystemInternal: React.FC<ServiceTierSystemProps> = ({
       }
 
       // Calculate new price
-      const newTier =
-        SERVICE_TIERS.find((tier) => tier.id === tierId) || SERVICE_TIERS[0];
+      const newTier = SERVICE_TIERS[tierId as keyof typeof SERVICE_TIERS] || SERVICE_TIERS.premium;
       const newPrice = calculatePrice(
         newTier,
         serviceCategory,

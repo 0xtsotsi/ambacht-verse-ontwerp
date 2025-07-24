@@ -3,7 +3,17 @@ export const useComponentTracking = () => ({
   trackInteraction: () => {},
   trackPerformance: () => {},
   logComponentMount: () => {},
-  logComponentUnmount: () => {}
+  logComponentUnmount: () => {},
+  createStateLogger: () => ({
+    logStateChange: () => {}
+  }),
+  performance: {
+    getPerformanceStats: () => ({
+      renderCount: 0,
+      duration: 0,
+      averageRenderTime: 0
+    })
+  }
 });
 
 export const usePerformanceLogger = () => ({
