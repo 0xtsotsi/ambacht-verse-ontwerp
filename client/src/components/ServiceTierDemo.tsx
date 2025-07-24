@@ -115,7 +115,7 @@ export const ServiceTierDemo: React.FC = () => {
         />
 
         {/* Debug Information */}
-        {process.env.NODE_ENV === "development" && (
+        {import.meta.env.DEV && (
           <div className="bg-gray-100 p-4 rounded-lg text-xs font-mono">
             <h3 className="font-bold mb-2">Debug Info:</h3>
             <pre>

@@ -228,7 +228,7 @@ const ServiceTierSystemInternal: React.FC<ServiceTierSystemProps> = ({
       </div>
 
       {/* Performance monitoring display (development only) */}
-      {process.env.NODE_ENV === "development" && tracking.performance && (
+      {import.meta.env.DEV && tracking.performance && (
         <div className="mt-4 p-3 bg-forest-green/5 rounded-lg text-xs text-forest-green">
           <div>Render Count: {tracking.renderInfo?.renderCount}</div>
           <div>

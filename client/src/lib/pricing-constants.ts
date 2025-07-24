@@ -1,188 +1,191 @@
+// Pricing constants for Wesley's Ambacht catering service
 
-export interface ServiceCategory {
-  id: string;
-  name: string;
-  description: string;
-  basePrice: number;
-  minPrice: number;
-  maxPrice: number;
-  features: string[];
-  popularFeatures: string[];
-}
+export const MIN_GUEST_COUNT = 10;
+export const MAX_GUEST_COUNT = 500;
 
-export interface ServiceTier {
-  id: string;
-  name: string;
-  description: string;
-  priceMultiplier: number;
-  features: string[];
-}
+export const GUEST_COUNT_PRESETS = [
+  { label: "Klein feest (10-15 gasten)", value: 12, description: "Intiem samenzijn" },
+  { label: "Gezelschap (20-30 gasten)", value: 25, description: "Familie & vrienden" },
+  { label: "Bedrijfsborrel (30-50 gasten)", value: 40, description: "Zakelijke bijeenkomst" },
+  { label: "Groot feest (50-75 gasten)", value: 60, description: "Uitgebreide viering" },
+  { label: "Event (75-150 gasten)", value: 100, description: "Grote bijeenkomst" },
+  { label: "Gala (150+ gasten)", value: 200, description: "Exclusief evenement" },
+] as const;
 
-export interface AddOnService {
-  id: string;
-  name: string;
-  description: string;
-  pricePerPerson?: number;
-  flatRate?: number;
-  popular: boolean;
-}
+export const BASE_PRICE_PER_PERSON = 25;
 
-export interface VolumeDiscount {
-  minGuests: number;
-  discount: number;
-  label: string;
-}
-
-// Service categories
-export const SERVICE_CATEGORIES: ServiceCategory[] = [
-  {
-    id: "buffet",
-    name: "Buffet",
-    description: "Complete buffet service met een breed assortiment aan gerechten",
-    basePrice: 22.5,
-    minPrice: 18.5,
-    maxPrice: 27.5,
-    features: [
-      "Breed assortiment gerechten",
-      "Zelf opscheppen",
-      "Geschikt voor grote groepen"
-    ],
-    popularFeatures: [
-      "Breed assortiment gerechten",
-      "Geschikt voor grote groepen"
-    ]
-  },
-  {
-    id: "walking_dinner",
-    name: "Walking Dinner",
-    description: "Culinaire hapjes geserveerd in een informele setting",
-    basePrice: 28.5,
-    minPrice: 24.5,
-    maxPrice: 34.5,
-    features: [
-      "Klein portie gerechten",
-      "Informele setting",
-      "Meer bewegingsvrijheid"
-    ],
-    popularFeatures: [
-      "Informele setting",
-      "Meer bewegingsvrijheid"
-    ]
-  },
-  {
-    id: "seated_dinner",
-    name: "Seated Dinner",
-    description: "Formeel diner aan tafel met bediening",
-    basePrice: 35.0,
-    minPrice: 29.5,
-    maxPrice: 45.0,
-    features: [
-      "Formele tafelschikking",
-      "Volledige bediening",
-      "Meerdere gangen"
-    ],
-    popularFeatures: [
-      "Volledige bediening",
-      "Meerdere gangen"
-    ]
-  }
-];
-
-// Service tiers
-export const SERVICE_TIERS: ServiceTier[] = [
-  {
-    id: "essential",
+export const SERVICE_TIERS = {
+  essential: {
     name: "Essential",
-    description: "Basis service met alle essentiële elementen",
-    priceMultiplier: 1.0,
-    features: [
-      "Standaard servies en bestek",
-      "Basis tafelinrichting",
-      "Standaard menukaarten"
-    ]
+    description: "Basis catering service",
+    multiplier: 0.8,
+    features: ["Standaard menu", "Basis service", "2 uur service"]
   },
-  {
-    id: "premium",
-    name: "Premium",
-    description: "Uitgebreide service met extra aandacht voor detail",
-    priceMultiplier: 1.35,
-    features: [
-      "Premium servies en bestek",
-      "Uitgebreide tafelinrichting",
-      "Gepersonaliseerde menukaarten",
-      "Meer personeelsbezetting"
-    ]
+  premium: {
+    name: "Premium", 
+    description: "Uitgebreide catering service",
+    multiplier: 1.0,
+    features: ["Uitgebreid menu", "Professionele service", "4 uur service", "Drankenpakket"]
   },
-  {
-    id: "luxury",
+  luxury: {
     name: "Luxury",
-    description: "De ultieme culinaire ervaring met topkwaliteit en service",
-    priceMultiplier: 1.75,
-    features: [
-      "Luxe servies en bestek",
-      "Complete styling en decoratie",
-      "Custom menukaarten",
-      "Luxe servetten en tafellakens",
-      "VIP personeelsbezetting",
-      "Sommelier service"
-    ]
+    description: "Exclusieve catering service", 
+    multiplier: 1.4,
+    features: ["Luxe menu", "Dedicated service", "6 uur service", "Premium drankenpakket", "Live cooking"]
   }
-];
+} as const;
 
-// Add-on services
-export const ADD_ON_SERVICES: AddOnService[] = [
-  {
-    id: "live_cooking",
-    name: "Live Cooking",
-    description: "Chefs bereiden gerechten live voor uw gasten",
-    flatRate: 350,
-    popular: true
+export const SERVICE_CATEGORIES = {
+  corporate: {
+    name: "Zakelijk",
+    description: "Bedrijfsevents en zakelijke bijeenkomsten",
+    multiplier: 1.1
   },
-  {
-    id: "wine_pairing",
-    name: "Wijn Arrangement",
-    description: "Speciaal geselecteerde wijnen bij elk gerecht",
-    pricePerPerson: 12.5,
-    popular: true
+  private: {
+    name: "Privé",
+    description: "Privé feesten en familiebijeenkomsten", 
+    multiplier: 1.0
   },
-  {
-    id: "dessert_buffet",
-    name: "Dessert Buffet",
-    description: "Uitgebreid buffet met diverse nagerechten",
-    pricePerPerson: 8.5,
-    popular: false
+  wedding: {
+    name: "Bruiloft",
+    description: "Trouwfeesten en huwelijksrecepties",
+    multiplier: 1.3
   },
-  {
-    id: "coffee_service",
-    name: "Koffie Service",
-    description: "Premium koffie en thee na het diner",
-    pricePerPerson: 4.5,
-    popular: false
-  },
-  {
-    id: "welcome_drinks",
-    name: "Welkomstdrankjes",
-    description: "Feestelijke drankjes bij aankomst",
-    pricePerPerson: 7.5,
-    popular: true
+  celebration: {
+    name: "Viering",
+    description: "Verjaardag, jubileum en andere vieringen",
+    multiplier: 1.15
   }
-];
+} as const;
 
-// Volume discounts
-export const VOLUME_DISCOUNTS: VolumeDiscount[] = [
+export type ServiceTier = keyof typeof SERVICE_TIERS;
+export type ServiceCategory = keyof typeof SERVICE_CATEGORIES;
+
+export const VOLUME_DISCOUNTS = [
+  { threshold: 50, discount: 0.05, label: "5% korting vanaf 50 gasten" },
+  { threshold: 100, discount: 0.08, label: "8% korting vanaf 100 gasten" },
+  { threshold: 200, discount: 0.12, label: "12% korting vanaf 200 gasten" },
+] as const;
+
+export const ADD_ON_SERVICES = [
   {
-    minGuests: 50,
-    discount: 0.05,
-    label: "5% korting vanaf 50 personen"
+    id: "premium-drinks",
+    name: "Premium Drankenservice", 
+    description: "Uitgebreide selectie wijnen, bieren en frisdranken",
+    category: "beverage",
+    pricePerPerson: 8.50,
+    flatRate: null
   },
   {
-    minGuests: 100,
-    discount: 0.08,
-    label: "8% korting vanaf 100 personen"
+    id: "coffee-tea",
+    name: "Koffie & Thee Service",
+    description: "Onbeperkte koffie en thee tijdens evenement", 
+    category: "beverage",
+    pricePerPerson: 3.75,
+    flatRate: null
   },
   {
-    minGuests: 150,
-    discount: 0.10,
-    label: "10% korting vanaf 150 personen"
+    id: "welcome-drink",
+    name: "Welkomstdrankje",
+    description: "Prosecco of speciaal welkomstdrankje bij aankomst",
+    category: "beverage", 
+    pricePerPerson: 4.25,
+    flatRate: null
+  },
+  {
+    id: "premium-wine",
+    name: "Premium Wijnpakket",
+    description: "Geselecteerde wijnen passend bij het menu",
+    category: "beverage",
+    pricePerPerson: 12.00,
+    flatRate: null
+  },
+  {
+    id: "linen-upgrade",
+    name: "Linnen & Servies Upgrade",
+    description: "Premium tafellinnen en servies",
+    category: "equipment",
+    pricePerPerson: null,
+    flatRate: 150.00
+  },
+  {
+    id: "av-system", 
+    name: "Audio/Video Systeem",
+    description: "Professionele geluids- en beeldapparatuur",
+    category: "equipment",
+    pricePerPerson: null,
+    flatRate: 275.00
+  },
+  {
+    id: "decoration",
+    name: "Decoratie Pakket", 
+    description: "Seizoensgebonden tafeldecoratie en bloemen",
+    category: "equipment",
+    pricePerPerson: null,
+    flatRate: 125.00
+  },
+  {
+    id: "tent-heating",
+    name: "Tent & Verwarming",
+    description: "Professionele tent met verwarming (outdoor events)",
+    category: "equipment", 
+    pricePerPerson: null,
+    flatRate: 450.00
+  },
+  {
+    id: "extra-staff",
+    name: "Extra Bediening",
+    description: "Aanvullend servicepersoneel",
+    category: "staff",
+    pricePerPerson: 12.50,
+    flatRate: null
+  },
+  {
+    id: "sommelier",
+    name: "Sommelier Service", 
+    description: "Professionele wijnadvies en -service",
+    category: "staff",
+    pricePerPerson: null,
+    flatRate: 200.00
+  },
+  {
+    id: "event-coordinator",
+    name: "Event Coordinator",
+    description: "Dedicated eventcoördinator ter plaatse", 
+    category: "staff",
+    pricePerPerson: null,
+    flatRate: 300.00
+  },
+  {
+    id: "live-cooking",
+    name: "Live Cooking Station",
+    description: "Chef die live gerechten bereidt",
+    category: "extras", 
+    pricePerPerson: 15.00,
+    flatRate: null
+  },
+  {
+    id: "cheese-platter",
+    name: "Kaasplank Service",
+    description: "Traditionele Nederlandse kaasplank",
+    category: "extras",
+    pricePerPerson: 6.75,
+    flatRate: null
+  },
+  {
+    id: "dessert-upgrade",
+    name: "Dessert Upgrade",
+    description: "Premium dessertbuffet",
+    category: "extras",
+    pricePerPerson: 7.50,
+    flatRate: null
+  },
+  {
+    id: "midnight-snack", 
+    name: "Midnight Snack",
+    description: "Late avond hapjes service",
+    category: "extras",
+    pricePerPerson: 8.25,
+    flatRate: null
   }
-];
+] as const;

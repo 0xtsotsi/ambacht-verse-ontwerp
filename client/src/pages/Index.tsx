@@ -81,7 +81,7 @@ const Index = () => {
       <Hero />
       <About />
       <Services />
-      <ServiceTierSystem />
+      <ServiceTierSystem initialServiceCategory="private" />
       <Gallery />
       <BookingForm />
       <Footer />

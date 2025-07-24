@@ -88,7 +88,7 @@ export function withPerformanceOptimization<P extends object>(
     // Log performance data periodically in development
     React.useEffect(() => {
       if (
-        process.env.NODE_ENV === "development" &&
+        import.meta.env.DEV &&
         enablePerformanceMonitoring
       ) {
         const interval = setInterval(() => {
