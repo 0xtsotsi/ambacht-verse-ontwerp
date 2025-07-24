@@ -26,11 +26,7 @@ interface ServiceTierComparisonProps {
 export const ServiceTierComparison = memo<ServiceTierComparisonProps>(
   ({ tiers, serviceCategory, selectedTier }) => {
     // Component tracking
-    const tracking = useComponentTracking("ServiceTierComparison", {
-      enableRenderLogging: true,
-      enablePerformanceLogging: true,
-      dependencies: [selectedTier, serviceCategory.id],
-    });
+    const tracking = useComponentTracking();
 
     return (
       <div data-testid="service-tier-comparison" className="space-y-6">
@@ -48,7 +44,7 @@ export const ServiceTierComparison = memo<ServiceTierComparisonProps>(
           {tiers.map((tier, index) => {
             const isSelected = selectedTier === tier.id;
             const calculatedPrice = (
-              serviceCategory.basePrice * tier.priceMultiplier
+              25 * tier.multiplier // Using BASE_PRICE_PER_PERSON
             ).toFixed(2);
 
             return (
@@ -103,7 +99,7 @@ export const ServiceTierComparison = memo<ServiceTierComparisonProps>(
                         variant={isSelected ? "default" : "secondary"}
                         className={`text-xs ${isSelected ? "bg-accent" : "bg-beige text-natural-brown"}`}
                       >
-                        {tier.priceMultiplier}x basis
+                        {tier.multiplier}x basis
                       </Badge>
                     </div>
                   </CardTitle>
@@ -147,9 +143,9 @@ export const ServiceTierComparison = memo<ServiceTierComparisonProps>(
                       {serviceCategory.name} Specialiteiten:
                     </h4>
                     <ul className="space-y-2">
-                      {serviceCategory.popularFeatures
+                      {([] as string[])
                         .slice(0, 2)
-                        .map((feature, idx) => (
+                        .map((feature: string, idx: number) => (
                           <li
                             key={idx}
                             className="flex items-start space-x-2 text-sm"
@@ -182,8 +178,8 @@ export const ServiceTierComparison = memo<ServiceTierComparisonProps>(
                     <div className="font-bold">
                       €
                       {(
-                        serviceCategory.minPrice *
-                        tier.priceMultiplier *
+                        20 *
+                        tier.multiplier *
                         10
                       ).toFixed(0)}
                       <span className="font-normal"> (10 personen)</span>

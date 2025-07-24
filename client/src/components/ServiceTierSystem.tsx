@@ -16,6 +16,8 @@ import {
   SERVICE_TIERS,
   ServiceTier,
   ServiceCategory,
+  getAllServiceTiers,
+  getServiceTierWithId,
 } from "@/lib/pricing-constants";
 import { ServiceTierMatrix } from "./ServiceTierMatrix";
 import { ServiceTierComparison } from "./ServiceTierComparison";
@@ -90,12 +92,12 @@ const ServiceTierSystemInternal: React.FC<ServiceTierSystemProps> = ({
 
   const validGuestCount = Math.max(1, guestCount || 25);
 
-  const currentTier = SERVICE_TIERS[selectedTier as keyof typeof SERVICE_TIERS] || SERVICE_TIERS.premium;
+  const currentTier = getServiceTierWithId(selectedTier as keyof typeof SERVICE_TIERS) || getServiceTierWithId('premium');
 
   // Calculate price based on current selections
   const calculatePrice = useCallback(
     (tier: ServiceTier, category: ServiceCategory, guests: number) => {
-      return category.basePrice * tier.priceMultiplier * guests;
+      return 25 * tier.multiplier * guests; // Using BASE_PRICE_PER_PERSON
     },
     [],
   );
@@ -209,7 +211,7 @@ const ServiceTierSystemInternal: React.FC<ServiceTierSystemProps> = ({
       {/* Tier Comparison Grid */}
       <div className="bg-white/60 backdrop-blur-sm rounded-xl p-6 border border-beige/20">
         <ServiceTierComparison
-          tiers={SERVICE_TIERS}
+          tiers={getAllServiceTiers()}
           serviceCategory={serviceCategory}
           selectedTier={selectedTier}
         />

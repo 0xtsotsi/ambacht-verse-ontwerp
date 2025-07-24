@@ -6,7 +6,9 @@ export const LoggerUtils = {
 };
 
 export const UserFlowLogger = {
-  log: (...args: any[]) => console.log(...args)
+  log: (...args: any[]) => console.log(...args),
+  interaction: (...args: any[]) => console.log(...args),
+  navigation: (...args: any[]) => console.log(...args)
 };
 
 export const APILogger = {

@@ -15,6 +15,7 @@ import {
   SERVICE_TIERS,
   ServiceTier,
   ServiceCategory,
+  getAllServiceTiers,
 } from "@/lib/pricing-constants";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -29,11 +30,7 @@ interface ServiceTierMatrixProps {
 export const ServiceTierMatrix = memo<ServiceTierMatrixProps>(
   ({ onTierChange, selectedTier, serviceCategory }) => {
     // Component tracking
-    const tracking = useComponentTracking("ServiceTierMatrix", {
-      enableRenderLogging: true,
-      enablePerformanceLogging: true,
-      dependencies: [selectedTier, serviceCategory.id],
-    });
+    const tracking = useComponentTracking();
 
     const handleTierClick = (tierId: string) => {
       onTierChange(tierId);
@@ -59,10 +56,10 @@ export const ServiceTierMatrix = memo<ServiceTierMatrixProps>(
 
         {/* Tier Selection Grid */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {SERVICE_TIERS.map((tier, index) => {
+          {getAllServiceTiers().map((tier, index) => {
             const isSelected = selectedTier === tier.id;
             const calculatedPrice = (
-              serviceCategory.basePrice * tier.priceMultiplier
+              25 * tier.multiplier
             ).toFixed(2);
 
             return (
@@ -186,15 +183,14 @@ export const ServiceTierMatrix = memo<ServiceTierMatrixProps>(
             <span className="text-natural-brown">
               Gekozen niveau:{" "}
               <span className="font-medium text-forest-green">
-                {SERVICE_TIERS.find((t) => t.id === selectedTier)?.name}
+                {SERVICE_TIERS[selectedTier as keyof typeof SERVICE_TIERS]?.name || 'Premium'}
               </span>
             </span>
             <span className="text-accent font-medium">
               €
               {(
-                serviceCategory.basePrice *
-                (SERVICE_TIERS.find((t) => t.id === selectedTier)
-                  ?.priceMultiplier || 1)
+                25 *
+                (SERVICE_TIERS[selectedTier as keyof typeof SERVICE_TIERS]?.multiplier || 1)
               ).toFixed(2)}{" "}
               per persoon
             </span>

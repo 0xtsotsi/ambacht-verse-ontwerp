@@ -58,8 +58,25 @@ export const SERVICE_CATEGORIES = {
   }
 } as const;
 
-export type ServiceTier = keyof typeof SERVICE_TIERS;
-export type ServiceCategory = keyof typeof SERVICE_CATEGORIES;
+export type ServiceTier = typeof SERVICE_TIERS[keyof typeof SERVICE_TIERS] & { id: keyof typeof SERVICE_TIERS };
+export type ServiceCategory = typeof SERVICE_CATEGORIES[keyof typeof SERVICE_CATEGORIES] & { id: keyof typeof SERVICE_CATEGORIES };
+
+// Helper functions to get objects with IDs
+export const getServiceTierWithId = (tierId: keyof typeof SERVICE_TIERS): ServiceTier => ({
+  ...SERVICE_TIERS[tierId],
+  id: tierId
+});
+
+export const getServiceCategoryWithId = (categoryId: keyof typeof SERVICE_CATEGORIES): ServiceCategory => ({
+  ...SERVICE_CATEGORIES[categoryId],
+  id: categoryId
+});
+
+export const getAllServiceTiers = (): ServiceTier[] => 
+  Object.keys(SERVICE_TIERS).map(id => getServiceTierWithId(id as keyof typeof SERVICE_TIERS));
+
+export const getAllServiceCategories = (): ServiceCategory[] => 
+  Object.keys(SERVICE_CATEGORIES).map(id => getServiceCategoryWithId(id as keyof typeof SERVICE_CATEGORIES));
 
 export const VOLUME_DISCOUNTS = [
   { threshold: 50, discount: 0.05, label: "5% korting vanaf 50 gasten" },
