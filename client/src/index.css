@@ -146,6 +146,27 @@
   .luxury-underline.visible::after {
     width: 80px;
   }
+
+  /* Smooth scroll behavior */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Arrow bounce animation */
+  @keyframes arrowPulse {
+    0%, 100% { 
+      transform: translateY(0);
+      opacity: 0.8;
+    }
+    50% { 
+      transform: translateY(-8px);
+      opacity: 1;
+    }
+  }
+
+  .arrow-pulse {
+    animation: arrowPulse 2s ease-in-out infinite;
+  }
   
   /* Navigation text */
   .text-nav {
