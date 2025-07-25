@@ -16,6 +16,12 @@ A modern catering service website for Wesley's Ambacht, featuring booking manage
   - Created comprehensive API routes for booking and availability management
   - Removed all Supabase dependencies
   - Database schema pushed and working
+- **2025-01-25**: Complete UI refactor to match Soprano's Catering design
+  - Implemented new color system: cream (#F9F6F1), accent orange (#E86C32), gold (#D4B170)
+  - Updated typography with Playfair Display and Open Sans fonts
+  - Created Soprano's-inspired components: Hero, Navigation, ServiceSection, FeatureSection
+  - Added floating CTA button and full-bleed hero sections
+  - Responsive design with elegant animations and hover effects
 
 ## Database Schema
 The project uses a comprehensive PostgreSQL schema with:

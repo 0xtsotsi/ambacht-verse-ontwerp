@@ -12,54 +12,34 @@ export default {
         xl: "0.75rem",
       },
       colors: {
-        // New Julienne + Sopranos color system
-        'cream-light': 'var(--cream-light)',
-        'warm-beige': 'var(--warm-beige)',
-        'charcoal': 'var(--charcoal)',
-        'golden-honey': 'var(--golden-honey)',
-        'accent-orange': 'var(--accent-orange)',
-        'accent-red': 'var(--accent-red)',
-        'accent-green': 'var(--accent-green)',
+        // Soprano's Catering inspired color system
+        background: '#F9F6F1',
+        card: '#FFFFFF',
+        accent: '#E86C32',
+        highlight: '#D4B170',
+        muted: '#5F5F5F',
+        secondary: '#F5E9D3',
+        error: '#D45745',
         
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-        card: {
-          DEFAULT: "var(--card)",
-          foreground: "var(--foreground)",
-        },
-        popover: {
-          DEFAULT: "var(--card)",
-          foreground: "var(--foreground)",
-        },
+        foreground: '#2C2C2C',
+        border: '#E5E5E5',
+        input: '#F5F5F5',
+        ring: '#E86C32',
+        
         primary: {
-          DEFAULT: "var(--accent-orange)",
-          foreground: "#ffffff",
-        },
-        secondary: {
-          DEFAULT: "var(--muted)",
-          foreground: "var(--charcoal)",
-        },
-        muted: {
-          DEFAULT: "var(--muted)",
-          foreground: "var(--charcoal)",
-        },
-        accent: {
-          DEFAULT: "var(--accent-orange)",
-          foreground: "#ffffff",
+          DEFAULT: '#E86C32',
+          foreground: '#FFFFFF',
         },
         destructive: {
-          DEFAULT: "var(--accent-red)",
-          foreground: "#ffffff",
+          DEFAULT: '#D45745',
+          foreground: '#FFFFFF',
         },
-        border: "var(--border)",
-        input: "var(--input)",
-        ring: "var(--accent-orange)",
         chart: {
-          "1": "var(--accent-orange)",
-          "2": "var(--golden-honey)",
-          "3": "var(--accent-green)",
-          "4": "var(--accent-red)",
-          "5": "var(--charcoal)",
+          "1": '#E86C32',
+          "2": '#D4B170',
+          "3": '#5F5F5F',
+          "4": '#D45745',
+          "5": '#2C2C2C',
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

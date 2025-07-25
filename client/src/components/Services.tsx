@@ -11,24 +11,24 @@ export const Services = () => {
   }, []);
 
   const categories = [
-    { id: "bbq", name: "BBQ Catering", icon: "🔥" },
-    { id: "kantoor", name: "Kantoor Catering", icon: "🏢" },
-    { id: "evenement", name: "Evenement Buffets", icon: "🎉" },
+    { id: "bbq", name: "🔥 BBQ Catering", icon: "🔥" },
+    { id: "kantoor", name: "🏢 Kantoor Catering", icon: "🏢" },
+    { id: "evenement", name: "🎉 Evenement Buffets", icon: "🎉" },
   ];
 
   const serviceItems = {
     bbq: [
       {
-        name: "Premium BBQ Pakket",
-        description: "Compleet BBQ-pakket met premium vlees en bijgerechten",
-        price: "€25 p.p.",
-        image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=2071",
+        name: "Feest Buffet",
+        description: "Uitgebreid buffet voor feesten en partijen",
+        price: "€30 p.p.",
+        image: "https://images.unsplash.com/photo-1574484284002-952d92456975?q=80&w=2074",
       },
       {
-        name: "Vegetarisch BBQ",
-        description: "Heerlijke vegetarische alternatieven voor de BBQ",
-        price: "€20 p.p.",
-        image: "https://images.unsplash.com/photo-1543362906-acfc16c67564?q=80&w=2065",
+        name: "Bruiloft Catering",
+        description: "Elegante catering voor uw speciale dag",
+        price: "€45 p.p.",
+        image: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?q=80&w=2080",
       },
     ],
     kantoor: [
@@ -47,32 +47,31 @@ export const Services = () => {
     ],
     evenement: [
       {
-        name: "Feest Buffet",
-        description: "Uitgebreid buffet voor feesten en partijen",
-        price: "€30 p.p.",
-        image: "https://images.unsplash.com/photo-1574484284002-952d92456975?q=80&w=2074",
+        name: "Premium BBQ Pakket",
+        description: "Compleet BBQ-pakket met premium vlees en bijgerechten",
+        price: "€25 p.p.",
+        image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=2071",
       },
       {
-        name: "Bruiloft Catering",
-        description: "Elegante catering voor uw speciale dag",
-        price: "€45 p.p.",
-        image: "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?q=80&w=2080",
+        name: "Vegetarisch BBQ",
+        description: "Heerlijke vegetarische alternatieven voor de BBQ",
+        price: "€20 p.p.",
+        image: "https://images.unsplash.com/photo-1543362906-acfc16c67564?q=80&w=2065",
       },
     ],
   };
 
   return (
-    <section id="services" className="section-spacing bg-card">
+    <section id="services" className="section-spacing bg-secondary">
       <div className="container-main">
         {/* Header */}
         <div className={`text-center mb-16 transition-all duration-1000 ${
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
-          <h2 className="text-display text-charcoal mb-6">
-            Onze <span className="text-accent-orange">Services</span>
-          </h2>
-          <div className="w-16 h-0.5 bg-accent-orange mx-auto mb-6" />
-          <p className="text-heading text-charcoal max-w-2xl mx-auto">
+          <p className="text-script mb-4">Ontdek</p>
+          <h2 className="text-display text-foreground mb-6">Onze Services</h2>
+          <div className="w-16 h-0.5 bg-highlight mx-auto mb-6" />
+          <p className="text-body text-foreground max-w-2xl mx-auto">
             Van intieme diners tot grote evenementen, wij zorgen voor een culinaire ervaring die uw gasten nooit zullen vergeten.
           </p>
         </div>
@@ -82,18 +81,17 @@ export const Services = () => {
           isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
         }`}>
           {categories.map((category) => (
-            <button
+            <Button
               key={category.id}
               onClick={() => setActiveCategory(category.id)}
-              className={`px-6 py-3 rounded-xl font-medium text-body transition-all duration-300 ${
+              className={`px-8 py-4 rounded-full font-semibold transition-all duration-300 ${
                 activeCategory === category.id
-                  ? 'bg-accent-orange text-white'
-                  : 'bg-background text-charcoal hover:bg-accent-orange hover:text-white'
+                  ? 'bg-accent text-white'
+                  : 'bg-highlight text-white hover:bg-accent'
               }`}
             >
-              <span className="mr-2">{category.icon}</span>
               {category.name}
-            </button>
+            </Button>
           ))}
         </div>
 
@@ -109,16 +107,14 @@ export const Services = () => {
                   alt={item.name}
                   className="w-full h-full object-cover"
                 />
-                <div className="absolute top-4 right-4 bg-accent-orange text-white px-3 py-1 rounded-full text-small font-medium">
+                <div className="absolute top-4 right-4 bg-accent text-white px-3 py-1 rounded-full text-small font-medium">
                   {item.price}
                 </div>
               </div>
               <CardContent className="p-6">
-                <h3 className="text-heading text-charcoal mb-3">{item.name}</h3>
-                <p className="text-body text-charcoal mb-4">{item.description}</p>
-                <Button className="btn-primary w-full">
-                  Meer Info
-                </Button>
+                <h3 className="text-subheading text-foreground mb-3">{item.name}</h3>
+                <p className="text-body text-muted mb-4">{item.description}</p>
+                <Button className="btn-primary w-full">Meer Info</Button>
               </CardContent>
             </Card>
           ))}

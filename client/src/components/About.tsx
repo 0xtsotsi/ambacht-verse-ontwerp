@@ -33,20 +33,16 @@ export const About = () => {
             isVisible ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
           }`}>
             <div className="space-y-6">
-              <h2 className="text-display text-charcoal">
-                Ambachtelijk
-                <span className="text-accent-orange"> & Vers</span>
-              </h2>
+              <h2 className="text-heading text-accent">Ambachtelijk & Vers</h2>
+              <div className="w-16 h-0.5 bg-highlight" />
               
-              <div className="w-16 h-0.5 bg-accent-orange" />
-              
-              <p className="text-body text-charcoal leading-relaxed">
+              <p className="text-body text-foreground leading-relaxed">
                 Bij Wesley's Ambacht geloven wij in de kracht van traditioneel ambachtelijk werk 
                 gecombineerd met moderne technieken. Elke maaltijd wordt met passie en precisie 
                 bereid, waarbij we alleen de beste ingrediënten gebruiken.
               </p>
               
-              <p className="text-body text-charcoal leading-relaxed">
+              <p className="text-body text-foreground leading-relaxed">
                 Onze chef-koks hebben jarenlange ervaring en een oog voor detail. We streven ernaar 
                 om elke gast een onvergetelijke culinaire ervaring te bieden.
               </p>
@@ -73,18 +69,18 @@ export const About = () => {
         }`}>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <div className="card-base p-8 text-center">
-              <div className="text-3xl font-bold text-accent-orange mb-2">500+</div>
-              <div className="text-body text-charcoal">Tevreden Klanten</div>
+              <div className="text-3xl font-bold text-accent mb-2">500+</div>
+              <div className="text-body text-foreground">Tevreden Klanten</div>
             </div>
             
             <div className="card-base p-8 text-center">
-              <div className="text-3xl font-bold text-accent-orange mb-2">10+</div>
-              <div className="text-body text-charcoal">Jaar Ervaring</div>
+              <div className="text-3xl font-bold text-accent mb-2">10+</div>
+              <div className="text-body text-foreground">Jaar Ervaring</div>
             </div>
             
             <div className="card-base p-8 text-center">
-              <div className="text-3xl font-bold text-accent-orange mb-2">100%</div>
-              <div className="text-body text-charcoal">Verse Ingrediënten</div>
+              <div className="text-3xl font-bold text-accent mb-2">100%</div>
+              <div className="text-body text-foreground">Verse Ingrediënten</div>
             </div>
           </div>
         </div>

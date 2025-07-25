@@ -1,0 +1,58 @@
+# 🎯 OBJECTIVE:
+You are refactoring the Wesley’s Ambacht project to match the **layout, style, typography, color palette, and structure** of the website https://www.sopranoscatering.com.
+
+# 📂 PROJECT TO EDIT:
+> `https://github.com/0xtsotsi/ambacht-verse-ontwerp` (currently loaded in this Replit project)
+
+# 🖼️ CURRENT UI STATE (Screenshots uploaded):
+- Header is off-balance, lacks padding, color, and elegant structure.
+- Pricing cards show broken NaN values and inconsistent grid spacing.
+- CTA buttons are misaligned, float, and have poor visual hierarchy.
+- Sections like “Wie zijn wij” are visually flat and disconnected.
+
+# 🎨 DESIGN GOAL:
+Rebuild the Ambacht project using **SopranosCatering.com** as the visual reference.
+
+## 🔁 Refactor the following components:
+
+### 1. Header:
+- Full-width, center-aligned nav like Soprano.
+- Add warm cream background (#F9F6F1) and bold nav links.
+- Sticky on scroll with background fade-in effect.
+
+### 2. Hero Section:
+- Full-bleed image with call to action.
+- Add elegant serif headline + subheading like Soprano’s welcome banner.
+
+### 3. Pricing Cards:
+- Replace broken pricing logic with static tier data (3 columns).
+- Add hover effect (`hover:scale-[1.03]`) and consistent shadow.
+- Title, price, and feature list inside cards, with clear CTA.
+
+### 4. “Wie zijn wij” Section:
+- Add heading (`text-3xl font-bold`), image block, and paragraph.
+- Layout: image left, text right (reversed on alt sections).
+- Use soft alternating backgrounds (`#F5E9D3`, `#FFFFFF`).
+
+### 5. CTA Button:
+- Sticky pill button at bottom right on desktop: “Reserveer Vandaag”
+- Use Tailwind utility: `fixed bottom-6 right-6 px-6 py-3 bg-[#E86C32] text-white rounded-full shadow-lg hover:scale-105 transition`
+
+### 6. Footer:
+- Dense, structured footer like Soprano’s with contact info, socials, and quick links.
+- Background: dark muted brown/black, white text.
+
+## 🧩 Tailwind Theming:
+Replace all old styles with:
+
+```js
+// tailwind.config.js > extend.colors
+{
+  background: '#F9F6F1',
+  card: '#FFFFFF',
+  accent: '#E86C32',
+  highlight: '#D4B170',
+  muted: '#5F5F5F',
+  secondary: '#F5E9D3',
+  error: '#D45745',
+}
