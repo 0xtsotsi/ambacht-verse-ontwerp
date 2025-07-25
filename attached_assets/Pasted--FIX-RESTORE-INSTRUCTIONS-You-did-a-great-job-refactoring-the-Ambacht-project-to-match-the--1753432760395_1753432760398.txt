@@ -1,0 +1,74 @@
+# 🔁 FIX & RESTORE INSTRUCTIONS
+
+You did a great job refactoring the Ambacht project to match the Soprano’s design system — but now please make the following precise corrections:
+
+---
+
+## ✅ 1. Restore the Dynamic Booking System:
+
+> ⚠️ You removed the original dynamic booking/reservation form component (used to fetch or process real bookings). This must be restored.
+
+- Reintegrate the original booking logic (if in separate component like `BookingForm.jsx` or `Boeking.vue`)
+- Ensure the button “Reserveer Vandaag” links directly to or opens the dynamic booking modal or form
+- Booking form must retain all dynamic fields and submission logic (if present in original version)
+- Ensure it uses updated Soprano-style styles, but retains backend connection or JS logic
+
+---
+
+## 🎨 2. Correct Font Sizes and Visual Hierarchy:
+
+> ⚠️ Current font sizes are inconsistent and do not follow proper hierarchy.
+
+Use the following font scale via Tailwind:
+
+```js
+// Headings:
+text-5xl font-semibold leading-tight      // Hero or primary
+text-3xl font-medium leading-snug         // Section titles
+text-xl font-normal leading-relaxed       // Subheaders
+
+// Body:
+text-base font-normal leading-loose       // Main text
+text-sm text-muted-foreground             // Small text or details
+Ensure all major sections follow this hierarchy consistently:
+
+Header navigation = text-base font-medium
+
+Pricing titles = text-2xl font-semibold
+
+CTA text = text-lg font-bold
+
+Footer = text-sm text-muted-foreground
+
+🚫 3. Remove All Emojis:
+⚠️ Emojis were added into section titles and descriptions — remove them all for visual clarity and professionalism.
+
+“📂 PROJECT TO EDIT” → just “Project to edit”
+
+“🎯 OBJECTIVE” → “Objective”
+
+“🍝”, “🧁” etc → remove entirely from code comments, headings, and text content
+
+Keep the tone clean, structured, and elegant — no icons or emoji required.
+
+🔄 4. Maintain Sopranos Layout but Fix These:
+Ensure all CTA buttons still follow Soprano layout but lead to the restored booking system
+
+Do not remove working logic when changing visual structure
+
+Retain Tailwind color tokens from previous instruction (F9F6F1 background, E86C32 accent, etc.)
+
+✅ Summary
+You must preserve all functional parts of the original Ambacht site (esp. booking system), while keeping the visual refactor clean, elegant, and consistent with Soprano style.
+
+Focus on:
+
+Font scale and structure
+
+Functional restoration (booking)
+
+Visual consistency
+
+Professional tone (remove emojis)
+
+DO NOT DELETE functional features when refactoring.

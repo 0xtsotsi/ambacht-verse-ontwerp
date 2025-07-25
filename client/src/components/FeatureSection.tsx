@@ -51,7 +51,6 @@ export const FeatureSection = () => {
               {/* Content */}
               <div className="flex-1 text-center lg:text-left">
                 <div className="mb-6">
-                  <div className="text-6xl mb-4">🍽️</div>
                   <h3 className="text-heading text-foreground mb-4">{feature.title}</h3>
                 </div>
                 

@@ -11,9 +11,9 @@ export const Services = () => {
   }, []);
 
   const categories = [
-    { id: "bbq", name: "🔥 BBQ Catering", icon: "🔥" },
-    { id: "kantoor", name: "🏢 Kantoor Catering", icon: "🏢" },
-    { id: "evenement", name: "🎉 Evenement Buffets", icon: "🎉" },
+    { id: "bbq", name: "BBQ Catering" },
+    { id: "kantoor", name: "Kantoor Catering" },
+    { id: "evenement", name: "Evenement Buffets" },
   ];
 
   const serviceItems = {

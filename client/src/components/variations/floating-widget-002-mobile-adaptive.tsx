@@ -88,7 +88,7 @@ export function FloatingBookingWidget({
     >
       <Card
         className={cn(
-          "bg-gradient-to-br from-[#CC5D00] to-[#BB3A3C] text-white shadow-2xl border-0",
+          "bg-gradient-to-br from-accent to-error text-white shadow-2xl border-0",
           "transition-all duration-300 ease-out",
           // Mobile-first responsive sizing
           isExpanded ? "w-72 md:w-80" : "w-auto",
@@ -105,8 +105,8 @@ export function FloatingBookingWidget({
           <div className="p-4 md:p-5">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <ChefHat className="w-5 h-5 text-[#FFEFDA]" />
-                <span className="font-semibold text-sm md:text-base text-[#FFEFDA]">
+                <ChefHat className="w-5 h-5 text-highlight" />
+                <span className="font-semibold text-sm md:text-base text-highlight">
                   Wesley's Ambacht
                 </span>
               </div>
@@ -122,7 +122,7 @@ export function FloatingBookingWidget({
             </div>
 
             <div className="space-y-3">
-              <p className="text-[#FFEFDA] text-sm md:text-base font-medium leading-relaxed">
+              <p className="text-highlight text-sm md:text-base font-medium leading-relaxed">
                 Reserveer uw culinaire ervaring
               </p>
 
@@ -181,8 +181,8 @@ export function FloatingBookingWidget({
 
               {/* Mobile trust indicator */}
               <div className="text-center pt-2">
-                <p className="text-[#FFEFDA]/80 text-xs">
-                  Premium catering • 15+ jaar ervaring
+                <p className="text-highlight/80 text-xs">
+                  Premium catering - 15+ jaar ervaring
                 </p>
               </div>
             </div>
@@ -201,17 +201,17 @@ export function FloatingBookingWidget({
           >
             <div className="flex items-center gap-2 md:gap-3">
               <div className="p-2 md:p-1.5 bg-white/15 rounded-full">
-                <Calendar className="w-5 h-5 md:w-4 md:h-4 text-[#FFEFDA]" />
+                <Calendar className="w-5 h-5 md:w-4 md:h-4 text-highlight" />
               </div>
               <div className="text-left">
                 <div className="font-semibold text-sm md:text-base">
                   Reserveer Vandaag
                 </div>
-                <div className="text-[#FFEFDA] text-xs opacity-90 hidden md:block">
+                <div className="text-highlight text-xs opacity-90 hidden md:block">
                   Beschikbaarheid checken
                 </div>
               </div>
-              <ArrowRight className="w-4 h-4 ml-1 md:ml-2 text-[#FFEFDA]" />
+              <ArrowRight className="w-4 h-4 ml-1 md:ml-2 text-highlight" />
             </div>
           </Button>
         )}

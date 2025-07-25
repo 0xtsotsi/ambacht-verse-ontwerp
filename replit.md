@@ -22,6 +22,10 @@ A modern catering service website for Wesley's Ambacht, featuring booking manage
   - Created Soprano's-inspired components: Hero, Navigation, ServiceSection, FeatureSection
   - Added floating CTA button and full-bleed hero sections
   - Responsive design with elegant animations and hover effects
+  - Restored dynamic booking system with FloatingBookingWidget functionality
+  - Fixed font hierarchy: text-5xl (hero), text-3xl (sections), text-xl (subheads), text-base (body), text-sm (small)
+  - Removed all emojis for professional appearance
+  - Integrated DateCheckerModal and StepByStepQuoteCalculator with Soprano's theme
 
 ## Database Schema
 The project uses a comprehensive PostgreSQL schema with:

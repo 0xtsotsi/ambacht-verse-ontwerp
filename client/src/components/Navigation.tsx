@@ -45,7 +45,7 @@ export const Navigation = () => {
               <a
                 key={item.name}
                 href={item.href}
-                className="text-sm font-semibold text-foreground hover:text-accent transition-colors duration-300 tracking-wide"
+                className="text-nav text-foreground hover:text-accent transition-colors duration-300 tracking-wide"
                 style={{ fontFamily: 'Open Sans, sans-serif' }}
               >
                 {item.name}
