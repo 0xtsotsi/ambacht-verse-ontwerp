@@ -1,64 +1,91 @@
 import { Button } from "@/components/ui/button";
+import { Heart, Star, Users, Award, Sparkles, ChefHat } from "lucide-react";
 
 export const FeatureSection = () => {
   const features = [
     {
-      title: "WEDDINGS",
-      description: "We couldn't be happier that you're considering us to cater your wedding. Our chefs understand the importance of your wedding day and will work closely with you to ensure every detail is considered and every expectation exceeded.",
-      image: "https://images.unsplash.com/photo-1519225421980-715cb0215aed?q=80&w=2070",
-      buttonText: "Wedding Menus"
+      title: "BRUILOFTEN",
+      description: "We kunnen niet blijer zijn dat u overweegt om ons uw bruiloft te laten verzorgen. Onze chefs begrijpen het belang van uw trouwdag en zullen nauw met u samenwerken om ervoor te zorgen dat elk detail wordt overwogen en elke verwachting wordt overtroffen.",
+      image: "/attached_assets/1000005722_1753439577481.jpg",
+      buttonText: "Bruiloft Menu's",
+      icon: <Heart className="w-8 h-8" />,
+      gradient: "from-rose-500 to-pink-500"
     },
     {
-      title: "FRESH & INSPIRED",
-      description: "Culinary innovation and impeccable service is the cornerstone of Soprano's Catering. We are committed to building long term relationships based on personal service and exceptional quality. Choose from one of our menu options or let our chefs design a menu specifically for you.",
-      image: "https://images.unsplash.com/photo-1543362906-acfc16c67564?q=80&w=2065",
-      buttonText: "Social Events"
+      title: "VERS & GEÏNSPIREERD",
+      description: "Culinaire innovatie en onberispelijke service is de hoeksteen van Wesley's Ambacht. We zijn toegewijd aan het opbouwen van langdurige relaties gebaseerd op persoonlijke service en uitzonderlijke kwaliteit.",
+      image: "/attached_assets/1000005886_1753439577476.jpg",
+      buttonText: "Sociale Evenementen",
+      icon: <Star className="w-8 h-8" />,
+      gradient: "from-amber-500 to-orange-500"
     },
     {
-      title: "SERVICE STYLES",
-      description: "Soprano's makes catering easy with several service style options. From pick up and drop off, to full service delivery, there is an option suited for any occasion.",
-      image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=2071",
-      buttonText: "Service Styles"
+      title: "SERVICE STIJLEN",
+      description: "Wesley's Ambacht maakt catering gemakkelijk met verschillende service-opties. Van ophalen en afleveren tot volledige service bezorging, er is een optie geschikt voor elke gelegenheid.",
+      image: "/attached_assets/1000005880_1753439577477.jpg",
+      buttonText: "Service Opties",
+      icon: <Users className="w-8 h-8" />,
+      gradient: "from-blue-500 to-cyan-500"
     },
     {
-      title: "VENUES & VENDORS",
-      description: "We passionately work with countless people and businesses who share our passion for excellence. When we do, we're happy to recommend them to our clients. Below you'll find a few partners we are proud to recommend based on our shared experience.",
-      image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?q=80&w=2070",
-      buttonText: "Venues & Vendors"
+      title: "KWALITEIT & AMBACHT",
+      description: "We werken hartstochtelijk samen met talloze mensen en bedrijven die onze passie voor excellentie delen. Hieronder vindt u een aantal partners die we trots aanbevelen op basis van onze gedeelde ervaring.",
+      image: "/attached_assets/1000005693_1753439577478.jpg",
+      buttonText: "Onze Partners",
+      icon: <Award className="w-8 h-8" />,
+      gradient: "from-green-500 to-emerald-500"
     }
   ];
 
   return (
-    <section className="section-spacing bg-background">
-      <div className="container-main">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+    <section className="section-spacing bg-gradient-to-br from-gray-50 via-orange-50/30 to-amber-50/30 relative overflow-hidden">
+      {/* Background decorations */}
+      <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-orange-100/10 to-amber-100/10"></div>
+      <div className="absolute top-20 right-20 w-64 h-64 bg-gradient-to-br from-orange-300/20 to-amber-300/20 rounded-full blur-3xl animate-pulse"></div>
+      
+      <div className="container-main relative z-10">
+        <div className="text-center mb-20">
+          <div className="flex items-center justify-center mb-6">
+            <Sparkles className="w-8 h-8 text-orange-500 mr-3 animate-bounce" />
+            <h2 className="text-5xl font-bold text-gray-800">ONZE SPECIALITEITEN</h2>
+            <Sparkles className="w-8 h-8 text-orange-500 ml-3 animate-bounce" />
+          </div>
+          <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-amber-500 mx-auto rounded-full"></div>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
           {features.map((feature, index) => (
             <div 
               key={index} 
-              className={`flex flex-col lg:flex-row items-center gap-8 ${
+              className={`flex flex-col lg:flex-row items-center gap-8 group ${
                 index % 2 === 1 ? 'lg:flex-row-reverse' : ''
               }`}
             >
               {/* Image */}
-              <div className="flex-1">
+              <div className="flex-1 relative overflow-hidden rounded-2xl shadow-2xl group-hover:shadow-3xl transition-all duration-500">
                 <img
                   src={feature.image}
                   alt={feature.title}
-                  className="w-full h-80 object-cover rounded-lg shadow-lg"
+                  className="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-110"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent group-hover:from-black/60 transition-all duration-500"></div>
+                <div className={`absolute top-4 left-4 bg-gradient-to-r ${feature.gradient} text-white p-3 rounded-full shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                  {feature.icon}
+                </div>
               </div>
 
               {/* Content */}
               <div className="flex-1 text-center lg:text-left">
                 <div className="mb-6">
-                  <h3 className="text-heading text-foreground mb-4">{feature.title}</h3>
+                  <h3 className="text-3xl font-bold text-gray-800 mb-4 group-hover:text-orange-600 transition-colors duration-300">{feature.title}</h3>
+                  <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-amber-500 mx-auto lg:mx-0 rounded-full group-hover:w-24 transition-all duration-300"></div>
                 </div>
                 
-                <p className="text-body text-muted leading-relaxed mb-6">
+                <p className="text-lg text-gray-600 leading-relaxed mb-8">
                   {feature.description}
                 </p>
 
-                <Button className="btn-primary">
+                <Button className={`bg-gradient-to-r ${feature.gradient} hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-white px-8 py-3 rounded-full`}>
                   {feature.buttonText}
                 </Button>
               </div>

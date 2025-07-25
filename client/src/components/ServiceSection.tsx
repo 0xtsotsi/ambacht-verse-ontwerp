@@ -1,26 +1,34 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
+import { Building2, PartyPopper, Heart, Flame, UtensilsCrossed, Sparkles } from "lucide-react";
 
 export const ServiceSection = () => {
   const [activeService, setActiveService] = useState("corporate");
 
   const services = [
-    { id: "corporate", name: "Corporate Events", icon: "🏢" },
-    { id: "social", name: "Social Events", icon: "🎉" },
-    { id: "weddings", name: "Weddings", icon: "💍" },
-    { id: "grill", name: "Grill & BBQ", icon: "🔥" },
-    { id: "bytray", name: "By The Tray", icon: "🍽️" },
+    { id: "corporate", name: "Corporate Events", icon: <Building2 className="w-6 h-6" />, gradient: "from-blue-500 to-cyan-500" },
+    { id: "social", name: "Social Events", icon: <PartyPopper className="w-6 h-6" />, gradient: "from-purple-500 to-pink-500" },
+    { id: "weddings", name: "Bruiloften", icon: <Heart className="w-6 h-6" />, gradient: "from-rose-500 to-pink-500" },
+    { id: "grill", name: "BBQ Catering", icon: <Flame className="w-6 h-6" />, gradient: "from-orange-500 to-red-500" },
+    { id: "bytray", name: "Lunch Service", icon: <UtensilsCrossed className="w-6 h-6" />, gradient: "from-green-500 to-emerald-500" },
   ];
 
   return (
     <section className="section-spacing" style={{ backgroundColor: '#F0F4F8' }}>
       <div className="container-main text-center">
         {/* Header Banner */}
-        <div className="bg-gradient-to-r from-muted/20 to-muted/10 py-12 mb-16 rounded-lg">
-          <h2 className="text-display text-white mb-4">NEW SPRING SPECIALS MENU</h2>
-          <Button className="btn-primary">
-            Spring Specials
-          </Button>
+        <div className="bg-gradient-to-r from-orange-500/20 via-amber-400/20 to-orange-500/20 backdrop-blur-sm py-16 mb-20 rounded-2xl relative overflow-hidden">
+          <div className="absolute inset-0 bg-gradient-to-r from-orange-600/10 to-amber-500/10 animate-pulse"></div>
+          <div className="relative z-10">
+            <div className="flex items-center justify-center mb-4">
+              <Sparkles className="w-8 h-8 text-orange-500 mr-3 animate-bounce" />
+              <h2 className="text-display text-gray-800 mb-0">LENTE SPECIALS MENU</h2>
+              <Sparkles className="w-8 h-8 text-orange-500 ml-3 animate-bounce" />
+            </div>
+            <Button className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white px-8 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300">
+              Bekijk Specials
+            </Button>
+          </div>
         </div>
 
         {/* Discover Section */}
@@ -30,22 +38,26 @@ export const ServiceSection = () => {
           <div className="w-16 h-0.5 bg-highlight mx-auto mb-8" />
           
           <p className="text-body max-w-4xl mx-auto text-muted leading-relaxed mb-12">
-            We handle all occasions large and small, no matter what your catering needs might be, give us a call to see if your date is available. Soprano's Catering offers a wide range of pick up and drop off selections for your next catered event including: breakfast, lunch, and box lunches, appetizers, BBQ and dinner options as well as full service catering for large corporate events and weddings.
+            Wij verzorgen alle gelegenheden, groot en klein. Ongeacht uw cateringbehoeften, bel ons om te zien of uw datum beschikbaar is. Wesley's Ambacht biedt een breed scala aan ophaal- en bezorgopties voor uw volgende catered evenement, inclusief: ontbijt, lunch en lunchpakketten, hapjes, BBQ en dineropties evenals volledige service catering voor grote bedrijfsevenementen en bruiloften.
           </p>
 
           {/* Service Buttons */}
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-wrap justify-center gap-6">
             {services.map((service) => (
               <Button
                 key={service.id}
-                className={`px-8 py-4 rounded-full font-semibold transition-all duration-300 ${
+                className={`px-8 py-6 rounded-2xl font-semibold transition-all duration-500 flex items-center space-x-3 group relative overflow-hidden ${
                   activeService === service.id
-                    ? 'bg-accent text-white'
-                    : 'bg-highlight text-white hover:bg-accent'
+                    ? `bg-gradient-to-r ${service.gradient} text-white shadow-2xl scale-105`
+                    : 'bg-white text-gray-700 hover:text-white border border-gray-200 hover:border-transparent shadow-lg hover:shadow-2xl hover:scale-105'
                 }`}
                 onClick={() => setActiveService(service.id)}
               >
-                {service.name}
+                <div className={`absolute inset-0 bg-gradient-to-r ${service.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+                <span className="relative z-10 transform group-hover:scale-110 transition-transform duration-300">
+                  {service.icon}
+                </span>
+                <span className="relative z-10">{service.name}</span>
               </Button>
             ))}
           </div>

@@ -1,34 +1,34 @@
 import { useState, useEffect, useRef, memo, useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Camera, ChefHat, Utensils, Users } from "lucide-react";
-import { useOptimizedIntersectionObserver } from "@/hooks/useAnimationOptimization";
-import { usePerformanceLogger } from "@/hooks/useComponentLogger";
+import { Camera, ChefHat, Utensils, Users, Sparkles, Star } from "lucide-react";
 
 export const Gallery = memo(() => {
   const [activeCategory, setActiveCategory] = useState("all");
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const sectionRef = useRef<HTMLDivElement>(null);
 
-  // Optimized intersection observer with proper cleanup
-  const { observe, isVisible } = useOptimizedIntersectionObserver({
-    threshold: 0.1,
-    rootMargin: "50px",
-  });
-
-  // Performance monitoring
-  const { getPerformanceStats } = usePerformanceLogger({
-    componentName: "Gallery",
-    slowRenderThreshold: 16,
-    enableMemoryTracking: true,
-  });
+  const [isVisible, setIsVisible] = useState(false);
 
   // Set up intersection observer
   useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsVisible(true);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
     if (sectionRef.current) {
-      observe(sectionRef.current);
+      observer.observe(sectionRef.current);
     }
-  }, [observe]);
+
+    return () => observer.disconnect();
+  }, []);
 
   // Memoize categories to prevent unnecessary re-renders
   const categories = useMemo(

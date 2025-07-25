@@ -1,5 +1,5 @@
 import { Card, CardContent } from "@/components/ui/card";
-import { Star, Quote } from "lucide-react";
+import { Star, Quote, Heart, Award, Trophy, Sparkles } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 
 export const Testimonials = () => {
@@ -59,9 +59,13 @@ export const Testimonials = () => {
 
   return (
     <section
-      className="py-32 bg-gradient-to-b from-white to-gray-50 overflow-hidden"
+      className="py-32 bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50 overflow-hidden relative"
       ref={sectionRef}
     >
+      {/* Background decoration */}
+      <div className="absolute inset-0 bg-gradient-to-br from-orange-100/20 to-amber-100/20"></div>
+      <div className="absolute top-10 right-10 w-32 h-32 bg-gradient-to-br from-orange-300/20 to-amber-300/20 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute bottom-10 left-10 w-40 h-40 bg-gradient-to-br from-yellow-300/20 to-orange-300/20 rounded-full blur-3xl animate-pulse delay-700"></div>
       <div className="container mx-auto px-16">
         <div className="max-w-6xl mx-auto">
           {/* V5 Interactive Section Header */}
