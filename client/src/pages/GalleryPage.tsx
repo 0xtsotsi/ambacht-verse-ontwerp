@@ -2,6 +2,27 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Image, Camera, Sparkles, ZoomIn, X } from "lucide-react";
 import { FloatingBookingWidget } from "@/components/FloatingBookingWidget";
+import { Navigation } from "@/components/Navigation";
+
+// Import all food images
+import galleryImage1 from "@assets/1000005684_1753439577478.jpg";
+import galleryImage2 from "@assets/1000005686_1753439577482.jpg";
+import galleryImage3 from "@assets/1000005690_1753439577479.jpg";
+import galleryImage4 from "@assets/1000005693_1753439577478.jpg";
+import galleryImage5 from "@assets/1000005705_1753439577479.jpg";
+import galleryImage6 from "@assets/1000005722_1753439577481.jpg";
+import galleryImage7 from "@assets/1000005723_1753439577480.jpg";
+import galleryImage8 from "@assets/1000005727_1753439577481.jpg";
+import galleryImage9 from "@assets/1000005737 (1)_1753439577480.jpg";
+import galleryImage10 from "@assets/1000005737_1753439577482.jpg";
+import galleryImage11 from "@assets/1000005739_1753439577480.jpg";
+import galleryImage12 from "@assets/1000005760_1753439577478.jpg";
+import galleryImage13 from "@assets/1000005871_1753439577475.jpg";
+import galleryImage14 from "@assets/1000005880_1753439577477.jpg";
+import galleryImage15 from "@assets/1000005886_1753439577476.jpg";
+import galleryImage16 from "@assets/1000005907_1753439577476.jpg";
+import galleryImage17 from "@assets/1000005916_1753439577477.jpg";
+import galleryImage18 from "@assets/1000005931_1753439577477.jpg";
 
 // Import all gallery images
 import image1 from "@assets/1000005684_1753439577478.jpg";
@@ -87,6 +108,7 @@ export const GalleryPage = () => {
 
   return (
     <div className="min-h-screen">
+      <Navigation />
       <FloatingBookingWidget />
       {/* Hero Section */}
       <section 

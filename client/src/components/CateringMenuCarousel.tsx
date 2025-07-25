@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Star, Clock, Users, ChefHat } from "lucide-react";
+import { JulienneFadeCarousel } from "./JulienneFadeCarousel";
 
 // Import high-quality food images
 import dish1 from "@assets/1000005907_1753439577476.jpg";
@@ -195,17 +196,29 @@ export const CateringMenuCarousel = () => {
             {/* Main Content Grid */}
             <div className="grid lg:grid-cols-2 gap-0">
               
-              {/* Image Section */}
+              {/* Image Section with Julienne Fade */}
               <div className="relative h-96 lg:h-auto overflow-hidden">
-                <img 
-                  src={currentItem.image} 
-                  alt={currentItem.title}
-                  className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
-                />
+                {menuItems.map((item, index) => (
+                  <div
+                    key={item.id}
+                    className={`absolute inset-0 transition-all duration-1000 ease-in-out ${
+                      index === currentSlide
+                        ? 'opacity-100 transform translate-y-0'
+                        : 'opacity-0 transform translate-y-8'
+                    }`}
+                    style={{
+                      backgroundImage: `url(${item.image})`,
+                      backgroundSize: 'cover',
+                      backgroundPosition: 'center',
+                    }}
+                  />
+                ))}
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
                 
-                {/* Price Badge */}
-                <div className="absolute top-6 right-6 bg-gradient-to-r from-[#E86C32] to-[#D4B170] text-white px-4 py-2 rounded-full font-bold text-lg shadow-lg">
+                {/* Price Badge with fade animation */}
+                <div className={`absolute top-6 right-6 bg-gradient-to-r from-[#E86C32] to-[#D4B170] text-white px-4 py-2 rounded-full font-bold text-lg shadow-lg transition-all duration-1200 delay-300 ${
+                  'opacity-100 transform translate-y-0'
+                }`}>
                   {currentItem.price}
                 </div>
 
@@ -225,8 +238,11 @@ export const CateringMenuCarousel = () => {
                 </button>
               </div>
 
-              {/* Content Section */}
+              {/* Content Section with Julienne Fade */}
               <div className="p-8 lg:p-12 flex flex-col justify-center">
+                <div className={`transition-all duration-1200 delay-500 ${
+                  'opacity-100 transform translate-y-0'
+                }`}>
                 
                 {/* Category */}
                 <div className="flex items-center gap-2 mb-4">
@@ -308,6 +324,7 @@ export const CateringMenuCarousel = () => {
                   >
                     Meer Info
                   </Button>
+                </div>
                 </div>
               </div>
             </div>

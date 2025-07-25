@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ChevronDown, Phone, Mail, MapPin, Clock, Send, CheckCircle2, Star, ChefHat } from "lucide-react";
 import { FloatingBookingWidget } from "@/components/FloatingBookingWidget";
+import { Navigation } from "@/components/Navigation";
 import contactHeroImage from "@assets/1000005907_1753439577476.jpg";
 
 export const ContactPage = () => {
@@ -62,6 +63,7 @@ export const ContactPage = () => {
 
   return (
     <div className="min-h-screen">
+      <Navigation />
       <FloatingBookingWidget />
       {/* Hero Section */}
       <section 

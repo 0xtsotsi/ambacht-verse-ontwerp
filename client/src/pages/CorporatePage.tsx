@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Building2, Users, Coffee, Calendar, Clock, CheckCircle2, Briefcase, Target } from "lucide-react";
 import { FloatingBookingWidget } from "@/components/FloatingBookingWidget";
+import { Navigation } from "@/components/Navigation";
 import corporateHeroImage from "@assets/1000005907_1753439577476.jpg";
 import meetingImage from "@assets/1000005722_1753439577481.jpg";
 import lunchImage from "@assets/1000005705_1753439577479.jpg";
@@ -108,6 +109,7 @@ export const CorporatePage = () => {
 
   return (
     <div className="min-h-screen">
+      <Navigation />
       <FloatingBookingWidget />
       {/* Hero Section */}
       <section 

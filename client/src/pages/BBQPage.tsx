@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Flame, Sun, Users, CheckCircle2, Thermometer, Clock, TreePine, ChefHat } from "lucide-react";
 import { FloatingBookingWidget } from "@/components/FloatingBookingWidget";
+import { Navigation } from "@/components/Navigation";
 import bbqHeroImage from "@assets/1000005871_1753439577475.jpg";
 import grillImage from "@assets/1000005880_1753439577477.jpg";
 import outdoorImage from "@assets/1000005886_1753439577476.jpg";
@@ -108,6 +109,7 @@ export const BBQPage = () => {
 
   return (
     <div className="min-h-screen">
+      <Navigation />
       <FloatingBookingWidget />
       {/* Hero Section */}
       <section 

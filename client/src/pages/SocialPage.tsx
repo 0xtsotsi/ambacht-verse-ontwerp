@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, PartyPopper, Gift, Calendar, Music, Star, CheckCircle2, Users, Heart } from "lucide-react";
 import { FloatingBookingWidget } from "@/components/FloatingBookingWidget";
+import { Navigation } from "@/components/Navigation";
 import socialHeroImage from "@assets/1000005723_1753439577480.jpg";
 import birthdayImage from "@assets/1000005739_1753439577480.jpg";
 import anniversaryImage from "@assets/1000005737_1753439577482.jpg";
@@ -108,6 +109,7 @@ export const SocialPage = () => {
 
   return (
     <div className="min-h-screen">
+      <Navigation />
       <FloatingBookingWidget />
       {/* Hero Section */}
       <section 
