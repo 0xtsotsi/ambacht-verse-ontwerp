@@ -9,11 +9,11 @@ export const Navigation = () => {
 
   const menuItems = useMemo(
     () => [
-      { name: "HOME", href: "#home" },
-      { name: "WIE ZIJN WIJ?", href: "#about" },
-      { name: "GALERIJ", href: "#gallery" },
-      { name: "GASTENBOEK", href: "#testimonials" },
-      { name: "CONTACT", href: "#contact" },
+      { name: "Home", href: "#home" },
+      { name: "Wie zijn wij", href: "#about" },
+      { name: "Services", href: "#services" },
+      { name: "Galerij", href: "#gallery" },
+      { name: "Contact", href: "#contact" },
     ],
     [],
   );
@@ -41,85 +41,75 @@ export const Navigation = () => {
 
   return (
     <nav
-      className={`fixed top-0 w-full z-50 backdrop-blur-md border-0 transition-all duration-700 ${
-        scrolled ? "bg-white/90 shadow-elegant-panel py-6" : "bg-white/80 py-8"
+      className={`fixed top-0 w-full z-50 backdrop-blur-md transition-all duration-300 ${
+        scrolled ? "bg-card/90 shadow-sm py-4" : "bg-card/80 py-6"
       }`}
     >
-      <div className="container mx-auto px-16">
-        <div className="flex items-center justify-center">
+      <div className="container-main">
+        <div className="flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex items-center">
+            <h1 className="text-heading text-charcoal font-semibold">
+              Wesley's Ambacht
+            </h1>
+          </div>
+
           {/* Desktop Menu */}
-          <div className="hidden md:flex items-center space-x-20">
-            {menuItems.map((item, index) => (
+          <div className="hidden md:flex items-center space-x-8">
+            {menuItems.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className={`font-elegant-nav font-medium text-sm tracking-[0.1em] uppercase relative group py-3 px-1 transition-all duration-500 transform hover:scale-105 ${
+                className={`text-body font-medium transition-all duration-300 hover:text-accent-orange relative group ${
                   activeSection === item.href.slice(1)
-                    ? "text-terracotta-600"
-                    : "text-elegant-dark hover:text-terracotta-600"
+                    ? "text-accent-orange"
+                    : "text-charcoal"
                 }`}
-                style={{
-                  transitionDelay: `${index * 50}ms`,
-                }}
               >
                 {item.name}
-                {/* Elegant underline with glow effect */}
                 <span
-                  className={`absolute -bottom-1 left-0 h-0.5 bg-gradient-to-r from-terracotta-500 to-terracotta-600 transition-all duration-500 transform origin-left ${
+                  className={`absolute -bottom-1 left-0 h-0.5 bg-accent-orange transition-all duration-300 origin-left ${
                     activeSection === item.href.slice(1)
-                      ? "w-full animate-elegant-glow"
+                      ? "w-full"
                       : "w-0 group-hover:w-full"
                   }`}
-                >
-                  <span className="absolute inset-0 blur-sm bg-terracotta-500/50"></span>
-                </span>
-                {/* Hover glow effect */}
-                <span className="absolute inset-0 rounded-lg transition-all duration-500 opacity-0 group-hover:opacity-100 bg-gradient-to-r from-terracotta-100/0 via-terracotta-100/20 to-terracotta-100/0"></span>
+                />
               </a>
             ))}
           </div>
 
-          {/* Mobile Menu Button with interactive animation */}
+          {/* Mobile Menu Button */}
           <button
-            className="md:hidden relative text-elegant-dark hover:text-terracotta-600 transition-all duration-500 p-4 group"
+            className="md:hidden relative text-charcoal hover:text-accent-orange transition-all duration-300 p-2"
             onClick={() => setIsOpen(!isOpen)}
           >
-            <span className="absolute inset-0 rounded-full bg-terracotta-100/0 group-hover:bg-terracotta-100/30 transition-all duration-500 transform scale-0 group-hover:scale-110"></span>
-            <span className="relative">
-              {isOpen ? (
-                <X className="w-5 h-5 transition-all duration-500 transform rotate-0 hover:rotate-90" />
-              ) : (
-                <Menu className="w-5 h-5 transition-all duration-500 transform hover:scale-110" />
-              )}
-            </span>
+            {isOpen ? (
+              <X className="w-6 h-6" />
+            ) : (
+              <Menu className="w-6 h-6" />
+            )}
           </button>
         </div>
 
-        {/* Mobile Menu with elegant slide animation */}
+        {/* Mobile Menu */}
         <div
-          className={`md:hidden overflow-hidden transition-all duration-700 transform ${
+          className={`md:hidden overflow-hidden transition-all duration-300 ${
             isOpen
-              ? "max-h-96 opacity-100 translate-y-0"
-              : "max-h-0 opacity-0 -translate-y-4"
+              ? "max-h-96 opacity-100"
+              : "max-h-0 opacity-0"
           }`}
         >
-          <div className="flex flex-col space-y-6 text-center mt-8 pb-8">
-            {menuItems.map((item, index) => (
+          <div className="flex flex-col space-y-4 text-center mt-6 pb-6">
+            {menuItems.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className={`font-elegant-nav font-medium text-sm tracking-[0.1em] uppercase py-3 px-4 rounded-lg transition-all duration-500 transform hover:scale-105 hover:bg-terracotta-50/50 ${
+                className={`text-body font-medium py-2 px-4 rounded-lg transition-all duration-300 ${
                   activeSection === item.href.slice(1)
-                    ? "text-terracotta-600 bg-terracotta-50/30"
-                    : "text-elegant-dark hover:text-terracotta-600"
+                    ? "text-accent-orange bg-cream-light"
+                    : "text-charcoal hover:text-accent-orange"
                 }`}
                 onClick={() => setIsOpen(false)}
-                style={{
-                  animationDelay: `${index * 100}ms`,
-                  animation: isOpen
-                    ? "interactive-slide-up 0.6s ease-out forwards"
-                    : "none",
-                }}
               >
                 {item.name}
               </a>

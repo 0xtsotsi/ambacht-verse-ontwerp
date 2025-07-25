@@ -1,0 +1,50 @@
+You are an expert frontend developer and UI engineer assigned to refactor the Ambacht-Verse-Ontwerp GitHub Project to fully adopt the layout, visual language, and interaction principles of:
+
+🧁 The Julienne Cooking App (iOS) — clean, elegant, warm, componentized
+
+🍝 The Soprano's Catering Website — festive, well-structured, brand-forward
+
+Your mission is to make Wesley’s Ambacht website match these two sources visually, structurally, and emotionally. The goal is a beautiful, professional, and emotionally engaging catering brand site that feels delightful and artisanal.
+
+🧾 Your Requirements
+Refer to the README.md (titled: Ambacht Ui Refactor) for:
+
+🎨 Color system: drop the old Ambacht palette and apply Julienne + Sopranos colors (backgrounds, accent orange, gold highlights, cream cards)
+
+✍️ Typography: Implement Inter or SF Display with clean heading/body/small scale using Tailwind
+
+🧩 Components: Refactor Header, Pricing Matrix, Reservation Button, and About/Gallery to match layout patterns from Julienne/Sopranos
+
+📐 Layout: Use a 12-column grid system, max-w-[1200px], desktop-first design
+
+🧭 Header: full-width, centered nav, sticky with background fade
+
+💳 Pricing Matrix: 3-column, real data, hover-scale animation, no NaN
+
+🍽️ Reserve CTA: sticky pill button (bottom right), warm gradient
+
+🗂️ Who Are We / About: clear sectioning, visuals, CTA
+
+🔄 Animation: Only use framer-motion if the project already supports it. Prefer Tailwind transition, hover, ease-in-out.
+
+✅ Constraints
+Do not use Framer Motion unless already included
+
+Use Tailwind and component-based design (shadcn/ui v4 optional, not required)
+
+Avoid overengineering — focus on clean, scalable HTML/JSX
+
+The site should be desktop-first, then gracefully responsive for mobile
+
+Correct all layout bugs (icon spacing, misaligned buttons, visual inconsistencies)
+
+🧪 Deliverables
+Fully functional and visually polished UI
+
+Adheres strictly to Julienne/Sopranos aesthetic
+
+All layout bugs fixed
+
+Color system implemented in Tailwind or via CSS custom props
+
+All sections match live references in structure and visual hierarchy
