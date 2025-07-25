@@ -3,14 +3,7 @@
 export const MIN_GUEST_COUNT = 10;
 export const MAX_GUEST_COUNT = 500;
 
-export const GUEST_COUNT_PRESETS = [
-  { label: "Klein feest (10-15 gasten)", value: 12, description: "Intiem samenzijn" },
-  { label: "Gezelschap (20-30 gasten)", value: 25, description: "Familie & vrienden" },
-  { label: "Bedrijfsborrel (30-50 gasten)", value: 40, description: "Zakelijke bijeenkomst" },
-  { label: "Groot feest (50-75 gasten)", value: 60, description: "Uitgebreide viering" },
-  { label: "Event (75-150 gasten)", value: 100, description: "Grote bijeenkomst" },
-  { label: "Gala (150+ gasten)", value: 200, description: "Exclusief evenement" },
-] as const;
+export const GUEST_COUNT_PRESETS = [12, 25, 40, 60, 100, 200] as const;
 
 export const BASE_PRICE_PER_PERSON = 25;
 
@@ -18,19 +11,19 @@ export const SERVICE_TIERS = {
   essential: {
     name: "Essential",
     description: "Basis catering service",
-    multiplier: 0.8,
+    priceMultiplier: 0.8,
     features: ["Standaard menu", "Basis service", "2 uur service"]
   },
   premium: {
     name: "Premium", 
     description: "Uitgebreide catering service",
-    multiplier: 1.0,
+    priceMultiplier: 1.0,
     features: ["Uitgebreid menu", "Professionele service", "4 uur service", "Drankenpakket"]
   },
   luxury: {
     name: "Luxury",
     description: "Exclusieve catering service", 
-    multiplier: 1.4,
+    priceMultiplier: 1.4,
     features: ["Luxe menu", "Dedicated service", "6 uur service", "Premium drankenpakket", "Live cooking"]
   }
 } as const;
@@ -39,21 +32,25 @@ export const SERVICE_CATEGORIES = {
   corporate: {
     name: "Zakelijk",
     description: "Bedrijfsevents en zakelijke bijeenkomsten",
+    basePrice: 25,
     multiplier: 1.1
   },
   private: {
     name: "Privé",
     description: "Privé feesten en familiebijeenkomsten", 
+    basePrice: 25,
     multiplier: 1.0
   },
   wedding: {
     name: "Bruiloft",
     description: "Trouwfeesten en huwelijksrecepties",
+    basePrice: 25,
     multiplier: 1.3
   },
   celebration: {
     name: "Viering",
     description: "Verjaardag, jubileum en andere vieringen",
+    basePrice: 25,
     multiplier: 1.15
   }
 } as const;
@@ -79,9 +76,9 @@ export const getAllServiceCategories = (): ServiceCategory[] =>
   Object.keys(SERVICE_CATEGORIES).map(id => getServiceCategoryWithId(id as keyof typeof SERVICE_CATEGORIES));
 
 export const VOLUME_DISCOUNTS = [
-  { threshold: 50, discount: 0.05, label: "5% korting vanaf 50 gasten" },
-  { threshold: 100, discount: 0.08, label: "8% korting vanaf 100 gasten" },
-  { threshold: 200, discount: 0.12, label: "12% korting vanaf 200 gasten" },
+  { minGuests: 50, discount: 0.05, label: "5% korting vanaf 50 gasten" },
+  { minGuests: 100, discount: 0.08, label: "8% korting vanaf 100 gasten" },
+  { minGuests: 200, discount: 0.12, label: "12% korting vanaf 200 gasten" },
 ] as const;
 
 export const ADD_ON_SERVICES = [

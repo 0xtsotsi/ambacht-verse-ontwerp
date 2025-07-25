@@ -23,8 +23,8 @@ import {
   type QuoteStatus,
 } from "@shared/schema";
 
-const sql = neon(process.env.DATABASE_URL!);
-const db = drizzle(sql);
+const neonClient = neon(process.env.DATABASE_URL!);
+const db = drizzle(neonClient);
 
 export interface IStorage {
   // User methods
@@ -265,7 +265,14 @@ export class MemStorage implements IStorage {
     const newBooking: Booking = {
       ...booking,
       id,
+      customerPhone: booking.customerPhone || null,
+      companyName: booking.companyName || null,
+      serviceTier: booking.serviceTier || "premium",
       status: booking.status || "pending",
+      specialRequests: booking.specialRequests || null,
+      dietaryRestrictions: booking.dietaryRestrictions || null,
+      estimatedTotal: booking.estimatedTotal || null,
+      finalTotal: booking.finalTotal || null,
       createdAt: new Date(),
       updatedAt: new Date(),
       confirmedAt: null,
@@ -340,7 +347,9 @@ export class MemStorage implements IStorage {
     const newQuote: Quote = {
       ...quote,
       id,
+      bookingId: quote.bookingId || null,
       status: quote.status || "draft",
+      selectedAddOns: quote.selectedAddOns || "[]",
       createdAt: new Date(),
       updatedAt: new Date(),
       sentAt: null,

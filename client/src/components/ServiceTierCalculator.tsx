@@ -34,11 +34,7 @@ interface ServiceTierCalculatorProps {
 export const ServiceTierCalculator = memo<ServiceTierCalculatorProps>(
   ({ tier, serviceCategory, guestCount: initialGuestCount, onPriceChange }) => {
     // Component tracking
-    const tracking = useComponentTracking("ServiceTierCalculator", {
-      enableRenderLogging: true,
-      enablePerformanceLogging: true,
-      dependencies: [tier.id, serviceCategory.id, initialGuestCount],
-    });
+    const tracking = useComponentTracking("ServiceTierCalculator");
 
     const [guestCount, setGuestCount] = useState(initialGuestCount);
     const [showDetails, setShowDetails] = useState(false);
