@@ -5,12 +5,16 @@ import { Hero } from "@/components/Hero";
 import { SopranoServicesSection } from "@/components/SopranoServicesSection";
 import { CateringMenuCarousel } from "@/components/CateringMenuCarousel";
 import { CTASection } from "@/components/CTASection";
+import { EnhancedCTA } from "@/components/EnhancedCTA";
+import { StatsSection } from "@/components/CounterAnimation";
 import { FeatureSection } from "@/components/FeatureSection";
 import { Services } from "@/components/Services";
 import { Footer } from "@/components/Footer";
 import { FloatingBookingWidget } from "@/components/FloatingBookingWidget";
 import { DateCheckerModal } from "@/components/DateCheckerModal";
 import { StepByStepQuoteCalculator } from "@/components/variations/quote-calculator-001-step-by-step";
+import { ScrollProgress } from "@/components/ScrollProgress";
+import { ScrollTextReveal } from "@/components/ScrollProgress";
 import { useToast } from "@/hooks/use-toast";
 import type { QuoteBreakdown, QuoteInput } from "@/lib/quote-calculations";
 
@@ -71,12 +75,16 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <ScrollProgress />
       <Navigation />
       <Hero />
       <SopranosNavigation />
       <SopranoServicesSection />
       <CateringMenuCarousel />
-      <CTASection />
+      <ScrollTextReveal>
+        <EnhancedCTA />
+      </ScrollTextReveal>
+      <StatsSection />
       <FeatureSection />
       <Services />
       <Footer />
