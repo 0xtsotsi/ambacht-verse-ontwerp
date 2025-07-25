@@ -17,15 +17,10 @@ export const ServiceSection = () => {
     <section className="section-spacing" style={{ backgroundColor: '#F0F4F8' }}>
       <div className="container-main text-center">
         {/* Header Banner */}
-        <div className="bg-gradient-to-r from-orange-500/20 via-amber-400/20 to-orange-500/20 backdrop-blur-sm py-16 mb-20 rounded-2xl relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-r from-orange-600/10 to-amber-500/10 animate-pulse"></div>
+        <div className="bg-[#FF6B35]/10 backdrop-blur-sm py-16 mb-20 rounded-2xl relative overflow-hidden">
           <div className="relative z-10">
-            <div className="flex items-center justify-center mb-4">
-              <Sparkles className="w-8 h-8 text-orange-500 mr-3 animate-bounce" />
-              <h2 className="text-display text-gray-800 mb-0">LENTE SPECIALS MENU</h2>
-              <Sparkles className="w-8 h-8 text-orange-500 ml-3 animate-bounce" />
-            </div>
-            <Button className="bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white px-8 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300">
+            <h2 className="text-display text-gray-800 mb-6">LENTE SPECIALS MENU</h2>
+            <Button className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white px-8 py-3 rounded-full shadow-lg transform hover:scale-105 transition-all duration-300">
               Bekijk Specials
             </Button>
           </div>
@@ -48,12 +43,12 @@ export const ServiceSection = () => {
                 key={service.id}
                 className={`px-8 py-6 rounded-2xl font-semibold transition-all duration-500 flex items-center space-x-3 group relative overflow-hidden ${
                   activeService === service.id
-                    ? `bg-gradient-to-r ${service.gradient} text-white shadow-2xl scale-105`
-                    : 'bg-white text-gray-700 hover:text-white border border-gray-200 hover:border-transparent shadow-lg hover:shadow-2xl hover:scale-105'
+                    ? 'bg-[#FF6B35] text-white shadow-2xl scale-105'
+                    : 'bg-white text-gray-700 hover:text-white border border-gray-200 hover:border-transparent shadow-lg hover:shadow-2xl hover:scale-105 hover:bg-[#FF6B35]'
                 }`}
                 onClick={() => setActiveService(service.id)}
               >
-                <div className={`absolute inset-0 bg-gradient-to-r ${service.gradient} opacity-0 group-hover:opacity-100 transition-opacity duration-500`}></div>
+                <div className="absolute inset-0 bg-[#FF6B35] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                 <span className="relative z-10 transform group-hover:scale-110 transition-transform duration-300">
                   {service.icon}
                 </span>

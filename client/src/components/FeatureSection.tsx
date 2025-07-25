@@ -41,16 +41,12 @@ export const FeatureSection = () => {
     <section className="section-spacing bg-gradient-to-br from-gray-50 via-orange-50/30 to-amber-50/30 relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-br from-orange-100/10 to-amber-100/10"></div>
-      <div className="absolute top-20 right-20 w-64 h-64 bg-gradient-to-br from-orange-300/20 to-amber-300/20 rounded-full blur-3xl animate-pulse"></div>
+      <div className="absolute top-20 right-20 w-64 h-64 bg-[#FF6B35]/10 rounded-full blur-3xl animate-pulse"></div>
       
       <div className="container-main relative z-10">
         <div className="text-center mb-20">
-          <div className="flex items-center justify-center mb-6">
-            <Sparkles className="w-8 h-8 text-orange-500 mr-3 animate-bounce" />
-            <h2 className="text-5xl font-bold text-gray-800">ONZE SPECIALITEITEN</h2>
-            <Sparkles className="w-8 h-8 text-orange-500 ml-3 animate-bounce" />
-          </div>
-          <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-amber-500 mx-auto rounded-full"></div>
+          <h2 className="text-5xl font-bold text-gray-800 mb-6">ONZE SPECIALITEITEN</h2>
+          <div className="w-24 h-1 bg-[#FF6B35] mx-auto rounded-full"></div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20">
@@ -69,7 +65,7 @@ export const FeatureSection = () => {
                   className="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent group-hover:from-black/60 transition-all duration-500"></div>
-                <div className={`absolute top-4 left-4 bg-gradient-to-r ${feature.gradient} text-white p-3 rounded-full shadow-lg group-hover:scale-110 transition-transform duration-300`}>
+                <div className="absolute top-4 left-4 bg-[#FF6B35] text-white p-3 rounded-full shadow-lg group-hover:scale-110 transition-transform duration-300">
                   {feature.icon}
                 </div>
               </div>
@@ -77,15 +73,15 @@ export const FeatureSection = () => {
               {/* Content */}
               <div className="flex-1 text-center lg:text-left">
                 <div className="mb-6">
-                  <h3 className="text-3xl font-bold text-gray-800 mb-4 group-hover:text-orange-600 transition-colors duration-300">{feature.title}</h3>
-                  <div className="w-16 h-1 bg-gradient-to-r from-orange-500 to-amber-500 mx-auto lg:mx-0 rounded-full group-hover:w-24 transition-all duration-300"></div>
+                  <h3 className="text-3xl font-bold text-gray-800 mb-4 group-hover:text-[#FF6B35] transition-colors duration-300">{feature.title}</h3>
+                  <div className="w-16 h-1 bg-[#FF6B35] mx-auto lg:mx-0 rounded-full group-hover:w-24 transition-all duration-300"></div>
                 </div>
                 
                 <p className="text-lg text-gray-600 leading-relaxed mb-8">
                   {feature.description}
                 </p>
 
-                <Button className={`bg-gradient-to-r ${feature.gradient} hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-white px-8 py-3 rounded-full`}>
+                <Button className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-white px-8 py-3 rounded-full">
                   {feature.buttonText}
                 </Button>
               </div>

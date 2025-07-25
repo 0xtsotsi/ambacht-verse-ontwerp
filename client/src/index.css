@@ -7,18 +7,18 @@
 
 @layer base {
   :root {
-    /* Soprano's Catering color system */
+    /* Wesley's Ambacht color system - matching button */
     --background: #F9F6F1;
     --foreground: #2C2C2C;
     --card: #FFFFFF;
-    --accent: #E86C32;
-    --highlight: #D4B170;
+    --accent: #FF6B35;
+    --highlight: #FF6B35;
     --muted: #5F5F5F;
     --secondary: #F5E9D3;
     --error: #D45745;
     --border: #E5E5E5;
     --input: #F5F5F5;
-    --ring: #E86C32;
+    --ring: #FF6B35;
     --border-radius: 0.5rem;
   }
 
@@ -98,11 +98,11 @@
     font-family: 'Open Sans', sans-serif;
   }
 
-  /* Button Styles - Soprano's style */
+  /* Button Styles - Wesley's Ambacht style */
   .btn-primary {
-    @apply bg-accent text-white px-8 py-4 rounded-full font-semibold;
+    @apply bg-[#FF6B35] text-white px-8 py-4 rounded-full font-semibold;
     @apply transition-all duration-300 ease-in-out;
-    @apply hover:scale-105 hover:shadow-lg;
+    @apply hover:bg-[#FF6B35]/90 hover:scale-105 hover:shadow-lg;
     font-family: 'Open Sans', sans-serif;
   }
   

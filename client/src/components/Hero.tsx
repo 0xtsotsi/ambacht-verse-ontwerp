@@ -58,36 +58,13 @@ export const Hero = () => {
         </div>
       </div>
 
-      {/* Phone Number at Bottom */}
-      <div className="absolute bottom-6 left-6 text-white flex items-center space-x-3 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2 group hover:bg-orange-500/80 transition-all duration-300">
+      {/* Contact Info at Bottom */}
+      <div className="absolute bottom-6 left-6 text-white flex items-center space-x-3 bg-black/30 backdrop-blur-sm rounded-full px-4 py-2 group hover:bg-[#FF6B35]/80 transition-all duration-300">
         <Phone className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
         <span className="text-lg font-semibold">06 212 226 58</span>
       </div>
 
-      {/* Social Icons at Bottom Right */}
-      <div className="absolute bottom-6 right-6 flex space-x-4">
-        <a href="mailto:info@ambachtbijwesley.nl" className="text-white hover:text-orange-400 transition-all duration-300 bg-black/30 backdrop-blur-sm rounded-full p-3 group hover:bg-orange-500/80">
-          <Mail className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
-        </a>
-        <a href="#" className="text-white hover:text-blue-400 transition-all duration-300 bg-black/30 backdrop-blur-sm rounded-full p-3 group hover:bg-blue-500/80">
-          <Facebook className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
-        </a>
-        <a href="#" className="text-white hover:text-pink-400 transition-all duration-300 bg-black/30 backdrop-blur-sm rounded-full p-3 group hover:bg-pink-500/80">
-          <Instagram className="w-6 h-6 group-hover:scale-110 transition-transform duration-300" />
-        </a>
-      </div>
 
-      {/* Quality Badges */}
-      <div className="absolute top-6 right-6 flex flex-col space-y-3">
-        <div className="bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-full px-4 py-2 flex items-center space-x-2 shadow-lg animate-pulse">
-          <Star className="w-4 h-4 fill-current" />
-          <span className="text-sm font-semibold">Premium Kwaliteit</span>
-        </div>
-        <div className="bg-gradient-to-r from-green-400 to-emerald-500 text-white rounded-full px-4 py-2 flex items-center space-x-2 shadow-lg animate-pulse">
-          <Award className="w-4 h-4 fill-current" />
-          <span className="text-sm font-semibold">Ambachtelijk</span>
-        </div>
-      </div>
     </section>
   );
 };
