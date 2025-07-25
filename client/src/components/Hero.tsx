@@ -97,9 +97,9 @@ export const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll Arrow - exact Soprano's cut-out style */}
+      {/* Scroll Arrow - exact Soprano's style */}
       <div 
-        className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 z-20 cursor-pointer group"
+        className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 cursor-pointer group animate-bounce"
         onClick={() => {
           const servicesSection = document.querySelector('[data-section="services"]');
           if (servicesSection) {
@@ -107,14 +107,8 @@ export const Hero = () => {
           }
         }}
       >
-        <div 
-          className="w-16 h-16 bg-white flex items-center justify-center hover:bg-gray-50 transition-all duration-300 shadow-xl"
-          style={{
-            clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-            transform: 'rotate(180deg)'
-          }}
-        >
-          <ChevronDown className="w-6 h-6 text-gray-700 group-hover:text-[#E86C32] transition-colors duration-300" style={{ transform: 'rotate(180deg)' }} />
+        <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all duration-300 shadow-lg group-hover:scale-110">
+          <ChevronDown className="w-6 h-6 text-white group-hover:text-[#E86C32] transition-colors duration-300" />
         </div>
       </div>
     </section>

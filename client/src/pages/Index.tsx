@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { Hero } from "@/components/Hero";
-import { ServiceSection } from "@/components/ServiceSection";
+import { SopranoServicesSection } from "@/components/SopranoServicesSection";
 import { CTASection } from "@/components/CTASection";
 import { FeatureSection } from "@/components/FeatureSection";
 import { Services } from "@/components/Services";
@@ -71,7 +71,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       <Hero />
-      <ServiceSection />
+      <SopranoServicesSection />
       <CTASection />
       <FeatureSection />
       <Services />

@@ -59,7 +59,7 @@ export const Gallery = memo(() => {
         description: "Broodjes hamburger, pulled chicken en kipsaté",
         type: "BBQ Events",
         height: "h-64",
-        image: "/attached_assets/1000005931_1753439577477.jpg"
+        image: "/attached_assets/1000005907_1753439577476.jpg"
       },
       {
         id: 2,
@@ -68,7 +68,7 @@ export const Gallery = memo(() => {
         description: "Artisanale vleeswaren en kazen",
         type: "Corporate Catering",
         height: "h-80",
-        image: "/attached_assets/1000005871_1753439577475.jpg"
+        image: "/attached_assets/1000005886_1753439577476.jpg"
       },
       {
         id: 3,
@@ -77,7 +77,7 @@ export const Gallery = memo(() => {
         description: "Dagvers bereid met lokale ingrediënten",
         type: "Healthy Options",
         height: "h-64",
-        image: "/attached_assets/1000005684_1753439577478.jpg"
+        image: "/attached_assets/1000005737_1753439577482.jpg"
       },
       {
         id: 4,
@@ -86,7 +86,7 @@ export const Gallery = memo(() => {
         description: "Kleurrijke fruitschaal met verse kruiden",
         type: "Healthy Catering",
         height: "h-72",
-        image: "/attached_assets/1000005916_1753439577477.jpg"
+        image: "/attached_assets/1000005722_1753439577481.jpg"
       },
       {
         id: 5,
@@ -95,7 +95,7 @@ export const Gallery = memo(() => {
         description: "Vers belegde broodjes voor lunch catering",
         type: "Lunch Service",
         height: "h-60",
-        image: "/attached_assets/1000005760_1753439577478.jpg"
+        image: "/attached_assets/1000005705_1753439577479.jpg"
       },
       {
         id: 6,
@@ -104,7 +104,7 @@ export const Gallery = memo(() => {
         description: "Verse zalm en andere visspecialiteiten",
         type: "Premium Catering",
         height: "h-68",
-        image: "/attached_assets/1000005739_1753439577480.jpg"
+        image: "/attached_assets/1000005727_1753439577481.jpg"
       },
       {
         id: 7,
