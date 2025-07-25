@@ -1,6 +1,5 @@
-import { drizzle } from "drizzle-orm/neon-http";
-import { neon } from "@neondatabase/serverless";
 import { eq, gte, lte, and, desc, asc, sql } from "drizzle-orm";
+import { db } from "./db";
 import {
   users,
   bookings,
@@ -22,9 +21,6 @@ import {
   type BookingStatus,
   type QuoteStatus,
 } from "@shared/schema";
-
-const neonClient = neon(process.env.DATABASE_URL!);
-const db = drizzle(neonClient);
 
 export interface IStorage {
   // User methods
@@ -120,17 +116,18 @@ export class DatabaseStorage implements IStorage {
 
   // Availability methods
   async getAvailabilitySlots(startDate?: string, endDate?: string): Promise<AvailabilitySlot[]> {
-    let query = db.select().from(availabilitySlots);
-    
     const conditions = [];
     if (startDate) conditions.push(gte(availabilitySlots.date, startDate));
     if (endDate) conditions.push(lte(availabilitySlots.date, endDate));
     
     if (conditions.length > 0) {
-      query = query.where(and(...conditions));
+      return await db.select().from(availabilitySlots)
+        .where(and(...conditions))
+        .orderBy(asc(availabilitySlots.date), asc(availabilitySlots.timeSlot));
+    } else {
+      return await db.select().from(availabilitySlots)
+        .orderBy(asc(availabilitySlots.date), asc(availabilitySlots.timeSlot));
     }
-    
-    return await query.orderBy(asc(availabilitySlots.date), asc(availabilitySlots.timeSlot));
   }
 
   async getAvailableTimeSlots(date: string): Promise<AvailabilitySlot[]> {
