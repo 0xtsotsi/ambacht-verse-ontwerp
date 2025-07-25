@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Home, Users, Image, Heart, Flame, Phone, ChefHat } from "lucide-react";
+import { Link } from "wouter";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,7 +11,7 @@ export const Navigation = () => {
     { name: "HOME", href: "#home" },
     { name: "SERVICES", href: "#services" },
     { name: "GALERIJ", href: "#gallery" },
-    { name: "EVENEMENTEN", href: "#events" },
+    { name: "BRUILOFTEN", href: "/wedding" },
     { name: "BBQ CATERING", href: "#bbq" },
     { name: "CONTACT", href: "#contact" },
   ];
@@ -47,17 +48,31 @@ export const Navigation = () => {
           {/* Desktop Menu - Soprano's style horizontal nav */}
           <div className="hidden lg:flex items-center space-x-12">
             {menuItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className={`text-sm font-medium tracking-widest transition-colors duration-300 relative group ${
-                  scrolled ? "text-gray-700 hover:text-[#E86C32]" : "text-white hover:text-[#D4AF37]"
-                }`}
-                style={{ fontFamily: 'Open Sans, sans-serif' }}
-              >
-                {item.name}
-                <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E86C32] group-hover:w-full transition-all duration-300"></div>
-              </a>
+              item.href.startsWith('/') ? (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className={`text-sm font-medium tracking-widest transition-colors duration-300 relative group ${
+                    scrolled ? "text-gray-700 hover:text-[#E86C32]" : "text-white hover:text-[#D4AF37]"
+                  }`}
+                  style={{ fontFamily: 'Open Sans, sans-serif' }}
+                >
+                  {item.name}
+                  <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E86C32] group-hover:w-full transition-all duration-300"></div>
+                </Link>
+              ) : (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  className={`text-sm font-medium tracking-widest transition-colors duration-300 relative group ${
+                    scrolled ? "text-gray-700 hover:text-[#E86C32]" : "text-white hover:text-[#D4AF37]"
+                  }`}
+                  style={{ fontFamily: 'Open Sans, sans-serif' }}
+                >
+                  {item.name}
+                  <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-[#E86C32] group-hover:w-full transition-all duration-300"></div>
+                </a>
+              )
             ))}
           </div>
 

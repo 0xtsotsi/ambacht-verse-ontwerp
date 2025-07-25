@@ -4,6 +4,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Router, Route } from "wouter";
 import Index from "./pages/Index";
+import { WeddingPage } from "./pages/WeddingPage";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -15,6 +16,7 @@ const App = () => (
       <Sonner />
       <Router>
         <Route path="/" component={Index} />
+        <Route path="/wedding" component={WeddingPage} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" component={NotFound} />
       </Router>

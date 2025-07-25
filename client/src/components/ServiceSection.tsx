@@ -99,16 +99,7 @@ export const ServiceSection = () => {
               </Button>
             </div>
             
-            {/* Scroll Arrow - exactly like Soprano's */}
-            <div 
-              className="absolute bottom-6 left-1/2 transform -translate-x-1/2 cursor-pointer group arrow-pulse"
-              onClick={scrollToDiscover}
-            >
-              <div className="w-14 h-14 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center transition-all duration-300 group-hover:bg-white/40 group-hover:scale-125 shadow-lg group-hover:shadow-xl">
-                <ChevronDown className="w-7 h-7 text-white transition-transform duration-300 group-hover:scale-110" />
-              </div>
-              <div className="absolute inset-0 bg-white/10 rounded-full animate-ping"></div>
-            </div>
+
           </div>
         </div>
 

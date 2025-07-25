@@ -97,9 +97,25 @@ export const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll down indicator - like Soprano's */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white animate-bounce">
-        <ChevronDown className="w-8 h-8" />
+      {/* Scroll Arrow - exact Soprano's cut-out style */}
+      <div 
+        className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 z-20 cursor-pointer group"
+        onClick={() => {
+          const servicesSection = document.querySelector('[data-section="services"]');
+          if (servicesSection) {
+            servicesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }
+        }}
+      >
+        <div 
+          className="w-16 h-16 bg-white flex items-center justify-center hover:bg-gray-50 transition-all duration-300 shadow-xl"
+          style={{
+            clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
+            transform: 'rotate(180deg)'
+          }}
+        >
+          <ChevronDown className="w-6 h-6 text-gray-700 group-hover:text-[#E86C32] transition-colors duration-300" style={{ transform: 'rotate(180deg)' }} />
+        </div>
       </div>
     </section>
   );
