@@ -39,7 +39,7 @@ export const Hero = () => {
 
           {/* Main Title */}
           <h1 className="text-display text-white mb-6">
-            WESLEY'S AMBACHT
+            WESLEY'S CATERING
           </h1>
 
           {/* Subtitle */}
@@ -59,7 +59,17 @@ export const Hero = () => {
 
       {/* Phone Number at Bottom */}
       <div className="absolute bottom-6 left-6 text-white flex items-center space-x-2">
-        <span className="text-lg font-semibold">06 212 226 58</span>
+        <span className="text-lg font-semibold">📞 1 (800) WE-CATER</span>
+      </div>
+
+      {/* Social Icons at Bottom Right */}
+      <div className="absolute bottom-6 right-6 flex space-x-4">
+        <a href="#" className="text-white hover:text-highlight transition-colors duration-300">
+          <span className="text-2xl">📘</span>
+        </a>
+        <a href="#" className="text-white hover:text-highlight transition-colors duration-300">
+          <span className="text-2xl">📷</span>
+        </a>
       </div>
     </section>
   );

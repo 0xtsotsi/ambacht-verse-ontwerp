@@ -33,12 +33,9 @@ export const Navigation = () => {
       <div className="container-main">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <div className="flex items-center space-x-3">
-            <div className="w-12 h-12 rounded-full border-2 border-[#D4B170] bg-transparent flex items-center justify-center">
-              <div className="text-[#D4B170] font-bold text-lg">WA</div>
-            </div>
-            <h1 className="text-2xl font-bold text-foreground" style={{ fontFamily: 'Playfair Display, serif' }}>
-              Wesley's Ambacht
+          <div className="flex items-center">
+            <h1 className="text-2xl font-bold text-foreground" style={{ fontFamily: 'Dancing Script, cursive' }}>
+              Wesley's Catering
             </h1>
           </div>
 

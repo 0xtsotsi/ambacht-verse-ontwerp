@@ -117,7 +117,7 @@ export function DateCheckerModal({
   // Memoized price calculation to avoid recalculation on every render
   const estimatedPrice = useMemo(() => {
     // Using 'social' category and 'basis' tier as defaults for simple DateChecker
-    return calculateEstimatedPrice(guestCount[0], "premium", "private");
+    return calculateEstimatedPrice("social", "basis", guestCount[0]);
   }, [guestCount]);
 
   const handleConfirm = () => {
