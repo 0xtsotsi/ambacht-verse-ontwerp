@@ -35,12 +35,13 @@ export const WeddingPage = () => {
       subtitle: "BUFFET STYLE",
       price: "€46",
       image: buffetImage,
-      description: "Includes Garden Field Green Salad with house made Balsamic Vinaigrette and Ranch Dressing",
-      details: "Add to your charcuterie and fresh fruit station to include additional items from our selection of enhancements",
+      description: "Inclusief artisanale charcuterieplank en verse fruitschaal bij aankomst, huisgemaakte balsamico vinaigrette en ranch dressing",
+      details: "Uitbreiding mogelijk met premium kazen, truffel mac & cheese, en seizoensspecialiteiten uit onze enhancement collectie",
       menu: {
-        pasta: ["Meat Sauce", "Tomato Basil", "Alfredo", "Primavera", "Palomino", "Pesto", "Wild Mushroom"],
-        entrees: ["Chicken Piccata", "Champagne Chicken", "Chicken Marsala", "Chicken Parmesan", "Chicken Florentine"],
-        sides: ["Roasted Red Skins", "Sour Cream & Chive Mashed", "Roasted Rosemary", "Roasted Sweet & White", "Wild Rice", "Rice Pilaf"]
+        voorgerechten: ["Caviar-topped Deviled Eggs", "Iberico Ham Crostini", "Prosciutto-wrapped Figs", "Artisanale Charcuterie", "Oyster Station"],
+        hoofdgerechten: ["Rack of Lamb met kruiden", "Plantain-crusted Yellowtail", "Prime NY Strip Steak", "Lobster Mac & Cheese", "Duck Confit"],
+        bijgerechten: ["Truffle Roasted Potatoes", "Wild Mushroom Risotto", "Roasted Brussels Sprouts", "Seasonal Vegetables", "Wild Rice Pilaf"],
+        desserts: ["Chocolate Lava Cake", "Tiramisu Trifle", "Flambéed Bananas Foster", "Artisanal Gelato Bar"]
       }
     },
     family: {
@@ -48,25 +49,27 @@ export const WeddingPage = () => {
       subtitle: "FAMILY STYLE", 
       price: "€49",
       image: familyImage,
-      description: "Includes Garden Field Green Salad with house made Balsamic Vinaigrette and Ranch Dressing",
-      details: "Add to your charcuterie and fresh fruit station to include additional items from our selection of enhancements",
+      description: "Warmhartige gedeelde maaltijd ervaring met premium ingrediënten, perfect voor intieme bruiloften en familiebijeenkomsten",
+      details: "Grote communale schalen die interactie bevorderen, inclusief tableside service en premium presentatie",
       menu: {
-        pasta: ["Meat Sauce", "Tomato Basil", "Alfredo", "Primavera", "Palomino", "Pesto", "Wild Mushroom"],
-        entrees: ["Chicken Piccata", "Champagne Chicken", "Chicken Marsala", "Chicken Parmesan", "Chicken Florentine"],
-        sides: ["Roasted Red Skins", "Sour Cream & Chive Mashed", "Roasted Rosemary", "Roasted Sweet & White", "Wild Rice", "Rice Pilaf"]
+        voorgerechten: ["Korean Corn Dogs", "Gourmet Ramen Station", "Build-Your-Own Caviar Service", "Mini Taco Assembly", "Premium Popcorn Bar"],
+        hoofdgerechten: ["Tomahawk Steak Carving", "Giant Parmesan Wheel Pasta", "Champagne Chicken", "Chicken Florentine", "Wild Mushroom Risotto"],
+        bijgerechten: ["Family-Style Comfort Classics", "Roasted Rosemary Potatoes", "Seasonal Vegetable Medley", "Artisanal Bread Service"],
+        desserts: ["S'mores Station", "Chocolate-covered Strawberries", "Wedding Cake Service", "Late-night Truffle Fries"]
       }
     },
     plated: {
       title: "Individual Service",
-      subtitle: "PLATED",
+      subtitle: "PLATED ELEGANCE",
       price: "€52",
       image: buffetImage,
-      description: "Includes Garden Field Green Salad with house made Balsamic Vinaigrette and Ranch Dressing",
-      details: "Add to your charcuterie and fresh fruit station to include additional items from our selection of enhancements",
+      description: "Sophisticated 3-5 course plated dinner met fotografisch perfecte presentatie en premium service",
+      details: "Multi-course ervaring met wine pairings, sommelier service en personalized menu cards voor elke gast",
       menu: {
-        pasta: ["Meat Sauce", "Tomato Basil", "Alfredo", "Primavera", "Palomino", "Pesto", "Wild Mushroom"],
-        entrees: ["Chicken Piccata", "Champagne Chicken", "Chicken Marsala", "Chicken Parmesan", "Chicken Florentine"],
-        sides: ["Roasted Red Skins", "Sour Cream & Chive Mashed", "Roasted Rosemary", "Roasted Sweet & White", "Wild Rice", "Rice Pilaf"]
+        voorgerechten: ["Coffin Bay King Oysters", "Pecorino & Truffle Honey Crostini", "Shrimp & Lobster Cocktail", "Korean-fusion Amuse Bouche"],
+        hoofdgerechten: ["Earl Grey-infused Proteins", "Mediterranean-Asian Fusion", "Premium Seafood Selection", "Vegetarian Luxury Options"],
+        bijgerechten: ["Porcini Roasted Potatoes", "Roasted Sweet & White Potatoes", "Seasonal Microgreens", "Edible Art Displays"],
+        desserts: ["Hand-painted Macarons", "Earl Grey Wedding Cake", "Adaptogenic Mocktails", "Premium Chocolate Truffles"]
       }
     }
   };
@@ -106,19 +109,13 @@ export const WeddingPage = () => {
           </h1>
         </div>
 
-        {/* Scroll Arrow */}
+        {/* Scroll Arrow - Elegant Round Cutout */}
         <div 
-          className="absolute -bottom-8 left-1/2 transform -translate-x-1/2 z-20 cursor-pointer group"
+          className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 cursor-pointer group"
           onClick={scrollToPackages}
         >
-          <div 
-            className="w-16 h-16 bg-white flex items-center justify-center hover:bg-gray-50 transition-all duration-300 shadow-xl"
-            style={{
-              clipPath: 'polygon(50% 0%, 0% 100%, 100% 100%)',
-              transform: 'rotate(180deg)'
-            }}
-          >
-            <ChevronDown className="w-6 h-6 text-gray-700 group-hover:text-[#E86C32] transition-colors duration-300" style={{ transform: 'rotate(180deg)' }} />
+          <div className="w-12 h-12 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center hover:bg-white/30 transition-all duration-300 shadow-lg group-hover:scale-110">
+            <ChevronDown className="w-6 h-6 text-white group-hover:text-[#E86C32] transition-colors duration-300" />
           </div>
         </div>
       </section>
@@ -231,32 +228,40 @@ export const WeddingPage = () => {
                       {packages[activePackage as keyof typeof packages].subtitle} - {packages[activePackage as keyof typeof packages].price} / PERSOON
                     </h6>
                     
-                    {/* Menu Items */}
+                    {/* Package Description */}
                     <div className="space-y-6">
                       <div>
-                        <h4 className="font-bold text-gray-900 mb-2 block">PASTA (SELECTEER 1)</h4>
-                        <div className="grid grid-cols-2 gap-1">
-                          {packages[activePackage as keyof typeof packages].menu.pasta.map((item, idx) => (
-                            <p key={idx} className="text-sm text-gray-600">{item}</p>
-                          ))}
+                        <h4 className="font-bold text-gray-900 mb-4">PACKAGE INCLUSIEF:</h4>
+                        <div className="space-y-2 text-sm text-gray-600">
+                          <p>• Artisanale charcuterieplank en verse fruitschaal bij aankomst</p>
+                          <p>• Premium ingrediënten en seizoensspecialiteiten</p>
+                          <p>• Volledige opstelling en afbraak service</p>
+                          <p>• Bruiloft china, zilverwerk, en linnen servetten</p>
+                          <p>• Geüniformeerde servers (tot 5 uur service)</p>
+                          <p>• Linnen voor food display tafels</p>
+                          <p>• Professionele taart snijservice</p>
                         </div>
                       </div>
                       
                       <div>
-                        <h4 className="font-bold text-gray-900 mb-2 block">HOOFDGERECHTEN (SELECTEER 2)</h4>
-                        <div className="grid grid-cols-1 gap-1">
-                          {packages[activePackage as keyof typeof packages].menu.entrees.map((item, idx) => (
-                            <p key={idx} className="text-sm text-gray-600">{item}</p>
-                          ))}
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <h4 className="font-bold text-gray-900 mb-2 block">AARDAPPEL / RIJST (SELECTEER 1)</h4>
-                        <div className="grid grid-cols-2 gap-1">
-                          {packages[activePackage as keyof typeof packages].menu.sides.map((item, idx) => (
-                            <p key={idx} className="text-sm text-gray-600">{item}</p>
-                          ))}
+                        <h4 className="font-bold text-gray-900 mb-4">LUXURY MENU SELECTIES:</h4>
+                        <div className="grid grid-cols-1 gap-3 text-sm text-gray-600">
+                          <div>
+                            <span className="font-semibold text-[#E86C32]">Premium Voorgerechten:</span>
+                            <span className="ml-2">Caviar service, Iberico ham, artisanale charcuterie</span>
+                          </div>
+                          <div>
+                            <span className="font-semibold text-[#E86C32]">Signature Hoofdgerechten:</span>
+                            <span className="ml-2">Rack of lamb, prime steak, lobster specialiteiten</span>
+                          </div>
+                          <div>
+                            <span className="font-semibold text-[#E86C32]">Gourmet Bijgerechten:</span>
+                            <span className="ml-2">Truffle potatoes, wild mushroom risotto, seasonal vegetables</span>
+                          </div>
+                          <div>
+                            <span className="font-semibold text-[#E86C32]">Artisanale Desserts:</span>
+                            <span className="ml-2">Chocolate lava cake, flambéed specialiteiten, gelato bar</span>
+                          </div>
                         </div>
                       </div>
                     </div>

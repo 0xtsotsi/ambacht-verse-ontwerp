@@ -1,0 +1,228 @@
+Primary Colors
+
+Warm Cream - #F8F6F0 (Primary background, clean surfaces, and card backgrounds)
+Rich Charcoal - #2C2925 (Primary brand color for headers, navigation, and emphasis)
+
+Secondary Colors
+
+Warm Orange - #D2691E (For call-to-action buttons and active states)
+Soft Peach - #F5E6D3 (For hover states, highlights, and secondary backgrounds)
+
+Accent Colors
+
+Golden Amber - #E6A756 (For important actions, notifications, and premium features)
+Deep Sage - #8B9A7A (For success states and fresh, natural elements)
+
+Functional Colors
+
+Success Green - #7A8471 (For confirmations and completed bookings)
+Alert Red - #C65D40 (For errors and urgent notifications)
+Neutral Gray - #A89F96 (For secondary text and inactive states)
+Dark Brown - #3D342A (For primary text and important content)
+
+Background Colors
+
+Pure Cream - #FEFCF8 (Main app background and content areas)
+Warm White - #F9F7F3 (Card backgrounds and elevated surfaces)
+Deep Charcoal - #1A1611 (For dark sections and footer areas)
+
+Typography
+Font Family
+
+Primary Font: Crimson Text (Editorial headers and brand elements)
+Secondary Font: Inter (Body text and UI elements)
+Alternative Font: Georgia (Web fallback for headers)
+
+Font Weights
+
+Light: 300
+Regular: 400
+Medium: 500
+Semibold: 600
+Bold: 700
+
+Text Styles
+Headings
+
+H1: 36px/42px, Bold, Letter spacing -0.3px
+
+Used for page titles and main headers
+
+
+H2: 28px/34px, Semibold, Letter spacing -0.2px
+
+Used for section headers and service categories
+
+
+H3: 22px/28px, Medium, Letter spacing -0.1px
+
+Used for subsection headers and card titles
+
+
+
+Body Text
+
+Body Large: 18px/26px, Regular, Letter spacing 0px
+
+Primary content and service descriptions
+
+
+Body: 16px/22px, Regular, Letter spacing 0px
+
+Standard text for most content areas
+
+
+Body Small: 14px/20px, Regular, Letter spacing 0.1px
+
+Secondary information and supporting details
+
+
+
+Special Text
+
+Caption: 13px/18px, Medium, Letter spacing 0.3px
+
+Used for metadata, timestamps, and labels
+
+
+Button Text: 16px/24px, Semibold, Letter spacing 0.2px
+
+Used for all interactive buttons and CTAs
+
+
+Link Text: 16px/22px, Medium, Letter spacing 0px, Warm Orange
+
+Clickable text throughout the application
+
+
+
+Component Styling
+Buttons
+
+Primary Button
+
+Background: Warm Orange (#D2691E)
+Text: Warm White (#F9F7F3)
+Height: 52dp
+Corner Radius: 12dp
+Padding: 20dp horizontal, 16dp vertical
+Shadow: Y-offset 2dp, Blur 6dp, Opacity 12%
+
+
+Secondary Button
+
+Border: 2dp Warm Orange (#D2691E)
+Text: Warm Orange (#D2691E)
+Background: Transparent
+Height: 52dp
+Corner Radius: 12dp
+Padding: 18dp horizontal
+
+
+Ghost Button
+
+Text: Rich Charcoal (#2C2925)
+Background: Soft Peach (#F5E6D3)
+Height: 48dp
+Corner Radius: 8dp
+
+
+
+Cards
+
+Recipe/Service Cards
+
+Background: Warm White (#F9F7F3)
+Shadow: Y-offset 4dp, Blur 12dp, Opacity 8%
+Corner Radius: 16dp
+Padding: 20dp
+Border: 1dp Soft Peach (#F5E6D3) on hover
+
+
+Feature Cards
+
+Background: Pure Cream (#FEFCF8)
+Shadow: Y-offset 2dp, Blur 8dp, Opacity 6%
+Corner Radius: 20dp
+Padding: 24dp
+
+
+
+Input Fields
+
+Standard Input
+
+Height: 56dp
+Corner Radius: 12dp
+Border: 1.5dp Neutral Gray (#A89F96)
+Active Border: 2dp Warm Orange (#D2691E)
+Background: Warm White (#F9F7F3)
+Text: Dark Brown (#3D342A)
+Placeholder: Neutral Gray (#A89F96)
+
+
+Textarea
+
+Min Height: 120dp
+Corner Radius: 12dp
+Padding: 16dp
+Same border and color treatment as standard input
+
+
+
+Icons
+
+Primary Icons: 24dp x 24dp
+Small Icons: 20dp x 20dp
+Navigation Icons: 28dp x 28dp
+Feature Icons: 32dp x 32dp
+Primary color: Rich Charcoal (#2C2925)
+Secondary color: Neutral Gray (#A89F96)
+Accent color: Warm Orange (#D2691E)
+
+Spacing System
+
+2dp - Micro spacing (tight element relationships)
+8dp - Small spacing (internal component padding)
+16dp - Default spacing (standard margins and gaps)
+24dp - Medium spacing (section separation)
+32dp - Large spacing (major content blocks)
+48dp - Extra large spacing (page sections)
+64dp - Maximum spacing (hero sections)
+
+Motion & Animation
+
+Subtle Transition: 250ms, Ease-out curve
+Emphasis Transition: 350ms, Custom cubic-bezier(0.25, 0.8, 0.25, 1)
+Microinteractions: 150ms, Ease-in-out
+Page Transitions: 400ms, Custom cubic-bezier(0.2, 0.8, 0.2, 1)
+Hover States: 200ms, Ease-out
+
+Image Treatment
+
+Food Photography: High-contrast, warm color grading
+Corner Radius: 12dp for standard images, 20dp for hero images
+Overlay Gradients: Subtle warm gradients for text readability
+Aspect Ratios: 4:3 for recipe cards, 16:9 for hero sections
+
+Special Design Elements
+Service Categories
+
+Background: Soft Peach (#F5E6D3)
+Icon Color: Warm Orange (#D2691E)
+Text: Rich Charcoal (#2C2925)
+Hover State: Golden Amber (#E6A756) background
+
+Pricing Cards
+
+Standard: Warm White background
+Featured: Golden Amber accent border
+Premium: Rich Charcoal background with Warm Cream text
+
+Navigation
+
+Active State: Warm Orange (#D2691E)
+Inactive State: Neutral Gray (#A89F96)
+Hover State: Golden Amber (#E6A756)
+
+This design system creates a warm, premium, and artisanal feeling that reflects both the sophisticated food app aesthetic and the high-quality catering service positioning of Soprano's Catering, emphasizing craftsmanship, quality, and culinary expertise.
