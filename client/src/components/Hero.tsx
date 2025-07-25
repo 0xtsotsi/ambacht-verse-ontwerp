@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 import { Phone, Instagram, Facebook, ChevronDown } from "lucide-react";
+import { ScrollIndicator } from "./LuxuryAnimations";
 import heroImage from "@assets/1000005907_1753439577476.jpg";
 
 export const Hero = () => {
@@ -36,39 +37,38 @@ export const Hero = () => {
         isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
       }`}>
         <div className="max-w-4xl mx-auto space-y-6">
-          {/* Script Welcome Text - golden color like Soprano's */}
-          <p className="text-script mb-4" style={{ color: '#D4AF37', fontSize: '2.5rem' }}>
-            Welkom bij
+          {/* Script Text - exactly like Soprano's "Reserve Today" */}
+          <p className="text-script mb-6" style={{ 
+            color: '#D4AF37', 
+            fontSize: '2.5rem',
+            fontFamily: 'Great Vibes, cursive'
+          }}>
+            Reserveer Vandaag
           </p>
 
-          {/* Main Title - bold white like Soprano's */}
-          <h1 className="text-white mb-6" style={{ 
-            fontSize: '4.5rem', 
-            fontWeight: '900', 
-            lineHeight: '1.1',
+          {/* Main Title - exactly like Soprano's "CHECK YOUR DATE" */}
+          <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white tracking-tight" style={{ 
             fontFamily: 'Playfair Display, serif',
             textShadow: '2px 2px 4px rgba(0,0,0,0.7)',
             letterSpacing: '0.02em'
           }}>
-            WESLEY'S AMBACHT
+            CONTROLEER UW DATUM
           </h1>
 
-          {/* Subtitle - matching Soprano's paragraph style */}
-          <p className="max-w-2xl mx-auto text-white leading-relaxed mb-8" style={{
-            fontSize: '1.1rem',
+          {/* Description - matching Soprano's style */}
+          <p className="max-w-2xl mx-auto text-lg md:text-xl text-white leading-relaxed mb-8" style={{
             fontFamily: 'Open Sans, sans-serif',
-            fontWeight: '400',
-            lineHeight: '1.6',
             textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
           }}>
-            Van handmatig selecteren van onze eigen producten rechtstreeks van de lokale markt, tot het maken van onze eigen saladedressing - Wesley's Ambacht doet alles op de ambachtelijke manier. Bij Wesley's Ambacht garanderen wij dat u zult genieten van ons uitstekende eten, professionele service en concurrerende prijzen.
+            Neem vandaag contact met ons op om onze evenementenplanning te controleren en 
+            uw data te reserveren. We ontwerpen een pakket dat perfect past bij uw speciale evenement.
           </p>
 
-          {/* CTA Button - matching Soprano's orange button */}
+          {/* CTA Button - exact match to Soprano's "Contact Us" button */}
           <Button
             className="px-8 py-4 rounded-full text-white font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
             style={{
-              background: 'linear-gradient(135deg, #E86C32 0%, #FF6B35 100%)',
+              background: 'linear-gradient(135deg, #CC7A00 0%, #D4AF37 100%)',
               border: 'none',
               fontFamily: 'Open Sans, sans-serif'
             }}

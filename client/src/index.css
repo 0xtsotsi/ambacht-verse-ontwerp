@@ -5,6 +5,27 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Soprano's Luxury Color System Implementation */
+:root {
+  /* Primary Soprano's Palette - Sophisticated Elegance */
+  --sophisticated-cream: #FAF8F5;
+  --warm-gold: #D4AF37;
+  --luxe-orange: #CC7A00;
+  --elegant-charcoal: #2F2F2F;
+  --deep-bronze: #8B4513;
+  --subtle-tan: #F5E6D3;
+  --rich-brown: #5D3A00;
+  
+  /* Gradient Definitions */
+  --gold-gradient: linear-gradient(135deg, var(--luxe-orange), var(--warm-gold));
+  --elegant-gradient: linear-gradient(135deg, var(--deep-bronze), var(--rich-brown));
+  
+  /* Surface Colors */
+  --card-background: var(--sophisticated-cream);
+  --overlay-dark: rgba(47, 47, 47, 0.8);
+  --overlay-light: rgba(255, 255, 255, 0.9);
+}
+
 @layer base {
   :root {
     /* Wesley's Ambacht color system - matching button */

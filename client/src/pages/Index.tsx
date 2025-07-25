@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
+import { SopranosNavigation } from "@/components/SopranosNavigation";
 import { Hero } from "@/components/Hero";
 import { SopranoServicesSection } from "@/components/SopranoServicesSection";
 import { CateringMenuCarousel } from "@/components/CateringMenuCarousel";
@@ -72,6 +73,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Navigation />
       <Hero />
+      <SopranosNavigation />
       <SopranoServicesSection />
       <CateringMenuCarousel />
       <CTASection />

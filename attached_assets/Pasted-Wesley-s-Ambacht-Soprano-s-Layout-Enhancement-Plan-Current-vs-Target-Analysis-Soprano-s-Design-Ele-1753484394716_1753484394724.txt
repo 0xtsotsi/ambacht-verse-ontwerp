@@ -1,0 +1,650 @@
+Wesley's Ambacht → Soprano's Layout Enhancement Plan
+Current vs Target Analysis
+Soprano's Design Elements (From Screenshot)
+
+Hero Section: Full-width background with elegant table setting
+Typography: "Reserve Today" in script font, "CHECK YOUR DATE" in bold caps
+Color Scheme: Warm golds/browns with sophisticated contrast
+Navigation Pills: Rounded button navigation (Corporate Events, Social Events, Weddings, etc.)
+Layout: Clean, centered content with professional photography
+Call-to-Action: Prominent orange/gold "Contact Us" button
+
+Wesley's Current Issues
+
+Too much content density on homepage
+Inconsistent visual hierarchy
+Missing the elegant sophistication of Soprano's
+Need better use of whitespace
+Requires luxury-level animations and interactions
+
+Step-by-Step Layout Replication
+1. Hero Section Transformation
+tsx// Enhanced Hero Component with Soprano's Style
+export const SopranosHero = () => {
+  const [isLoaded, setIsLoaded] = useState(false)
+  
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoaded(true), 300)
+    return () => clearTimeout(timer)
+  }, [])
+  
+  return (
+    <section className="relative h-screen overflow-hidden">
+      {/* Background Image with Parallax */}
+      <motion.div
+        className="absolute inset-0"
+        initial={{ scale: 1.1 }}
+        animate={{ scale: isLoaded ? 1 : 1.1 }}
+        transition={{ duration: 1.2, ease: "easeOut" }}
+      >
+        <Image
+          src="/images/elegant-table-setting.jpg"
+          alt="Elegant dining setup"
+          fill
+          className="object-cover"
+          priority
+        />
+        {/* Sophisticated Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-craft-charcoal/40 via-transparent to-craft-charcoal/60" />
+      </motion.div>
+      
+      {/* Content Container */}
+      <div className="relative z-10 flex items-center justify-center h-full">
+        <div className="text-center text-white max-w-4xl px-8">
+          {/* Script Header */}
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.5, duration: 0.8 }}
+            className="font-script text-2xl md:text-3xl text-golden-honey mb-4"
+          >
+            Reserveer Vandaag
+          </motion.p>
+          
+          {/* Main Title */}
+          <motion.h1
+            initial={{ opacity: 0, y: 40 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.7, duration: 0.8 }}
+            className="font-display text-5xl md:text-7xl font-bold tracking-tight mb-6"
+          >
+            CONTROLEER UW DATUM
+          </motion.h1>
+          
+          {/* Description */}
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.9, duration: 0.8 }}
+            className="text-lg md:text-xl max-w-2xl mx-auto mb-8 leading-relaxed"
+          >
+            Neem vandaag contact met ons op om onze evenementenplanning te controleren en 
+            uw data te reserveren. We ontwerpen een pakket dat perfect past bij uw speciale evenement.
+          </motion.p>
+          
+          {/* CTA Button */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 1.1, duration: 0.6, type: "spring" }}
+          >
+            <Button
+              size="lg"
+              className="bg-heritage-orange hover:bg-heritage-orange/90 text-white px-8 py-4 text-lg font-semibold rounded-full shadow-xl hover:shadow-2xl transition-all duration-300"
+            >
+              Contact Ons
+            </Button>
+          </motion.div>
+        </div>
+      </div>
+      
+      {/* Scroll Indicator */}
+      <motion.div
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.5 }}
+      >
+        <motion.div
+          animate={{ y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="w-6 h-10 border-2 border-white/50 rounded-full flex justify-center"
+        >
+          <motion.div
+            animate={{ y: [0, 16, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="w-1 h-3 bg-white/70 rounded-full mt-2"
+          />
+        </motion.div>
+      </motion.div>
+    </section>
+  )
+}
+2. Navigation Pills Enhancement
+tsx// Sophisticated Navigation Pills
+export const NavigationPills = () => {
+  const [activeTab, setActiveTab] = useState(0)
+  
+  const services = [
+    { id: 'corporate', label: 'Corporate Events', href: '/corporate' },
+    { id: 'social', label: 'Social Events', href: '/social' },
+    { id: 'weddings', label: 'Weddings', href: '/wedding' },
+    { id: 'bbq', label: 'Grill & BBQ', href: '/bbq' },
+    { id: 'tray', label: 'By The Tray', href: '/tray' }
+  ]
+  
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ delay: 0.3 }}
+      className="flex flex-wrap justify-center gap-4 px-8 py-6 bg-warm-cream/95 backdrop-blur-sm"
+    >
+      {services.map((service, index) => (
+        <motion.div
+          key={service.id}
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.1 * index }}
+        >
+          <Link href={service.href}>
+            <motion.button
+              className={cn(
+                "px-6 py-3 rounded-full font-medium transition-all duration-300 shadow-md",
+                activeTab === index
+                  ? "bg-heritage-orange text-white shadow-lg"
+                  : "bg-white text-craft-charcoal hover:bg-golden-honey/10 hover:shadow-lg"
+              )}
+              whileHover={{ 
+                scale: 1.05,
+                y: -2
+              }}
+              whileTap={{ scale: 0.95 }}
+              onMouseEnter={() => setActiveTab(index)}
+            >
+              {service.label}
+            </motion.button>
+          </Link>
+        </motion.div>
+      ))}
+    </motion.div>
+  )
+}
+3. Luxury Animation System
+tsx// Premium Page Transitions
+export const PageTransition = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{
+        duration: 0.6,
+        ease: [0.22, 1, 0.36, 1] // Premium easing curve
+      }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+
+// Staggered Content Reveal
+export const StaggeredReveal = ({ children, delay = 0 }: StaggeredRevealProps) => {
+  return (
+    <motion.div
+      initial="hidden"
+      animate="visible"
+      variants={{
+        hidden: { opacity: 0 },
+        visible: {
+          opacity: 1,
+          transition: {
+            delayChildren: delay,
+            staggerChildren: 0.15
+          }
+        }
+      }}
+    >
+      {React.Children.map(children, (child, index) => (
+        <motion.div
+          variants={{
+            hidden: { opacity: 0, y: 30 },
+            visible: { 
+              opacity: 1, 
+              y: 0,
+              transition: {
+                duration: 0.6,
+                ease: [0.22, 1, 0.36, 1]
+              }
+            }
+          }}
+        >
+          {child}
+        </motion.div>
+      ))}
+    </motion.div>
+  )
+}
+
+// Luxury Hover Effects
+export const LuxuryCard = ({ children, className }: LuxuryCardProps) => {
+  return (
+    <motion.div
+      className={cn("relative overflow-hidden", className)}
+      whileHover="hover"
+      initial="initial"
+      variants={{
+        initial: {
+          scale: 1,
+          rotateY: 0,
+          rotateX: 0,
+        },
+        hover: {
+          scale: 1.02,
+          rotateY: 5,
+          rotateX: 5,
+          transition: {
+            duration: 0.4,
+            ease: "easeOut"
+          }
+        }
+      }}
+      style={{
+        transformStyle: "preserve-3d",
+        transformOrigin: "center center"
+      }}
+    >
+      <motion.div
+        variants={{
+          initial: { boxShadow: "0 4px 20px rgba(0,0,0,0.1)" },
+          hover: { boxShadow: "0 20px 40px rgba(0,0,0,0.15)" }
+        }}
+        className="rounded-xl"
+      >
+        {children}
+      </motion.div>
+    </motion.div>
+  )
+}
+4. Premium Icon System
+tsx// Custom Icon Library with Animations
+export const AnimatedIcon = ({ 
+  icon: Icon, 
+  size = 24, 
+  animation = "none",
+  className 
+}: AnimatedIconProps) => {
+  const animations = {
+    pulse: {
+      scale: [1, 1.1, 1],
+      transition: { duration: 2, repeat: Infinity }
+    },
+    float: {
+      y: [0, -5, 0],
+      transition: { duration: 3, repeat: Infinity, ease: "easeInOut" }
+    },
+    rotate: {
+      rotate: 360,
+      transition: { duration: 2, repeat: Infinity, ease: "linear" }
+    },
+    bounce: {
+      y: [0, -10, 0],
+      transition: { duration: 1, repeat: Infinity, ease: "easeInOut" }
+    }
+  }
+  
+  return (
+    <motion.div
+      animate={animation !== "none" ? animations[animation] : {}}
+      className={className}
+    >
+      <Icon 
+        size={size} 
+        className="text-current"
+      />
+    </motion.div>
+  )
+}
+
+// Service Icons with Luxury Styling
+export const ServiceIcon = ({ type, size = "md" }: ServiceIconProps) => {
+  const icons = {
+    wedding: Crown,
+    corporate: Briefcase,
+    social: Users,
+    bbq: Flame,
+    catering: ChefHat
+  }
+  
+  const sizes = {
+    sm: 32,
+    md: 48,
+    lg: 64,
+    xl: 80
+  }
+  
+  const Icon = icons[type]
+  
+  return (
+    <motion.div
+      className="relative"
+      whileHover="hover"
+      initial="initial"
+    >
+      <motion.div
+        variants={{
+          initial: {
+            background: "linear-gradient(135deg, var(--golden-honey), var(--heritage-orange))",
+            scale: 1
+          },
+          hover: {
+            background: "linear-gradient(135deg, var(--heritage-orange), var(--golden-honey))",
+            scale: 1.1
+          }
+        }}
+        className="rounded-full p-4 shadow-lg"
+      >
+        <Icon 
+          size={sizes[size]} 
+          className="text-white"
+        />
+      </motion.div>
+      
+      {/* Glow Effect */}
+      <motion.div
+        variants={{
+          initial: { opacity: 0 },
+          hover: { opacity: 1 }
+        }}
+        className="absolute inset-0 rounded-full bg-heritage-orange/20 blur-xl -z-10"
+      />
+    </motion.div>
+  )
+}
+5. Enhanced Color Palette Implementation
+css/* Soprano's-Inspired Color System */
+:root {
+  /* Primary Palette - Matching Soprano's Elegance */
+  --sophisticated-cream: #FAF8F5;
+  --warm-gold: #D4AF37;
+  --deep-bronze: #8B4513;
+  --elegant-charcoal: #2F2F2F;
+  
+  /* Accent Colors */
+  --luxe-orange: #CC7A00;
+  --subtle-tan: #F5E6D3;
+  --rich-brown: #5D3A00;
+  
+  /* Functional Colors */
+  --success-sage: #6B8E5A;
+  --warning-amber: #FFB84D;
+  --error-burgundy: #8B0000;
+  
+  /* Surface Colors */
+  --card-background: var(--sophisticated-cream);
+  --overlay-dark: rgba(47, 47, 47, 0.8);
+  --overlay-light: rgba(255, 255, 255, 0.9);
+}
+
+/* Dark Mode Variants */
+.dark {
+  --sophisticated-cream: #1A1814;
+  --warm-gold: #FFD700;
+  --elegant-charcoal: #F5F5F5;
+  
+  --card-background: #252117;
+  --overlay-dark: rgba(250, 248, 245, 0.9);
+  --overlay-light: rgba(26, 24, 20, 0.9);
+}
+6. Typography Enhancement
+tsx// Soprano's-Style Typography System
+export const Typography = {
+  // Script font for elegance (like "Reserve Today")
+  script: "font-script text-golden-honey",
+  
+  // Display fonts for headers (like "CHECK YOUR DATE")
+  displayLarge: "font-display text-4xl md:text-6xl lg:text-7xl font-bold tracking-tight",
+  displayMedium: "font-display text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight",
+  
+  // Body text variations
+  bodyLarge: "text-lg md:text-xl leading-relaxed",
+  bodyMedium: "text-base md:text-lg leading-relaxed",
+  bodySmall: "text-sm md:text-base leading-relaxed",
+  
+  // Interactive elements
+  buttonLarge: "text-lg font-semibold tracking-wide",
+  buttonMedium: "text-base font-semibold tracking-wide",
+  
+  // Navigation
+  navItem: "text-base font-medium tracking-wide hover:text-heritage-orange transition-colors"
+}
+
+// Enhanced Text Component
+export const EnhancedText = ({ 
+  variant, 
+  children, 
+  className,
+  reveal = false,
+  delay = 0 
+}: EnhancedTextProps) => {
+  const baseClasses = Typography[variant] || ""
+  
+  if (reveal) {
+    return (
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          delay, 
+          duration: 0.6,
+          ease: [0.22, 1, 0.36, 1]
+        }}
+        className={cn(baseClasses, className)}
+      >
+        {children}
+      </motion.div>
+    )
+  }
+  
+  return (
+    <div className={cn(baseClasses, className)}>
+      {children}
+    </div>
+  )
+}
+7. Advanced Interaction Patterns
+tsx// Magnetic Button Effect (Premium UX)
+export const MagneticButton = ({ children, ...props }: MagneticButtonProps) => {
+  const ref = useRef<HTMLButtonElement>(null)
+  const [position, setPosition] = useState({ x: 0, y: 0 })
+  
+  const handleMouseMove = (e: MouseEvent) => {
+    if (!ref.current) return
+    
+    const rect = ref.current.getBoundingClientRect()
+    const centerX = rect.left + rect.width / 2
+    const centerY = rect.top + rect.height / 2
+    
+    const deltaX = (e.clientX - centerX) * 0.15
+    const deltaY = (e.clientY - centerY) * 0.15
+    
+    setPosition({ x: deltaX, y: deltaY })
+  }
+  
+  const handleMouseLeave = () => {
+    setPosition({ x: 0, y: 0 })
+  }
+  
+  return (
+    <motion.button
+      ref={ref}
+      {...props}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
+      animate={{ x: position.x, y: position.y }}
+      transition={{ type: "spring", stiffness: 400, damping: 30 }}
+      className={cn(
+        "relative overflow-hidden bg-heritage-orange text-white px-8 py-4 rounded-full font-semibold shadow-lg",
+        "hover:shadow-xl transition-shadow duration-300",
+        props.className
+      )}
+    >
+      {/* Ripple Effect */}
+      <motion.div
+        className="absolute inset-0 bg-white/20 rounded-full"
+        initial={{ scale: 0, opacity: 0 }}
+        whileHover={{ scale: 1, opacity: 1 }}
+        transition={{ duration: 0.3 }}
+      />
+      <span className="relative z-10">{children}</span>
+    </motion.button>
+  )
+}
+
+// Parallax Section
+export const ParallaxSection = ({ children, offset = 50 }: ParallaxSectionProps) => {
+  const { scrollY } = useScroll()
+  const y = useTransform(scrollY, [0, 1000], [0, offset])
+  
+  return (
+    <motion.div style={{ y }} className="relative">
+      {children}
+    </motion.div>
+  )
+}
+
+// Content reveal on scroll
+export const ScrollReveal = ({ children, threshold = 0.1 }: ScrollRevealProps) => {
+  const ref = useRef(null)
+  const isInView = useInView(ref, { once: true, amount: threshold })
+  
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+    >
+      {children}
+    </motion.div>
+  )
+}
+8. Complete Layout Structure
+tsx// Main Layout matching Soprano's structure
+export const SopranosLayout = () => {
+  return (
+    <div className="min-h-screen bg-sophisticated-cream">
+      {/* Header */}
+      <Header />
+      
+      {/* Hero Section */}
+      <SopranosHero />
+      
+      {/* Navigation Pills */}
+      <NavigationPills />
+      
+      {/* Services Section */}
+      <section className="py-20 bg-white">
+        <div className="container mx-auto px-8">
+          <StaggeredReveal>
+            <div className="text-center mb-16">
+              <EnhancedText variant="script" className="text-2xl mb-4" reveal>
+                Ontdek
+              </EnhancedText>
+              <EnhancedText variant="displayMedium" reveal delay={0.1}>
+                ONZE SERVICES
+              </EnhancedText>
+              <EnhancedText variant="bodyLarge" className="text-craft-charcoal/70 max-w-3xl mx-auto mt-6" reveal delay={0.2}>
+                Van intieme diners tot grote evenementen, wij zorgen voor een culinaire ervaring 
+                die uw gasten nooit zullen vergeten.
+              </EnhancedText>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {services.map((service, index) => (
+                <ScrollReveal key={service.id}>
+                  <LuxuryCard className="bg-card-background rounded-xl p-8 text-center">
+                    <ServiceIcon type={service.type} size="lg" />
+                    <h3 className="text-2xl font-bold mt-6 mb-4">{service.title}</h3>
+                    <p className="text-craft-charcoal/70 mb-6">{service.description}</p>
+                    <MagneticButton>
+                      Meer Informatie
+                    </MagneticButton>
+                  </LuxuryCard>
+                </ScrollReveal>
+              ))}
+            </div>
+          </StaggeredReveal>
+        </div>
+      </section>
+      
+      {/* Call to Action Section */}
+      <ParallaxSection offset={30}>
+        <section className="relative py-32 overflow-hidden">
+          <div className="absolute inset-0">
+            <Image
+              src="/images/elegant-event.jpg"
+              alt="Elegant catering setup"
+              fill
+              className="object-cover"
+            />
+            <div className="absolute inset-0 bg-overlay-dark" />
+          </div>
+          
+          <div className="relative z-10 container mx-auto px-8 text-center text-white">
+            <ScrollReveal>
+              <EnhancedText variant="script" className="text-3xl mb-6" reveal>
+                Klaar om te beginnen?
+              </EnhancedText>
+              <EnhancedText variant="displayMedium" reveal delay={0.1}>
+                LAAT ONS UW EVENEMENT ONVERGETELIJK MAKEN
+              </EnhancedText>
+              <EnhancedText variant="bodyLarge" className="max-w-2xl mx-auto my-8" reveal delay={0.2}>
+                Neem contact op met onze evenement specialisten om uw datum te controleren 
+                en uw perfecte catering ervaring te plannen.
+              </EnhancedTest>
+              <motion.div
+                initial={{ opacity: 0, scale: 0.8 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.4, duration: 0.6 }}
+              >
+                <MagneticButton className="bg-warm-gold hover:bg-warm-gold/90 text-elegant-charcoal">
+                  Contact Ons Nu
+                </MagneticButton>
+              </motion.div>
+            </ScrollReveal>
+          </div>
+        </section>
+      </ParallaxSection>
+      
+      {/* Footer */}
+      <Footer />
+    </div>
+  )
+}
+Implementation Priority
+Phase 1: Foundation
+
+Update color palette to match Soprano's elegance
+Implement new typography system
+Create hero section with exact layout matching
+
+Phase 2: Interactions
+
+Add premium animations and transitions
+Implement magnetic buttons and hover effects
+Create navigation pill system
+
+Phase 3: Advanced Features
+
+Parallax scrolling effects
+Advanced scroll-triggered animations
+Luxury micro-interactions
+
+Phase 4: Polish
+
+Performance optimization
+Accessibility enhancements
+Mobile responsiveness refinement
+
+This comprehensive enhancement plan will transform Wesley's Ambacht into a luxury-level experience matching Soprano's sophisticated aesthetic while maintaining the Dutch artisanal character.
