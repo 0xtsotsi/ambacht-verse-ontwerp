@@ -35,7 +35,7 @@ export const Navigation = () => {
           {/* Logo */}
           <div className="flex items-center">
             <h1 className="text-2xl font-bold text-foreground" style={{ fontFamily: 'Dancing Script, cursive' }}>
-              Wesley's Catering
+              Wesley's Ambacht
             </h1>
           </div>
 

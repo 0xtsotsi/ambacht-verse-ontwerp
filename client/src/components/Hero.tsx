@@ -20,7 +20,7 @@ export const Hero = () => {
       id="home"
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{
-        backgroundImage: `url('https://images.unsplash.com/photo-1576867757603-05b134ebc379?q=80&w=2070')`,
+        backgroundImage: `url('/attached_assets/1000005907_1753439577476.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
@@ -39,12 +39,12 @@ export const Hero = () => {
 
           {/* Main Title */}
           <h1 className="text-display text-white mb-6">
-            WESLEY'S CATERING
+            WESLEY'S AMBACHT
           </h1>
 
           {/* Subtitle */}
           <p className="text-body max-w-2xl mx-auto text-white/90 leading-relaxed mb-8">
-            Van het handmatig selecteren van onze eigen producten rechtstreeks van de Oosterse markten tot het maken van onze eigen saladedressing, Wesley's doet alles op de oude manier! Bij Wesley's garanderen we dat je zult genieten van ons uitstekende eten, professionele service en concurrerende prijzen.
+            Ambachtelijk en vers... zoals vroeger. Wij zijn Wesley en Marjoleine Kreeft, beiden met een mooi horecaverleden. Wesley's Ambacht staat voor vers en zo min mogelijk E-nummers. Of u nou een broodjeslunch op de zaak wilt, een BBQ om het seizoen af te sluiten of een Buffet om uw verjaardag te vieren - wij staan voor u klaar!
           </p>
 
           {/* CTA Button */}
@@ -59,7 +59,7 @@ export const Hero = () => {
 
       {/* Phone Number at Bottom */}
       <div className="absolute bottom-6 left-6 text-white flex items-center space-x-2">
-        <span className="text-lg font-semibold">📞 1 (800) WE-CATER</span>
+        <span className="text-lg font-semibold">📞 06 212 226 58</span>
       </div>
 
       {/* Social Icons at Bottom Right */}

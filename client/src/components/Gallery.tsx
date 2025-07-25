@@ -55,50 +55,65 @@ export const Gallery = memo(() => {
       {
         id: 1,
         category: "bbq",
-        title: "Pulled Pork Perfectie",
-        description: "16 uur langzaam gerookt voor de perfecte textuur",
-        type: "Smoking Specialty",
+        title: "BBQ Catering Setup",
+        description: "Broodjes hamburger, pulled chicken en kipsaté",
+        type: "BBQ Events",
         height: "h-64",
+        image: "/attached_assets/1000005931_1753439577477.jpg"
       },
       {
         id: 2,
         category: "catering",
-        title: "Broodjes Lunch Setup",
-        description: "Vers belegde broodjes voor kantoor catering",
-        type: "Office Catering",
+        title: "Luxe Borrelplank",
+        description: "Artisanale vleeswaren en kazen",
+        type: "Corporate Catering",
         height: "h-80",
+        image: "/attached_assets/1000005871_1753439577475.jpg"
       },
       {
         id: 3,
-        category: "events",
-        title: "Bruiloft Buffet",
-        description: "Uitgebreid buffet met lokale specialiteiten",
-        type: "Wedding Catering",
-        height: "h-72",
+        category: "catering",
+        title: "Verse Salades",
+        description: "Dagvers bereid met lokale ingrediënten",
+        type: "Healthy Options",
+        height: "h-64",
+        image: "/attached_assets/1000005684_1753439577478.jpg"
       },
       {
         id: 4,
-        category: "bbq",
-        title: "Outdoor BBQ Setup",
-        description: "Complete BBQ opstelling voor bedrijfsfeest",
-        type: "Corporate Event",
-        height: "h-60",
+        category: "catering",
+        title: "Verse Fruit Salade",
+        description: "Kleurrijke fruitschaal met verse kruiden",
+        type: "Healthy Catering",
+        height: "h-72",
+        image: "/attached_assets/1000005916_1753439577477.jpg"
       },
       {
         id: 5,
-        category: "catering",
-        title: "Seizoen Salade Bar",
-        description: "Verse seizoenssalades met lokale groenten",
-        type: "Healthy Options",
-        height: "h-68",
+        category: "bbq",
+        title: "Gourmet Broodjes",
+        description: "Vers belegde broodjes voor lunch catering",
+        type: "Lunch Service",
+        height: "h-60",
+        image: "/attached_assets/1000005760_1753439577478.jpg"
       },
       {
         id: 6,
+        category: "catering",
+        title: "Luxe Visplank",
+        description: "Verse zalm en andere visspecialiteiten",
+        type: "Premium Catering",
+        height: "h-68",
+        image: "/attached_assets/1000005739_1753439577480.jpg"
+      },
+      {
+        id: 7,
         category: "events",
-        title: "Verjaardag Catering",
-        description: "Persoonlijk menu voor 50ste verjaardag",
-        type: "Birthday Party",
+        title: "Familiedag Catering",
+        description: "Complete catering voor bedrijfsfamiliedag",
+        type: "Corporate Events",
         height: "h-76",
+        image: "/attached_assets/1000005907_1753439577476.jpg"
       },
     ],
     [],
@@ -205,12 +220,24 @@ export const Gallery = memo(() => {
                 }}
               >
                 <div className="bg-white/90 backdrop-blur-sm rounded-2xl shadow-elegant-soft hover:shadow-elegant-panel overflow-hidden transition-all duration-700">
-                  {/* Interactive Image Placeholder */}
+                  {/* Interactive Image */}
                   <div
                     className={`${item.height} bg-gray-100 relative overflow-hidden group`}
                   >
-                    {/* Dynamic gradient background */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-terracotta-100 via-terracotta-200 to-terracotta-300 opacity-50"></div>
+                    {/* Actual Image */}
+                    {item.image && (
+                      <img
+                        src={item.image}
+                        alt={item.title}
+                        className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                        loading="lazy"
+                      />
+                    )}
+                    
+                    {/* Dynamic gradient background for items without images */}
+                    {!item.image && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-terracotta-100 via-terracotta-200 to-terracotta-300 opacity-50"></div>
+                    )}
 
                     {/* Interactive overlay */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-700"></div>

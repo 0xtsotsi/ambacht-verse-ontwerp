@@ -56,10 +56,9 @@ export const Footer = () => {
               </div>
 
               <p className="text-gray-300 leading-relaxed mb-16 max-w-lg text-lg font-elegant-body font-light transition-all duration-700 group-hover:text-white transform group-hover:translate-x-2">
-                Met passie en vakmanschap creëren wij onvergetelijke culinaire
-                ervaringen. Van traditionele smoking technieken tot moderne
-                catering concepten - altijd met respect voor ambachtelijkheid en
-                kwaliteit.
+                Wij zijn Wesley en Marjoleine Kreeft, beiden met een mooi horecaverleden. 
+                Wesley's Ambacht staat voor vers en zo min mogelijk E-nummers. 
+                Van broodjeslunch tot BBQ events - altijd ambachtelijk en vers, zoals vroeger.
               </p>
 
               <div className="flex items-center space-x-4 transition-all duration-500 group-hover:scale-105">
@@ -86,9 +85,9 @@ export const Footer = () => {
               </h4>
               <div className="space-y-8">
                 {[
-                  { icon: Phone, text: "0639581128" },
-                  { icon: Mail, text: "info@wesleysambacht.nl" },
-                  { icon: MapPin, text: "Gelderland, Nederland", mt: true },
+                  { icon: Phone, text: "06 212 226 58" },
+                  { icon: Mail, text: "info@ambachtbijwesley.nl" },
+                  { icon: MapPin, text: "Nieuweweg 79, 3251 AS Stellendam", mt: true },
                 ].map((item, index) => (
                   <div
                     key={index}
@@ -128,11 +127,11 @@ export const Footer = () => {
               </h4>
               <ul className="space-y-6">
                 {[
-                  "Kantoor Catering",
-                  "BBQ Services",
-                  "Evenement Buffets",
-                  "Smoking Specialiteiten",
-                  "Maatwerk Catering",
+                  "Broodjes Lunch",
+                  "BBQ Catering",
+                  "Familiedagen",
+                  "Buffet Services", 
+                  "Corporate Events",
                 ].map((service, index) => (
                   <li
                     key={service}
