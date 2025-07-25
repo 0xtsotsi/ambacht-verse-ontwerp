@@ -8,12 +8,13 @@ export const Navigation = () => {
   const [scrolled, setScrolled] = useState(false);
 
   const menuItems = [
-    { name: "HOME", href: "#home" },
-    { name: "SERVICES", href: "#services" },
-    { name: "GALERIJ", href: "#gallery" },
+    { name: "HOME", href: "/" },
     { name: "BRUILOFTEN", href: "/wedding" },
-    { name: "BBQ CATERING", href: "#bbq" },
-    { name: "CONTACT", href: "#contact" },
+    { name: "CORPORATE", href: "/corporate" },
+    { name: "SOCIALE EVENTS", href: "/social" },
+    { name: "BBQ CATERING", href: "/bbq" },
+    { name: "GALERIJ", href: "/gallery" },
+    { name: "CONTACT", href: "/contact" },
   ];
 
   useEffect(() => {

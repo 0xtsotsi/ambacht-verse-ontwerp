@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { ChevronDown, Heart, Users, Utensils, Calendar, Star, CheckCircle } from "lucide-react";
+import { FloatingBookingWidget } from "@/components/FloatingBookingWidget";
 import weddingHeroImage from "@assets/1000005886_1753439577476.jpg";
 import buffetImage from "@assets/1000005907_1753439577476.jpg";
 import familyImage from "@assets/1000005737_1753439577482.jpg";
@@ -82,6 +83,7 @@ export const WeddingPage = () => {
 
   return (
     <div className="min-h-screen">
+      <FloatingBookingWidget />
       {/* Hero Section with parallax background */}
       <section 
         className="relative h-screen flex items-center justify-center overflow-hidden"
