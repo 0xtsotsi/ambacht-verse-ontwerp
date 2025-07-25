@@ -6,7 +6,7 @@ export const CTASection = () => {
     <section
       className="section-spacing relative overflow-hidden bg-gradient-to-br from-gray-900 via-orange-900/50 to-amber-900/50"
       style={{
-        backgroundImage: `url('/attached_assets/1000005905_1753439577476.jpg')`,
+        backgroundImage: `url('/attached_assets/1000005686_1753439577482.jpg')`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
         backgroundRepeat: 'no-repeat'
@@ -30,7 +30,7 @@ export const CTASection = () => {
 
 
 
-        <Button className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 text-white text-xl px-12 py-4 rounded-full shadow-2xl transform hover:scale-110 transition-all duration-300">
+        <Button className="btn-primary text-xl px-12 py-4">
           Neem Contact Op
         </Button>
       </div>

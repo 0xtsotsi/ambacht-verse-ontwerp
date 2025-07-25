@@ -34,11 +34,17 @@ export const Navigation = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center space-x-3 group">
-            <img 
-              src="/attached_assets/Screenshot 2025-07-25 115858_1753441310470.png" 
-              alt="Wesley's Ambacht Logo" 
-              className="w-16 h-16 object-contain group-hover:scale-110 transition-transform duration-300"
-            />
+            <div className="w-12 h-12 bg-gradient-to-br from-[#FF6B35] to-[#FF8A5B] rounded-full flex items-center justify-center shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:scale-110">
+              <ChefHat className="w-6 h-6 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold text-foreground group-hover:text-[#FF6B35] transition-colors duration-300" style={{ fontFamily: 'Dancing Script, cursive' }}>
+                Wesley's Ambacht
+              </h1>
+              <p className="text-xs text-gray-500 -mt-1" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+                Ambachtelijk • Vers • Zoals vroeger
+              </p>
+            </div>
           </div>
 
           {/* Desktop Menu */}

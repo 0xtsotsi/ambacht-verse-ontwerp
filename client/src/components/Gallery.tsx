@@ -157,47 +157,32 @@ export const Gallery = memo(() => {
               transition: "all 1s ease-out",
             }}
           >
-            <h2 className="text-8xl md:text-9xl font-elegant-heading text-elegant-dark mb-16 font-light tracking-[-0.02em] relative inline-block">
-              <span className="text-terracotta-600 relative">
-                Onze
-                <span className="absolute inset-0 blur-3xl bg-terracotta-400/20 animate-pulse"></span>
-              </span>{" "}
-              Galerij
-            </h2>
-            <div className="relative w-32 h-px bg-terracotta-600 mx-auto mb-16 overflow-hidden">
-              <span className="absolute inset-0 bg-gradient-to-r from-transparent via-terracotta-400 to-transparent animate-pulse"></span>
-            </div>
-            <p className="text-2xl font-elegant-body text-elegant-dark max-w-4xl mx-auto font-light leading-relaxed animate-interactive-slide-up">
+            <h2 className="text-5xl font-bold text-gray-800 mb-8">ONZE GALERIJ</h2>
+            <div className="w-24 h-1 bg-[#FF6B35] mx-auto mb-8 rounded-full"></div>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
               Neem eens een kijkje in de galerij wat wij afgelopen jaar allemaal
               mochten realiseren. Van intieme lunches tot grote feesten - elk
               evenement krijgt onze volle aandacht.
             </p>
           </div>
 
-          {/* Interactive Category Filter */}
-          <div className="flex flex-wrap justify-center gap-16 mb-32">
-            {categories.map((category, index) => (
+          {/* Category Filter */}
+          <div className="flex flex-wrap justify-center gap-6 mb-16">
+            {categories.map((category) => (
               <Button
                 key={category.id}
                 onClick={() => handleCategoryChange(category.id)}
-                variant={
+                className={`flex items-center gap-3 px-8 py-4 rounded-full font-semibold transition-all duration-300 ${
                   activeCategory === category.id
-                    ? "interactive-primary"
-                    : "interactive-glass"
-                }
-                size="elegant-lg"
-                className="flex items-center gap-3 group"
-                style={{
-                  animationDelay: `${index * 0.1}s`,
-                  animation: isVisible
-                    ? "interactive-slide-up 0.8s ease-out forwards"
-                    : "none",
-                }}
+                    ? 'btn-primary'
+                    : 'bg-white border border-gray-200 text-gray-700 hover:text-white hover:border-transparent shadow-lg hover:shadow-xl hover:scale-105'
+                }`}
               >
-                <span className="transform group-hover:scale-125 group-hover:rotate-12 transition-all duration-500">
+                <span className="transform group-hover:scale-110 transition-transform duration-300">
                   {category.icon}
                 </span>
-                <span className="relative z-10">{category.name}</span>
+                <span>{category.name}</span>
+                <div className="absolute inset-0 bg-gradient-to-r from-[#FF6B35] to-[#FF8A5B] opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-full"></div>
               </Button>
             ))}
           </div>

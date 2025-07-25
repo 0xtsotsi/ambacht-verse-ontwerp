@@ -65,7 +65,7 @@ export const FeatureSection = () => {
                   className="w-full h-80 object-cover transition-transform duration-700 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent group-hover:from-black/60 transition-all duration-500"></div>
-                <div className="absolute top-4 left-4 bg-[#FF6B35] text-white p-3 rounded-full shadow-lg group-hover:scale-110 transition-transform duration-300">
+                <div className="absolute top-4 left-4 bg-gradient-to-br from-[#FF6B35] to-[#FF8A5B] text-white p-3 rounded-full shadow-lg group-hover:scale-110 transition-transform duration-300">
                   {feature.icon}
                 </div>
               </div>
@@ -81,7 +81,7 @@ export const FeatureSection = () => {
                   {feature.description}
                 </p>
 
-                <Button className="bg-[#FF6B35] hover:bg-[#FF6B35]/90 hover:shadow-lg transform hover:scale-105 transition-all duration-300 text-white px-8 py-3 rounded-full">
+                <Button className="btn-primary">
                   {feature.buttonText}
                 </Button>
               </div>

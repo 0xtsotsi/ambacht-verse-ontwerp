@@ -4,11 +4,9 @@ import { Hero } from "@/components/Hero";
 import { ServiceSection } from "@/components/ServiceSection";
 import { CTASection } from "@/components/CTASection";
 import { FeatureSection } from "@/components/FeatureSection";
-import { About } from "@/components/About";
 import { Services } from "@/components/Services";
-import { BookingForm } from "@/components/BookingForm";
 import { Footer } from "@/components/Footer";
-import { FloatingBookingWidget } from "@/components/variations/floating-widget-002-mobile-adaptive";
+import { FloatingBookingWidget } from "@/components/FloatingBookingWidget";
 import { DateCheckerModal } from "@/components/DateCheckerModal";
 import { StepByStepQuoteCalculator } from "@/components/variations/quote-calculator-001-step-by-step";
 import { useToast } from "@/hooks/use-toast";
@@ -76,17 +74,11 @@ const Index = () => {
       <ServiceSection />
       <CTASection />
       <FeatureSection />
-      <About />
       <Services />
-      <BookingForm />
       <Footer />
 
-      {/* Dynamic Booking Widget - Soprano's style with original functionality */}
-      <FloatingBookingWidget
-        onBookingClick={scrollToBooking}
-        onPhoneClick={handlePhoneClick}
-        onQuoteCalculatorClick={handleOpenQuoteCalculator}
-      />
+      {/* Dynamic Booking Widget */}
+      <FloatingBookingWidget />
 
       {/* DateChecker Modal */}
       <DateCheckerModal
