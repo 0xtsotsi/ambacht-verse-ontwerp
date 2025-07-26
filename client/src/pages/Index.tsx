@@ -7,6 +7,9 @@ import { CateringMenuCarousel } from "@/components/CateringMenuCarousel";
 import { CTASection } from "@/components/CTASection";
 import { EnhancedCTA } from "@/components/EnhancedCTA";
 import { StatsSection } from "@/components/CounterAnimation";
+import { PerformanceMonitor } from "@/components/PerformanceOptimizations";
+import { SEOHead, CateringBusinessSchema } from "@/components/SEOOptimizations";
+import { SkipLink } from "@/components/AccessibilityEnhancements";
 import { FeatureSection } from "@/components/FeatureSection";
 import { Services } from "@/components/Services";
 import { Footer } from "@/components/Footer";
@@ -75,10 +78,21 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
+      <SEOHead
+        title="Wesley's Ambacht - Premium Catering Stellendam"
+        description="Professionele catering service in Stellendam. Specialiteit in zakelijke evenementen, bruiloften en sociale gelegenheden. Verse lokale ingrediënten, ervaren team. Bel 06 212 226 58."
+        keywords={["catering", "Stellendam", "bruiloft", "zakelijk evenement", "BBQ", "lokale ingrediënten"]}
+        canonical="https://ambachtbijwesley.nl"
+        ogImage="/images/hero-wesley-ambacht.jpg"
+      />
+      <CateringBusinessSchema />
+      <PerformanceMonitor />
+      <SkipLink />
       <ScrollProgress />
       <Navigation />
       <Hero />
-      <SopranosNavigation />
+      <main id="main-content">
+        <SopranosNavigation />
       <SopranoServicesSection />
       <CateringMenuCarousel />
       <ScrollTextReveal>
@@ -86,7 +100,8 @@ const Index = () => {
       </ScrollTextReveal>
       <StatsSection />
       <FeatureSection />
-      <Services />
+        <Services />
+      </main>
       <Footer />
 
       {/* Dynamic Booking Widget */}

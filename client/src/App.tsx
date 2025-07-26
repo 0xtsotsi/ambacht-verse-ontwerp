@@ -3,6 +3,7 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Router, Route } from "wouter";
+import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import { WeddingPage } from "./pages/WeddingPage";
 import { CorporatePage } from "./pages/CorporatePage";
@@ -15,11 +16,12 @@ import NotFound from "./pages/NotFound";
 const queryClient = new QueryClient();
 
 const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <Router>
+  <HelmetProvider>
+    <QueryClientProvider client={queryClient}>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <Router>
         <Route path="/" component={Index} />
         <Route path="/wedding" component={WeddingPage} />
         <Route path="/corporate" component={CorporatePage} />
@@ -29,9 +31,10 @@ const App = () => (
         <Route path="/contact" component={ContactPage} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
         <Route path="*" component={NotFound} />
-      </Router>
-    </TooltipProvider>
-  </QueryClientProvider>
+        </Router>
+      </TooltipProvider>
+    </QueryClientProvider>
+  </HelmetProvider>
 );
 
 export default App;
