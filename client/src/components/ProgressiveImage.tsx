@@ -1,58 +1,55 @@
-import React, { useState, useEffect } from "react";
-import { motion } from "framer-motion";
-import { cn } from "@/lib/utils";
+import React, { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
 
 interface ProgressiveImageProps {
   src: string;
-  placeholder?: string;
   alt: string;
   className?: string;
+  loading?: 'lazy' | 'eager';
 }
 
-export const ProgressiveImage = ({ 
-  src, 
-  placeholder = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iI0ZBRjhGNSIvPjwvc3ZnPg==",
-  alt, 
-  className 
-}: ProgressiveImageProps) => {
+export const ProgressiveImage: React.FC<ProgressiveImageProps> = ({
+  src,
+  alt,
+  className = '',
+  loading = 'lazy'
+}) => {
   const [imageLoaded, setImageLoaded] = useState(false);
-  const [imageSrc, setImageSrc] = useState(placeholder);
-  
+  const [imageSrc, setImageSrc] = useState<string | null>(null);
+
   useEffect(() => {
     const img = new Image();
+    img.src = src;
     img.onload = () => {
       setImageSrc(src);
       setImageLoaded(true);
     };
-    img.src = src;
+    img.onerror = () => {
+      // Fallback to default image if loading fails
+      setImageSrc('@assets/1000005907_1753439577476.jpg');
+      setImageLoaded(true);
+    };
   }, [src]);
-  
+
   return (
-    <div className={cn("relative overflow-hidden", className)}>
-      <motion.img
-        src={imageSrc}
-        alt={alt}
-        initial={{ opacity: 0 }}
-        animate={{ opacity: imageLoaded ? 1 : 0.7 }}
-        transition={{ duration: 0.6, ease: "easeOut" }}
-        className="w-full h-full object-cover"
-      />
+    <div className={`relative overflow-hidden ${className}`}>
+      {/* Loading skeleton */}
       {!imageLoaded && (
-        <motion.div
-          className="absolute inset-0 bg-gradient-to-r from-[#FAF8F5] via-[#F5E6D3] to-[#FAF8F5]"
-          animate={{
-            backgroundPosition: ["0% 0%", "100% 0%", "0% 0%"]
-          }}
-          transition={{ duration: 2, repeat: Infinity }}
-        >
-          <div className="absolute inset-0 flex items-center justify-center">
-            <motion.div
-              className="w-8 h-8 border-2 border-[#D4AF37] border-t-transparent rounded-full"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-            />
-          </div>
-        </motion.div>
+        <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 animate-pulse" />
+      )}
+      
+      {/* Actual image with fade-in animation */}
+      {imageSrc && (
+        <motion.img
+          src={imageSrc}
+          alt={alt}
+          loading={loading}
+          className={`w-full h-full object-cover ${className}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: imageLoaded ? 1 : 0 }}
+          transition={{ duration: 0.5 }}
+          onLoad={() => setImageLoaded(true)}
+        />
       )}
     </div>
   );

@@ -1,0 +1,307 @@
+// HeroSection.jsx - Full Implementation with 3D elements and animations
+import React, { Suspense, useRef, useState, useEffect } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
+import { Canvas } from '@react-three/fiber';
+import { Float, PerspectiveCamera, Environment } from '@react-three/drei';
+import { ChevronDown, Calendar, Users, Sparkles } from 'lucide-react';
+import dynamic from 'next/dynamic';
+
+// Lazy load 3D components for performance
+const FloatingFood = dynamic(() => import('./FloatingFood'), {
+  ssr: false,
+  loading: () => null
+});
+
+const HeroSection = () => {
+  const [isVideoLoaded, setIsVideoLoaded] = useState(false);
+  const heroRef = useRef(null);
+  const { scrollY } = useScroll();
+  
+  // Parallax effect for background
+  const y = useTransform(scrollY, [0, 500], [0, 150]);
+  const opacity = useTransform(scrollY, [0, 500], [1, 0]);
+
+  // Text animations
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2,
+        delayChildren: 0.3
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.8,
+        ease: [0.6, -0.05, 0.01, 0.99]
+      }
+    }
+  };
+
+  return (
+    <section ref={heroRef} className="relative h-screen overflow-hidden bg-black">
+      {/* Background Video with Parallax */}
+      <motion.div 
+        className="absolute inset-0 z-0"
+        style={{ y }}
+      >
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          onLoadedData={() => setIsVideoLoaded(true)}
+          className={`object-cover w-full h-full transition-opacity duration-1000 ${
+            isVideoLoaded ? 'opacity-100' : 'opacity-0'
+          }`}
+        >
+          <source src="/videos/hero-catering-ambiance.mp4" type="video/mp4" />
+          <source src="/videos/hero-catering-ambiance.webm" type="video/webm" />
+        </video>
+        
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/80" />
+        
+        {/* Animated Grain Texture */}
+        <div className="absolute inset-0 opacity-[0.015] mix-blend-overlay">
+          <div className="absolute inset-0 bg-noise animate-grain" />
+        </div>
+      </motion.div>
+
+      {/* 3D Elements Layer */}
+      <div className="absolute inset-0 z-10 pointer-events-none">
+        <Suspense fallback={null}>
+          <Canvas
+            camera={{ position: [0, 0, 5], fov: 50 }}
+            className="!pointer-events-none"
+          >
+            <PerspectiveCamera makeDefault position={[0, 0, 5]} />
+            <Environment preset="sunset" />
+            <ambientLight intensity={0.5} />
+            <directionalLight position={[10, 10, 5]} intensity={1} />
+            
+            {/* Floating 3D Food Elements */}
+            <Float
+              speed={2}
+              rotationIntensity={0.5}
+              floatIntensity={0.5}
+            >
+              <FloatingFood position={[-3, 2, 0]} foodType="steak" />
+            </Float>
+            
+            <Float
+              speed={3}
+              rotationIntensity={0.3}
+              floatIntensity={0.7}
+            >
+              <FloatingFood position={[3, -1, -1]} foodType="vegetables" />
+            </Float>
+            
+            <Float
+              speed={2.5}
+              rotationIntensity={0.4}
+              floatIntensity={0.6}
+            >
+              <FloatingFood position={[2, 2, -2]} foodType="dessert" />
+            </Float>
+          </Canvas>
+        </Suspense>
+      </div>
+
+      {/* Main Content */}
+      <motion.div 
+        className="relative z-20 flex items-center justify-center h-full px-4"
+        style={{ opacity }}
+      >
+        <motion.div 
+          className="text-center text-white max-w-5xl mx-auto"
+          variants={containerVariants}
+          initial="hidden"
+          animate="visible"
+        >
+          {/* Accent Text */}
+          <motion.div 
+            className="flex items-center justify-center gap-2 mb-6"
+            variants={itemVariants}
+          >
+            <Sparkles className="w-5 h-5 text-amber-400" />
+            <span className="text-amber-400 font-medium tracking-widest uppercase text-sm">
+              Exquisite Catering Since 1985
+            </span>
+            <Sparkles className="w-5 h-5 text-amber-400" />
+          </motion.div>
+
+          {/* Main Headline */}
+          <motion.h1 
+            className="font-serif text-6xl md:text-7xl lg:text-8xl leading-tight mb-6"
+            variants={itemVariants}
+          >
+            <span className="block">Culinary Excellence</span>
+            <span className="block text-amber-400">For Every Occasion</span>
+          </motion.h1>
+
+          {/* Subheadline */}
+          <motion.p 
+            className="text-xl md:text-2xl text-gray-200 mb-10 max-w-3xl mx-auto leading-relaxed"
+            variants={itemVariants}
+          >
+            From intimate gatherings to grand celebrations, we bring the authentic taste 
+            of Wesley's Ambacht to your special moments
+          </motion.p>
+
+          {/* CTA Buttons */}
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
+            variants={itemVariants}
+          >
+            <button className="group relative px-8 py-4 bg-amber-500 text-gray-900 rounded-full font-semibold text-lg overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/25">
+              <span className="relative z-10 flex items-center gap-2">
+                <Calendar className="w-5 h-5" />
+                Book Your Event
+              </span>
+              <div className="absolute inset-0 bg-gradient-to-r from-amber-400 to-orange-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </button>
+
+            <button className="group px-8 py-4 border-2 border-white/30 text-white rounded-full font-semibold text-lg backdrop-blur-sm transition-all duration-300 hover:bg-white hover:text-gray-900 hover:scale-105">
+              <span className="flex items-center gap-2">
+                <Users className="w-5 h-5" />
+                View Our Services
+              </span>
+            </button>
+          </motion.div>
+
+          {/* Trust Indicators */}
+          <motion.div 
+            className="mt-12 flex flex-wrap justify-center items-center gap-8 text-sm text-gray-300"
+            variants={itemVariants}
+          >
+            <div className="flex items-center gap-2">
+              <span className="text-amber-400 text-2xl">★★★★★</span>
+              <span>500+ Five Star Reviews</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">🏆</span>
+              <span>Best Caterer 2023</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <span className="text-2xl">👨‍🍳</span>
+              <span>Michelin-Trained Chefs</span>
+            </div>
+          </motion.div>
+        </motion.div>
+      </motion.div>
+
+      {/* Scroll Indicator */}
+      <motion.div 
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-30"
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 2, duration: 0.8 }}
+      >
+        <motion.div
+          className="flex flex-col items-center gap-2 text-white cursor-pointer group"
+          animate={{ y: [0, 10, 0] }}
+          transition={{ repeat: Infinity, duration: 2, ease: "easeInOut" }}
+          onClick={() => {
+            window.scrollTo({ top: window.innerHeight, behavior: 'smooth' });
+          }}
+        >
+          <span className="text-sm font-medium opacity-70 group-hover:opacity-100 transition-opacity">
+            Discover Our Services
+          </span>
+          <ChevronDown className="w-6 h-6" />
+        </motion.div>
+      </motion.div>
+
+      {/* Decorative Elements */}
+      <div className="absolute top-20 left-10 w-20 h-20 bg-amber-500/10 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-20 right-10 w-32 h-32 bg-amber-400/10 rounded-full blur-3xl animate-pulse delay-1000" />
+    </section>
+  );
+};
+
+// FloatingFood.jsx - 3D Food Component
+const FloatingFood = ({ position, foodType }) => {
+  const meshRef = useRef();
+  
+  // Simple rotation animation
+  useFrame((state, delta) => {
+    if (meshRef.current) {
+      meshRef.current.rotation.y += delta * 0.5;
+      meshRef.current.position.y += Math.sin(state.clock.elapsedTime) * 0.001;
+    }
+  });
+
+  // Different geometries for different food types
+  const getFoodGeometry = () => {
+    switch(foodType) {
+      case 'steak':
+        return <boxGeometry args={[1.5, 0.5, 1]} />;
+      case 'vegetables':
+        return <coneGeometry args={[0.8, 1.5, 8]} />;
+      case 'dessert':
+        return <sphereGeometry args={[0.8, 32, 32]} />;
+      default:
+        return <boxGeometry args={[1, 1, 1]} />;
+    }
+  };
+
+  const getFoodColor = () => {
+    switch(foodType) {
+      case 'steak':
+        return '#8B4513';
+      case 'vegetables':
+        return '#4CAF50';
+      case 'dessert':
+        return '#FFB6C1';
+      default:
+        return '#FF6B6B';
+    }
+  };
+
+  return (
+    <mesh ref={meshRef} position={position}>
+      {getFoodGeometry()}
+      <meshStandardMaterial 
+        color={getFoodColor()} 
+        emissive={getFoodColor()}
+        emissiveIntensity={0.2}
+        roughness={0.5}
+        metalness={0.3}
+      />
+    </mesh>
+  );
+};
+
+// CSS for grain animation
+const styles = `
+  @keyframes grain {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-5%, -10%); }
+    20% { transform: translate(-15%, 5%); }
+    30% { transform: translate(7%, -25%); }
+    40% { transform: translate(-5%, 25%); }
+    50% { transform: translate(-15%, 10%); }
+    60% { transform: translate(15%, 0%); }
+    70% { transform: translate(0%, 15%); }
+    80% { transform: translate(3%, 20%); }
+    90% { transform: translate(-10%, 10%); }
+  }
+
+  .animate-grain {
+    animation: grain 8s steps(10) infinite;
+  }
+
+  .bg-noise {
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  }
+`;
+
+export default HeroSection;

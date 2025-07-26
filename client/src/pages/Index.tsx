@@ -1,8 +1,9 @@
 import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { SopranosNavigation } from "@/components/SopranosNavigation";
-import { Hero } from "@/components/Hero";
-import { SopranoServicesSection } from "@/components/SopranoServicesSection";
+import HeroSection3D from "@/components/HeroSection3D";
+import AdvancedServiceGrid from "@/components/AdvancedServiceGrid";
+import AdvancedGallery from "@/components/AdvancedGallery";
 import { CateringMenuCarousel } from "@/components/CateringMenuCarousel";
 import { CTASection } from "@/components/CTASection";
 import { EnhancedCTA } from "@/components/EnhancedCTA";
@@ -18,6 +19,7 @@ import { DateCheckerModal } from "@/components/DateCheckerModal";
 import { StepByStepQuoteCalculator } from "@/components/variations/quote-calculator-001-step-by-step";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { ScrollTextReveal } from "@/components/ScrollProgress";
+import BookingWizard3D from "@/components/BookingWizard3D";
 import { useToast } from "@/hooks/use-toast";
 import type { QuoteBreakdown, QuoteInput } from "@/lib/quote-calculations";
 
@@ -25,9 +27,10 @@ const Index = () => {
   const { toast } = useToast();
   const [dateCheckerOpen, setDateCheckerOpen] = useState(false);
   const [quoteCalculatorOpen, setQuoteCalculatorOpen] = useState(false);
+  const [bookingWizardOpen, setBookingWizardOpen] = useState(false);
 
   const scrollToBooking = () => {
-    setDateCheckerOpen(true);
+    setBookingWizardOpen(true);
   };
 
   const handlePhoneClick = () => {
@@ -90,16 +93,17 @@ const Index = () => {
       <SkipLink />
       <ScrollProgress />
       <Navigation />
-      <Hero />
+      <HeroSection3D />
       <main id="main-content">
         <SopranosNavigation />
-      <SopranoServicesSection />
-      <CateringMenuCarousel />
-      <ScrollTextReveal>
-        <EnhancedCTA />
-      </ScrollTextReveal>
-      <StatsSection />
-      <FeatureSection />
+        <AdvancedServiceGrid />
+        <CateringMenuCarousel />
+        <ScrollTextReveal>
+          <EnhancedCTA />
+        </ScrollTextReveal>
+        <StatsSection />
+        <AdvancedGallery />
+        <FeatureSection />
         <Services />
       </main>
       <Footer />
@@ -121,6 +125,11 @@ const Index = () => {
         onOpenChange={setQuoteCalculatorOpen}
         onRequestDetailedQuote={handleQuoteRequest}
       />
+
+      {/* Advanced Booking Wizard */}
+      {bookingWizardOpen && (
+        <BookingWizard3D onClose={() => setBookingWizardOpen(false)} />
+      )}
     </div>
   );
 };

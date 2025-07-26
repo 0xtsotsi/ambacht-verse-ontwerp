@@ -1,0 +1,356 @@
+// BookingWizard.jsx - Advanced multi-step booking system with animations
+import React, { useState, useEffect } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useForm, Controller } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import { 
+  Calendar, Users, Utensils, Package, User, Check, 
+  ChevronRight, ChevronLeft, MapPin, Clock, DollarSign,
+  Phone, Mail, MessageSquare, Sparkles, Info
+} from 'lucide-react';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
+
+// Form validation schemas
+const eventDetailsSchema = z.object({
+  eventType: z.string().min(1, 'Please select an event type'),
+  eventDate: z.date().min(new Date(), 'Event date must be in the future'),
+  eventTime: z.string().min(1, 'Please select event time'),
+  guestCount: z.number().min(10, 'Minimum 10 guests required').max(1000, 'Maximum 1000 guests'),
+  venue: z.string().min(1, 'Please provide venue details'),
+  eventDuration: z.string().min(1, 'Please select event duration')
+});
+
+const menuSelectionSchema = z.object({
+  menuStyle: z.string().min(1, 'Please select a menu style'),
+  courses: z.array(z.string()).min(1, 'Please select at least one course'),
+  dietaryRestrictions: z.array(z.string()).optional(),
+  specialRequests: z.string().optional()
+});
+
+const contactInfoSchema = z.object({
+  firstName: z.string().min(2, 'First name is required'),
+  lastName: z.string().min(2, 'Last name is required'),
+  email: z.string().email('Invalid email address'),
+  phone: z.string().regex(/^\+?[\d\s-()]+$/, 'Invalid phone number'),
+  company: z.string().optional(),
+  howHeard: z.string().optional()
+});
+
+// Booking steps configuration
+const bookingSteps = [
+  {
+    id: 'event-type',
+    title: 'Event Type',
+    subtitle: 'What are we celebrating?',
+    icon: <Calendar className="w-6 h-6" />
+  },
+  {
+    id: 'event-details',
+    title: 'Event Details',
+    subtitle: 'Tell us about your event',
+    icon: <Users className="w-6 h-6" />
+  },
+  {
+    id: 'menu-selection',
+    title: 'Menu Selection',
+    subtitle: 'Choose your culinary experience',
+    icon: <Utensils className="w-6 h-6" />
+  },
+  {
+    id: 'additional-services',
+    title: 'Additional Services',
+    subtitle: 'Enhance your event',
+    icon: <Package className="w-6 h-6" />
+  },
+  {
+    id: 'contact-info',
+    title: 'Contact Information',
+    subtitle: 'How can we reach you?',
+    icon: <User className="w-6 h-6" />
+  },
+  {
+    id: 'review',
+    title: 'Review & Submit',
+    subtitle: 'Confirm your details',
+    icon: <Check className="w-6 h-6" />
+  }
+];
+
+const BookingWizard = ({ onClose }) => {
+  const [currentStep, setCurrentStep] = useState(0);
+  const [bookingData, setBookingData] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // Get current schema based on step
+  const getCurrentSchema = () => {
+    switch (currentStep) {
+      case 1: return eventDetailsSchema;
+      case 2: return menuSelectionSchema;
+      case 4: return contactInfoSchema;
+      default: return z.object({});
+    }
+  };
+
+  const form = useForm({
+    resolver: zodResolver(getCurrentSchema()),
+    mode: 'onChange'
+  });
+
+  const handleNext = async (data) => {
+    const isValid = await form.trigger();
+    if (isValid) {
+      setBookingData({ ...bookingData, ...data });
+      if (currentStep < bookingSteps.length - 1) {
+        setCurrentStep(currentStep + 1);
+      }
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentStep > 0) {
+      setCurrentStep(currentStep - 1);
+    }
+  };
+
+  const handleSubmit = async () => {
+    setIsSubmitting(true);
+    try {
+      // Submit booking data to API
+      await new Promise(resolve => setTimeout(resolve, 2000)); // Simulate API call
+      console.log('Booking submitted:', bookingData);
+      // Show success message or redirect
+    } catch (error) {
+      console.error('Submission error:', error);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 overflow-y-auto bg-black/50 backdrop-blur-sm">
+      <div className="min-h-screen flex items-center justify-center p-4">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0, scale: 0.95 }}
+          className="bg-white rounded-2xl shadow-2xl max-w-4xl w-full overflow-hidden"
+        >
+          {/* Header */}
+          <div className="bg-gradient-to-r from-amber-500 to-orange-600 p-6 text-white">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-3xl font-bold">Book Your Event</h2>
+              <button
+                onClick={onClose}
+                className="p-2 hover:bg-white/20 rounded-lg transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            {/* Progress Steps */}
+            <div className="flex items-center justify-between">
+              {bookingSteps.map((step, index) => (
+                <div key={step.id} className="flex items-center">
+                  <motion.div
+                    className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all ${
+                      index <= currentStep 
+                        ? 'bg-white text-amber-600 border-white' 
+                        : 'bg-transparent text-white/60 border-white/40'
+                    }`}
+                    animate={{
+                      scale: index === currentStep ? 1.1 : 1
+                    }}
+                  >
+                    {index < currentStep ? (
+                      <Check className="w-5 h-5" />
+                    ) : (
+                      <span className="text-sm font-bold">{index + 1}</span>
+                    )}
+                  </motion.div>
+                  {index < bookingSteps.length - 1 && (
+                    <div className={`w-full h-0.5 mx-2 transition-all ${
+                      index < currentStep ? 'bg-white' : 'bg-white/30'
+                    }`} />
+                  )}
+                </div>
+              ))}
+            </div>
+
+            {/* Current Step Info */}
+            <div className="mt-6 flex items-center gap-3">
+              {bookingSteps[currentStep].icon}
+              <div>
+                <h3 className="text-xl font-semibold">{bookingSteps[currentStep].title}</h3>
+                <p className="text-white/80 text-sm">{bookingSteps[currentStep].subtitle}</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Content */}
+          <div className="p-8">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentStep}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+              >
+                {currentStep === 0 && <EventTypeStep form={form} />}
+                {currentStep === 1 && <EventDetailsStep form={form} />}
+                {currentStep === 2 && <MenuSelectionStep form={form} />}
+                {currentStep === 3 && <AdditionalServicesStep form={form} />}
+                {currentStep === 4 && <ContactInfoStep form={form} />}
+                {currentStep === 5 && <ReviewStep bookingData={bookingData} />}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Footer */}
+          <div className="bg-gray-50 px-8 py-6 flex items-center justify-between">
+            <button
+              onClick={handlePrevious}
+              disabled={currentStep === 0}
+              className={`flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all ${
+                currentStep === 0 
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed' 
+                  : 'bg-white text-gray-700 hover:bg-gray-100 shadow-md'
+              }`}
+            >
+              <ChevronLeft className="w-5 h-5" />
+              Previous
+            </button>
+
+            {currentStep < bookingSteps.length - 1 ? (
+              <button
+                onClick={form.handleSubmit(handleNext)}
+                className="flex items-center gap-2 px-6 py-3 bg-amber-500 text-white rounded-lg font-medium hover:bg-amber-600 transition-all shadow-md"
+              >
+                Next
+                <ChevronRight className="w-5 h-5" />
+              </button>
+            ) : (
+              <button
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                className="flex items-center gap-2 px-8 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-all shadow-md"
+              >
+                {isSubmitting ? (
+                  <>
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    Submitting...
+                  </>
+                ) : (
+                  <>
+                    <Check className="w-5 h-5" />
+                    Submit Booking
+                  </>
+                )}
+              </button>
+            )}
+          </div>
+        </motion.div>
+      </div>
+    </div>
+  );
+};
+
+// Step 1: Event Type Selection
+const EventTypeStep = ({ form }) => {
+  const eventTypes = [
+    {
+      id: 'corporate',
+      title: 'Corporate Event',
+      description: 'Business meetings, conferences, team building',
+      icon: '🏢',
+      color: 'from-blue-500 to-indigo-600'
+    },
+    {
+      id: 'wedding',
+      title: 'Wedding',
+      description: 'Your special day deserves exceptional catering',
+      icon: '💑',
+      color: 'from-pink-500 to-rose-600'
+    },
+    {
+      id: 'social',
+      title: 'Social Gathering',
+      description: 'Birthdays, anniversaries, celebrations',
+      icon: '🎉',
+      color: 'from-purple-500 to-indigo-600'
+    },
+    {
+      id: 'bbq',
+      title: 'BBQ & Outdoor',
+      description: 'Grilling, picnics, outdoor events',
+      icon: '🔥',
+      color: 'from-orange-500 to-red-600'
+    }
+  ];
+
+  const [selectedType, setSelectedType] = useState('');
+
+  return (
+    <div className="space-y-6">
+      <div className="grid md:grid-cols-2 gap-4">
+        {eventTypes.map((type) => (
+          <motion.div
+            key={type.id}
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+          >
+            <label className="cursor-pointer">
+              <input
+                type="radio"
+                name="eventType"
+                value={type.id}
+                onChange={(e) => {
+                  setSelectedType(e.target.value);
+                  form.setValue('eventType', e.target.value);
+                }}
+                className="sr-only"
+              />
+              <div className={`relative p-6 rounded-xl border-2 transition-all ${
+                selectedType === type.id 
+                  ? 'border-amber-500 shadow-lg' 
+                  : 'border-gray-200 hover:border-gray-300'
+              }`}>
+                <div className={`absolute inset-0 bg-gradient-to-br ${type.color} opacity-5 rounded-xl`} />
+                <div className="relative">
+                  <span className="text-4xl mb-4 block">{type.icon}</span>
+                  <h3 className="text-xl font-semibold mb-2">{type.title}</h3>
+                  <p className="text-gray-600">{type.description}</p>
+                </div>
+                {selectedType === type.id && (
+                  <motion.div
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    className="absolute top-4 right-4 w-8 h-8 bg-amber-500 rounded-full flex items-center justify-center"
+                  >
+                    <Check className="w-5 h-5 text-white" />
+                  </motion.div>
+                )}
+              </div>
+            </label>
+          </motion.div>
+        ))}
+      </div>
+
+      {/* Quick Info */}
+      <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 flex items-start gap-3">
+        <Info className="w-5 h-5 text-amber-600 mt-0.5" />
+        <div className="text-sm text-amber-800">
+          <p className="font-medium mb-1">Not sure which type fits your event?</p>
+          <p>Our event specialists can help you choose the perfect catering style. Call us at (555) 123-4567.</p>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Additional step components would follow the same pattern...
+// EventDetailsStep, MenuSelectionStep, AdditionalServicesStep, ContactInfoStep, ReviewStep
+
+export default BookingWizard;

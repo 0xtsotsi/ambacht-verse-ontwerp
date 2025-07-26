@@ -11,7 +11,7 @@ import { SocialPage } from "./pages/SocialPage";
 import { BBQPage } from "./pages/BBQPage";
 import { GalleryPage } from "./pages/GalleryPage";
 import { ContactPage } from "./pages/ContactPage";
-import NotFound from "./pages/NotFound";
+import Custom404 from "./pages/Custom404";
 
 const queryClient = new QueryClient();
 
@@ -30,7 +30,7 @@ const App = () => (
         <Route path="/gallery" component={GalleryPage} />
         <Route path="/contact" component={ContactPage} />
         {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-        <Route path="*" component={NotFound} />
+        <Route path="*" component={Custom404} />
         </Router>
       </TooltipProvider>
     </QueryClientProvider>
