@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
 import { SopranosNavigation } from "@/components/SopranosNavigation";
-import HeroSection3D from "@/components/HeroSection3D";
-import AdvancedServiceGrid from "@/components/AdvancedServiceGrid";
+import HeroSection from "@/components/HeroSection3D";
+import { Services } from "@/components/Services";
 import AdvancedGallery from "@/components/AdvancedGallery";
 import { CateringMenuCarousel } from "@/components/CateringMenuCarousel";
 import { CTASection } from "@/components/CTASection";
@@ -93,10 +93,10 @@ const Index = () => {
       <SkipLink />
       <ScrollProgress />
       <Navigation />
-      <HeroSection3D />
+      <HeroSection />
       <main id="main-content">
         <SopranosNavigation />
-        <AdvancedServiceGrid />
+        <Services />
         <CateringMenuCarousel />
         <ScrollTextReveal>
           <EnhancedCTA />

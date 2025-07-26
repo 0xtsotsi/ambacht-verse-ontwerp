@@ -15,59 +15,87 @@ const galleryCategories = [
 const galleryImages = [
   {
     id: 1,
-    src: '@assets/1000005907_1753439577476.jpg',
+    src: 'https://images.unsplash.com/photo-1519225421980-715cb0215aed?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
     category: 'weddings',
     title: 'Elegante Bruiloft Receptie',
     description: 'Prachtig gedekte tafels voor 200 gasten'
   },
   {
     id: 2,
-    src: '@assets/1000005931_1753439577477.jpg',
+    src: 'https://images.unsplash.com/photo-1555244162-803834f70033?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
     category: 'corporate',
     title: 'Executive Lunch Buffet',
     description: 'Premium zakelijke catering opstelling'
   },
   {
     id: 3,
-    src: '@assets/1000005916_1753439577477.jpg',
+    src: 'https://images.unsplash.com/photo-1544025162-d76694265947?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
     category: 'bbq',
     title: 'BBQ Extravaganza',
     description: 'Live grilling voor outdoor events'
   },
   {
     id: 4,
-    src: '@assets/1000005886_1753439577476.jpg',
+    src: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
     category: 'social',
     title: 'Verjaardag Viering',
     description: 'Feestelijke catering voor 50 gasten'
   },
   {
     id: 5,
-    src: '@assets/1000005880_1753439577477.jpg',
+    src: 'https://images.unsplash.com/photo-1511795409834-ef04bbd61622?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80',
     category: 'weddings',
     title: 'Romantische Diner Setup',
     description: 'Intieme bruiloft setting'
   },
   {
     id: 6,
-    src: '@assets/1000005871_1753439577475.jpg',
+    src: 'https://images.unsplash.com/photo-1567521464027-f127ff144326?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80',
     category: 'corporate',
     title: 'Conferentie Catering',
     description: 'Professionele lunch service'
   },
   {
     id: 7,
-    src: '@assets/1000005760_1753439577478.jpg',
+    src: 'https://images.unsplash.com/photo-1530103862676-de8c9debad1d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
     category: 'social',
     title: 'Jubileum Feest',
     description: '25-jarig huwelijksfeest'
   },
   {
     id: 8,
-    src: '@assets/1000005739_1753439577480.jpg',
+    src: 'https://images.unsplash.com/photo-1551218808-94e220e084d2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80',
     category: 'bbq',
     title: 'Zomer BBQ Party',
     description: 'Outdoor grill evenement'
+  },
+  {
+    id: 9,
+    src: 'https://images.unsplash.com/photo-1551632811-561732d1e306?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+    category: 'weddings',
+    title: 'Cocktail Reception',
+    description: 'Stijlvolle cocktail opstelling'
+  },
+  {
+    id: 10,
+    src: 'https://images.unsplash.com/photo-1559339352-11d035aa65de?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80',
+    category: 'corporate',
+    title: 'Business Lunch',
+    description: 'Zakelijke lunch arrangement'
+  },
+  {
+    id: 11,
+    src: 'https://images.unsplash.com/photo-1596040033229-a9821ebd058d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+    category: 'social',
+    title: 'Garden Party',
+    description: 'Outdoor sociale bijeenkomst'
+  },
+  {
+    id: 12,
+    src: 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80',
+    category: 'bbq',
+    title: 'Premium Grill Station',
+    description: 'Live cooking experience'
   }
 ];
 
@@ -164,7 +192,7 @@ const AdvancedGallery = () => {
 
         {/* Gallery Grid with 3D hover effects */}
         <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+          className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6"
           initial={{ opacity: 0 }}
           animate={inView ? { opacity: 1 } : {}}
           transition={{ duration: 0.8, delay: 0.4 }}
