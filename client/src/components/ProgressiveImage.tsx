@@ -1,76 +1,176 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
 
 interface ProgressiveImageProps {
   src: string;
-  alt: string;
   placeholder?: string;
+  alt: string;
   className?: string;
+  webpSrc?: string;
+  avifSrc?: string;
+  sizes?: string;
   priority?: boolean;
-  onClick?: () => void;
+  onLoad?: () => void;
+  onError?: () => void;
 }
 
-export function ProgressiveImage({
+export const ProgressiveImage = ({
   src,
-  alt,
   placeholder,
+  alt,
   className,
+  webpSrc,
+  avifSrc,
+  sizes = "100vw",
   priority = false,
-  onClick
-}: ProgressiveImageProps) {
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [hasError, setHasError] = useState(false);
+  onLoad,
+  onError
+}: ProgressiveImageProps) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+  const [imageSrc, setImageSrc] = useState(placeholder || '');
+  const [imageError, setImageError] = useState(false);
+
+  // Generate WebP and AVIF sources if not provided
+  const generateWebPSrc = (originalSrc: string) => {
+    return webpSrc || originalSrc.replace(/\.(jpg|jpeg|png)$/i, '.webp');
+  };
+
+  const generateAvifSrc = (originalSrc: string) => {
+    return avifSrc || originalSrc.replace(/\.(jpg|jpeg|png)$/i, '.avif');
+  };
 
   useEffect(() => {
-    if (priority) {
-      const img = new Image();
-      img.src = src;
-      img.onload = () => setIsLoaded(true);
-      img.onerror = () => setHasError(true);
-    }
-  }, [src, priority]);
+    if (!src) return;
 
-  const handleLoad = () => {
-    setIsLoaded(true);
-  };
+    const loadImage = async () => {
+      // Try AVIF first (best compression)
+      const avifSource = generateAvifSrc(src);
+      const webpSource = generateWebPSrc(src);
 
-  const handleError = () => {
-    setHasError(true);
-  };
+      const tryLoadImage = (source: string): Promise<boolean> => {
+        return new Promise((resolve) => {
+          const img = new Image();
+          img.onload = () => {
+            setImageSrc(source);
+            setImageLoaded(true);
+            setImageError(false);
+            onLoad?.();
+            resolve(true);
+          };
+          img.onerror = () => resolve(false);
+          
+          // Set sizes for responsive images
+          if (sizes) img.sizes = sizes;
+          
+          // Priority loading for above-the-fold images
+          if (priority) {
+            img.loading = 'eager';
+            img.fetchPriority = 'high';
+          }
+          
+          img.src = source;
+        });
+      };
+
+      // Progressive enhancement: AVIF → WebP → Original
+      let loaded = false;
+      
+      if (avifSrc || src.includes('.avif')) {
+        loaded = await tryLoadImage(avifSource);
+      }
+      
+      if (!loaded && (webpSrc || !src.includes('.webp'))) {
+        loaded = await tryLoadImage(webpSource);
+      }
+      
+      if (!loaded) {
+        // Fallback to original
+        const originalLoaded = await tryLoadImage(src);
+        if (!originalLoaded) {
+          setImageError(true);
+          onError?.();
+        }
+      }
+    };
+
+    loadImage();
+  }, [src, webpSrc, avifSrc, sizes, priority, onLoad, onError]);
+
+  if (imageError) {
+    return (
+      <div className={cn("bg-muted flex items-center justify-center", className)}>
+        <span className="text-muted-foreground text-sm">Failed to load image</span>
+      </div>
+    );
+  }
 
   return (
-    <div className={cn("relative overflow-hidden", className)} onClick={onClick}>
-      {/* Placeholder/Loading state */}
-      {(!isLoaded || hasError) && (
-        <div className="absolute inset-0 bg-gradient-to-br from-warm-gold/20 to-heritage-orange/20 animate-pulse">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-shimmer" />
-        </div>
-      )}
-      
-      {/* Low quality placeholder if provided */}
-      {placeholder && !isLoaded && !hasError && (
-        <img
-          src={placeholder}
+    <div className={cn("relative overflow-hidden", className)}>
+      {/* Modern picture element with multiple formats */}
+      <picture>
+        {avifSrc && (
+          <source srcSet={avifSrc} type="image/avif" sizes={sizes} />
+        )}
+        {webpSrc && (
+          <source srcSet={webpSrc} type="image/webp" sizes={sizes} />
+        )}
+        <motion.img
+          src={imageSrc}
           alt={alt}
-          className="absolute inset-0 w-full h-full object-cover filter blur-lg scale-110"
+          initial={{ opacity: 0, scale: 1.1 }}
+          animate={{ 
+            opacity: imageLoaded ? 1 : 0.7,
+            scale: imageLoaded ? 1 : 1.1
+          }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="w-full h-full object-cover"
+          loading={priority ? "eager" : "lazy"}
+          {...(priority && { fetchPriority: "high" as const })}
+          sizes={sizes}
+        />
+      </picture>
+
+      {/* Loading skeleton */}
+      {!imageLoaded && (
+        <motion.div
+          className="absolute inset-0 bg-gradient-to-r from-warm-cream via-beige to-warm-cream animate-shimmer"
+          initial={{ opacity: 1 }}
+          animate={{ opacity: imageLoaded ? 0 : 1 }}
+          transition={{ duration: 0.3 }}
         />
       )}
-      
-      {/* Main image */}
-      <motion.img
-        src={src}
-        alt={alt}
-        onLoad={handleLoad}
-        onError={handleError}
-        className={cn(
-          "w-full h-full object-cover transition-all duration-700",
-          isLoaded ? "opacity-100" : "opacity-0"
-        )}
-        initial={{ scale: 1.1 }}
-        animate={{ scale: isLoaded ? 1 : 1.1 }}
-        transition={{ duration: 0.7 }}
-      />
+
+      {/* Blur placeholder */}
+      {placeholder && !imageLoaded && (
+        <div 
+          className="absolute inset-0 bg-cover bg-center filter blur-sm scale-110"
+          style={{ backgroundImage: `url(${placeholder})` }}
+        />
+      )}
     </div>
   );
-}
+};
+
+// Utility hook for image optimization
+export const useImageOptimization = () => {
+  const optimizeImageSrc = (src: string, width?: number, quality = 85) => {
+    if (!src) return { src, webpSrc: undefined, avifSrc: undefined };
+
+    const baseUrl = src.split('.').slice(0, -1).join('.');
+    const extension = src.split('.').pop()?.toLowerCase();
+
+    // Generate optimized versions
+    const webpSrc = `${baseUrl}.webp${width ? `?w=${width}&q=${quality}` : ''}`;
+    const avifSrc = `${baseUrl}.avif${width ? `?w=${width}&q=${quality}` : ''}`;
+
+    return {
+      src,
+      webpSrc,
+      avifSrc,
+      sizes: width ? `(max-width: ${width}px) 100vw, ${width}px` : '100vw'
+    };
+  };
+
+  return { optimizeImageSrc };
+};

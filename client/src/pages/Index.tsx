@@ -1,12 +1,11 @@
 import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
-import { HeroSectionEnhanced } from "@/components/HeroSectionEnhanced";
-import { NavigationPills } from "@/components/NavigationPills";
-
-import { ServicesEnhanced } from "@/components/ServicesEnhanced";
-import { GalleryEnhanced } from "@/components/GalleryEnhanced";
-import { TestimonialsEnhanced } from "@/components/TestimonialsEnhanced";
-import { CTASectionEnhanced } from "@/components/CTASectionEnhanced";
+import { Hero } from "@/components/Hero";
+import { SopranoServicesSection } from "@/components/SopranoServicesSection";
+import { Services } from "@/components/Services";
+import { Gallery } from "@/components/Gallery";
+import { Testimonials } from "@/components/Testimonials";
+import { CTASection } from "@/components/CTASection";
 import { Footer } from "@/components/Footer";
 import { FloatingBookingWidget } from "@/components/FloatingBookingWidget";
 import { DateCheckerModal } from "@/components/DateCheckerModal";
@@ -73,12 +72,12 @@ const Index = () => {
   return (
     <div className="min-h-screen">
       <Navigation />
-      <HeroSectionEnhanced />
-      <NavigationPills />
-      <ServicesEnhanced />
-      <GalleryEnhanced />
-      <TestimonialsEnhanced />
-      <CTASectionEnhanced />
+      <Hero />
+      <SopranoServicesSection />
+      <Services />
+      <Gallery />
+      <Testimonials />
+      <CTASection />
       <Footer />
 
       {/* Dynamic Booking Widget */}
