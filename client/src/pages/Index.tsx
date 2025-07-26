@@ -3,7 +3,7 @@ import { Navigation } from "@/components/Navigation";
 import { SopranosNavigation } from "@/components/SopranosNavigation";
 import HeroSection from "@/components/HeroSection3D";
 import { Services } from "@/components/Services";
-import AdvancedGallery from "@/components/AdvancedGallery";
+
 import { CateringMenuCarousel } from "@/components/CateringMenuCarousel";
 import { CTASection } from "@/components/CTASection";
 import { EnhancedCTA } from "@/components/EnhancedCTA";
@@ -101,7 +101,6 @@ const Index = () => {
           <EnhancedCTA />
         </ScrollTextReveal>
         <StatsSection />
-        <AdvancedGallery />
         <FeatureSection />
       </main>
       <Footer />
