@@ -6,6 +6,7 @@ import { Router, Route } from "wouter";
 import { HelmetProvider } from "react-helmet-async";
 import Index from "./pages/Index";
 import { WeddingPage } from "./pages/WeddingPage";
+import BruiloftenPage from "./pages/BruiloftenPage";
 import { CorporatePage } from "./pages/CorporatePage";
 import { SocialPage } from "./pages/SocialPage";
 import { BBQPage } from "./pages/BBQPage";
@@ -24,6 +25,7 @@ const App = () => (
         <Router>
         <Route path="/" component={Index} />
         <Route path="/wedding" component={WeddingPage} />
+        <Route path="/bruiloften" component={BruiloftenPage} />
         <Route path="/corporate" component={CorporatePage} />
         <Route path="/social" component={SocialPage} />
         <Route path="/bbq" component={BBQPage} />

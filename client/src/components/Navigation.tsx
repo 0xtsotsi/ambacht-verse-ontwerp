@@ -9,7 +9,7 @@ export const Navigation = () => {
 
   const menuItems = [
     { name: "HOME", href: "/" },
-    { name: "BRUILOFTEN", href: "/wedding" },
+    { name: "BRUILOFTEN", href: "/bruiloften" },
     { name: "CORPORATE", href: "/corporate" },
     { name: "SOCIALE EVENTS", href: "/social" },
     { name: "BBQ CATERING", href: "/bbq" },
