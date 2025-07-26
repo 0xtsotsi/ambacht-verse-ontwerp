@@ -12,7 +12,6 @@ import { PerformanceMonitor } from "@/components/PerformanceOptimizations";
 import { SEOHead, CateringBusinessSchema } from "@/components/SEOOptimizations";
 import { SkipLink } from "@/components/AccessibilityEnhancements";
 import { FeatureSection } from "@/components/FeatureSection";
-import { Services } from "@/components/Services";
 import { Footer } from "@/components/Footer";
 import { FloatingBookingWidget } from "@/components/FloatingBookingWidget";
 import { DateCheckerModal } from "@/components/DateCheckerModal";
@@ -104,7 +103,6 @@ const Index = () => {
         <StatsSection />
         <AdvancedGallery />
         <FeatureSection />
-        <Services />
       </main>
       <Footer />
 
