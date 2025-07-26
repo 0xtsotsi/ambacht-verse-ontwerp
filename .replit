@@ -5,6 +5,9 @@ hidden = [".config", ".git", "generated-icon.png", "node_modules", "dist"]
 [nix]
 channel = "stable-25_05"
 
+[env]
+DATABASE_URL = "postgresql://username:password@localhost:5432/database_name"
+
 [deployment]
 deploymentTarget = "autoscale"
 run = ["npm", "run", "start"]
