@@ -1,24 +1,15 @@
 import { useState } from "react";
 import { Navigation } from "@/components/Navigation";
-import { SopranosNavigation } from "@/components/SopranosNavigation";
-import HeroSection from "@/components/HeroSection3D";
+import { Hero } from "@/components/Hero";
+import { SopranoServicesSection } from "@/components/SopranoServicesSection";
 import { Services } from "@/components/Services";
-
-import { CateringMenuCarousel } from "@/components/CateringMenuCarousel";
+import { Gallery } from "@/components/Gallery";
+import { Testimonials } from "@/components/Testimonials";
 import { CTASection } from "@/components/CTASection";
-import { EnhancedCTA } from "@/components/EnhancedCTA";
-import { StatsSection } from "@/components/CounterAnimation";
-import { PerformanceMonitor } from "@/components/PerformanceOptimizations";
-import { SEOHead, CateringBusinessSchema } from "@/components/SEOOptimizations";
-import { SkipLink } from "@/components/AccessibilityEnhancements";
-import { FeatureSection } from "@/components/FeatureSection";
 import { Footer } from "@/components/Footer";
 import { FloatingBookingWidget } from "@/components/FloatingBookingWidget";
 import { DateCheckerModal } from "@/components/DateCheckerModal";
 import { StepByStepQuoteCalculator } from "@/components/variations/quote-calculator-001-step-by-step";
-import { ScrollProgress } from "@/components/ScrollProgress";
-import { ScrollTextReveal } from "@/components/ScrollProgress";
-import BookingWizard3D from "@/components/BookingWizard3D";
 import { useToast } from "@/hooks/use-toast";
 import type { QuoteBreakdown, QuoteInput } from "@/lib/quote-calculations";
 
@@ -79,30 +70,14 @@ const Index = () => {
   };
 
   return (
-    <div className="min-h-screen bg-background">
-      <SEOHead
-        title="Wesley's Ambacht - Premium Catering Stellendam"
-        description="Professionele catering service in Stellendam. Specialiteit in zakelijke evenementen, bruiloften en sociale gelegenheden. Verse lokale ingrediënten, ervaren team. Bel 06 212 226 58."
-        keywords={["catering", "Stellendam", "bruiloft", "zakelijk evenement", "BBQ", "lokale ingrediënten"]}
-        canonical="https://ambachtbijwesley.nl"
-        ogImage="/images/hero-wesley-ambacht.jpg"
-      />
-      <CateringBusinessSchema />
-      <PerformanceMonitor />
-      <SkipLink />
-      <ScrollProgress />
+    <div className="min-h-screen">
       <Navigation />
-      <HeroSection />
-      <main id="main-content">
-        <SopranosNavigation />
-        <Services />
-        <CateringMenuCarousel />
-        <ScrollTextReveal>
-          <EnhancedCTA />
-        </ScrollTextReveal>
-        <StatsSection />
-        <FeatureSection />
-      </main>
+      <Hero />
+      <SopranoServicesSection />
+      <Services />
+      <Gallery />
+      <Testimonials />
+      <CTASection />
       <Footer />
 
       {/* Dynamic Booking Widget */}
@@ -123,10 +98,7 @@ const Index = () => {
         onRequestDetailedQuote={handleQuoteRequest}
       />
 
-      {/* Advanced Booking Wizard */}
-      {bookingWizardOpen && (
-        <BookingWizard3D onClose={() => setBookingWizardOpen(false)} />
-      )}
+
     </div>
   );
 };
