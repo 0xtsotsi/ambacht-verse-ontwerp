@@ -2,19 +2,22 @@ import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X, Home, Users, Image, Heart, Flame, Phone, ChefHat } from "lucide-react";
 import { Link } from "wouter";
+import { LanguageToggle } from "@/components/LanguageToggle";
+import { useLanguage } from "@/contexts/LanguageContext";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const { t } = useLanguage();
 
   const menuItems = [
-    { name: "HOME", href: "/" },
-    { name: "BRUILOFTEN", href: "/bruiloften" },
-    { name: "CORPORATE", href: "/corporate" },
-    { name: "SOCIALE EVENTS", href: "/social" },
-    { name: "BBQ CATERING", href: "/bbq" },
-    { name: "GALERIJ", href: "/gallery" },
-    { name: "CONTACT", href: "/contact" },
+    { name: t('nav.home'), href: "/" },
+    { name: t('nav.weddings'), href: "/bruiloften" },
+    { name: t('nav.corporate'), href: "/corporate" },
+    { name: t('nav.social'), href: "/social" },
+    { name: t('nav.bbq'), href: "/bbq" },
+    { name: t('nav.gallery'), href: "/gallery" },
+    { name: t('nav.contact'), href: "/contact" },
   ];
 
   useEffect(() => {
@@ -47,7 +50,8 @@ export const Navigation = () => {
           </div>
 
           {/* Desktop Menu - Soprano's style horizontal nav */}
-          <div className="hidden lg:flex items-center space-x-12">
+          <div className="hidden lg:flex items-center space-x-8">
+            <div className="flex items-center space-x-8">
             {menuItems.map((item) => (
               item.href.startsWith('/') ? (
                 <Link
@@ -75,17 +79,24 @@ export const Navigation = () => {
                 </a>
               )
             ))}
+            </div>
+            
+            {/* Language Toggle */}
+            <LanguageToggle />
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            className={`lg:hidden transition-colors duration-300 ${
-              scrolled ? "text-gray-700 hover:text-[#E86C32]" : "text-white hover:text-[#D4AF37]"
-            }`}
-            onClick={() => setIsOpen(!isOpen)}
-          >
-            {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {/* Mobile Menu Button & Language Toggle */}
+          <div className="lg:hidden flex items-center space-x-3">
+            <LanguageToggle />
+            <button
+              className={`transition-colors duration-300 ${
+                scrolled ? "text-gray-700 hover:text-[#E86C32]" : "text-white hover:text-[#D4AF37]"
+              }`}
+              onClick={() => setIsOpen(!isOpen)}
+            >
+              {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
         </div>
 
         {/* Mobile Menu */}

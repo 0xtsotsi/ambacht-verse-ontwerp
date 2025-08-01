@@ -34,8 +34,8 @@ export const CorporatePage = () => {
 
   const corporateServices = {
     meetings: {
-      title: "Executive Meetings",
-      subtitle: "BOARDROOM CATERING",
+      title: "Directie Vergaderingen",
+      subtitle: "DIRECTIEKAMER CATERING",
       price: "€25",
       image: meetingImage,
       description: "Professional catering voor executive meetings en boardroom sessies met premium kwaliteit en discrete service",
@@ -56,8 +56,8 @@ export const CorporatePage = () => {
       ]
     },
     conferences: {
-      title: "Conference Catering",
-      subtitle: "ALL-DAY EVENTS",
+      title: "Conferentie Catering",
+      subtitle: "HELE DAG EVENEMENTEN",
       price: "€45",
       image: conferenceImage,
       description: "Complete all-day conference catering van ontbijt tot dinner met energizing food choices voor optimale productiviteit",
@@ -78,8 +78,8 @@ export const CorporatePage = () => {
       ]
     },
     office: {
-      title: "Office Dining",
-      subtitle: "DAILY CATERING",
+      title: "Kantoor Dining",
+      subtitle: "DAGELIJKSE CATERING",
       price: "€18",
       image: lunchImage,
       description: "Dagelijkse office catering service voor team lunches, employee events en kantoor dining programs",
@@ -129,7 +129,7 @@ export const CorporatePage = () => {
           <div className="flex items-center justify-center gap-3 mb-6">
             <Building2 className="w-8 h-8 text-[#D4AF37]" />
             <p className="text-script text-2xl" style={{ color: '#D4AF37', fontFamily: 'Great Vibes, cursive' }}>
-              Business Excellence
+              Zakelijke Excellentie
             </p>
           </div>
           <h1 className="text-white mb-8" style={{ 
@@ -140,7 +140,7 @@ export const CorporatePage = () => {
             textShadow: '2px 2px 4px rgba(0,0,0,0.7)',
             letterSpacing: '0.02em'
           }}>
-            CORPORATE CATERING
+            BEDRIJFSCATERING
           </h1>
           <p className="text-xl text-white/90 max-w-3xl mx-auto leading-relaxed mb-8" style={{ fontFamily: 'Open Sans, sans-serif' }}>
             Professionele catering oplossingen voor executive meetings, conferences en office dining. 
@@ -169,7 +169,7 @@ export const CorporatePage = () => {
             <div className="flex items-center justify-center gap-3 mb-6">
               <Briefcase className="w-6 h-6 text-[#E86C32]" />
               <p className="text-script text-2xl" style={{ color: '#D4AF37', fontFamily: 'Great Vibes, cursive' }}>
-                Professional Services
+                Professionele Services
               </p>
             </div>
             <h2 className="text-4xl font-bold mb-8 text-gray-900" style={{ fontFamily: 'Playfair Display, serif' }}>
@@ -207,7 +207,7 @@ export const CorporatePage = () => {
             <div className="bg-white p-6 rounded-lg shadow-lg text-center">
               <Users className="w-12 h-12 text-[#E86C32] mx-auto mb-4" />
               <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
-                Professional Image
+                Professioneel Imago
               </h3>
               <p className="text-gray-600" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                 Premium presentatie die uw bedrijfsstandaarden reflecteert en indruk maakt op clients en partners.
@@ -312,13 +312,13 @@ export const CorporatePage = () => {
                           border: 'none'
                         }}
                       >
-                        Request Quote
+                        Vraag Offerte Aan
                       </Button>
                       <Button 
                         variant="outline"
                         className="px-6 py-3 rounded-full border-2 border-[#E86C32] text-[#E86C32] hover:bg-[#E86C32] hover:text-white transition-all duration-300"
                       >
-                        View Menu
+                        Bekijk Menu
                       </Button>
                     </div>
                   </div>
@@ -341,7 +341,7 @@ export const CorporatePage = () => {
               <Button 
                 className="bg-white text-[#E86C32] hover:bg-gray-100 font-bold px-8 py-3 rounded-full transition-all duration-300"
               >
-                Setup Corporate Account
+                Stel Zakelijk Account In
               </Button>
             </div>
           </div>

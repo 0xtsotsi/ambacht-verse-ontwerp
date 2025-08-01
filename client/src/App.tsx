@@ -5,6 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Router, Route } from "wouter";
 import { HelmetProvider } from "react-helmet-async";
 import { ErrorBoundary } from "@/components/ErrorBoundary";
+import { LanguageProvider } from "@/contexts/LanguageContext";
 import Index from "./pages/Index";
 import { WeddingPage } from "./pages/WeddingPage";
 import BruiloftenPage from "./pages/BruiloftenPage";
@@ -22,22 +23,24 @@ const App = () => (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
         <TooltipProvider>
-          <Toaster />
-          <Sonner />
-          <Router>
-            <ErrorBoundary level="page" resetOnPropsChange>
-              <Route path="/" component={Index} />
-              <Route path="/wedding" component={WeddingPage} />
-              <Route path="/bruiloften" component={BruiloftenPage} />
-              <Route path="/corporate" component={CorporatePage} />
-              <Route path="/social" component={SocialPage} />
-              <Route path="/bbq" component={BBQPage} />
-              <Route path="/gallery" component={GalleryPage} />
-              <Route path="/contact" component={ContactPage} />
-              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-              <Route path="*" component={Custom404} />
-            </ErrorBoundary>
-          </Router>
+          <LanguageProvider>
+            <Toaster />
+            <Sonner />
+            <Router>
+              <ErrorBoundary level="page" resetOnPropsChange>
+                <Route path="/" component={Index} />
+                <Route path="/wedding" component={WeddingPage} />
+                <Route path="/bruiloften" component={BruiloftenPage} />
+                <Route path="/corporate" component={CorporatePage} />
+                <Route path="/social" component={SocialPage} />
+                <Route path="/bbq" component={BBQPage} />
+                <Route path="/gallery" component={GalleryPage} />
+                <Route path="/contact" component={ContactPage} />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" component={Custom404} />
+              </ErrorBoundary>
+            </Router>
+          </LanguageProvider>
         </TooltipProvider>
       </QueryClientProvider>
     </HelmetProvider>

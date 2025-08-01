@@ -34,8 +34,8 @@ export const BBQPage = () => {
 
   const bbqStyles = {
     classic: {
-      title: "Classic American BBQ",
-      subtitle: "TRADITIONAL GRILL",
+      title: "Klassieke American BBQ",
+      subtitle: "TRADITIONELE GRILL",
       price: "€32",
       image: grillImage,
       description: "Authentieke American-style BBQ met slow-smoked vlees, traditional rubs en signature sauzen voor de ultieme outdoor dining experience",
@@ -56,7 +56,7 @@ export const BBQPage = () => {
       ]
     },
     dutch: {
-      title: "Dutch BBQ Experience",
+      title: "Nederlandse BBQ Ervaring",
       subtitle: "HOLLANDSE GRILL",
       price: "€28",
       image: outdoorImage,
@@ -78,8 +78,8 @@ export const BBQPage = () => {
       ]
     },
     premium: {
-      title: "Premium Grill Experience",
-      subtitle: "LUXURY OUTDOOR",
+      title: "Premium Grill Ervaring",
+      subtitle: "LUXE OUTDOOR",
       price: "€45",
       image: smokingImage,
       description: "Luxe BBQ ervaring met premium cuts, gourmet marinades en sophisticated outdoor dining setup voor exclusieve events",
@@ -129,7 +129,7 @@ export const BBQPage = () => {
           <div className="flex items-center justify-center gap-3 mb-6">
             <Flame className="w-8 h-8 text-[#D4AF37]" />
             <p className="text-script text-2xl" style={{ color: '#D4AF37', fontFamily: 'Great Vibes, cursive' }}>
-              Fire & Flavor
+              Vuur & Smaak
             </p>
           </div>
           <h1 className="text-white mb-8" style={{ 
@@ -169,7 +169,7 @@ export const BBQPage = () => {
             <div className="flex items-center justify-center gap-3 mb-6">
               <ChefHat className="w-6 h-6 text-[#E86C32]" />
               <p className="text-script text-2xl" style={{ color: '#D4AF37', fontFamily: 'Great Vibes, cursive' }}>
-                Outdoor Excellence
+                Outdoor Excellentie
               </p>
             </div>
             <h2 className="text-4xl font-bold mb-8 text-gray-900" style={{ fontFamily: 'Playfair Display, serif' }}>
@@ -189,7 +189,7 @@ export const BBQPage = () => {
             <div className="bg-white p-6 rounded-lg shadow-lg text-center">
               <Sun className="w-12 h-12 text-[#E86C32] mx-auto mb-4" />
               <h3 className="text-xl font-bold mb-3" style={{ fontFamily: 'Playfair Display, serif' }}>
-                Outdoor Experience
+                Outdoor Ervaring
               </h3>
               <p className="text-gray-600" style={{ fontFamily: 'Open Sans, sans-serif' }}>
                 Complete outdoor setup met professional equipment voor een authentieke BBQ ervaring.
