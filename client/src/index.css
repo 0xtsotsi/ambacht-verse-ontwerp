@@ -1,5 +1,5 @@
-/* Soprano's Catering inspired fonts */
-@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Open+Sans:wght@300;400;500;600;700&family=Dancing+Script:wght@400;600;700&family=Great+Vibes&display=swap");
+/* Soprano's Exact Typography System - Wesley's Ambacht Implementation */
+@import url("https://fonts.googleapis.com/css2?family=Oswald:wght@200;300;400;600;700&family=Great+Vibes&family=Karla:wght@300;400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -8,22 +8,35 @@
 /* Soprano's Luxury Color System Implementation */
 :root {
   /* Primary Soprano's Palette - Sophisticated Elegance */
-  --sophisticated-cream: #FAF8F5;
-  --warm-gold: #D4AF37;
-  --luxe-orange: #CC7A00;
-  --elegant-charcoal: #2F2F2F;
-  --deep-bronze: #8B4513;
-  --subtle-tan: #F5E6D3;
-  --rich-brown: #5D3A00;
-  
+  --sophisticated-cream: #faf8f5;
+  --warm-gold: #d4af37;
+  --luxe-orange: #cc7a00;
+  --elegant-charcoal: #2f2f2f;
+  --deep-bronze: #8b4513;
+  --subtle-tan: #f5e6d3;
+  --rich-brown: #5d3a00;
+
   /* Gradient Definitions */
-  --gold-gradient: linear-gradient(135deg, var(--luxe-orange), var(--warm-gold));
-  --elegant-gradient: linear-gradient(135deg, var(--deep-bronze), var(--rich-brown));
-  
+  --gold-gradient: linear-gradient(
+    135deg,
+    var(--luxe-orange),
+    var(--warm-gold)
+  );
+  --elegant-gradient: linear-gradient(
+    135deg,
+    var(--deep-bronze),
+    var(--rich-brown)
+  );
+
   /* Surface Colors */
   --card-background: var(--sophisticated-cream);
   --overlay-dark: rgba(47, 47, 47, 0.8);
   --overlay-light: rgba(255, 255, 255, 0.9);
+
+  /* Soprano's Typography System - Custom Properties */
+  --font-heading: "Oswald", "Impact", "Arial Black", sans-serif;
+  --font-body: "Karla", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-script: "Great Vibes", "Brush Script MT", cursive;
 }
 
 /* Cutting-edge performance optimizations */
@@ -32,8 +45,12 @@
 }
 
 @keyframes shimmer {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 /* WCAG 2.2 accessibility enhancements */
@@ -70,8 +87,10 @@ html {
   html {
     scroll-behavior: auto;
   }
-  
-  *, *::before, *::after {
+
+  *,
+  *::before,
+  *::after {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
@@ -95,27 +114,27 @@ html {
 @layer base {
   :root {
     /* Wesley's Ambacht color system - matching button */
-    --background: #F9F6F1;
-    --foreground: #2C2C2C;
-    --card: #FFFFFF;
-    --accent: #FF6B35;
-    --highlight: #FF6B35;
-    --muted: #5F5F5F;
-    --secondary: #F5E9D3;
-    --error: #D45745;
-    --border: #E5E5E5;
-    --input: #F5F5F5;
-    --ring: #FF6B35;
+    --background: #f9f6f1;
+    --foreground: #2c2c2c;
+    --card: #ffffff;
+    --accent: #ff6b35;
+    --highlight: #ff6b35;
+    --muted: #5f5f5f;
+    --secondary: #f5e9d3;
+    --error: #d45745;
+    --border: #e5e5e5;
+    --input: #f5f5f5;
+    --ring: #ff6b35;
     --border-radius: 0.5rem;
   }
 
   .dark {
-    --background: #2C2C2C;
-    --foreground: #F9F6F1;
-    --card: #3C3C3C;
-    --muted: #4A4A4A;
-    --input: #5A5A5A;
-    --border: #6A6A6A;
+    --background: #2c2c2c;
+    --foreground: #f9f6f1;
+    --card: #3c3c3c;
+    --muted: #4a4a4a;
+    --input: #5a5a5a;
+    --border: #6a6a6a;
   }
 }
 
@@ -125,47 +144,54 @@ html {
   }
   body {
     @apply bg-background text-foreground;
-    font-family: 'Playfair Display', 'Georgia', serif;
+    font-family: var(--font-body);
   }
-  
-  h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', 'Georgia', serif;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-heading);
     font-weight: 600;
   }
-  
-  p, span, div {
-    font-family: 'Open Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  p,
+  span,
+  div {
+    font-family: var(--font-body);
   }
 }
 
 @layer components {
-  /* Typography Scale - Fixed Hierarchy */
-  .text-display { 
+  /* Typography Scale - Soprano's Fixed Hierarchy */
+  .text-display {
     @apply text-5xl font-semibold leading-tight;
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-heading);
   }
-  .text-heading { 
+  .text-heading {
     @apply text-3xl font-medium leading-snug;
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-heading);
   }
-  .text-subheading { 
+  .text-subheading {
     @apply text-xl font-normal leading-relaxed;
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-heading);
   }
-  .text-body { 
+  .text-body {
     @apply text-base font-normal leading-loose;
-    font-family: 'Open Sans', sans-serif;
+    font-family: var(--font-body);
   }
-  .text-small { 
+  .text-small {
     @apply text-sm text-muted;
-    font-family: 'Open Sans', sans-serif;
+    font-family: var(--font-body);
   }
-  
+
   /* Script text for welcome */
   .text-script {
     @apply text-3xl;
-    font-family: 'Great Vibes', cursive;
-    color: #D4AF37;
+    font-family: var(--font-script);
+    color: #d4af37;
     font-weight: 400;
   }
 
@@ -199,13 +225,18 @@ html {
   }
 
   .service-button::before {
-    content: '';
+    content: "";
     position: absolute;
     top: 0;
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
     transition: left 0.8s;
   }
 
@@ -219,13 +250,13 @@ html {
   }
 
   .luxury-underline::after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: -2px;
     left: 50%;
     width: 0;
     height: 2px;
-    background: linear-gradient(90deg, #E86C32, #D4AF37, #E86C32);
+    background: linear-gradient(90deg, #e86c32, #d4af37, #e86c32);
     transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     transform: translateX(-50%);
   }
@@ -299,47 +330,47 @@ html {
   .animate-fade-scale {
     animation: fadeInScale 0.8s ease-out forwards;
   }
-  
+
   /* Navigation text */
   .text-nav {
     @apply text-base font-medium;
-    font-family: 'Open Sans', sans-serif;
+    font-family: var(--font-body);
   }
-  
+
   /* Pricing titles */
   .text-pricing {
     @apply text-2xl font-semibold;
-    font-family: 'Playfair Display', serif;
+    font-family: var(--font-heading);
   }
-  
+
   /* CTA text */
   .text-cta {
     @apply text-lg font-bold;
-    font-family: 'Open Sans', sans-serif;
+    font-family: var(--font-body);
   }
-  
+
   /* Footer text */
   .text-footer {
     @apply text-sm text-muted;
-    font-family: 'Open Sans', sans-serif;
+    font-family: var(--font-body);
   }
 
   /* Button Styles - Wesley's Ambacht gradient style */
   .btn-primary {
-    background: linear-gradient(135deg, #FF6B35 0%, #FF8A5B 50%, #FF6B35 100%);
+    background: linear-gradient(135deg, #ff6b35 0%, #ff8a5b 50%, #ff6b35 100%);
     @apply text-white px-8 py-4 rounded-full font-semibold;
     @apply transition-all duration-300 ease-in-out;
     @apply hover:scale-105 hover:shadow-xl;
-    font-family: 'Open Sans', sans-serif;
+    font-family: var(--font-body);
     background-size: 200% 200%;
     animation: gradientShift 3s ease infinite;
   }
-  
+
   .btn-primary:hover {
-    background: linear-gradient(135deg, #FF8A5B 0%, #FF6B35 50%, #FF8A5B 100%);
+    background: linear-gradient(135deg, #ff8a5b 0%, #ff6b35 50%, #ff8a5b 100%);
     box-shadow: 0 10px 25px rgba(255, 107, 53, 0.4);
   }
-  
+
   /* Hero overlay for Soprano's style */
   .hero-overlay {
     position: absolute;
@@ -347,21 +378,32 @@ html {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.5) 100%);
+    background: linear-gradient(
+      135deg,
+      rgba(0, 0, 0, 0.4) 0%,
+      rgba(0, 0, 0, 0.2) 50%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
     z-index: 1;
   }
-  
+
   @keyframes gradientShift {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    0% {
+      background-position: 0% 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0% 50%;
+    }
   }
-  
+
   .btn-secondary {
     @apply border-2 border-accent text-accent bg-transparent px-8 py-4 rounded-full font-semibold;
     @apply transition-all duration-300 ease-in-out;
     @apply hover:bg-accent hover:text-white hover:scale-105;
-    font-family: 'Open Sans', sans-serif;
+    font-family: var(--font-body);
   }
 
   /* Card Styles */
@@ -369,7 +411,7 @@ html {
     @apply bg-card border border-border rounded-lg shadow-sm;
     @apply transition-all duration-300 ease-in-out;
   }
-  
+
   .card-hoverable {
     @apply card-base hover:scale-[1.03] hover:shadow-lg;
   }
@@ -378,7 +420,7 @@ html {
   .container-main {
     @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
   }
-  
+
   .section-spacing {
     @apply py-16 md:py-24;
   }
@@ -387,9 +429,9 @@ html {
   .hero-overlay {
     @apply absolute inset-0 bg-black/40;
   }
-  
+
   .text-script {
-    font-family: 'Dancing Script', cursive;
+    font-family: var(--font-script);
     @apply text-highlight text-xl md:text-2xl;
   }
 }
@@ -493,15 +535,15 @@ html {
 
 @layer utilities {
   .font-serif {
-    font-family: "Baskerville", "Times New Roman", serif;
+    font-family: var(--font-heading);
   }
 
   .font-body {
-    font-family: "Open Sans", sans-serif;
+    font-family: var(--font-body);
   }
 
   .font-script {
-    font-family: "Dancing Script", cursive;
+    font-family: var(--font-script);
   }
 
   .text-forest-green {

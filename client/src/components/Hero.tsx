@@ -14,7 +14,7 @@ export const Hero = () => {
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
     if (element) {
-      element.scrollIntoView({ behavior: 'smooth' });
+      element.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -24,55 +24,74 @@ export const Hero = () => {
       className="relative min-h-screen flex items-center justify-center overflow-hidden"
       style={{
         backgroundImage: `url(${heroImage})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundRepeat: 'no-repeat'
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        backgroundRepeat: "no-repeat",
       }}
     >
       {/* Dark Overlay - matching Soprano's style */}
       <div className="hero-overlay" />
 
       {/* Main Content - exactly like Soprano's layout */}
-      <div className={`relative z-10 text-center text-white px-4 transition-all duration-1000 ${
-        isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-      }`}>
+      <div
+        className={`relative z-10 text-center text-white px-4 transition-all duration-1000 ${
+          isLoaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+        }`}
+      >
         <div className="max-w-4xl mx-auto space-y-6">
-          {/* Script Text - exactly like Soprano's "Reserve Today" */}
-          <p className="text-script mb-6" style={{ 
-            color: '#D4AF37', 
-            fontSize: '2.5rem',
-            fontFamily: 'Great Vibes, cursive'
-          }}>
-            Reserveer Vandaag
+          {/* Script Text - exactly like Soprano's "Welcome to" */}
+          <p
+            className="text-script mb-4"
+            style={{
+              color: "#D4AF37",
+              fontSize: "3.5rem",
+              fontFamily: "var(--font-script)",
+              fontWeight: "400",
+            }}
+          >
+            Welkom bij
           </p>
 
-          {/* Main Title - exactly like Soprano's "CHECK YOUR DATE" */}
-          <h1 className="text-5xl md:text-7xl font-bold mb-8 text-white tracking-tight" style={{ 
-            fontFamily: 'Playfair Display, serif',
-            textShadow: '2px 2px 4px rgba(0,0,0,0.7)',
-            letterSpacing: '0.02em'
-          }}>
-            CONTROLEER UW DATUM
+          {/* Main Title - exactly like Soprano's "SOPRANO'S CATERING" */}
+          <h1
+            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 text-white tracking-wider"
+            style={{
+              fontFamily: "var(--font-heading)",
+              textShadow: "2px 2px 4px rgba(0,0,0,0.8)",
+              letterSpacing: "0.1em",
+              fontWeight: "700",
+            }}
+          >
+            WESLEY'S AMBACHT CATERING
           </h1>
 
-          {/* Description - matching Soprano's style */}
-          <p className="max-w-2xl mx-auto text-lg md:text-xl text-white leading-relaxed mb-8" style={{
-            fontFamily: 'Open Sans, sans-serif',
-            textShadow: '1px 1px 2px rgba(0,0,0,0.5)'
-          }}>
-            Neem vandaag contact met ons op om onze evenementenplanning te controleren en 
-            uw data te reserveren. We ontwerpen een pakket dat perfect past bij uw speciale evenement.
+          {/* Description - matching Soprano's exact style */}
+          <p
+            className="max-w-3xl mx-auto text-lg md:text-xl text-white leading-relaxed mb-10"
+            style={{
+              fontFamily: "var(--font-body)",
+              textShadow: "1px 1px 2px rgba(0,0,0,0.7)",
+              fontWeight: "400",
+              lineHeight: "1.7",
+            }}
+          >
+            Van het handmatig selecteren van onze eigen producten rechtstreeks
+            van de lokale markt, tot het maken van onze eigen salades en
+            dressings, Wesley's Ambacht doet alles op de oude manier! Bij
+            Wesley's Ambacht garanderen we dat u zult genieten van ons
+            uitstekende eten, professionele service en concurrerende prijzen.
           </p>
 
           {/* CTA Button - exact match to Soprano's "Contact Us" button */}
           <Button
-            className="px-8 py-4 rounded-full text-white font-semibold text-lg transition-all duration-300 hover:scale-105 hover:shadow-xl"
+            className="px-10 py-4 rounded-full text-white font-bold text-lg transition-all duration-300 hover:scale-105 hover:shadow-2xl border-2 border-transparent hover:border-white/20"
             style={{
-              background: 'linear-gradient(135deg, #CC7A00 0%, #D4AF37 100%)',
-              border: 'none',
-              fontFamily: 'Open Sans, sans-serif'
+              background: "#E86C32",
+              fontFamily: "var(--font-body)",
+              fontWeight: "700",
+              letterSpacing: "0.02em",
             }}
-            onClick={() => scrollToSection('contact')}
+            onClick={() => scrollToSection("contact")}
           >
             Contact Ons
           </Button>
@@ -82,7 +101,10 @@ export const Hero = () => {
       {/* Phone number - bottom left like Soprano's */}
       <div className="absolute bottom-8 left-8 text-white flex items-center space-x-3 bg-black/40 backdrop-blur-sm rounded-full px-6 py-3 group hover:bg-[#E86C32]/90 transition-all duration-300">
         <Phone className="w-5 h-5 group-hover:scale-110 transition-transform duration-300" />
-        <span className="text-lg font-semibold" style={{ fontFamily: 'Open Sans, sans-serif' }}>
+        <span
+          className="text-lg font-semibold"
+          style={{ fontFamily: "var(--font-body)" }}
+        >
           06 212 226 58
         </span>
       </div>
@@ -97,13 +119,23 @@ export const Hero = () => {
         </div>
       </div>
 
-      {/* Scroll Arrow - exact Soprano's style */}
-      <div 
-        className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-20 cursor-pointer group animate-bounce"
+      {/* Scroll Arrow - mathematically perfect centering */}
+      <div
+        className="absolute z-20 cursor-pointer group animate-bounce"
+        style={{
+          bottom: "2rem",
+          left: "50%",
+          transform: "translateX(-50%)",
+        }}
         onClick={() => {
-          const servicesSection = document.querySelector('[data-section="services"]');
+          const servicesSection = document.querySelector(
+            '[data-section="services"]',
+          );
           if (servicesSection) {
-            servicesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            servicesSection.scrollIntoView({
+              behavior: "smooth",
+              block: "start",
+            });
           }
         }}
       >
