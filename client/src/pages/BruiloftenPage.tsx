@@ -119,7 +119,7 @@ const BruiloftenPage = () => {
                 fontFamily: 'Playfair Display, serif',
                 color: '#2C2C2C'
               }}>
-                WEDDINGS
+                BRUILOFTEN
               </h2>
               
               <div className="w-20 h-1 bg-[#D4AF37] mb-8" />
@@ -128,7 +128,7 @@ const BruiloftenPage = () => {
                 fontFamily: 'Open Sans, sans-serif',
                 fontSize: '1.1rem'
               }}>
-                We couldn't be happier that you're considering us to cater your wedding. Our chefs understand the importance of your wedding day and will work closely with you to ensure every detail is considered and every expectation exceeded.
+                We kunnen niet gelukkiger zijn dat u ons overweegt voor de catering van uw bruiloft. Onze chefs begrijpen het belang van uw trouwdag en zullen nauw met u samenwerken om ervoor te zorgen dat elk detail wordt overwogen en elke verwachting wordt overtroffen.
               </p>
               
               <Button
@@ -138,7 +138,7 @@ const BruiloftenPage = () => {
                   fontFamily: 'Open Sans, sans-serif'
                 }}
               >
-                Wedding Menus
+                Bruiloft Menu's
               </Button>
             </motion.div>
           </div>
@@ -167,7 +167,7 @@ const BruiloftenPage = () => {
                 fontFamily: 'Playfair Display, serif',
                 color: '#2C2C2C'
               }}>
-                FRESH & INSPIRED
+                VERS & GEÏNSPIREERD
               </h2>
               
               <div className="w-20 h-1 bg-[#CC7A00] mb-8" />
@@ -186,7 +186,7 @@ const BruiloftenPage = () => {
                   fontFamily: 'Open Sans, sans-serif'
                 }}
               >
-                Social Events
+                Sociale Evenementen
               </Button>
             </motion.div>
 
@@ -232,7 +232,7 @@ const BruiloftenPage = () => {
                   fontFamily: 'Playfair Display, serif',
                   letterSpacing: '0.1em'
                 }}>
-                  SERVICE STYLES
+                  SERVICE STIJLEN
                 </h2>
                 
                 <p className="max-w-md mx-auto mb-8 text-lg" style={{
@@ -245,7 +245,7 @@ const BruiloftenPage = () => {
                   className="px-8 py-3 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white text-white font-semibold hover:bg-white hover:text-[#CC7A00] transition-all duration-300"
                   style={{ fontFamily: 'Open Sans, sans-serif' }}
                 >
-                  Service Styles
+                  Service Stijlen
                 </Button>
               </div>
             </motion.div>
@@ -269,7 +269,7 @@ const BruiloftenPage = () => {
                   fontFamily: 'Playfair Display, serif',
                   letterSpacing: '0.1em'
                 }}>
-                  VENUES & VENDORS
+                  LOCATIES & LEVERANCIERS
                 </h2>
                 
                 <p className="max-w-md mx-auto mb-8 text-lg" style={{
@@ -282,7 +282,7 @@ const BruiloftenPage = () => {
                   className="px-8 py-3 rounded-full bg-white/20 backdrop-blur-sm border-2 border-white text-white font-semibold hover:bg-white hover:text-[#CC7A00] transition-all duration-300"
                   style={{ fontFamily: 'Open Sans, sans-serif' }}
                 >
-                  Venues & Vendors
+                  Locaties & Leveranciers
                 </Button>
               </div>
             </motion.div>
@@ -307,7 +307,7 @@ const BruiloftenPage = () => {
               color: '#2C2C2C',
               letterSpacing: '0.05em'
             }}>
-              WE ARE HERE TO SERVE YOU
+              WIJ ZIJN ER VOOR U
             </h2>
             
             <p className="text-gray-600 leading-relaxed mb-8" style={{

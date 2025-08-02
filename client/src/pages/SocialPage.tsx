@@ -34,7 +34,7 @@ export const SocialPage = () => {
 
   const socialEvents = {
     birthday: {
-      title: "Birthday Celebrations",
+      title: "Verjaardag Vieringen",
       subtitle: "VERJAARDAG FEESTEN",
       price: "€22",
       image: birthdayImage,
@@ -56,7 +56,7 @@ export const SocialPage = () => {
       ]
     },
     anniversary: {
-      title: "Anniversary Parties",
+      title: "Jubileum Feesten",
       subtitle: "JUBILEUM VIERINGEN",
       price: "€35",
       image: anniversaryImage,
@@ -78,7 +78,7 @@ export const SocialPage = () => {
       ]
     },
     family: {
-      title: "Family Gatherings",
+      title: "Familie Bijeenkomsten",
       subtitle: "FAMILIE BIJEENKOMSTEN",
       price: "€28",
       image: familyImage,
@@ -129,7 +129,7 @@ export const SocialPage = () => {
           <div className="flex items-center justify-center gap-3 mb-6">
             <PartyPopper className="w-8 h-8 text-[#D4AF37]" />
             <p className="text-script text-2xl" style={{ color: '#D4AF37', fontFamily: 'Great Vibes, cursive' }}>
-              Celebrate Life
+              Vier Het Leven
             </p>
           </div>
           <h1 className="text-white mb-8" style={{ 
@@ -169,7 +169,7 @@ export const SocialPage = () => {
             <div className="flex items-center justify-center gap-3 mb-6">
               <Heart className="w-6 h-6 text-[#E86C32]" />
               <p className="text-script text-2xl" style={{ color: '#D4AF37', fontFamily: 'Great Vibes, cursive' }}>
-                Special Moments
+                Bijzondere Momenten
               </p>
             </div>
             <h2 className="text-4xl font-bold mb-8 text-gray-900" style={{ fontFamily: 'Playfair Display, serif' }}>

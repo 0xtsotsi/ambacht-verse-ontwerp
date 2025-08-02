@@ -83,7 +83,7 @@ export const ContactPage = () => {
           <div className="flex items-center justify-center gap-3 mb-6">
             <ChefHat className="w-8 h-8 text-[#D4AF37]" />
             <p className="text-script text-2xl" style={{ color: '#D4AF37', fontFamily: 'Great Vibes, cursive' }}>
-              Let's Connect
+              Laten We Verbinden
             </p>
           </div>
           <h1 className="text-white mb-8" style={{ 
