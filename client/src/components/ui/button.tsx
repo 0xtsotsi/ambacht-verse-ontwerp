@@ -18,13 +18,15 @@ const buttonVariants = cva(
           "bg-secondary text-secondary-foreground hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        // V5 Interactive Elegance variants only
-        "interactive-primary":
-          "relative bg-gradient-to-r from-terracotta-500 to-terracotta-600 hover:from-terracotta-600 hover:to-terracotta-700 text-white shadow-elegant-button hover:shadow-elegant-button-hover rounded-2xl font-elegant-body font-bold transition-all duration-700 transform hover:scale-110 hover:-translate-y-2 overflow-hidden group before:absolute before:inset-0 before:bg-gradient-to-r before:from-terracotta-600/0 before:via-terracotta-400/30 before:to-terracotta-600/0 before:translate-x-[-200%] hover:before:translate-x-[200%] before:transition-transform before:duration-1000 animate-elegant-glow",
-        "interactive-outline":
-          "relative border-2 border-terracotta-500 text-terracotta-600 bg-transparent hover:bg-terracotta-600 hover:text-white hover:border-terracotta-600 rounded-2xl font-elegant-body font-bold transition-all duration-500 transform hover:scale-110 hover:rotate-1 group overflow-hidden before:absolute before:inset-0 before:bg-terracotta-600 before:translate-y-full hover:before:translate-y-0 before:transition-transform before:duration-500 before:-z-10",
-        "interactive-glass":
-          "relative bg-gradient-to-br from-white/60 via-terracotta-50/40 to-white/60 backdrop-blur-md border border-terracotta-300/50 text-terracotta-700 hover:from-terracotta-100/70 hover:via-terracotta-100/60 hover:to-terracotta-50/70 hover:border-terracotta-400/70 rounded-2xl font-elegant-body font-semibold transition-all duration-700 transform hover:scale-105 hover:-translate-y-1 shadow-elegant-soft hover:shadow-elegant-panel group before:absolute before:inset-0 before:rounded-2xl before:bg-gradient-to-r before:from-transparent before:via-terracotta-200/20 before:to-transparent before:blur-xl before:opacity-0 hover:before:opacity-100 before:transition-opacity before:duration-700",
+        // Soprano's Catering style buttons - exact match from reference
+        "soprano-primary":
+          "bg-white text-[#E86C32] border-2 border-[#E86C32] hover:bg-[#E86C32] hover:text-white rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl",
+        "soprano-cta":
+          "bg-[#E86C32] text-white hover:bg-[#D85A1A] rounded-full font-bold transition-all duration-300 transform hover:scale-105 shadow-lg hover:shadow-xl border-2 border-transparent hover:border-white/20",
+        "soprano-outline":
+          "bg-transparent text-white border-2 border-white hover:bg-white hover:text-[#E86C32] rounded-full font-semibold transition-all duration-300 transform hover:scale-105",
+        "soprano-services":
+          "bg-[#E86C32] text-white hover:bg-[#D85A1A] rounded-full font-semibold transition-all duration-300 px-8 py-3 text-sm tracking-wide shadow-md hover:shadow-lg transform hover:scale-105",
       },
       size: {
         default: "h-10 px-4 py-2",
